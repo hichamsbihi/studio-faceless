@@ -1,0 +1,45 @@
+{
+  "extraKnownMarketplaces": {
+    "studio-faceless": {
+      "source": {
+        "source": "github",
+        "repo": "hichamsbihi/studio-faceless"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "studio-faceless@studio-faceless": true
+  },
+  "permissions": {
+    "allow": [
+      "Bash(node node_modules/hyperframes/bin/hyperframes.mjs *)",
+      "Bash(* node_modules/hyperframes/bin/hyperframes.mjs *)",
+      "Bash(npx hyperframes *)",
+      "Bash(* render.mjs*)",
+      "Bash(python mix.py*)",
+      "Bash(python -B mix.py*)",
+      "Bash(python -I -B mix.py*)",
+      "Bash(python3 mix.py*)",
+      "Bash(py mix.py*)",
+      "Bash(python */mix.py*)",
+      "Bash(python -B */mix.py*)",
+      "Bash(python -I -B */mix.py*)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(rm -fr *)",
+      "Bash(rm -r *)",
+      "Bash(npm install *)",
+      "Bash(npm i *)",
+      "Bash(npm uninstall *)",
+      "Bash(npm update *)",
+      "Bash(npx hyperframes@*)",
+      "Bash(npx hyperframes publish*)",
+      "Bash(npx hyperframes cloud*)",
+      "Bash(npx hyperframes cloudrun*)",
+      "Bash(npx hyperframes lambda*)",
+      "Bash(npx hyperframes auth*)",
+      "Bash(npx hyperframes upgrade*)"
+    ]
+  }
+}

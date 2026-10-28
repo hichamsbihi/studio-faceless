@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Channel name — EXXX, sequence N "title" (v1)</title>
+<!--
+Gabarit de séquence v2 (20/10/2026, repris en v3), d'après la v1 (16/10/2026, séquence 6 v2 de l'E003 d'AA).
+v2 : un texte posé reste immobile (REFERENTIEL § 2 ter) ; ni échelle, ni flou, ni rotation animés sur un texte. Mode d'emploi : README.md.
+« À REMPLACER » marque ce qui change d'une séquence à l'autre.
+
+Principe : chaque élément est une fonction pure du temps t (s) de la bande voix. Le moteur diffuse l'évènement « hf-seek »
+à chaque image ; render(t) recalcule tout l'état visible. Ni GSAP, ni horloge, ni Math.random : seul le grain change à
+chaque image, par des positions pseudo-aléatoires fixes. Une animation WAAPI (el.animate(…, {fill: 'both'}).pause()) est
+aussi recalée par le moteur, mais un seul système par séquence : hf-seek.
+
+Couches, du fond vers l'avant :
+  1. arrière-plan commun (ici, non minuté) : papier charbon → couche de contexte floue → vignette → brume → grain ;
+  2. un moment = une sous-composition (compositions/), minutée par son hôte (data-start, data-duration) ;
+  3. habillage commun (ici) : étiquette du coin, crédit, noir d'entrée et de sortie.
+Anti-tremblement (E003) : transformations 2D seulement, jamais perspective() ni rotateX/Y à 0 ; pas d'arrondi au pixel
+pendant un mouvement lent ; un élément immobile ne change d'aucune valeur d'une image à l'autre.
+Texte (E005, 19/10/2026) : la brume, le grain, les flous et --workers 2 imposent un rendu recalé au pixel. Un texte entre et
+sort en opacité ou en glissement linéaire de 1 à 2 px entiers par image, puis reste immobile ; le mouvement d'un plan vient
+du papier, des photos de contexte et des photos en carte.
+-->
+<style>
+@font-face{font-family:Newsreader;src:url(media/fonts/Newsreader-VariableFont.ttf);font-weight:200 800}
+/* IBM Plex Mono : pas de fichier ; le compilateur HyperFrames l'injecte (Google Fonts, cache ~/.cache/hyperframes/fonts). */
+
+/* Palette de l'épisode (marque/README.md, « Films » : socle fixe + palette par épisode), À REMPLACER par celle de la
+   DIRECTION_ARTISTIQUE de l'épisode. Valeurs ci-dessous : palette par défaut. Couleurs en hexadécimal à 6 chiffres
+   (AA.melange les lit) ; --teinte75 = --teinte à 75 %. Jamais les couleurs de marque exclues des films (marque/README.md). */
+:root{
+  --teinte:#0B1622;            /* teinte des fonds flous (kit) ; fond des crédits et sous-titres d'étiquette (75 %) */
+  --teinte75:rgba(11,22,34,.75);
+  --texte:#F1F3F5;             /* texte sur fond, titres */
+  --fiche:#F1F3F5;             /* papier des fiches */
+  --encre:#0B1622;             /* texte des fiches */
+  --surligneur:#FFE600;        /* surligneur, étiquettes (date, lieu) */
+  --encre-surligneur:#0B1622;  /* texte sur le surligneur et les étiquettes */
+  --accent:#E10600;            /* accent dramatique : chiffre clé, minute décisive */
+}
+html,body{margin:0;background:var(--teinte)}
+#film{position:relative;width:100%;height:100%;overflow:hidden;background:var(--teinte);color:var(--texte);font-family:Newsreader,serif}
+.plein{position:absolute;inset:0}
+
+/* ---- 1. arrière-plan commun */
+#papier{background:url(media/matieres/paper-charcoal-rb09.jpg) center/cover;transform-origin:50% 50%}
+/* fond de contexte : photo du kit déjà floutée et teintée (2112 × 1188, flou σ 14–18, --teinte à 55 %), 25–45 % d'opacité ; elle reste derrière les titres, les fiches et les données (§ 2 ter) */
+.contexte{position:absolute;left:-96px;top:-54px;width:2112px;height:1188px;transform-origin:50% 50%;opacity:0;visibility:hidden}
+#vignette{background:radial-gradient(ellipse 80% 75% at 55% 50%,rgba(13,16,18,.25) 40%,rgba(13,16,18,.7) 100%)}
+/* brume : plans d'atmosphère seulement (exemple AA : stade de nuit, souvenir, question), 0,15–0,35 */
+.brume{position:absolute;left:-192px;top:-184px;width:2304px;height:1447px;mix-blend-mode:screen;opacity:0;visibility:hidden}
+#grain{background:url(media/matieres/grain-512.png) repeat;mix-blend-mode:overlay;opacity:.085}
+
+/* ---- composants réutilisables (classes globales, employées dans les sous-compositions) */
+/* IBM Plex Mono : étiquettes, dates, lieux, sources, crédits, en majuscules espacées */
+.mono{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.14em}
+/* étiquette : surligneur, texte --encre-surligneur ; sa ligne d'appoint en --texte sur --teinte à 75 % */
+.etq{display:inline-block;background:var(--surligneur);color:var(--encre-surligneur);font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:22px;letter-spacing:.12em;text-transform:uppercase;padding:9px 15px 8px;white-space:nowrap}
+.etq-sous{display:table;margin-top:6px;background:var(--teinte75);color:var(--texte);font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:18px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px 4px;white-space:nowrap}
+/* titre : Newsreader, --texte ; le mot clé peut être surligné (classe .surligne + AA.surligne) */
+.titre{font-weight:600;font-size:132px;line-height:1.02;letter-spacing:-.005em;white-space:nowrap;text-shadow:0 6px 30px rgba(0,0,0,.45)}
+.titre-sous{margin-top:22px;font-weight:500;font-size:60px;line-height:1.1;white-space:nowrap}
+.chiffre{font-weight:700;font-size:300px;line-height:1;color:var(--accent);text-shadow:0 8px 40px rgba(0,0,0,.5)}
+/* fiche « papier » d'étude : 1180 × 700, --fiche, ombre douce ; centrée (x 370, y 190), rotation −1,5° au repos */
+.fiche{position:absolute;left:370px;top:190px;width:1180px;height:700px;box-sizing:border-box;padding:0 92px;display:flex;flex-direction:column;justify-content:center;background:var(--fiche);color:var(--encre);box-shadow:0 28px 60px rgba(0,0,0,.45),0 8px 18px rgba(0,0,0,.30);transform-origin:50% 50%}
+.fiche-revue{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;font-weight:500;font-size:24px;letter-spacing:.16em;margin-bottom:30px}
+.fiche-titre{font-weight:600;font-size:54px;line-height:1.14;margin-bottom:34px}
+.fiche-auteurs{font-weight:400;font-size:28px;line-height:1.4}
+.fiche-lieu{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;font-weight:500;font-size:22px;letter-spacing:.16em;margin-top:10px}
+/* surligneur : la largeur du trait va de 0 à 100 % (AA.surligne) ; hauteur 92 %, centrée, pour couvrir les majuscules */
+.surligne{background-image:linear-gradient(var(--surligneur),var(--surligneur));background-repeat:no-repeat;background-size:0% 92%;background-position:0 50%;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+
+/* ---- 3. habillage commun */
+#coin{position:absolute;left:96px;top:64px;opacity:0;visibility:hidden}
+#credit{position:absolute;right:40px;bottom:22px;font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:500;letter-spacing:.06em;color:var(--texte);background:var(--teinte75);padding:5px 10px 4px;white-space:nowrap;opacity:0;visibility:hidden}
+#noir{background:#000}
+</style>
+<script>
+// Outils communs, définis dans <head> pour exister avant les scripts des sous-compositions.
+window.AA = (function () {
+  const C = (v, a, b) => Math.max(a, Math.min(b, v));
+  const L = (t, a, b) => C((t - a) / (b - a), 0, 1);           // progression linéaire de a à b, bornée à [0, 1]
+  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  return {
+    C, L,
+    S: u => u * u * (3 - 2 * u),                                // courbes : douce, sinusoïdale, sortie et entrée cubiques
+    SIO: u => 0.5 - 0.5 * Math.cos(Math.PI * u),
+    EO: u => 1 - Math.pow(1 - u, 3),
+    EI: u => u * u * u,
+    lerp: (a, b, u) => a + (b - a) * u,
+    f: (v, n = 3) => (+v).toFixed(n),                           // jamais d'arrondi au pixel pendant un mouvement lent
+    // opacité ; « inherit » et non « visible » : un enfant visible annulerait le masquage de l'hôte hors de sa fenêtre
+    op(el, v) { el.style.opacity = (+v).toFixed(3); el.style.visibility = v <= 0.001 ? 'hidden' : 'inherit'; },
+    flou: b => (b > 0.05 ? `blur(${b.toFixed(2)}px)` : ''),
+    surligne(el, u) { el.style.backgroundSize = (100 * u).toFixed(1) + '% 92%'; },
+    melange(a, b, u) { const x = hex(a), y = hex(b); return `rgb(${x.map((v, i) => Math.round(v + (y[i] - v) * u)).join(',')})`; },
+    couleur: nom => getComputedStyle(document.documentElement).getPropertyValue(nom).trim(),   // couleur de la palette (:root)
+    hasard: n => { const x = Math.sin(n * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); },   // fixe : même n, même valeur
+    // début de l'hôte d'une sous-composition (s) : hf-seek donne le temps de la séquence, le moment calcule son temps local.
+    // Hôte = l'ancêtre minuté le plus proche sous la racine (data-start en secondes, jamais une référence à un autre clip).
+    debutHote(el) {
+      for (let n = el; n; n = n.parentElement)
+        if (n.hasAttribute('data-start') && n.parentElement && n.parentElement.closest('[data-composition-id]')) return parseFloat(n.getAttribute('data-start')) || 0;
+      console.error('AA.debutHote : hôte introuvable pour #' + (el && el.id));
+      return 0;
+    },
+  };
+})();
+</script>
+</head>
+<body>
+<!-- À REMPLACER : data-composition-id, data-duration (= bande voix, arrondie à l'image suivante). Rendu à 30 i/s (render.sh). -->
+<div id="film" data-composition-id="gabarit-sequence" data-start="0" data-width="1920" data-height="1080" data-duration="12" data-no-timeline>
+
+  <!-- ===== 1. arrière-plan commun : papier charbon → contexte flou → vignette → brume → grain ===== -->
+  <div id="fond" class="plein" data-layout-allow-overlap data-layout-allow-occlusion>
+    <div id="papier" class="plein"></div>
+    <img id="ctx1" class="contexte" src="media/fonds/fond-exemple.jpg" alt="">   <!-- À REMPLACER : fonds du kit, un <img> par fond -->
+    <div id="vignette" class="plein"></div>
+    <img id="brume1" class="brume" src="media/matieres/fog-08_resourceboy.jpg" alt="">
+    <img id="brume2" class="brume" src="media/matieres/fog-65_resourceboy.jpg" alt="">
+    <div id="grain" class="plein"></div>
+  </div>
+
+  <!-- ===== 2. moments : une sous-composition par moment (même data-composition-id sur l'hôte et dans le fichier) ===== -->
+  <div id="m01" data-composition-id="m01-titre" data-composition-src="compositions/m01-titre.html"
+       data-start="0" data-duration="5.8" data-track-index="2" data-width="1920" data-height="1080" data-no-timeline></div>
+  <div id="m02" data-composition-id="m02-fiche" data-composition-src="compositions/m02-fiche.html"
+       data-start="5.4" data-duration="6.6" data-track-index="3" data-width="1920" data-height="1080" data-no-timeline></div>
+
+  <!-- ===== 3. habillage commun ===== -->
+  <div id="habillage" class="plein" data-layout-allow-overlap data-layout-allow-occlusion>
+    <div id="coin"><div id="coinT" class="etq"></div><div id="coinS" class="etq-sous"></div></div>
+    <div id="credit"></div>
+    <div id="noir" class="plein"></div>
+  </div>
+
+  <!-- ===== 4. son : la voix seule (gabarit v3, 24/10/2026), faite par voix.py, gain 1. Ni musique ni effets : le mix se fait sur le film collé.
+       À décommenter quand media/audio/piste-voix.wav existe. ===== -->
+  <!-- <audio id="voix" src="media/audio/piste-voix.wav" data-start="0" data-duration="12" data-track-index="10" data-volume="1"></audio> -->
+</div>
+
+<script>
+(function () {
+  const A = window.AA, $ = id => document.getElementById(id);
+
+  // ---- repères de la voix (s), À REMPLACER par ceux du kit : débuts de phrase par silencedetect, mots internes recalés
+  const T = {m02: 5.4, fin: 12.0};
+
+  // ---- arrière-plan. Contextes : [id, début, fin, fondu d'entrée, fondu de sortie, opacité 0,25–0,45]
+  // Une photo réelle liée au propos reste derrière les titres, les fiches et les données (REFERENTIEL § 2 ter) : ici, un seul
+  // contexte tient toute la séquence (un espace continu), plus discret derrière la fiche (0,30).
+  const CONTEXTES = [['ctx1', 0, 11.4, 0.8, 0.6, 0.40]];
+  const CONTEXTE_SOUS_FICHE = [T.m02, T.m02 + 0.6, 0.30];   // [début, fin de la baisse, opacité] — À REMPLACER ou supprimer
+  // brumes : [id, début, fin, opacité] — plans d'atmosphère seulement ; pas de brume derrière une fiche d'étude
+  const BRUMES = [['brume1', 0, 5.2, 0.22]];
+  // plans du papier : dérive 1,00 → 1,04 sur la durée de chaque plan
+  const PLANS = [[0, T.m02], [T.m02, T.fin]];
+
+  // ---- habillage : [début, fin, étiquette, ligne d'appoint] et [début, fin, crédit] — textes vus : anglais
+  const COIN = [[0.9, 5.0, '01.01.2000 · PLACE', 'What the picture shows'], [6.3, 11.2, 'JOURNAL · YEAR', '']];
+  const CREDITS = [[0.4, 11.2, 'Background: AUTHOR / SOURCE, LICENCE']];   // crédit visible tant que la photo l'est
+
+  function render(t) {
+    // ===== 1. arrière-plan
+    const plan = PLANS.find(p => t >= p[0] && t < p[1]);
+    const ps = plan ? 1 + 0.04 * A.L(t, plan[0], plan[1]) : 1;
+    $('papier').style.transform = ps > 1.00001 ? `scale(${A.f(ps, 5)})` : '';
+    const [sa, sb, so] = CONTEXTE_SOUS_FICHE;
+    CONTEXTES.forEach(([id, a, b, fi, fo, mx]) => {
+      const o = t < a ? 0 : (fi > 0 ? A.L(t, a, a + fi) : 1) * (fo > 0 ? 1 - A.L(t, b, b + fo) : (t < b ? 1 : 0));
+      A.op($(id), o * A.lerp(mx, so, A.SIO(A.L(t, sa, sb))));
+      if (o > 0) $(id).style.transform = `scale(${A.f(1 + 0.05 * A.L(t, a, b + fo), 5)})`;
+    });
+    ['brume1', 'brume2'].forEach((id, k) => {
+      const g = BRUMES.filter(x => x[0] === id && t >= x[1]).map(([, a, b, mx]) => mx * A.L(t, a, a + 0.8) * (1 - A.L(t, b, b + 0.5)));
+      const o = g.length ? Math.max(...g) : 0;
+      A.op($(id), o);
+      if (o > 0) $(id).style.transform = `translate(${A.f(-60 * A.L(t, 0, T.fin) - 20 * k, 2)}px,${A.f(10 * k, 1)}px)`;
+    });
+    const fr = Math.round(t * 30);                                 // grain : une position fixe par image (30 i/s)
+    $('grain').style.backgroundPosition = fr === 0 ? '0px 0px' : `${Math.floor(A.hasard(fr) * 512)}px ${Math.floor(A.hasard(fr + 0.37) * 512)}px`;
+
+    // ===== 3. habillage
+    const g = COIN.find(x => t >= x[0] && t < x[1]);
+    $('coinT').textContent = g ? g[2] : '';
+    $('coinS').textContent = g ? g[3] : '';
+    $('coinS').style.display = g && g[3] ? 'table' : 'none';
+    A.op($('coin'), g ? A.L(t, g[0], g[0] + 0.15) * (1 - A.L(t, g[1] - 0.15, g[1])) : 0);
+    const c = CREDITS.find(x => t >= x[0] && t < x[1]);
+    $('credit').textContent = c ? c[2] : '';
+    A.op($('credit'), c ? 1 : 0);
+    A.op($('noir'), t < 0.6 ? 1 - A.SIO(A.L(t, 0, 0.6)) : A.SIO(A.L(t, T.fin - 0.75, T.fin - 0.05)));
+  }
+  window.addEventListener('hf-seek', e => render(e.detail.time));
+  Promise.all([document.fonts.load('600 40px Newsreader'), document.fonts.load("500 20px 'IBM Plex Mono'")]).catch(() => {}).then(() => render(0));
+})();
+</script>
+</body>
+</html>

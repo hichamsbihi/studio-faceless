@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Moment 02 du gabarit : la fiche « papier » d'une étude se pose, un passage est surligné. Le moteur ne garde que le
+     contenu de <template>. Classes .fiche*, .surligne et outils AA : ../index.html. Son de la pose (P1) et du trait (P2) :
+     placés au mix du film aux mêmes instants (temps de la séquence = début de l'hôte + repère local). -->
+</head>
+<body>
+<template>
+<style>
+#m02-fiche{position:absolute;inset:0}
+#m02-carte{opacity:0;visibility:hidden}
+</style>
+<div id="m02-fiche" data-composition-id="m02-fiche" data-width="1920" data-height="1080" data-no-timeline>
+  <!-- textes À REMPLACER (anglais, vérifiés à la source) : revue · année, titre exact, auteurs, institution -->
+  <div id="m02-carte" class="fiche">
+    <div class="fiche-revue">Journal name · 2000</div>
+    <div class="fiche-titre">Exact study title, three lines at most, with the <span id="m02-hl" class="surligne">key finding</span> highlighted</div>
+    <div class="fiche-auteurs">First Author · Second Author · Third Author</div>
+    <div class="fiche-lieu">University</div>
+  </div>
+</div>
+<script>
+(function () {
+  const A = window.AA, $ = id => document.getElementById(id);
+  const T0 = A.debutHote($('m02-fiche'));
+  const R = {pose: 0.3, trait: 1.8};                  // repères locaux (s), À REMPLACER
+
+  // Un texte posé reste immobile (REFERENTIEL § 2 ter) : rotation fixe de −1,5°, ni échelle ni rotation animées ; le plan
+  // vit par le papier qui dérive derrière (index.html). Pose : glissement linéaire de 2 px exactement par image (40 px en
+  // 20 images) ; repères multiples de 1/30 s.
+  function render(t) {
+    const e = A.L(t, R.pose, R.pose + 20 / 30);        // pose : descend de 40 px et apparaît
+    $('m02-carte').style.transform = `translateY(${Math.round(40 * (1 - e))}px) rotate(-1.5deg)`;
+    A.op($('m02-carte'), A.L(t, R.pose, R.pose + 0.25));
+    A.surligne($('m02-hl'), A.SIO(A.L(t, R.trait, R.trait + 0.6)));
+  }
+  window.addEventListener('hf-seek', ev => render(ev.detail.time - T0));
+})();
+</script>
+</template>
+</body>
+</html>

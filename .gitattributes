@@ -1,0 +1,21 @@
+# Dépôt du plugin studio-faceless : aucun fichier en Git LFS (une installation de plugin ne télécharge pas le contenu LFS).
+* text=auto
+*.sh text eol=lf
+.githooks/* text eol=lf
+plugins/studio-faceless/starter/.githooks/* text eol=lf
+*.ps1 text eol=crlf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.mp3 binary
+*.wav binary
+*.mp4 binary
+*.mov binary
+*.webm binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary

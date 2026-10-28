@@ -1,0 +1,4 @@
+# Dépendances Python des outils du plugin studio-faceless (seuls imports hors bibliothèque standard).
+# Testé le 14 octobre 2026 avec Python 3.14.5, numpy 2.4.6 et scipy 1.17.1.
+numpy>=2.4
+scipy>=1.17

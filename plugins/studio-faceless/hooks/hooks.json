@@ -1,0 +1,30 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "python -I \"${CLAUDE_PLUGIN_ROOT}/hooks/regles_studio.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell|Write|Edit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "python -I \"${CLAUDE_PLUGIN_ROOT}/hooks/garde_commandes.py\"",
+            "timeout": 10,
+            "statusMessage": "Garde studio-faceless"
+          }
+        ]
+      }
+    ]
+  }
+}

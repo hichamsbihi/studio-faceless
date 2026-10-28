@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Moment 01 du gabarit : un titre et sa ligne d'appoint. Le moteur ne garde que le contenu de <template> :
+     style, balisage et script y sont tous. Classes .titre, .titre-sous, .surligne et outils AA : ../index.html. -->
+</head>
+<body>
+<template>
+<style>
+#m01-titre{position:absolute;inset:0}
+#m01-bloc{position:absolute;left:150px;top:330px;opacity:0;visibility:hidden}
+</style>
+<!-- data-composition-id identique à celui de l'hôte (index.html) ; data-no-timeline : pas de timeline GSAP à attendre -->
+<div id="m01-titre" data-composition-id="m01-titre" data-width="1920" data-height="1080" data-no-timeline>
+  <div id="m01-bloc">
+    <div id="m01-t" class="titre">Title of the <span id="m01-mot" class="surligne">moment</span></div>
+    <div id="m01-s" class="titre-sous">Day, 1 Month 2000</div>
+  </div>
+</div>
+<script>
+(function () {
+  const A = window.AA, $ = id => document.getElementById(id);
+  const T0 = A.debutHote($('m01-titre'));            // début de l'hôte dans la séquence (s)
+  // repères locaux (s, depuis le début du moment), À REMPLACER : calés sur les premiers mots de la voix
+  const R = {entre: 0.6, mot: 1.6, sous: 2.4, sort: 5.3, fin: 5.8};
+
+  // Un texte posé reste immobile (REFERENTIEL § 2 ter) : ni échelle ni flou sur le bloc ; le mouvement du plan vient du
+  // papier et de la photo de contexte (index.html). Entrée : glissement linéaire de 2 px exactement par image (24 px en
+  // 12 images), seul glissement régulier dans le rendu recalé au pixel ; repères multiples de 1/30 s.
+  function render(t) {                                // t : temps local du moment
+    const e = A.L(t, R.entre, R.entre + 0.4);          // entrée : monte de 24 px et apparaît
+    const x = A.SIO(A.L(t, R.sort, R.fin));            // sortie : s'efface sur place
+    $('m01-bloc').style.transform = e < 1 ? `translateY(${Math.round(24 * (1 - e))}px)` : '';
+    A.op($('m01-bloc'), e * (1 - x));
+    const u = A.SIO(A.L(t, R.mot, R.mot + 0.5));       // mot clé : trait du surligneur, le texte passe à son encre
+    A.surligne($('m01-mot'), u);
+    $('m01-mot').style.color = u > 0 ? A.melange(A.couleur('--texte'), A.couleur('--encre-surligneur'), u) : '';
+    A.op($('m01-s'), A.L(t, R.sous, R.sous + 0.4));
+  }
+  window.addEventListener('hf-seek', ev => render(ev.detail.time - T0));
+})();
+</script>
+</template>
+</body>
+</html>

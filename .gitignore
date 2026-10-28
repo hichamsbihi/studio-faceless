@@ -1,0 +1,10 @@
+# Caches et réglages personnels
+__pycache__/
+*.pyc
+node_modules/
+.claude/settings.local.json
+
+# Système
+Thumbs.db
+desktop.ini
+.DS_Store

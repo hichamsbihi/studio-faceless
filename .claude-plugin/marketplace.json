@@ -1,0 +1,14 @@
+{
+  "name": "studio-faceless",
+  "description": "Catalogue privé du studio de chaînes YouTube faceless de Hicham.",
+  "owner": {
+    "name": "Hicham"
+  },
+  "plugins": [
+    {
+      "name": "studio-faceless",
+      "source": "./plugins/studio-faceless",
+      "description": "Studio de chaînes YouTube documentaires faceless avec Claude Code et HyperFrames."
+    }
+  ]
+}

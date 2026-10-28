@@ -1,0 +1,7 @@
+#!/bin/sh
+# Contrôle avant chaque commit : verifier_depot.py du plugin studio-faceless. Activé par : git config core.hooksPath .githooks
+# Le plugin est cherché dans son cache d'installation ; STUDIO_FACELESS_OUTILS peut désigner un autre dossier outils/.
+V="${STUDIO_FACELESS_OUTILS:+$STUDIO_FACELESS_OUTILS/verifier_depot.py}"
+[ -n "$V" ] || V=$(ls -d "$HOME"/.claude/plugins/cache/studio-faceless/studio-faceless/*/outils/verifier_depot.py 2>/dev/null | sort -V | tail -1)
+[ -n "$V" ] && [ -f "$V" ] || { echo "verifier_depot.py introuvable : le plugin studio-faceless est-il installé ?" >&2; exit 1; }
+exec python -I -B "$V"

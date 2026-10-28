@@ -1,0 +1,64 @@
+# Ce qui n'entre jamais dans le dépôt de la chaîne (règles du plugin studio-faceless, validées sur AA le 21/10/2026).
+# Le dépôt garde le texte (code, configuration, gabarits, directives, fiches) et, en Git LFS, les binaires indispensables
+# de marque/ et templates/. Les médias des épisodes, les rendus et les archives vont dans la sauvegarde externe.
+
+# Dépendances et caches (recréés par npm ci et par Python)
+node_modules/
+__pycache__/
+*.pyc
+
+# Réglages personnels de Claude Code
+.claude/settings.local.json
+
+# Corbeille de l'archivage, archives et fichiers partiels
+_A_SUPPRIMER/
+*.zip
+*.partiel
+
+# Médias des épisodes (sauvegarde externe)
+episodes/**/*.mp4
+episodes/**/*.mov
+episodes/**/*.webm
+episodes/**/*.mkv
+episodes/**/*.wav
+episodes/**/*.mp3
+episodes/**/*.m4a
+episodes/**/*.aac
+episodes/**/*.flac
+episodes/**/*.png
+episodes/**/*.jpg
+episodes/**/*.jpeg
+episodes/**/*.webp
+episodes/**/*.gif
+episodes/**/*.tif
+episodes/**/*.tiff
+episodes/**/*.pdf
+episodes/**/*.ttf
+episodes/**/*.otf
+episodes/**/*.woff
+episodes/**/*.woff2
+episodes/**/*.qt
+# Médias téléchargés à la main et pages web enregistrées (validé sur AA, 26/10/2026 : un épisode en contenait 260 Mo)
+episodes/*/inputs/media/
+
+# Captures d'études de chaînes tierces : médias d'un tiers, usage interne, hors dépôt
+direction/references/**/captures/
+
+# Sorties et captures de travail des épisodes
+episodes/*/outputs/
+episodes/**/planche/
+episodes/**/planches/
+episodes/**/controle/
+episodes/**/controles/
+episodes/**/snapshots/
+episodes/**/captures/
+
+# Modèles et mesures lourdes, gardés hors du projet
+*.bin
+*.npz
+*.f32
+
+# Système
+Thumbs.db
+desktop.ini
+.DS_Store

@@ -1,0 +1,58 @@
+# Installer le studio sur une machine
+
+Le studio tourne sous **Windows**, avec **Git Bash** pour les commandes de Claude. Les versions sont celles de la machine de référence au 28/10/2026.
+
+## 1. Prérequis (installés par le propriétaire)
+| Outil | Version de référence | Rôle | Installation suggérée (PowerShell) |
+|---|---|---|---|
+| Git pour Windows, avec Git LFS | Git 2.49, LFS 3.6.1 | dépôts, binaires de la marque, Git Bash | `winget install Git.Git` |
+| GitHub CLI | récente | identifiants Git pour le dépôt privé du plugin | `winget install GitHub.cli` |
+| nvm pour Windows, puis Node | Node **22.0.0** | HyperFrames (Node 22 ou plus obligatoire) | `winget install CoreyButler.NVMforWindows`, puis `nvm install 22.0.0` et `nvm use 22.0.0` |
+| Python | 3.14 (3.12 au moins) | outils, garde-fou, mix | `winget install Python.Python.3.14` |
+| FFmpeg | 9.0 | tout le son et l'image | `winget install Gyan.FFmpeg` |
+| Claude Code | 2.1.169 ou plus | Claude, plugin, agents | application de bureau ou `claude` en terminal |
+
+- **Compte GitHub** du propriétaire, avec l'authentification à deux facteurs et l'accès aux dépôts privés.
+- **Compte claude.ai** avec les connecteurs de la chaîne (ElevenLabs pour la voix, la musique et les effets ; vidIQ en lecture seule).
+- **Chrome sans fenêtre** : HyperFrames télécharge `chrome-headless-shell` (environ 270 Mo) dans `~/.cache/hyperframes/` au premier contrôle ou rendu, avec l'accord du propriétaire.
+
+## 2. Identifiants Git (une fois par machine)
+Claude Code installe le plugin avec les identifiants Git de la machine, sans jamais en demander.
+```bash
+gh auth login
+```
+```bash
+gh auth setup-git
+```
+
+## 3. Skills HyperFrames figés (une fois par machine)
+Les agents préchargent les skills HyperFrames 0.8.149. Le plus simple est de cloner ce dépôt une fois, puis de copier chaque dossier de `plugins/studio-faceless/vendor/claude-skills/` dans `~/.claude/skills/`, sans écraser un dossier existant.
+
+## 4. Brancher une chaîne existante
+1. Cloner le dépôt de la chaîne, puis récupérer ses binaires :
+   ```bash
+   git lfs install
+   ```
+   ```bash
+   git clone https://github.com/<compte>/<depot-de-la-chaine>.git
+   ```
+2. Ouvrir le dossier dans Claude Code et **accepter la confiance du dossier** : sans elle, Claude Code ignore le catalogue déclaré dans `.claude/settings.json`.
+3. Installer le plugin pour ce projet :
+   ```bash
+   claude plugin install studio-faceless@studio-faceless --scope project
+   ```
+4. Dépendances de la chaîne : `npm ci` (HyperFrames 0.8.149, figé par `package-lock.json`), puis `pip install -r requirements.txt`.
+5. Contrôle avant commit : `git config core.hooksPath .githooks`.
+6. Connecteurs : ajouter à la liste `ask` de `.claude/settings.json` l'identifiant du connecteur ElevenLabs de la session (`mcp__<identifiant>`). Il dépend du compte et ne figure donc pas dans le squelette.
+7. Modèle Whisper pour le contrôle des prises : `ggml-base.en.bin`, hors du projet, téléchargé avec l'accord du propriétaire.
+
+## 5. Vérifier
+À donner à Claude dans la chaîne, en lisant le bilan avant de continuer :
+> Vérifie l'installation : liste les skills et agents `studio-faceless`, vérifie que les règles communes du studio sont arrivées au début de la session, lance `hyperframes check` sur le gabarit de séquence v3 du plugin copié dans un dossier temporaire, un rendu test de 3 secondes avec `--workers 1`, un contrôle `controle.py niveau` sur ce rendu et `controle.py chrome`. Vérifie à la fin qu'aucun Chrome ne reste ouvert.
+
+## 6. Mettre à jour le plugin
+La mise à jour automatique est désactivée pour un dépôt privé : rien ne change sans action du propriétaire.
+```bash
+claude plugin update studio-faceless@studio-faceless
+```
+Puis `/reload-plugins` dans une session déjà ouverte.

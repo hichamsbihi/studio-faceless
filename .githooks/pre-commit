@@ -1,0 +1,3 @@
+#!/bin/sh
+# Dépôt du plugin studio-faceless : contrôle avant chaque commit. Activé par : git config core.hooksPath .githooks
+exec python -I -B plugins/studio-faceless/outils/verifier_depot.py
