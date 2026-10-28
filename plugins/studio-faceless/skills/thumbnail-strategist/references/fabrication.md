@@ -8,7 +8,7 @@ Aucun outil nouveau : une page HTML/CSS par miniature, rendue par le Chrome sans
 - Nom du PNG livré : `<NomChaine>-<EPISODE>-miniature-vN-<n>-<mots>.png`.
 
 ## 2. Page source
-Modèle à copier puis adapter : la page de la miniature v4 de l'E003 (AA, 38 lignes), gardée dans les archives AA ; les extraits de CSS ci-dessous en donnent le principe.
+Modèle à copier puis adapter : la page de la dernière miniature validée de la chaîne (exemple AA : la v4 de l'E003, 38 lignes). Pour la première miniature d'une chaîne, partir des extraits de CSS ci-dessous. La police Montserrat (SIL OFL) se télécharge une fois depuis Google Fonts, avec l'accord du propriétaire, et se range dans `marque/` avec sa licence ; chaque miniature en copie ensuite les deux fichiers dans son `media/`.
 - `html, body` : 1280×720, `overflow: hidden`, fond de secours foncé ; tout en `position: absolute` dans un conteneur 1280×720.
 - Police : `@font-face` local sur `media/Montserrat-VariableFont.ttf`, graisse 900 pour les mots, 800 pour les pastilles.
 - Commentaire en tête : version, mots, épisode, date, photo et licence, ce qui change depuis la version précédente.

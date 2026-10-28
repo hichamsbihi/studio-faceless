@@ -11,3 +11,9 @@ Première version, tirée de StudioV1 (chaîne Apparently Athletic) dans son ét
 - Référentiels par défaut : qualité de réalisation, direction audio, catalogue d'animations, méthode de récit.
 - Outils : contrôles, montage, cartes, shorts, rendu, archivage, contrôle du dépôt, suivi des tokens. Ils travaillent dans le dossier de la chaîne (`CLAUDE_PROJECT_DIR`, sinon le dossier courant).
 - Gabarit de séquence v3, modèles d'épisode et de contrat de mission, squelette de chaîne (`starter/`), skills HyperFrames 0.8.149 figés (`vendor/`).
+- Décisions de Hicham du 28/10/2026, intégrées avant toute installation :
+  - crédits CC BY par défaut dans le dossier YouTube, qu'une chaîne peut écarter dans `direction/ECARTS.md` ;
+  - fiche `BRAND-SPLIT` (ex-AA-SPLIT) ;
+  - § 4 de `DIRECTION_AUDIO.md` réécrit pour les deux connecteurs ElevenLabs ;
+  - modèle de miniature : la dernière validée de la chaîne ;
+  - statut `APPROUVE_PAR_<PROPRIETAIRE>`.

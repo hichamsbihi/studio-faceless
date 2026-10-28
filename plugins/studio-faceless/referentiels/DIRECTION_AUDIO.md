@@ -92,14 +92,18 @@ Les pratiques propres à un épisode vont dans son `CLAUDE.md`.
 - Échecs connus : l'alignement DTW sur la voix Windows (Zira) dérive ; Scribe d'ElevenLabs demande que le propriétaire envoie le fichier lui-même.
 
 ## 4. ElevenLabs
-- Le connecteur de la session génère des voix et des effets sonores, **pas de musique** (vérifié le 13 octobre 2026). Coût constaté pour les effets : environ 3,3 crédits par seconde.
+- **Deux connecteurs possibles**, selon ce que le propriétaire a ajouté à son compte claude.ai :
+  - le connecteur de base fait voix et effets sonores, **pas de musique** ;
+  - le connecteur ElevenLabs complet ajoute la musique (Eleven Music v2.5 : durée de 3 à 600 s, instrumental possible ; prompt = genre, humeur, instruments, tempo, courbe d'énergie, sans visuel) ;
+  - vérifier celui de la session avant de promettre une musique.
+- **Coûts constatés sur AA** : effets, environ 3,3 crédits par seconde ; musique, estimation d'environ 27,5 crédits par seconde et par variante (20/10/2026).
 - Brief d'un son : action ou matière, proximité, énergie, durée, sec ou réverbéré, début et fin, éléments exclus, rôle dans la scène. Générer les éléments séparément.
 - **Coût réel** : l'estimation affichée avant une génération dépasse largement la facturation (constaté : 35 crédits facturés pour 115,5 estimés). La lire, sans s'en servir comme budget réel.
 - **Une génération par nœud** (`generations_count: 1` ; quatre par défaut), ou deux quand le propriétaire doit choisir entre variantes (exemple AA : épisode 003). Prompt de 450 caractères au plus. Les liens de téléchargement expirent au bout de 2 h.
 - **Clics et attaques** : un « clic » généré contient souvent plusieurs attaques. Mesurer les transitoires et ne garder qu'une paire appui/relâchement, calée sur l'image de contact.
-- **Musique** : Eleven Music demande le connecteur ElevenLabs complet, que seul le propriétaire peut ajouter. Sans lui, le dire et proposer une autre solution.
-  - **Solution éprouvée sur AA le 15/10/2026** : des nappes en boucle générées par le modèle d'effets (`loop: true`, 30 s, 2 variantes). Le Studio Director garde la variante dont le raccord de boucle est propre (écart d'énergie début/fin ≤ 1,5 dB) et la moins chargée entre 1 et 4 kHz. Il nomme l'autre pour que le propriétaire puisse l'échanger à l'écoute.
-- **Garde-fou** : chaque appel au connecteur demande le clic du propriétaire. Regrouper les générations (tous les nœuds, puis un lancement par lot de 20 au plus) quand il est présent. **Aucun sous-agent n'appelle le connecteur** : le Studio Director génère et télécharge, puis consigne prompts, identifiants, empreintes et crédits.
+- **Musique** : puiser d'abord dans `marque/son/`. Eleven Music demande le connecteur complet, que seul le propriétaire peut ajouter : sans lui, le dire et proposer une autre solution. Avec lui, montrer l'estimation et attendre l'accord du propriétaire, puisque la musique coûte cher.
+  - **Solution éprouvée sur AA (15/10/2026, choisie de nouveau le 20/10/2026 parce qu'Eleven Music y était jugé trop cher)** : des nappes en boucle générées par le modèle d'effets (`loop: true`, 30 s, 2 variantes). Le Studio Director garde la variante dont le raccord de boucle est propre (écart d'énergie début/fin ≤ 1,5 dB) et la moins chargée entre 1 et 4 kHz. Il nomme l'autre pour que le propriétaire puisse l'échanger à l'écoute.
+- **Garde-fou** : chaque appel au connecteur passe par une règle « ask » du `.claude/settings.json` de la chaîne (identifiant du connecteur, `INSTALLATION.md` du plugin) ; à défaut, Claude demande l'accord du propriétaire en conversation avant chaque lot. Regrouper les générations (tous les nœuds, puis un lancement par lot de 20 au plus) quand il est présent. **Aucun sous-agent n'appelle le connecteur** : le Studio Director génère et télécharge, puis consigne prompts, identifiants, empreintes et crédits.
 - Les sons générés sont des illustrations. Consigner le prompt, l'identifiant, les crédits et la licence de l'abonnement dans `PROVENANCE.md`.
 
 ## 5. Contrôles

@@ -88,7 +88,7 @@
 | ORBIT-DIVE | Carte | de la Terre de nuit à un lieu précis | E001 |
 | NIGHT-ROUTE | Carte | un trajet réel sans images du trajet | E001 |
 | ARGUMENT-MAP | Carte | une carte qui porte l'argument | E001 |
-| AA-SPLIT | Marque | signature et outro de la chaîne | E001, E003, E004 |
+| BRAND-SPLIT | Marque | signature et outro de la chaîne (ex-AA-SPLIT) | E001, E003, E004 |
 | HOLD-CALL | Montage | placer l'appel Like + Subscribe | E004 |
 
 ## Fiches
@@ -297,7 +297,7 @@
 ### ARGUMENT-MAP · La carte qui porte l'argument
 **Recette** : un tirage d'archive devient un repère posé sur une carte (OSM) ; flèche en pointillés vers le nouveau lieu ; la même carte mène aux lieux suivants ; routes et terrain inutiles masqués. **Attention** : sans argument spatial, pas de carte.
 
-### AA-SPLIT · Signature et outro
+### BRAND-SPLIT · Signature et outro (ex-AA-SPLIT)
 **Recette** : propre à la chaîne (signature et outro, fichiers finis de `marque/`) : voir `direction/ECARTS.md` et `marque/README.md`.
 
 ### HOLD-CALL · Pause et appel Like + Subscribe
