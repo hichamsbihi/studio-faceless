@@ -8,7 +8,7 @@ Les mesures se font sur le **PNG livré**, jamais sur la source HTML seule. Elle
 | 1 | Format | `miniature.py mesure IMAGE` | PNG ou JPEG, au moins 1280×720, 16:9, moins de 2 Mo (aide YouTube 72431) |
 | 2 | Aperçus réduits | `miniature.py planche SORTIE.png IMAGE...` : chaque variante en 320×180 et 168×94 | À 168×94 : les mots principaux se lisent, le visage se reconnaît, la contradiction se comprend |
 | 3 | Coin inférieur droit | Sur la planche, la durée simulée « 12:34 » ; dans la source, la zone x ≥ 1080 et y ≥ 620 | Ni texte, ni visage, ni pointe de flèche sous la durée |
-| 4 | Contraste du texte | `miniature.py contraste #TEXTE #FOND` pour un aplat ; `contraste #TEXTE --image IMAGE --zone x,y,l,h` sur une bande de fond collée aux lettres, sans les lettres | Au moins 4,5:1 pour les mots principaux ; 3:1 minimum (gros texte, WCAG 2.2, critère 1.4.3) ; le script juge sur les 5 % de pixels les plus défavorables |
+| 4 | Contraste du texte | `miniature.py contraste "#TEXTE" "#FOND"` pour un aplat ; `contraste "#TEXTE" --image IMAGE --zone x,y,l,h` sur une bande de fond collée aux lettres, sans les lettres | Au moins 4,5:1 pour les mots principaux ; 3:1 minimum (gros texte, WCAG 2.2, critère 1.4.3) ; le script juge sur les 5 % de pixels les plus défavorables |
 | 5 | Fonds clair et sombre | La planche montre chaque variante sur le blanc et le noir `#0F0F0F` de YouTube | Les bords de l'image ne se fondent dans aucun des deux fonds |
 | 6 | Économie | Compter dans la source | 3 éléments à lire au plus (sujet, texte, flèche) ; 2 à 4 mots |
 | 7 | Flèche | Distance entre la pointe et le sujet, à l'œil sur le PNG ou par les coordonnées | Elle désigne sans entrer dans le sujet |

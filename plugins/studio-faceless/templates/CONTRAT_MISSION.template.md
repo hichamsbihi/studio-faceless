@@ -20,7 +20,7 @@ restrictions : <interdits propres à la mission>
 - `studio-faceless:motion-producer` (parcours raccourci, validé sur AA, 16/10/2026) : il faut aussi le chemin du **kit de l'épisode** (`episodes/<id>/kit/`), un **brief de séquence court** (modèle ci-dessous) et un dossier d'écriture exact (`episodes/<id>/production/<séquence>-vN/`).
   - Le producteur fait la mise en scène, sans images clés soumises au propriétaire ; il vérifie une planche, écrit `render.sh` et **s'arrête**. Le Studio Director lance le rendu et les contrôles.
   - Les restrictions rappellent l'interdiction de l'effet diaporama, avec sa définition (`${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2).
-  - Une correction après visionnage se confie à un **nouvel** agent, avec un brief de quelques lignes (ce qui change, fichiers et version de départ).
+  - Une correction après visionnage se fait dans la même version (validé sur AA, 24/10/2026) : reprise du producteur si son cache est chaud, sinon un agent court, avec un brief de quelques lignes (ce qui change, fichiers et version de départ) ; une nouvelle version seulement pour un défaut majeur.
 - `studio-faceless:shorts-producer` (validé sur AA, 19/10/2026) : il faut le **kit shorts** (`episodes/<id>/kit/shorts/`), un **brief de short** (modèle : skill `studio-faceless:shorts`, `references/brief-short.md`) et un dossier d'écriture exact (`episodes/<id>/production/short-0N-vM/`). Mêmes règles que le producteur de séquences : il s'arrête à `render.sh`, et chaque correction est confiée à un nouvel agent.
 - `studio-faceless:studio-maintainer` : `episode_id` vaut « studio » ; sans écriture autorisée, il constate seulement.
 
@@ -35,7 +35,7 @@ plan de plans : <moment (s) → média du kit → mouvement voulu → raison d'�
 son : <musique du kit et gain relatif ; effets au moment exact, ou « aucun »>
 gabarit : <kit/gabarit/> ; éléments à réutiliser (fond, fiche, étiquettes…)
 règles utiles : <extraits courts de direction/ et des consignes de l'épisode : palette, typographie, vibration, photos répétées…>
-fiches du catalogue : <identifiants suggérés, ou « aucune »> ; le producteur lit l'index de ${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md (lignes 1 à 90) et choisit lui-même, dans sa fiche d'effets écrite avant toute scène
+fiches du catalogue : <identifiants suggérés, ou « aucune »> ; le producteur lit l'index de ${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md (début du fichier, jusqu'à la première fiche `###`) et choisit lui-même, dans sa fiche d'effets écrite avant toute scène
 épisode précédent : <retours du propriétaire à appliquer ; techniques déjà employées, à améliorer et non à recopier>
 sortie : <dossier d'écriture exact> ; nom du MP4 prévu
 ```

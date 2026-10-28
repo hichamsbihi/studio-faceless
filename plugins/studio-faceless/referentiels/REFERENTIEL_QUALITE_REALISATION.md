@@ -122,7 +122,7 @@ Définir d'abord le besoin narratif, puis choisir des médias adaptés à ce bes
 - dès son feu vert de production, le Studio Director délègue chaque séquence à un `studio-faceless:motion-producer` ;
 - chaque producteur conçoit la mise en scène complète à partir du brief de séquence (narration, plan de plans, son) et du kit de l'épisode ;
 - depuis le 16/10/2026 (parcours raccourci, `CLAUDE.md` de la chaîne), il s'arrête à `render.sh` ; le Studio Director rend et contrôle ;
-- le propriétaire juge le rendu. Ses corrections se font dans une nouvelle version, par un nouvel agent.
+- le propriétaire juge le rendu. Ses corrections se font dans la même version (reprise du producteur si son cache est chaud, sinon un agent court) ; une nouvelle version seulement pour un défaut majeur (validé sur AA, 24/10/2026).
 
 | Champ | Question |
 |---|---|

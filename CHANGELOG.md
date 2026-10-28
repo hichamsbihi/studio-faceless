@@ -17,3 +17,14 @@ Première version, tirée de StudioV1 (chaîne Apparently Athletic) dans son ét
   - § 4 de `DIRECTION_AUDIO.md` réécrit pour les deux connecteurs ElevenLabs ;
   - modèle de miniature : la dernière validée de la chaîne ;
   - statut `APPROUVE_PAR_<PROPRIETAIRE>`.
+- Documentation complète (`docs/`) : une fiche par fichier, 18 workflows, index, points ouverts.
+- Garde-fou : un producteur peut lancer par Bash les outils du plugin installé (son cache est sous `~/.claude/`) ; une remontée par `..` reste refusée.
+- Alignements relevés par la documentation, selon la règle validée la plus récente ou selon le code :
+  - corrections dans la même version ;
+  - journal du collage en voix seule pour les chapitres et le SRT ;
+  - mix du film unique ;
+  - pas de balise de synthèse par défaut ;
+  - rappel d'abonnement vers 2:00 ;
+  - rendu sans `--workers` refusé ;
+  - codes de sortie de `controle.py` ;
+  - modèle de `CLAUDE.md` d'épisode.

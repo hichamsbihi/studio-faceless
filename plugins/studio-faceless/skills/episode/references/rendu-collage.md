@@ -1,7 +1,7 @@
 # Rendus, collage, mix du film, master (étapes 8 à 10)
 
 ## 1. Rendus
-- **Un rendu à la fois.** D'abord attendre la fin des rendus des autres sessions (processus `node … hyperframes.mjs … render`). Il n'y a plus de condition sur le processeur ni sur la mémoire (validé sur AA, 24/10/2026). On vérifie toutes les 5 min, 12 h au plus. Script de garde : `${CLAUDE_PLUGIN_ROOT}/outils/rendu/rendre_si_libre.sh <render.sh> <journal>` (depuis la racine de la chaîne).
+- **Un rendu à la fois.** D'abord attendre la fin des rendus des autres sessions (processus `node … hyperframes.mjs … render`). Il n'y a plus de condition sur le processeur ni sur la mémoire (validé sur AA, 24/10/2026). On vérifie toutes les 5 min, 12 h au plus. Script de garde : `bash ${CLAUDE_PLUGIN_ROOT}/outils/rendu/rendre_si_libre.sh <render.sh> <journal>` (depuis la racine de la chaîne).
 - **Une seule tâche suivie qui enchaîne la file**, par exemple `for q in seq6 seq2 seq7; do garde …; done` en arrière-plan suivi. Une tâche détachée (`( … &)`) ne prévient jamais.
 - Arrêter un rendu : `TaskStop` ne tue pas l'enfant `node` ; il faut `taskkill //T //F //PID`.
 - **Durées constatées** sur une machine libre : 7 à 16 min par séquence d'une à deux minutes. Plus de 5 h quand la machine est chargée.
@@ -56,5 +56,5 @@
 - **Une correction de son se fait par un remix** : on modifie le plan, puis on relance `mix_film.py` vers une nouvelle sortie, sans rendu de l'image.
 
 ## 5. Sous-titres et publication
-- **SRT** : `python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/montage/srt.py --script SCRIPT.md --mots "kit/voix/{seq}-montage-mots-recales.json" --journal <master>.log.txt --sortie X.srt`. Il les tire du script vérifié (blocs ```text sous `## seqN`), des mots recalés des bandes montage et du journal du master. Deux lignes de 42 caractères au plus, 1 à 7 s. Vérifier par sondage trois phrases contre le film.
+- **SRT** : `python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/montage/srt.py --script SCRIPT.md --mots "kit/voix/{seq}-montage-mots-recales.json" --journal <nom>-voix.log.txt --sortie X.srt`. Il les tire du script vérifié (blocs ```text sous `## seqN`), des mots recalés des bandes montage et du journal du collage en voix seule (celui d'`assembler.py`, dans `outputs/` ; le `.log.txt` de `mix_film.py` ne convient pas). Deux lignes de 42 caractères au plus, 1 à 7 s. Vérifier par sondage trois phrases contre le film.
 - **Dossier YouTube** : skill `studio-faceless:youtube-seo` ; chapitres par `${CLAUDE_PLUGIN_ROOT}/outils/controle/publication.py chapitres`.

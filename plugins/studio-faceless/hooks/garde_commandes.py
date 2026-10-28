@@ -9,10 +9,12 @@ Pour tous :
   suppression récursive ou définitive (rm -r où que soit l'option, Remove-Item -Recurse, rd /s, find -delete,
   shutil.rmtree, rmSync récursif, rimraf, Directory.Delete récursif) ; vidage de la corbeille ;
   écriture par Write ou Edit dans le plugin installé (il se modifie dans son dépôt, pas depuis une chaîne) ;
-- ask : aperçu HyperFrames ; rendu direct sans `--workers 1` ou `2`.
+  rendu direct sans `--workers 1` ou `2` ;
+- ask : aperçu HyperFrames.
 Par rôle, déduit du type d'agent (`agent_type` de l'entrée du hook, voir ROLES), ou option `--role` :
 - directeur-artistique : seules ffmpeg, ffprobe et mkdir ; pas d'écrasement (-y) ; sortie hors zones protégées ;
-- producteur : en Bash, aucune mention de direction/, templates/, .claude/ ou d'un CLAUDE.md, et aucune écriture
+- producteur : en Bash, aucune mention de direction/, templates/, .claude/ ou d'un CLAUDE.md (sauf les chemins du
+  plugin installé, pour lancer ses outils, sans « .. »), et aucune écriture
   vers un dossier existant de marque/, des entrées d'épisode ou un MP4 existant ; mêmes limites pour Write et Edit ;
 - mainteneur : n'écrit qu'avec Write et Edit (aucune écriture en Bash), jamais dans .claude/, un projet de
   production, un dossier existant de marque/, des entrées d'épisode ou un MP4.
@@ -135,6 +137,20 @@ def write_targets(seg):
     return targets
 
 
+def sans_plugin(command):
+    """La commande, chemins du plugin installé remplacés par PLUGIN : un producteur peut lancer les outils du plugin,
+    dont le cache est sous ~/.claude/plugins/ (sinon la règle « .claude/ » les bloquerait)."""
+    plugin = (os.environ.get('CLAUDE_PLUGIN_ROOT') or '').replace('\\', '/').rstrip('/')
+    if not plugin:
+        return command
+    formes = {plugin, plugin.replace('/', '\\')}
+    if re.match(r'^[a-z]:/', plugin, I):
+        formes.add('/' + plugin[0].lower() + plugin[2:])          # /c/Users/... (Git Bash)
+    for f in formes:
+        command = re.sub(re.escape(f) + r'[^\s"\'|;&]*', lambda m: m.group(0) if '..' in m.group(0) else 'PLUGIN', command, flags=I)
+    return command
+
+
 def decide_bash(command, role, root):
     for rx, why in DENY_TEXT:
         if rx.search(command):
@@ -159,7 +175,7 @@ def decide_bash(command, role, root):
             for t in write_targets(seg):
                 if protected(project_rel(t, root), root, {'core'}):
                     return 'deny', "producteur : écriture interdite dans direction/, templates/, .claude/ et les CLAUDE.md"
-        if re.search(r'(^|[\s"\'=/\\])(direction|templates|\.claude)[/\\]|claude\.md', command, I):
+        if re.search(r'(^|[\s"\'=/\\])(direction|templates|\.claude)[/\\]|claude\.md', sans_plugin(command), I):
             return 'deny', "producteur : direction/, templates/, .claude/ et les CLAUDE.md se lisent avec Read ou Grep, jamais par Bash"
         for seg in segments(command):
             for t in write_targets(seg):

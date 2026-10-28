@@ -30,7 +30,7 @@ S'il manque le brief, le kit ou le dossier d'écriture, ne crée rien : renvoie 
 ## Ce que tu lis, et rien de plus
 - Le brief, le kit et `episodes/<id>/CLAUDE.md` (constats HyperFrames de l'épisode).
 - Les règles de `direction/` et de `marque/` dont tu as besoin sont **déjà résumées dans le brief**. N'ouvre un référentiel que pour la section que le brief cite.
-- **Catalogue** (`${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md`) : l'en-tête et l'index (lignes 1 à 90, lecture par plage), puis les fiches que tu retiens, avec l'outil Grep (motif `^### ID`, 2 lignes après) ou Read, jamais par Bash. Avant toute scène, écris ta **fiche d'effets** en tête du README : pour chaque moment, la technique, l'idée qu'elle sert, pourquoi elle, son effet sonore ; puis ce qui progresse par rapport à l'épisode précédent (retours donnés par le brief). Chaque film doit faire mieux que le précédent (validé sur AA, 26/10/2026).
+- **Catalogue** (`${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md`) : l'en-tête et l'index (début du fichier, jusqu'à la première fiche `###`, lecture par plage), puis les fiches que tu retiens, avec l'outil Grep (motif `^### ID`, 2 lignes après) ou Read, jamais par Bash. Avant toute scène, écris ta **fiche d'effets** en tête du README : pour chaque moment, la technique, l'idée qu'elle sert, pourquoi elle, son effet sonore ; puis ce qui progresse par rapport à l'épisode précédent (retours donnés par le brief). Chaque film doit faire mieux que le précédent (validé sur AA, 26/10/2026).
 - **Jamais la production d'un autre épisode**, sauf un fichier et une plage cités au contrat.
 
 ## Périmètre
@@ -53,7 +53,7 @@ S'il manque le brief, le kit ou le dossier d'écriture, ne crée rien : renvoie 
 3. **Préparer le rendu, sans le lancer.**
    - Écris `render.sh` : la commande exacte du rendu final (`--workers 2`, une sortie qui n'écrase rien).
    - Écris un `README.md` court : ce qui est fait, les médias utilisés, les écarts au brief, les chiffres-cibles mesurés, l'image de sortie au pixel, et le **tableau des effets proposés** (code de l'effet, instant local, image qui le justifie, facultatif ou non).
-   - Copie l'extrait de provenance du kit en `PROVENANCE.md`.
+   - Ajoute l'extrait de provenance du kit à la fin du `PROVENANCE.md` du gabarit, sans effacer les licences des matières.
 4. **T'arrêter** avec ton rapport. Le Studio Director lance le rendu en arrière-plan et fait les contrôles (`${CLAUDE_PLUGIN_ROOT}/outils/controle/`).
 
 ## Économie de contexte (validé sur AA, 16/10/2026)

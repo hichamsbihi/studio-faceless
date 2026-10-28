@@ -31,7 +31,7 @@ Accompagner le sous-texte plutôt que l'action littérale quand la scène dit d�
 
 ## 5. Sources et droits
 - Aucune nouvelle recherche musicale sans demande du propriétaire ; il choisit lui-même les variantes.
-- Le connecteur ElevenLabs de la session ne fait pas de musique ; Suno, Udio et services équivalents sont exclus sans décision du propriétaire.
+- Connecteur ElevenLabs : le connecteur de base ne fait pas de musique, le connecteur complet ajoute Eleven Music, avec l'accord du propriétaire (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 4) ; Suno, Udio et services équivalents sont exclus sans décision du propriétaire.
 - Ne jamais demander une musique « comme » un artiste vivant ou un morceau connu : décrire des attributs (tempo, instrumentation, densité, registre, dynamique).
 - Le journal de cues ne contient **aucune donnée inventée** : compositeur, éditeur ou identifiants inconnus s'écrivent « inconnu / à vérifier ».
 

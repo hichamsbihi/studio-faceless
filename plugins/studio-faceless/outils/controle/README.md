@@ -20,7 +20,7 @@ Créés le 15/10/2026 (validé sur AA) et testés sur les rendus de l'épisode 0
 | Chrome de HyperFrames | `controle.py chrome` | 0 après un rendu ; ne jamais arrêter le Chrome d'un rendu parallèle | `CLAUDE.md` racine de la chaîne |
 | Bilan rapide | `controle.py tout FILM.mp4 --projet DOSSIER_DU_PROJET` | Niveau, couleurs, licences et Chrome d'un coup | — |
 
-Code de sortie : 0 = rien à signaler ; 1 = écart signalé ; 2 = erreur d'usage.
+Code de sortie : 0 = rien à signaler ; 1 = écart signalé ou erreur d'entrée (film illisible, sortie déjà présente) ; 2 = usage (arguments invalides, fichier introuvable).
 
 ## `ralentir.py` : ralentir une narration
 `python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/controle/ralentir.py PRISE.mp3 SORTIE.wav`
@@ -54,8 +54,8 @@ Sa version du 15/10/2026 redonnait exactement la bande de la séquence 6 de l'E0
 
 ## `publication.py` : le dossier de publication YouTube (16/10/2026)
 Bibliothèque standard seule ; il lit et affiche, n'écrit rien. Méthode : skill `studio-faceless:youtube-seo`.
-- `publication.py verifier PUBLICATION_vN.md [--journal MASTER.log.txt] [--srt F.srt] [--exclure MOT …] [--requete "…"]` : titres ≤ 100 caractères, description ≤ 5 000 octets, tags ≤ 500 caractères au compte de YouTube, chevrons, chapitres (`0:00`, ≥ 3, ≥ 10 s), hashtags, mots exclus, SRT.
-- `publication.py chapitres MASTER.log.txt --titre seq1="…" [--repere seq4:66.5="…"]` : chapitres prêts à coller, depuis le journal du master.
+- `publication.py verifier PUBLICATION_vN.md [--journal <nom>-voix.log.txt] [--srt F.srt] [--exclure MOT …] [--requete "…"]` : titres ≤ 100 caractères, description ≤ 5 000 octets, tags ≤ 500 caractères au compte de YouTube, chevrons, chapitres (`0:00`, ≥ 3, ≥ 10 s), hashtags, mots exclus, SRT.
+- `publication.py chapitres <nom>-voix.log.txt --titre seq1="…" [--repere seq4:66.5="…"]` : chapitres prêts à coller, depuis le journal du collage en voix seule (écrit par `assembler.py`, lignes « seqN t s → », pas celui de `mix_film.py`).
 - `publication.py mot mots-seqN.json "premiers mots"` : temps d'une phrase dans une bande voix.
 
 Testé sur l'E003 d'AA le 16/10/2026 : 0 écart ; il retrouve les chapitres et les 417 caractères de tags du dossier fait à la main.

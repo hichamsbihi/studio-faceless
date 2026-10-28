@@ -19,7 +19,7 @@ Le message de délégation suit le contrat de mission (neuf champs ; modèle : `
 - **Dépendances** : HyperFrames (la version de `package.json` fait foi), FFmpeg, Node, Python. Signaler une mise à jour sans l'appliquer.
 - **Reproductibilité** : vérifier que chaque `render.mjs`, `generate.py` ou script d'assemblage pointe vers des sources existantes, et que les empreintes annoncées correspondent.
 - **Catalogue** (`${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md`) :
-  - ajouter ou mettre à jour une fiche sur demande, avec des chemins vérifiés ;
+  - ajouter ou mettre à jour une fiche sur demande, avec des chemins vérifiés ; dans une chaîne, une nouvelle technique se propose dans `direction/ECARTS.md` (section MOTION_CATALOG) et n'entre au catalogue que dans le dépôt du plugin (le plugin installé ne se modifie pas) ;
   - statut « expérimental » ou « à améliorer » ;
   - « validé » **seulement** si le contrat cite l'accord explicite du propriétaire ;
   - identifier les composants réutilisables, sans les extraire tant qu'aucune mission ne le demande.

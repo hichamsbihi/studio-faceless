@@ -18,15 +18,15 @@ Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les
 `[Officiel]` aide YouTube, doc de l'API ou blog YouTube · `[Observé]` constaté, vérifiable, sans garantie officielle · `[Hypothèse]` raisonnement à tester sur nos chiffres · `[Folklore écarté]` affirmation répandue sans source, qu'on n'applique pas. Sources et limites : `references/signaux-et-limites.md`.
 
 ## Méthode, dans l'ordre
-1. **Lire par plages** : `BRIEF.md`, les fiches de narration vérifiées, le journal du master (`outputs/*.log.txt`), la décision de miniature, et les `PROVENANCE.md` des séquences et du kit pour les crédits, sauf écart de la chaîne (`direction/ECARTS.md`).
+1. **Lire par plages** : `BRIEF.md`, les fiches de narration vérifiées, le journal du collage en voix seule (`outputs/<nom>-voix.log.txt`, écrit par `assembler.py`), la décision de miniature, et les `PROVENANCE.md` des séquences et du kit pour les crédits, sauf écart de la chaîne (`direction/ECARTS.md`).
 2. **Une promesse** en une phrase, partagée par le titre et la miniature (`studio-faceless:thumbnail-strategist`) et tenue dès l'accroche du film.
 3. **Requêtes** : une principale dans la langue naturelle de la chaîne (anglais sur AA), 3 à 5 de longue traîne, indices gratuits datés, jamais de volume. Voir `references/requetes-titres-tags.md`.
 4. **Trois titres**, puis tags, hashtags et playlist : même référence.
 5. **Description, chapitres, crédits, déclaration des voix et sons générés, commentaire épinglé et réponse de crédits, SRT, réglages** : `references/description-et-credits.md`. **Pas de synthèse des sources** (validé sur AA, 19/10/2026, pour tous les épisodes).
 6. **Contrôle** : script de limites, puis liste de contrôle et fiche de conformité (`references/gabarit-et-controle.md`).
    ```
-   python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/controle/publication.py chapitres episodes/<id>/outputs/<master>.log.txt --titre seq1="…" …
-   python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/controle/publication.py verifier episodes/<id>/PUBLICATION_vN.md --journal <master>.log.txt --srt <fichier>.srt [--exclure MOT …] [--requete "…"]
+   python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/controle/publication.py chapitres episodes/<id>/outputs/<nom>-voix.log.txt --titre seq1="…" …
+   python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/controle/publication.py verifier episodes/<id>/PUBLICATION_vN.md --journal <nom>-voix.log.txt --srt <fichier>.srt [--exclure MOT …] [--requete "…"]
    ```
 7. **Soumission au propriétaire** : dossier `PROPOSÉ` + fiche de conformité. Il choisit le titre, valide, publie.
 8. **Après publication** : bilans J+2, J+7, J+28, sans toucher un titre qui marche (`references/apres-publication.md`).

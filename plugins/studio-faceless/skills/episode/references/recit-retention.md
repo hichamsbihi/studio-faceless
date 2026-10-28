@@ -63,4 +63,4 @@ Exemple AA : l'E007 suit ce patron :
 ## 7. Après la sortie
 - Rétention à 0:30, 1:00 et 2:00, comparée aux vidéos habituelles. Taux de clic au-delà d'environ 1 000 impressions.
 - On ne conclut qu'à partir d'environ 100 spectateurs.
-- `QUESTION OUVERTE` : l'appel à s'abonner au milieu du film (Méthode, étude AA, bloc 5).
+- Appel à s'abonner au milieu du film : plus une question ouverte ; place par défaut vers 2:00 (`METHODE_RECIT.md` § 1, validé sur AA, 26/10/2026), confirmée ou écartée à la porte.

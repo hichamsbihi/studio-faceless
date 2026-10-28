@@ -31,13 +31,13 @@ Ces règles s'appliquent à toutes les chaînes qui utilisent le plugin. Elles s
   - `controle.py` : niveau, planche, vibration, tremblement, son, couleurs, photos répétées, licences, voix / reste, Chrome.
 - **Garde-fou** (hook du plugin, `${CLAUDE_PLUGIN_ROOT}/hooks/garde_commandes.py`) :
   - pour tous, il refuse la publication, le cloud, la connexion, la mise à jour de HyperFrames ou des skills, l'installation npm, la suppression récursive ou définitive, le vidage de la corbeille et la modification du plugin installé ;
-  - il demande confirmation pour `preview` et pour un rendu sans `--workers 1` ou `2` ;
+  - il demande confirmation pour `preview`, et refuse un rendu sans `--workers 1` ou `2` ;
   - par rôle, reconnu au type d'agent :
     - le directeur artistique n'a droit qu'à `ffmpeg`, `ffprobe` et `mkdir`, sans écrasement ni sortie dans une zone protégée ;
-    - les producteurs ne touchent ni à `direction/`, `.claude/` et aux `CLAUDE.md`, ni à un dossier existant de `marque/`, aux entrées d'un épisode ou à un MP4 existant ;
+    - les producteurs ne touchent ni à `direction/`, `templates/`, `.claude/` et aux `CLAUDE.md` (ils peuvent lancer les outils du plugin), ni à un dossier existant de `marque/`, aux entrées d'un épisode ou à un MP4 existant ;
     - le mainteneur n'écrit qu'avec Write ou Edit, jamais dans `.claude/`, un projet de production, un dossier existant de `marque/`, les entrées d'un épisode ou un MP4.
   - Les permissions (allow, deny, ask) sont dans le `.claude/settings.json` de la chaîne.
-- **Rendu** : un à la fois, en tâche suivie, par `${CLAUDE_PLUGIN_ROOT}/outils/rendu/rendre_si_libre.sh`, qui attend la fin des rendus des autres sessions.
+- **Rendu** : un à la fois, en tâche suivie, par `bash "${CLAUDE_PLUGIN_ROOT}/outils/rendu/rendre_si_libre.sh" <render.sh> <journal>`, qui attend la fin des rendus des autres sessions.
 - **Archivage** : `${CLAUDE_PLUGIN_ROOT}/outils/archiver_episode.py`. Un aperçu d'abord ; `--executer` seulement avec l'accord du propriétaire.
 - **Dépôt Git de la chaîne** : `verifier_depot.py` contrôle chaque commit (crochet `.githooks/pre-commit`). Claude fait les commits locaux et **ne pousse qu'avec l'accord du propriétaire, donné à chaque fois** ; il ne se connecte jamais au compte GitHub.
 - **Suivi des tokens** à chaque fin d'étape : `python -B "${CLAUDE_PLUGIN_ROOT}/outils/suivi_tokens.py" --depuis AAAA-MM-JJ`.
@@ -70,7 +70,7 @@ La fabrication suit le skill `studio-faceless:episode`, du choix du sujet au mix
 
 ## Économie de tokens et de contexte
 - **Sessions** : on reste dans la session en cours. `/compact` dès que le contexte dépasse 150 à 200 k, à chaque fin d'étape et avant une pause de plus d'une heure. Avant, écrire l'état dans `BRIEF.md`, le `CLAUDE.md` de l'épisode ou la mémoire. Les lectures lourdes vont à un sous-agent qui ne renvoie qu'une synthèse.
-- **Sous-agents** : jamais plus de 4 min sans action (leur cache dure 5 min) ; une tâche longue revient à Claude principal ; aucune demande de permission en attente pendant l'absence du propriétaire ; une correction = un nouvel agent.
+- **Sous-agents** : jamais plus de 4 min sans action (leur cache dure 5 min) ; une tâche longue revient à Claude principal ; aucune demande de permission en attente pendant l'absence du propriétaire ; une correction se fait dans la même version : reprise du producteur si son cache est chaud, sinon un nouvel agent court (validé sur AA, 24/10/2026).
 - **Travail** : modifier plutôt que réécrire ; sorties de commandes courtes ; lectures par plages ; une planche d'images à la fois ; dans les contrats, des extraits utiles plutôt que des fichiers entiers.
 
 ## Règles permanentes

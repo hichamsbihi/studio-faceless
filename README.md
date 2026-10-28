@@ -13,7 +13,7 @@ studio-faceless (ce dépôt)                       espace d'une chaîne (un dép
                                                   episodes/          un dossier par épisode
                                                   .claude/settings.json   active le plugin, permissions
 ```
-Le plugin ne contient aucun nom de chaîne ni de personne. Ce qui est propre à une chaîne vit dans son espace. Une amélioration du plugin profite à toutes les chaînes dès qu'elles passent à la nouvelle version.
+Le plugin ne dépend d'aucune chaîne : les mentions d'AA ou de StudioV1 n'y servent qu'à dater l'origine d'une règle (« validé sur AA, date »). Ce qui est propre à une chaîne vit dans son espace. Une amélioration du plugin profite à toutes les chaînes dès qu'elles passent à la nouvelle version.
 
 ## Contenu du plugin (`plugins/studio-faceless/`)
 | Élément | Contenu |
@@ -34,6 +34,7 @@ Une fois installés, les skills et les agents portent le préfixe du plugin : `s
 - Installer une machine et brancher une chaîne existante : [`INSTALLATION.md`](INSTALLATION.md).
 - Créer une nouvelle chaîne : [`NOUVELLE_CHAINE.md`](NOUVELLE_CHAINE.md).
 - Fonctionnement interne et contraintes des plugins : [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+- **Documentation complète**, fichier par fichier et workflow par workflow : [`docs/README.md`](docs/README.md).
 
 ## Règles d'or
 1. **Seul le propriétaire valide.** Une proposition n'est pas une décision ; chaque décision est datée.
@@ -48,10 +49,11 @@ Une fois installés, les skills et les agents portent le préfixe du plugin : `s
 3. Commit, puis envoi sur GitHub avec l'accord du propriétaire.
 4. Dans chaque chaîne : `claude plugin update studio-faceless@studio-faceless`, puis `/reload-plugins` dans la session ouverte.
 
-Commits courts, en français, préfixés par la zone : `skills : …`, `agents : …`, `outils : …`, `garde : …`, `docs : …`.
+Commits courts, en français, préfixés par la zone : `plugin : …`, `skills : …`, `agents : …`, `outils : …`, `garde : …`, `docs : …`.
 
 ## Licence
 Dépôt privé, propriété de Hicham, tous droits réservés. Les contenus tiers gardent leur licence :
 - HyperFrames et ses skills : Apache-2.0 ;
 - `humanizer`, `javascript-animation` et `soundtrack` : MIT (leur `LICENSE` et leur provenance sont dans leur dossier) ;
+- `skills/regarder/references/claude-video/` : MIT, © Bradley Bonanno (son `LICENSE` est dans le dossier) ;
 - polices du gabarit : SIL OFL.

@@ -9,7 +9,7 @@ Modèle réel : le dossier de publication de l'E003 d'AA (description de 3 964 c
 4. **CHAPTERS** (ci-dessous).
 5. **Note sur la science**, si le film rapproche des études d'une scène qu'elles n'ont pas mesurée : petites études, autres pays, analogie et non preuve (`direction/LIGNE_EDITORIALE.md`).
 6. **Pas de synthèse des sources** (validé sur AA, 19/10/2026, pour tous les épisodes). Ni section SOURCES dans la description, ni réponse de sources au commentaire épinglé, ni mission `studio-faceless:research` pour les compiler. Les sources restent dans `research/` et les fiches de narration de l'épisode.
-7. **PHOTO CREDITS**, regroupés par auteur et licence, puis la ligne des licences, le crédit de la photo de la miniature, et le renvoi à la réponse 1.
+7. **PHOTO CREDITS**, sauf écart de la chaîne (`direction/ECARTS.md`), regroupés par auteur et licence, puis la ligne des licences, le crédit de la photo de la miniature, et le renvoi à la réponse 1.
 8. **AUDIO** : voix off, voix jouées, musique et effets générés (outil nommé) ; ambiances et foules « illustrative, not recordings of the events shown » ; musique de l'outro ; textures.
 9. Ligne de chaîne (texte fixe de la chaîne, dans `marque/README.md`), puis 1 à 3 hashtags (ceux de la chaîne : `direction/ECARTS.md` ou `marque/README.md`).
 
@@ -23,7 +23,7 @@ Contrôles : 5 000 octets, aucun chevron (`publication.py verifier`). Pas de lie
 
 ## Crédits
 - **Entrée** : les `PROVENANCE.md` des séquences du master, de la signature, de l'outro et de l'appel. Lecture lourde : la confier à `studio-faceless:research` avec un contrat de mission ; il renvoie la liste regroupée et la liste complète.
-- **CC BY** (2.0, 3.0, 3.0 BR, 4.0) : auteur tel qu'il demande à être crédité, source (Wikimedia Commons, Flickr…), licence avec son lien, et la mention des modifications (« adapted: cropped, blurred, tinted, animated »). Domaine public et CC0 : crédités par courtoisie.
+- **CC BY** (2.0, 3.0, 3.0 BR, 4.0), sauf écart de la chaîne (`direction/ECARTS.md`) : auteur tel qu'il demande à être crédité, source (Wikimedia Commons, Flickr…), licence avec son lien, et la mention des modifications (« adapted: cropped, blurred, tinted, animated »). Domaine public et CC0 : crédités par courtoisie.
 - Aucune licence en attente ni exclue (`controle.py licences`).
 - La photo de la miniature est créditée à part.
 

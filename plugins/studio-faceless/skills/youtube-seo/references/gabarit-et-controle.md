@@ -75,7 +75,7 @@ Bilan de `publication.py verifier` (une ligne) et fiche de conformité.
 - [ ] Chapitres calculés depuis le journal : `0:00`, ≥ 3, ≥ 10 s, titres dans la langue de la chaîne.
 - [ ] Note sur les limites des études, si le film les rapproche d'une scène qu'elles n'ont pas mesurée.
 - [ ] Aucune synthèse des sources (validé sur AA, 19/10/2026, pour tous les épisodes).
-- [ ] Crédits CC BY complets (auteur, source, licence, « adapted ») ; photo de la miniature créditée ; aucune licence en attente.
+- [ ] Crédits CC BY complets (auteur, source, licence, « adapted »), sauf écart de la chaîne (`direction/ECARTS.md`) ; photo de la miniature créditée ; aucune licence en attente.
 - [ ] Voix, musique et effets générés déclarés ; ambiances illustratives signalées.
 - [ ] Ligne de chaîne ; 1 à 3 hashtags.
 

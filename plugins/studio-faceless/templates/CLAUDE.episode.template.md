@@ -5,7 +5,7 @@ Modèle inactif tant qu'il n'est pas utilisé pour un épisode autorisé. À cop
 ## Cadre applicable
 - Respecter le `CLAUDE.md` de la chaîne et consulter les référentiels en vigueur selon la mission : `direction/LIGNE_EDITORIALE.md` (ligne éditoriale de la chaîne) et `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` pour recherche et storytelling, `${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` pour réalisation et qualité visuelle, `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` pour narration vocale et mixage. Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur ces règles par défaut. Les chemins de la chaîne partent de sa racine.
 - Renvoyer à ces documents sans recopier leurs règles ; respecter leurs statuts de décision, proposition ou hypothèse.
-- Échanges, recherches et documents internes en français ; contenus destinés au spectateur directement en anglais naturel et idiomatique.
+- Langues de la chaîne (son `CLAUDE.md`).
 - Limiter ces instructions à cet épisode. Ne pas importer les conclusions, sources, décisions ou états d'autres épisodes comme des acquis.
 
 ## Périmètre de l'épisode
@@ -20,8 +20,11 @@ Modèle inactif tant qu'il n'est pas utilisé pour un épisode autorisé. À cop
   - `inputs/` : briefs et prises d'origine fournis par le propriétaire, en lecture seule ;
   - `research/` : notes et sources ;
   - `assets/` : médias retenus, avec leur `PROVENANCE.md` ;
+  - `kit/` : socle préparé une seule fois pour toutes les séquences (médias convertis, voix, gabarit, briefs) ;
   - `production/<séquence>-vN/` : un projet HyperFrames par version, jamais écrasé ;
-  - `outputs/` : masters livrés.
+  - `montage/` : `montage.json` et `plan-son.json` du collage et du mix du film ;
+  - `outputs/` : masters livrés ;
+  - `miniatures-vN/` : miniatures, une version par dossier, jamais écrasée.
 - **Lecture par défaut d'un sous-agent** : ce dossier, les référentiels (ceux du plugin et `direction/` de la chaîne) utiles à sa mission (`references/` seulement pour un besoin précis) et les ressources approuvées du studio listées ici : [à renseigner]. Les autres épisodes sont exclus, sauf mention au contrat de mission.
 - **Écriture** : uniquement les chemins nommés dans le contrat de mission (voir `CLAUDE.md` de la chaîne).
 - **Constats techniques** (HyperFrames, rendus), consultés par `studio-faceless:motion-producer` : [à renseigner au fil de la production].

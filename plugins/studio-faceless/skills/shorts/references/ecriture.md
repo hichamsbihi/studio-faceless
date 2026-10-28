@@ -31,7 +31,7 @@ Exemples de forme (exemple AA ; faits à reprendre de la fiche de l'épisode) :
 - précis : « July 2014. Germany beat Brazil 7–1, in Brazil. Five days later, Brazilians were cheering for Germany. »
 
 ## 3. Le script dédié
-- **Dans la langue de la chaîne**, avec les seules balises d'émotion d'eleven_v4 (`[calm]`, `[thoughtful]`, `[serious]`, `[softly]`) et aucune balise de pause ni de vitesse.
+- **Dans la langue de la chaîne**, sans balise par défaut ; une balise d'émotion d'eleven_v4 (`[calm]`, `[thoughtful]`, `[serious]`, `[softly]`) seulement là où un passage l'exige (validé sur AA, 23/10/2026), et aucune balise de pause ni de vitesse.
 - **Un script en blocs, une seule prise, deux versions** (validé sur AA, 19/10/2026) :
 
   | Bloc | Contenu | YouTube | TikTok et Facebook |

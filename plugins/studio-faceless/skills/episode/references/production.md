@@ -49,7 +49,7 @@ Champs du modèle `${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`,
   - aucun téléchargement ;
   - aucun Chrome laissé ouvert, et on ne touche pas aux rendus des autres.
 - **Fiche d'effets, avant toute scène** (validé sur AA, 26/10/2026 : « obliger le producteur à bien choisir les effets avec une réflexion au préalable ; chaque vidéo doit être meilleure que la précédente ») :
-  - le producteur lit l'en-tête et l'index de `${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md` (lignes 1 à 90), puis les fiches qu'il retient ;
+  - le producteur lit l'en-tête et l'index de `${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md` (début du fichier, jusqu'à la première fiche `###`), puis les fiches qu'il retient ;
   - le brief lui donne les retours du propriétaire sur l'épisode précédent et les techniques déjà employées ;
   - avant de construire, il écrit en tête de son README, pour chaque moment du plan de plans :
     - la technique (identifiant, ou technique nouvelle décrite en deux phrases) ;

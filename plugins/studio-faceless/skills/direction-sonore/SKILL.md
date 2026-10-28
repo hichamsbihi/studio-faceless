@@ -25,7 +25,7 @@ Méthode et gabarits pour décider **ce que le son doit faire** dans un document
 3. **Couches et perspective** : peu de couches sous la voix, une distance et un point d'écoute cohérents avec l'image et le récit. Voir `references/reperage-et-couches.md`.
 4. **Relations son-image et transitions** : J-cut, L-cut, ponts, révélation par retrait, silences. Voir `references/transitions-et-silences.md`.
 5. **Musique** : depuis le 15/10/2026 (validé sur AA), elle porte l'immersion de chaque séquence. Elle est choisie selon la situation, s'entend vraiment, et on repère ses entrées, retraits et silences voulus. Les niveaux sont dans `DIRECTION_AUDIO.md` § 2 et 3. Voir aussi `references/musique-a-l-image.md`.
-6. **Mise en œuvre** dans HyperFrames : `hyperframes-audio` et la section HyperFrames de `DIRECTION_AUDIO.md` ; constats complémentaires dans `references/transitions-et-silences.md`.
+6. **Mise en œuvre** dans HyperFrames : `hyperframes-audio` et la section HyperFrames de `DIRECTION_AUDIO.md` ; constats complémentaires dans `references/transitions-et-silences.md`. Depuis le 24/10/2026 (validé sur AA), la séquence ne porte que la voix : ces techniques s'appliquent au mix du film (`DIRECTION_AUDIO.md` § 3, `outils/montage/mix_film.py`), pas dans la composition de la séquence.
 7. **Contrôle** du MP4 livré (mesures), puis passes d'écoute. Les mesures ne valident jamais l'écoute. Voir `references/controle-et-mesure.md`.
 
 ## Refus permanents (validés sur AA)

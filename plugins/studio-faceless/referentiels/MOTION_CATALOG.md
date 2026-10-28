@@ -3,7 +3,7 @@
 > Règles par défaut du plugin studio-faceless.
 > Les écarts de la chaîne (`direction/ECARTS.md`) l'emportent.
 
-**PROPOSITION** : des possibilités, pas un modèle. **Lire l'index, puis la seule fiche utile** (chercher `### ID`) : jamais le fichier entier (25 Ko) ; l'en-tête et l'index tiennent dans les lignes 1 à 93 (lecture par plage), une fiche s'obtient par `grep -n -A 2 "^### ID"` (validé sur AA, 18/10/2026) ; chaque fiche se suffit, sans film ni projet à ouvrir. Toutes sont `expérimental` (réalisées, non jugées par le propriétaire) ; `à améliorer` ou `validé` (accord daté du propriétaire) s'écrivent dans la fiche. Les fiches et la colonne « Épisodes » viennent de la première chaîne (AA, films sportifs) : la technique se transpose à une autre matière.
+**PROPOSITION** : des possibilités, pas un modèle. **Lire l'index, puis la seule fiche utile** (chercher `### ID`) : jamais le fichier entier (environ 31 Ko) ; l'en-tête et l'index tiennent dans les lignes 1 à 93 (lecture par plage), une fiche s'obtient par `grep -n -A 2 "^### ID"` (validé sur AA, 18/10/2026) ; chaque fiche se suffit, sans film ni projet à ouvrir. Toutes sont `expérimental` (réalisées, non jugées par le propriétaire), sauf les dix fiches « Tifo » non réalisées (ligne 18) ; `à améliorer` ou `validé` (accord daté du propriétaire) s'écrivent dans la fiche. Les fiches et la colonne « Épisodes » viennent de la première chaîne (AA, films sportifs) : la technique se transpose à une autre matière.
 
 **Règles communes** (non répétées dans les fiches) :
 - une technique sert une idée du récit, sur des médias réels, datés et sourcés (`${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2 bis) ; jamais d'effet diaporama (§ 2) ;
@@ -301,4 +301,4 @@
 **Recette** : propre à la chaîne (signature et outro, fichiers finis de `marque/`) : voir `direction/ECARTS.md` et `marque/README.md`.
 
 ### HOLD-CALL · Pause et appel Like + Subscribe
-**Recette** : après la dernière phrase d'une séquence, tenir sa dernière image ≈ 4 s ; poser l'overlay de l'appel (`marque/`) au début de la pause, clics hors de toute voix ; sous la pause, prolonger la musique de la séquence par son passage le plus régulier, au niveau de sa dernière seconde (fondu croisé 0,4 s, fondu de sortie 1 s). **Attention** : l'appel ne couvre ni texte ni étiquette.
+**Recette** : après la dernière phrase d'une séquence, tenir sa dernière image ≈ 4 s ; poser l'overlay de l'appel (`marque/`) au début de la pause, clics hors de toute voix ; sous la pause, prolonger la musique de la séquence par son passage le plus régulier, au niveau de sa dernière seconde (fondu croisé 0,4 s, fondu de sortie 1 s). **Son** : depuis le 24/10/2026 (validé sur AA), la séquence ne porte que la voix ; musique et clics se posent au mix du film (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 3, `outils/montage/mix_film.py`), pas dans la composition. **Attention** : l'appel ne couvre ni texte ni étiquette.

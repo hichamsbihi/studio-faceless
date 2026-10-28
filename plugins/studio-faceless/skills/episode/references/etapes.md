@@ -18,7 +18,7 @@ Les règles par défaut citées ici (`REFERENTIEL`, `DIRECTION_AUDIO`, `METHODE_
 ## 2. Angle et découpage
 - La question d'une phrase, la promesse, les couches et leurs révélations, le renversement vers 75 %, les séquences et la question qui finit chacune (`recit-retention.md`).
 - La signature de la chaîne vient après l'accroche (règle gardée).
-- Le rappel d'abonnement : sa place se décide ici. C'est une `QUESTION OUVERTE` de la Méthode (étude AA), bloc 5.
+- Le rappel d'abonnement : sa place par défaut est vers 2:00, juste après l'ouverture d'une question (`METHODE_RECIT.md` § 1, validé sur AA, 26/10/2026) ; la porte la confirme ou l'écarte.
 
 ## 3. Script
 - Narration en anglais, chaque phrase avec sa source. Fiche d'ouverture en tête : phrase, image prévue et temps estimé pour chaque repère de 0 à 2:00.

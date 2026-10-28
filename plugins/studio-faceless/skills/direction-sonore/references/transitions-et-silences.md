@@ -31,7 +31,7 @@ Le silence sert à : créer l'attente, isoler une phrase, agrandir un événemen
 - Contraste avant un moment fort : réduire les couches concurrentes juste avant, plutôt qu'ajouter un impact.
 
 ## 4. Mise en œuvre dans HyperFrames 0.8.149 : constats complémentaires
-Ces points complètent `hyperframes-audio` et la section HyperFrames de `DIRECTION_AUDIO.md`. Ils viennent d'une lecture du code installé le 14/10/2026, sans test de rendu : les vérifier sur le MP4 au premier usage.
+Ces points complètent `hyperframes-audio` et la section HyperFrames de `DIRECTION_AUDIO.md`. Ils viennent d'une lecture du code installé le 14/10/2026, sans test de rendu : les vérifier sur le MP4 au premier usage. Depuis le 24/10/2026 (validé sur AA), la séquence ne porte que la voix : les techniques de cette référence s'appliquent au mix du film (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 3, `outils/montage/mix_film.py`), pas dans la composition de la séquence.
 - **J-cut et L-cut** : il n'y a pas d'attribut dédié. Placer des `<audio>` distincts, chacun avec un `id`, son `data-start` et son `data-media-start`, sous des `<video>` en `muted`. Les fondus croisés se font par chevauchement et automation de volume, en valeurs absolues.
 - **Pas de panoramique ni de spatialisation dans le moteur** (aucun nœud stéréo ni effet « pan »). Une position gauche/droite ou un élargissement se prépare **avant**, dans FFmpeg (`pan`, `stereotools`, `adelay` par canal), en stems séparés.
 - **Automatisable** : volume, fréquences des filtres passe-bas et passe-haut, `wet`/`dry` de la réverbération, débit (`rate`). **Non automatisables** : compresseur, limiteur, true peak, gate, bitcrush ; automatiser un gain placé avant eux.
