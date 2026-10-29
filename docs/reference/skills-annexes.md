@@ -1,6 +1,6 @@
 # Skills annexes du plugin
 
-Cette page décrit les six skills « annexes » de `plugins/studio-faceless/skills/` : `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack` et `find-skills`. Les skills de métier (`episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`) sont décrits dans [`skill-episode.md`](skill-episode.md), [`publication.md`](publication.md) et [`son.md`](son.md).
+Cette page décrit les huit skills « annexes » de `plugins/studio-faceless/skills/` : `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`. Les skills de métier (`episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`) sont décrits dans [`skill-episode.md`](skill-episode.md), [`publication.md`](publication.md) et [`son.md`](son.md).
 
 ## Table des matières
 - [Vue d'ensemble](#vue-densemble)
@@ -10,6 +10,7 @@ Cette page décrit les six skills « annexes » de `plugins/studio-faceless/skil
 - [javascript-animation](#javascript-animation) : [SKILL.md](#skillsjavascript-animationskillmd), [PROVENANCE.md](#skillsjavascript-animationprovenancemd), [LICENSE](#skillsjavascript-animationlicense), [scripts](#scripts-de-javascript-animation), [templates](#skillsjavascript-animationtemplatesstarterhtml), [références](#références-de-javascript-animation)
 - [soundtrack](#soundtrack) : [SKILL.md](#skillssoundtrackskillmd), [LICENSE](#skillssoundtracklicense), [références](#skillssoundtrackreferencesai-musicmd), [script](#skillssoundtrackscriptssync-checkmjs), [templates](#templates-de-soundtrack)
 - [find-skills](#find-skills) : [SKILL.md](#skillsfind-skillsskillmd), [PROVENANCE.md](#skillsfind-skillsprovenancemd), [LICENSE](#skillsfind-skillslicense)
+- [elevenlabs-sound-effects et elevenlabs-music](#elevenlabs-sound-effects-et-elevenlabs-music)
 - [Points à vérifier et incohérences](#points-à-vérifier-et-incohérences)
 
 ## Vue d'ensemble
@@ -21,8 +22,10 @@ Cette page décrit les six skills « annexes » de `plugins/studio-faceless/skil
 | `studio-faceless:javascript-animation` | iart.ai v0.4.1, intégré le 14/10/2026 | MIT | intégré sur demande du propriétaire d'AA | Claude principal, **seulement si le propriétaire demande** une animation dessinée en code |
 | `studio-faceless:soundtrack` | iart.ai v0.4.1, intégré le 14/10/2026 | MIT | idem | idem, avec `javascript-animation` |
 | `studio-faceless:find-skills` | vercel-labs/skills, commit `773fb2c`, copie du 29/10/2026 avec une section « Règles du studio » | MIT | `VALIDÉ` (Hicham, 29/10/2026) | Claude principal ou `research`, quand le propriétaire cherche un skill |
+| `studio-faceless:elevenlabs-sound-effects` | elevenlabs/skills `sound-effects`, commit `503d4e9`, copie du 29/10/2026 avec une section « Règles du studio » | MIT | `VALIDÉ` (Hicham, 29/10/2026) | Claude principal, **à la demande explicite du propriétaire**, son par son |
+| `studio-faceless:elevenlabs-music` | elevenlabs/skills `music`, même commit et même traitement | MIT | idem | idem |
 
-Aucun agent du plugin ne précharge un de ces skills (champ `skills:` des agents : voir [`agents.md`](agents.md)). Seul `grilling` est cité ailleurs dans le plugin (`REGLES_STUDIO.md`, `skills/episode/`) ; `grill-me` ne l'est que dans `README.md` et `CHANGELOG.md`, et `humanizer`, `javascript-animation`, `soundtrack` et `find-skills` ne sont cités que dans leurs propres dossiers (`find-skills` est aussi nommé dans la provenance de `humanizer`).
+Aucun agent du plugin ne précharge un de ces skills (champ `skills:` des agents : voir [`agents.md`](agents.md)). Seul `grilling` est cité ailleurs dans le plugin (`REGLES_STUDIO.md`, `skills/episode/`) ; `grill-me` ne l'est que dans `README.md` et `CHANGELOG.md`, et `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music` ne sont cités que dans leurs propres dossiers (`find-skills` est aussi nommé dans la provenance de `humanizer`).
 
 ## grilling
 
@@ -250,6 +253,15 @@ Cinq fichiers en anglais, lus à la demande par le skill.
 ### skills/find-skills/LICENSE
 - **Rôle** : texte de la licence MIT (« Copyright (c) 2026 Vercel, Inc. »), exigé par la licence pour accompagner la copie.
 - **À savoir** : ne pas le modifier.
+
+## elevenlabs-sound-effects et elevenlabs-music
+
+### skills/elevenlabs-sound-effects/ et skills/elevenlabs-music/
+- **Rôle** : générer des effets sonores et ambiances (`eleven_text_to_sound_v2` : 0,5 à 30 s, boucle, fidélité au prompt) et de la musique (`music_v2_5` : prompt ou plan de composition, jusqu'à 10 min, musique calée sur une vidéo) avec l'API ElevenLabs. Copies d'elevenlabs/skills (`sound-effects/`, `music/`, commit `503d4e9`, MIT), en anglais, champ `name` préfixé par `elevenlabs-`.
+- **Quand il sert** : seulement à la demande explicite du propriétaire, son par son, avec une estimation des crédits avant ; sons de la marque et des épisodes.
+- **Contenu** : section « Règles du studio » (SDK Python `elevenlabs` figé dans le `requirements.txt` de la chaîne ; ni CLI, ni npm, ni `npx`, ni installateur ; clé `ELEVENLABS_API_KEY` posée par le propriétaire, que Claude ne lit jamais et dont il vérifie seulement l'existence ; provenance de chaque son ; forfait payant pour l'usage commercial, obligatoire pour la musique ; son illustratif ; connecteur ElevenLabs comme autre voie), puis le texte d'origine : démarrage, paramètres, formats, conseils de prompt, erreurs ; pour la musique, plans de composition, streaming, inpainting, finetunes, video-to-music (ces trois derniers seulement sur décision du propriétaire).
+- **Fichiers** : `SKILL.md`, `references/installation.md` (encadré du studio en tête : seule la section Python s'applique), `references/api_reference.md` (musique, inchangé), `LICENSE` (« Copyright (c) 2024 ElevenLabs »), `PROVENANCE.md` (source, empreintes d'origine et du studio, modifications).
+- **À savoir** : l'encadré « Setup » d'origine lançait `npx -y @elevenlabs/cli@latest onboard init` (version non figée, sans confirmation, connexion d'un compte) ; il est remplacé par un renvoi à la section du studio. Le garde-fou ne bloque pas `npx` hors HyperFrames : la règle tient par le texte du skill.
 
 ## Points à vérifier et incohérences
 - **`skills/javascript-animation/SKILL.md:84`** demande `npm i playwright-core`, alors que le garde-fou refuse `npm install` : ces scripts sont inutilisables tant que le propriétaire n'a pas décidé (voir aussi l'encadré `:11`).

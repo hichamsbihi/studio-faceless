@@ -3,9 +3,10 @@
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
 ## 0.1.2 (29/10/2026)
-Nouveau skill `find-skills`, ajouté à la demande de Hicham le 29/10/2026.
+Trois nouveaux skills, ajoutés à la demande de Hicham le 29/10/2026 : `find-skills`, `elevenlabs-sound-effects` et `elevenlabs-music`.
 - `skills/find-skills/` : copie du skill de vercel-labs/skills (MIT, commit `773fb2c`), avec son `LICENSE` et un `PROVENANCE.md` (source, empreintes). Il sert à chercher des skills utiles au studio (premier usage : effets sonores et musique de fond).
 - Le texte d'origine lance `npx skills` et installe avec `-g -y` ; une section « Règles du studio » placée sous le titre le remplace par la méthode déjà suivie pour `humanizer` : recherche sur skills.sh et GitHub par le web, vérification (installations, source, étoiles, licences, dépendances), copie à la main sur décision du propriétaire, nouvelle version du plugin.
+- `skills/elevenlabs-sound-effects/` et `skills/elevenlabs-music/` : copies des skills `sound-effects` et `music` d'elevenlabs/skills (MIT, commit `503d4e9`), trouvés avec la méthode de `find-skills`, avec `LICENSE` et `PROVENANCE.md`. Une section « Règles du studio » remplace leur mise en route par `npx -y @elevenlabs/cli@latest onboard init` : SDK Python `elevenlabs` figé dans le `requirements.txt` de la chaîne, clé d'API posée par le propriétaire dans `ELEVENLABS_API_KEY` (Claude ne la lit jamais), génération à la demande explicite du propriétaire, forfait payant pour l'usage commercial.
 - Listes des skills mises à jour : `README.md`, `DEMARRAGE.md`, `docs/README.md`, `docs/reference/skills-annexes.md`, `docs/reference/starter-et-depot.md`, `docs/workflows/installation-et-mise-a-jour.md`.
 
 ## 0.1.1 (29/10/2026)
