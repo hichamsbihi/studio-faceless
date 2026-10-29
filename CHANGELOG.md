@@ -34,3 +34,4 @@ Première version, tirée de StudioV1 (chaîne Apparently Athletic) dans son ét
   - D3 : `archiver_episode.py` reconnaît le dossier `montage/` du parcours v3 et garde le film en voix seule d'où le master est mixé ; testé sur l'aperçu de l'E010 d'AA ;
   - D4 : questions des portes 8, 9, 11 et 13 à écrire au prochain épisode ;
   - D5 : gabarit vertical et journal des shorts à créer au pilote des shorts.
+- Guide pas à pas `DEMARRAGE.md` (29/10/2026) : préparer la machine, créer la chaîne et son identité, fabriquer et publier la première vidéo, archiver ; encadrés « Pas encore éprouvé » pour ce qui n'a pas été testé.

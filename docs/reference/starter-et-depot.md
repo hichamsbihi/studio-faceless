@@ -61,7 +61,7 @@ Parcours qui l'utilise : [`../workflows/nouvelle-chaine.md`](../workflows/nouvel
 - **Rôle** : fige l'arbre complet des dépendances de `package.json`, pour que `npm ci` installe exactement la même chose partout. Version figée de HyperFrames : **0.8.149** (entrée `node_modules/hyperframes`, licence Apache-2.0, moteur Node `>=22`).
 - **Quand il sert** : par `npm ci` seulement. Ne se modifie jamais à la main.
 - **Contenu** : `lockfileVersion` 3, 125 entrées `node_modules/…`, toutes `dev: true`.
-- **À savoir** : le champ `name` du lock est `apparently-athletic-studiov1` (lignes 2 et 8) alors que `package.json` dit `ma-chaine` : reste d'AA dans un plugin censé n'avoir aucun nom de chaîne. `npm ci` ne contrôle que les dépendances, mais **à vérifier** avant la première installation d'une nouvelle chaîne.
+- **À savoir** : le champ `name` du lock vaut `ma-chaine` (lignes 2 et 8), comme `package.json` (nettoyé le 28/10/2026) ; on peut le remplacer par le nom de la chaîne dans les deux fichiers.
 
 #### starter/requirements.txt
 - **Rôle** : dépendances Python des outils du plugin, les seuls imports hors bibliothèque standard.
@@ -265,7 +265,6 @@ Chemins relatifs à la racine du dépôt (`studio-faceless/`).
 | Épisodes | oui (`episodes/<id>/`) | aucun |
 
 ## Points à vérifier et incohérences
-- **`starter/package-lock.json:2` et `:8`** : `apparently-athletic-studiov1` contre `starter/package.json:2` `ma-chaine`. Le plugin est présenté sans nom de chaîne (`README.md`, § Deux étages) : à nettoyer.
 - **`starter/.gitattributes:31-36`** : règles LFS sur `templates/**`, alors que le squelette n'a pas de dossier `templates/` (les modèles restent dans le plugin).
 - **`starter/.claude/settings.json:18`** `render.mjs` : le gabarit v3 utilise `render.sh`. (Règles `mix.py` : réglé le 29/10/2026, D2.)
 - **`README.md:54-57`** (licences) ne cite pas la licence MIT de `plugins/studio-faceless/skills/regarder/references/claude-video/LICENSE` (« Copyright (c) 2026 Bradley Bonanno »).

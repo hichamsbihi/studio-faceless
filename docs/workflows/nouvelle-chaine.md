@@ -67,7 +67,7 @@ Les commandes se lancent depuis Git Bash (Node 22, nvm), dans le dossier de la c
 - **Écrit** : les 17 fichiers du squelette dans le dossier de la chaîne, **fichiers cachés compris** (`.claude/`, `.githooks/`, `.gitignore`, `.gitattributes`).
 - **Commande** : le dépôt ne fournit pas de script de copie. Exemple en Git Bash (non fourni par le dépôt) : `cp -a "<clone>/plugins/studio-faceless/starter/." "<dossier de la chaîne>/"`.
 - **Contrôle** : `ls -a` montre `.claude`, `.githooks`, `.gitignore`, `.gitattributes`, `CLAUDE.md`, `direction`, `marque`, `package.json`, `package-lock.json`, `requirements.txt`.
-- **À corriger** : `package.json` porte `"name": "ma-chaine"` ; le `name` de `package-lock.json` est un reste d'AA (voir [`../reference/starter-et-depot.md`](../reference/starter-et-depot.md), « Points à vérifier »).
+- **À savoir** : `package.json` et `package-lock.json` portent le nom `ma-chaine` ; on peut le remplacer par le nom de la chaîne dans les deux fichiers.
 
 ### 3. Initialiser Git, LFS et les crochets
 - **Qui** : propriétaire, ou Claude avec son accord.

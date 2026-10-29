@@ -31,6 +31,7 @@ Le plugin ne dépend d'aucune chaîne : les mentions d'AA ou de StudioV1 n'y ser
 Une fois installés, les skills et les agents portent le préfixe du plugin : `studio-faceless:episode`, `studio-faceless:motion-producer`.
 
 ## Démarrer
+- **Commencer ici, pas à pas** : [`DEMARRAGE.md`](DEMARRAGE.md), de la machine vide à la première vidéo d'une nouvelle chaîne (installation, création de la chaîne, identité, fabrication, publication, archivage).
 - Installer une machine et brancher une chaîne existante : [`INSTALLATION.md`](INSTALLATION.md).
 - Créer une nouvelle chaîne : [`NOUVELLE_CHAINE.md`](NOUVELLE_CHAINE.md).
 - Fonctionnement interne et contraintes des plugins : [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).

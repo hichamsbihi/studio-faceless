@@ -6,6 +6,7 @@ Cette documentation décrit chaque fichier du plugin et chaque parcours de trava
 | Vous voulez… | Lire |
 |---|---|
 | Comprendre le plugin en cinq minutes | [`../README.md`](../README.md), puis [`ARCHITECTURE.md`](ARCHITECTURE.md) |
+| Tout faire pas à pas, de la machine vide à la première vidéo | [`../DEMARRAGE.md`](../DEMARRAGE.md) |
 | Installer une machine ou brancher une chaîne | [`workflows/installation-et-mise-a-jour.md`](workflows/installation-et-mise-a-jour.md) |
 | Créer une nouvelle chaîne | [`workflows/nouvelle-chaine.md`](workflows/nouvelle-chaine.md) |
 | Fabriquer un épisode de bout en bout | [`workflows/episode.md`](workflows/episode.md) |
