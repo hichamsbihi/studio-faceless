@@ -1,6 +1,6 @@
 # Skills annexes du plugin
 
-Cette page décrit les cinq skills « annexes » de `plugins/studio-faceless/skills/` : `grilling`, `grill-me`, `humanizer`, `javascript-animation` et `soundtrack`. Les skills de métier (`episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`) sont décrits dans [`skill-episode.md`](skill-episode.md), [`publication.md`](publication.md) et [`son.md`](son.md).
+Cette page décrit les six skills « annexes » de `plugins/studio-faceless/skills/` : `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack` et `find-skills`. Les skills de métier (`episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`) sont décrits dans [`skill-episode.md`](skill-episode.md), [`publication.md`](publication.md) et [`son.md`](son.md).
 
 ## Table des matières
 - [Vue d'ensemble](#vue-densemble)
@@ -9,6 +9,7 @@ Cette page décrit les cinq skills « annexes » de `plugins/studio-faceless/ski
 - [humanizer](#humanizer) : [SKILL.md](#skillshumanizerskillmd), [PROVENANCE.md](#skillshumanizerprovenancemd), [LICENSE](#skillshumanizerlicense)
 - [javascript-animation](#javascript-animation) : [SKILL.md](#skillsjavascript-animationskillmd), [PROVENANCE.md](#skillsjavascript-animationprovenancemd), [LICENSE](#skillsjavascript-animationlicense), [scripts](#scripts-de-javascript-animation), [templates](#skillsjavascript-animationtemplatesstarterhtml), [références](#références-de-javascript-animation)
 - [soundtrack](#soundtrack) : [SKILL.md](#skillssoundtrackskillmd), [LICENSE](#skillssoundtracklicense), [références](#skillssoundtrackreferencesai-musicmd), [script](#skillssoundtrackscriptssync-checkmjs), [templates](#templates-de-soundtrack)
+- [find-skills](#find-skills) : [SKILL.md](#skillsfind-skillsskillmd), [PROVENANCE.md](#skillsfind-skillsprovenancemd), [LICENSE](#skillsfind-skillslicense)
 - [Points à vérifier et incohérences](#points-à-vérifier-et-incohérences)
 
 ## Vue d'ensemble
@@ -19,8 +20,9 @@ Cette page décrit les cinq skills « annexes » de `plugins/studio-faceless/ski
 | `studio-faceless:humanizer` | blader/humanizer v3.1.0 (Siqi Chen), copie du 28/10/2026 | MIT | `PROPOSÉ` (essai sur un script d'AA) | Claude principal, sur le script anglais |
 | `studio-faceless:javascript-animation` | iart.ai v0.4.1, intégré le 14/10/2026 | MIT | intégré sur demande du propriétaire d'AA | Claude principal, **seulement si le propriétaire demande** une animation dessinée en code |
 | `studio-faceless:soundtrack` | iart.ai v0.4.1, intégré le 14/10/2026 | MIT | idem | idem, avec `javascript-animation` |
+| `studio-faceless:find-skills` | vercel-labs/skills, commit `773fb2c`, copie du 29/10/2026 avec une section « Règles du studio » | MIT | `VALIDÉ` (Hicham, 29/10/2026) | Claude principal ou `research`, quand le propriétaire cherche un skill |
 
-Aucun agent du plugin ne précharge un de ces skills (champ `skills:` des agents : voir [`agents.md`](agents.md)). Seul `grilling` est cité ailleurs dans le plugin (`REGLES_STUDIO.md`, `skills/episode/`) ; `grill-me` ne l'est que dans `README.md` et `CHANGELOG.md`, et `humanizer`, `javascript-animation` et `soundtrack` ne sont cités que dans leurs propres dossiers.
+Aucun agent du plugin ne précharge un de ces skills (champ `skills:` des agents : voir [`agents.md`](agents.md)). Seul `grilling` est cité ailleurs dans le plugin (`REGLES_STUDIO.md`, `skills/episode/`) ; `grill-me` ne l'est que dans `README.md` et `CHANGELOG.md`, et `humanizer`, `javascript-animation`, `soundtrack` et `find-skills` ne sont cités que dans leurs propres dossiers (`find-skills` est aussi nommé dans la provenance de `humanizer`).
 
 ## grilling
 
@@ -231,6 +233,23 @@ Cinq fichiers en anglais, lus à la demande par le skill.
 - **Usage** : coller dans la page, puis `window.SCORE = ac => buildScore(ac, { dur: DUR, cues: window.CUES });`.
 - **Options** : `bar` (durée cible d'une mesure en s, 2,67 ≈ 90 bpm), `key`, `tail` (accord final résolutif, s), `gain`, `chime` (cloche discrète à chaque coupe).
 - **À savoir** : sans échantillon ni bibliothèque ; réverbération par impulsion générée à graine fixe.
+
+## find-skills
+
+### skills/find-skills/SKILL.md
+- **Rôle** : trouver des skills d'agent utiles au studio dans l'écosystème skills.sh, les vérifier et les présenter au propriétaire. Copie de vercel-labs/skills (`skills/find-skills/SKILL.md`, commit `773fb2c`, MIT), en anglais, avec une section « Règles du studio » en français sous le titre.
+- **Quand il sert** : quand le propriétaire cherche une capacité qui pourrait exister en skill (premier usage, 29/10/2026 : effets sonores et musique de fond).
+- **Contenu** : règles du studio (pas de `npx skills` ; recherche sur skills.sh et GitHub par le web ; vérification des installations, de la source, des étoiles, des licences et des dépendances ; adoption par copie à la main, sur décision du propriétaire, avec `LICENSE` et `PROVENANCE.md`, puis nouvelle version du plugin) ; puis le texte d'origine : classement de skills.sh, recherche, seuils (1 000 installations, méfiance sous 100 ; dépôt de moins de 100 étoiles), présentation des options, catégories de recherche.
+- **Liens** : `PROVENANCE.md`, `LICENSE` ; méthode déjà suivie pour `humanizer` (28/10/2026).
+- **À savoir** : les étapes du texte d'origine qui lancent `npx skills` (`find`, `add … -g -y`, `update`, `init`) sont remplacées par la section du studio ; le garde-fou refuse de toute façon les installations npm.
+
+### skills/find-skills/PROVENANCE.md
+- **Rôle** : trace l'origine du skill, ses empreintes et la modification du studio.
+- **Contenu** : statut `VALIDÉ` (Hicham, 29/10/2026) ; dépôt, commits de `SKILL.md` et de `LICENSE` ; empreintes (octets, blob Git, SHA-256) du `SKILL.md` d'origine, du `SKILL.md` du studio et de `LICENSE` ; raison de la section ajoutée.
+
+### skills/find-skills/LICENSE
+- **Rôle** : texte de la licence MIT (« Copyright (c) 2026 Vercel, Inc. »), exigé par la licence pour accompagner la copie.
+- **À savoir** : ne pas le modifier.
 
 ## Points à vérifier et incohérences
 - **`skills/javascript-animation/SKILL.md:84`** demande `npm i playwright-core`, alors que le garde-fou refuse `npm install` : ces scripts sont inutilisables tant que le propriétaire n'a pas décidé (voir aussi l'encadré `:11`).

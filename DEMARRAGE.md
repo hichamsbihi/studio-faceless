@@ -2,7 +2,7 @@
 
 Guide pas à pas, en français, pour installer le studio `studio-faceless`, créer une chaîne YouTube faceless et fabriquer sa première vidéo, de l'installation jusqu'à l'archivage.
 
-**État du guide** : écrit le 29/10/2026 pour le plugin en version 0.1.0, revu pour la 0.1.1 (`plugins/studio-faceless/.claude-plugin/plugin.json`). Il enchaîne les workflows de [`docs/workflows/`](docs/workflows/) sans les remplacer. En cas d'écart, le fichier du plugin fait foi ([`docs/README.md`](docs/README.md)). Tout point incertain est écrit « à vérifier ».
+**État du guide** : écrit le 29/10/2026 pour le plugin en version 0.1.0, revu pour la 0.1.2 (`plugins/studio-faceless/.claude-plugin/plugin.json`). Il enchaîne les workflows de [`docs/workflows/`](docs/workflows/) sans les remplacer. En cas d'écart, le fichier du plugin fait foi ([`docs/README.md`](docs/README.md)). Tout point incertain est écrit « à vérifier ».
 
 ## À qui sert ce guide
 - **À toi, le propriétaire** de la chaîne (celui qui décide, valide et publie). Tu pars d'une machine Windows qui n'a pas encore le studio. Tu parles à Claude en français ; il fait le travail, tu décides.
@@ -63,7 +63,7 @@ Les commandes se tapent dans **Git Bash**, dans le dossier de la chaîne, sauf m
 |---|---|
 | `<clone>` | le dossier où tu as cloné le dépôt du plugin, par exemple `~/Desktop/studio-faceless` |
 | `<chaîne>` | le dossier de ta chaîne, par exemple `~/Desktop/MaChaine` |
-| `<plugin>` | le plugin installé : `$HOME/.claude/plugins/cache/studio-faceless/studio-faceless/0.1.1` (le dernier élément est le champ `version` de `plugin.json`) |
+| `<plugin>` | le plugin installé : `$HOME/.claude/plugins/cache/studio-faceless/studio-faceless/0.1.2` (le dernier élément est le champ `version` de `plugin.json`) |
 | `<id>` | l'identifiant de l'épisode, par exemple `episode-001` |
 | `<séquence>-vN` | un dossier de séquence versionné, par exemple `seq1-v1` |
 
@@ -315,7 +315,7 @@ claude plugin install studio-faceless@studio-faceless --scope project
 ```bash
 ls ~/.claude/plugins/cache/studio-faceless/studio-faceless/
 ```
-  Le dossier de la version (`0.1.1`) doit apparaître.
+  Le dossier de la version (`0.1.2`) doit apparaître.
 - **Détail** : [`nouvelle-chaine.md`](docs/workflows/nouvelle-chaine.md), étape 5 ; [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), « Chemins ».
 
 > **Pas encore éprouvé (à vérifier).**
@@ -363,7 +363,7 @@ grep -m1 '"version"' node_modules/hyperframes/package.json
   Au premier contrôle ou rendu, HyperFrames télécharge `chrome-headless-shell` (environ 270 Mo) dans `~/.cache/hyperframes/`. Réponds à la demande d'accord.
 - **Fichiers créés** : un dossier temporaire de test, et le Chrome dans `~/.cache/hyperframes/`. Rien dans la chaîne.
 - **Tu valides** : tu **lis le bilan avant de continuer**. C'est la porte.
-- **Vérifier** : le bilan liste les skills (`studio-faceless:episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`, `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`) et les cinq agents (`research`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`). Il montre les règles communes reçues, un `check` sans erreur, un rendu de 3 s, et `controle.py chrome` à 0. Si les règles communes ne sont pas visibles, redemande à Claude de les lister, puis vois « Si quelque chose bloque ».
+- **Vérifier** : le bilan liste les skills (`studio-faceless:episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`, `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`) et les cinq agents (`research`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`). Il montre les règles communes reçues, un `check` sans erreur, un rendu de 3 s, et `controle.py chrome` à 0. Si les règles communes ne sont pas visibles, redemande à Claude de les lister, puis vois « Si quelque chose bloque ».
 - **Détail** : [`installation-et-mise-a-jour.md`](docs/workflows/installation-et-mise-a-jour.md), partie C.
 
 > **Pas encore éprouvé.** Ce contrôle est le premier test réel de l'arrivée des règles communes (`SessionStart`), du préchargement des skills par les agents et du rôle reçu par le garde-fou. Si un résultat surprend, note-le : il corrige la documentation du plugin.
