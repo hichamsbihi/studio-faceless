@@ -16,10 +16,14 @@ Une chaîne est un dossier (et un dépôt Git privé) créé à partir du squele
    git config core.hooksPath .githooks
    ```
 4. Dépendances : `npm ci` ne marche qu'avec un `package-lock.json` à jour. Le squelette fournit celui de HyperFrames 0.8.149 ; le propriétaire décide de l'installation. Suivre ensuite [`INSTALLATION.md`](INSTALLATION.md) § 4, points 4 à 7 : `pip install -r requirements.txt`, règle « ask » du connecteur ElevenLabs, modèle Whisper.
-5. Ouvrir le dossier dans Claude Code, accepter la confiance du dossier, puis installer le plugin :
+5. Ouvrir le dossier dans Claude Code, accepter la confiance du dossier, puis, dans un terminal Git Bash ouvert dans ce dossier, déclarer le catalogue du plugin et installer le plugin :
+   ```bash
+   claude plugin marketplace add hichamsbihi/studio-faceless --scope project
+   ```
    ```bash
    claude plugin install studio-faceless@studio-faceless --scope project
    ```
+   Sans la première commande, l'installation échoue avec « Plugin "studio-faceless" not found in marketplace » : le CLI ne lit pas le catalogue déclaré dans `.claude/settings.json` (`extraKnownMarketplaces`) d'un dossier qui ne lui a pas encore été confié (Claude Code 2.1.169, constaté le 29/10/2026).
 
 ## 2. Remplir l'identité (avec Claude, une porte de questions)
 À donner à Claude dans la nouvelle chaîne :

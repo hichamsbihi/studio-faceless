@@ -83,6 +83,6 @@ La fabrication suit le skill `studio-faceless:episode`, du choix du sujet au mix
 - Ne jamais déclarer une écoute ou un visionnage qui n'a pas eu lieu ; séparer mesures techniques et validation humaine.
 - Ne jamais écraser un travail antérieur : nouvelle version dans un nouveau dossier ; vérifier qu'un dossier n'existe pas avant de le créer. Claude ne supprime rien.
 - Aucune publication, aucun achat, aucun changement de forfait, aucun contournement de paywall ou de protection.
-- Médias réels sous licence libre ; provenance et licence de chaque média consignées dans le `PROVENANCE.md` du projet ; aucune image générée par IA, sauf écart écrit de la chaîne.
+- Médias réels : par défaut, choisis sur ce qu'ils apportent à la scène, sous licence libre ou non libres en citation encadrée (`${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2 bis, validé sur AA, 24 et 28/10/2026 ; règle par défaut fixée le 29/10/2026) ; une chaîne peut s'en tenir aux licences libres par un écart écrit dans `direction/ECARTS.md`. Provenance et licence de chaque média consignées dans le `PROVENANCE.md` du projet ; aucune image générée par IA, sauf écart écrit de la chaîne.
 - Ne pas importer l'état, les sources ou les choix d'un épisode dans un autre sans examen explicite.
 - Rester concis dans les documents : pas de répétition d'un référentiel, renvoyer au fichier qui fait foi.

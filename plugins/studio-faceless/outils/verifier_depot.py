@@ -3,7 +3,7 @@
 Refuse, dans les fichiers à committer :
 - un fichier de plus de 10 Mo qui ne passe pas par Git LFS (GitHub refuse au-delà de 100 Mo) ;
 - un média d'épisode (vidéo, son, image, police sous episodes/) : il va dans la sauvegarde externe ;
-- un secret probable (clé d'API, jeton GitHub, clé privée, en-tête Bearer) ;
+- un secret probable (clé d'API sk-… ou sk_… en début de jeton, jeton GitHub, clé privée, en-tête Bearer) ;
 - un chemin propre à une machine (C:/Users/<nom>, /c/Users/<nom>) dans un fichier de code actif (hors episodes/, docs/ et tout dossier vendor/, copie de tiers).
 
 Usage, depuis la racine de la chaîne :
@@ -18,7 +18,7 @@ LIMITE = 10 * 1024 * 1024
 MEDIAS = {'.mp4', '.mov', '.webm', '.mkv', '.wav', '.mp3', '.m4a', '.aac', '.flac', '.png', '.jpg', '.jpeg', '.webp', '.gif',
           '.tif', '.tiff', '.pdf', '.ttf', '.otf', '.woff', '.woff2', '.zip'}
 CODE = {'.py', '.mjs', '.js', '.cjs', '.json', '.sh', '.ps1', '.html', '.css'}
-SECRET = re.compile(r"(sk-[A-Za-z0-9_\-]{20,}|sk_[A-Za-z0-9]{24,}|xi-api-key\s*[:=]\s*(?![$<{%])[A-Za-z0-9_\-]{20,}|api[_-]?key\s*[:=]\s*['\"][A-Za-z0-9_\-]{16,}"
+SECRET = re.compile(r"((?<![A-Za-z0-9_\-])(?:sk-[A-Za-z0-9_\-]{20,}|sk_(?:live_|test_)?[A-Za-z0-9]{24,})|xi-api-key\s*[:=]\s*(?![$<{%])[A-Za-z0-9_\-]{20,}|api[_-]?key\s*[:=]\s*['\"][A-Za-z0-9_\-]{16,}"
                     r"|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|Bearer\s+[A-Za-z0-9._\-]{24,})")
 CHEMIN = re.compile(r"(?i)(?:[A-Z]:[/\\]+Users[/\\]+|/[a-z]/Users/)(?!<|\{|%|\$|nom\b|vous\b|you\b|user\b)[A-Za-z0-9_][\w.\-]*")
 

@@ -43,6 +43,7 @@
 - **Les mots habitent l'image** (le plan de l'événement, sa profondeur, un support réel) au lieu de flotter en surimpression.
 - **Image adaptée au récit** : chaque image correspond au contexte et au niveau de l'histoire racontée. Une image amateur ou semi-pro n'est acceptée que si c'est ce que montre réellement le récit.
 - **Médias non libres en citation encadrée** (validé sur AA, 24/10/2026) :
+  - **règle par défaut du plugin** (29/10/2026) ; une chaîne peut l'écarter dans `direction/ECARTS.md` et s'en tenir aux licences libres ;
   - on prend la photo qui représente le mieux le moment, dans la meilleure qualité, même non libre (agence, presse, organisation), par exemple une personne avec son trophée ;
   - à trois conditions : elle est le sujet de ce que dit la voix ; elle reste à l'écran le temps utile ; elle est créditée (auteur et agence) ;
   - logos permis quand le film en a besoin (élargi sur AA, 28/10/2026 : « on peut utiliser si besoin ») : organisations, instances, compétitions, trophées, médias cités ; toujours avec mesure (recette v3 ci-dessous) ;

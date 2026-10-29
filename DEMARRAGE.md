@@ -2,7 +2,7 @@
 
 Guide pas à pas, en français, pour installer le studio `studio-faceless`, créer une chaîne YouTube faceless et fabriquer sa première vidéo, de l'installation jusqu'à l'archivage.
 
-**État du guide** : écrit le 29/10/2026 pour le plugin en version 0.1.0 (`plugins/studio-faceless/.claude-plugin/plugin.json`). Il enchaîne les workflows de [`docs/workflows/`](docs/workflows/) sans les remplacer. En cas d'écart, le fichier du plugin fait foi ([`docs/README.md`](docs/README.md)). Tout point incertain est écrit « à vérifier ».
+**État du guide** : écrit le 29/10/2026 pour le plugin en version 0.1.0, revu pour la 0.1.1 (`plugins/studio-faceless/.claude-plugin/plugin.json`). Il enchaîne les workflows de [`docs/workflows/`](docs/workflows/) sans les remplacer. En cas d'écart, le fichier du plugin fait foi ([`docs/README.md`](docs/README.md)). Tout point incertain est écrit « à vérifier ».
 
 ## À qui sert ce guide
 - **À toi, le propriétaire** de la chaîne (celui qui décide, valide et publie). Tu pars d'une machine Windows qui n'a pas encore le studio. Tu parles à Claude en français ; il fait le travail, tu décides.
@@ -32,7 +32,7 @@ Elles viennent du [`README.md`](README.md). Elles valent pour tout ce guide.
 1. **Seul le propriétaire valide.** Une proposition n'est pas une décision ; chaque décision est datée.
 2. **Claude ne publie, n'achète ni ne supprime rien.** Les essais retirés à l'archivage vont dans `_A_SUPPRIMER/`, que tu vides toi-même. Aucun envoi vers GitHub sans ton accord, à chaque fois.
 3. **On n'écrase jamais un travail** : une nouvelle version va dans un nouveau dossier.
-4. **Médias réels sous licence libre**, provenance consignée dans un `PROVENANCE.md`. Aucune image générée par IA, sauf écart écrit de ta chaîne.
+4. **Médias réels**, choisis sur ce qu'ils apportent à la scène : sous licence libre ou non libres en citation encadrée (`REFERENTIEL_QUALITE_REALISATION.md` § 2 bis) ; ta chaîne peut s'en tenir aux licences libres par un écart. Provenance consignée dans un `PROVENANCE.md`. Aucune image générée par IA, sauf écart écrit de ta chaîne.
 5. **HyperFrames reste figé en 0.8.149** : aucune mise à jour sans ta décision.
 
 > **Pas encore éprouvé.** La méthode et les outils viennent de StudioV1 (chaîne AA, la chaîne d'origine) et y ont servi. Ce qui n'a pas encore servi, c'est le plugin lui-même : le CLI `claude` de la machine où il a été écrit n'est connecté à aucun compte ([`docs/POINTS_OUVERTS.md`](docs/POINTS_OUVERTS.md), « Non testé »). En rédigeant ce guide, on a constaté que le dossier `~/.claude/plugins/` de cette machine ne contient aucun cache `studio-faceless` : **l'installation depuis GitHub n'a jamais été faite**. À confirmer à la première utilisation, selon `POINTS_OUVERTS.md` :
@@ -63,7 +63,7 @@ Les commandes se tapent dans **Git Bash**, dans le dossier de la chaîne, sauf m
 |---|---|
 | `<clone>` | le dossier où tu as cloné le dépôt du plugin, par exemple `~/Desktop/studio-faceless` |
 | `<chaîne>` | le dossier de ta chaîne, par exemple `~/Desktop/MaChaine` |
-| `<plugin>` | le plugin installé : `$HOME/.claude/plugins/cache/studio-faceless/studio-faceless/0.1.0` (le dernier élément est le champ `version` de `plugin.json`) |
+| `<plugin>` | le plugin installé : `$HOME/.claude/plugins/cache/studio-faceless/studio-faceless/0.1.1` (le dernier élément est le champ `version` de `plugin.json`) |
 | `<id>` | l'identifiant de l'épisode, par exemple `episode-001` |
 | `<séquence>-vN` | un dossier de séquence versionné, par exemple `seq1-v1` |
 
@@ -301,27 +301,27 @@ git config core.hooksPath .githooks
 
 ### B4. Installer le plugin pour ce projet
 - **Qui** : toi, ou Claude avec ton accord. **Dans un terminal Git Bash**, dans le dossier de la chaîne.
-- **À faire** :
+- **À faire**, dans cet ordre : déclarer le catalogue du plugin, puis installer le plugin.
+```bash
+claude plugin marketplace add hichamsbihi/studio-faceless --scope project
+```
 ```bash
 claude plugin install studio-faceless@studio-faceless --scope project
 ```
+  Sans la première commande, l'installation échoue avec « Plugin "studio-faceless" not found in marketplace » : le CLI ne lit pas le catalogue déclaré dans `.claude/settings.json` (`extraKnownMarketplaces`) d'un dossier qui ne lui a pas encore été confié (Claude Code 2.1.169, constaté le 29/10/2026).
 - **Fichiers créés** : le plugin arrive dans le cache `~/.claude/plugins/cache/studio-faceless/studio-faceless/<version>/` (seul `plugins/studio-faceless/` est copié). Le cache sert à tous les projets de la machine.
 - **Tu valides** : rien.
 - **Vérifier** :
 ```bash
 ls ~/.claude/plugins/cache/studio-faceless/studio-faceless/
 ```
-  Le dossier de la version (`0.1.0`) doit apparaître.
+  Le dossier de la version (`0.1.1`) doit apparaître.
 - **Détail** : [`nouvelle-chaine.md`](docs/workflows/nouvelle-chaine.md), étape 5 ; [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), « Chemins ».
 
 > **Pas encore éprouvé (à vérifier).**
-> - **L'installation depuis GitHub** n'a jamais été faite (voir l'encadré de l'introduction).
+> - **L'installation depuis GitHub** a servi une première fois le 29/10/2026, à la création d'une chaîne, avec l'étape `marketplace add` ci-dessus ; les autres points de l'encadré de l'introduction restent à confirmer.
 > - **L'effet de `--scope project` sur `.claude/settings.json`** : le fichier active déjà le plugin, et le comportement exact de la commande n'est pas décrit dans le dépôt.
 > - **La commande `/plugin` interactive** n'est citée dans aucun fichier du plugin. Dans l'onglet Code de l'application de bureau, elle peut ne pas être disponible : à vérifier. Garde un terminal Git Bash ouvert pour les commandes `claude plugin …`.
-> - Si Claude Code ne connaît pas le catalogue (`marketplace not found`), ajoute-le à la main, puis relance l'installation. La commande `claude plugin marketplace add <source>` existe dans Claude Code 2.1.169 (vu dans `claude plugin marketplace --help`, le 29/10/2026) ; elle n'a pas encore servi avec ce dépôt :
->   ```bash
->   claude plugin marketplace add hichamsbihi/studio-faceless
->   ```
 
 ### B5. Installer les dépendances
 - **Qui** : tu décides, Claude lance avec ton accord. Dans Git Bash (Node 22), dans le dossier de la chaîne.
@@ -1120,6 +1120,7 @@ git push
 | Le plugin n'est pas proposé à l'ouverture, ou Claude Code ignore le catalogue | **confiance du dossier non acceptée**, ou `.claude/` non copié (dossier caché) | recopie `starter/.claude/settings.json`, rouvre le dossier, accepte la confiance |
 | Aucune règle commune en début de session ; ou « verifier_depot.py introuvable » | **plugin activé mais non installé** : `enabledPlugins` de `settings.json` l'active, mais `claude plugin install … --scope project` n'a pas été lancé, donc le cache est vide. Autres causes : dossier non approuvé, Python absent du `PATH` | lance la commande de B4 dans un terminal ; vérifie `ls ~/.claude/plugins/cache/studio-faceless/studio-faceless/` ; `/reload-plugins` ; `python -I <plugin>/hooks/regles_studio.py` à la main |
 | `claude plugin install` : accès refusé ou dépôt introuvable | identifiants Git absents, ou compte sans accès au dépôt privé | refais A3 (`gh auth login`, `gh auth setup-git`) ; vérifie l'accès au dépôt |
+| `claude plugin install` : « Plugin "studio-faceless" not found in marketplace » | le CLI ne lit pas `extraKnownMarketplaces` de `.claude/settings.json` dans un dossier qui ne lui a pas encore été confié (Claude Code 2.1.169) | lance `claude plugin marketplace add hichamsbihi/studio-faceless --scope project`, puis relance l'installation (B4) |
 | `/plugin` introuvable dans l'application de bureau | la commande interactive peut ne pas être disponible dans l'onglet Code (à vérifier) | utilise un terminal Git Bash pour les commandes `claude plugin …` |
 | `claude plugin update` n'apporte rien | le champ `version` de `plugin.json` n'a pas augmenté | la version s'augmente dans le dépôt du plugin ([`faire-evoluer-le-plugin.md`](docs/workflows/faire-evoluer-le-plugin.md)) |
 | Plusieurs versions dans le cache | anciennes versions conservées (à vérifier) | le crochet `pre-commit` prend la plus haute ; Claude ne supprime rien, tu nettoies |

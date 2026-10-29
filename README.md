@@ -41,7 +41,7 @@ Une fois installés, les skills et les agents portent le préfixe du plugin : `s
 1. **Seul le propriétaire valide.** Une proposition n'est pas une décision ; chaque décision est datée.
 2. **Claude ne publie, n'achète ni ne supprime rien.** Les essais retirés à l'archivage vont dans `_A_SUPPRIMER/`, que le propriétaire vide lui-même. Aucun envoi vers GitHub sans son accord, donné à chaque fois.
 3. **On n'écrase jamais un travail** : une nouvelle version va dans un nouveau dossier.
-4. **Médias réels sous licence libre**, provenance consignée dans un `PROVENANCE.md`. Aucune image générée par IA, sauf écart écrit de la chaîne.
+4. **Médias réels**, choisis sur ce qu'ils apportent à la scène : sous licence libre ou non libres en citation encadrée (`REFERENTIEL_QUALITE_REALISATION.md` § 2 bis) ; une chaîne peut s'en tenir aux licences libres par un écart. Provenance consignée dans un `PROVENANCE.md`. Aucune image générée par IA, sauf écart écrit de la chaîne.
 5. **HyperFrames reste figé en 0.8.149** : aucune mise à jour sans décision du propriétaire.
 
 ## Faire évoluer le plugin

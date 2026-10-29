@@ -51,7 +51,7 @@ flowchart TD
   A2 --> A3["A3. Cloner le dépôt du plugin, copier vendor/claude-skills dans ~/.claude/skills"]
   A3 --> B1["B1. git lfs install, puis git clone de la chaîne"]
   B1 --> B2["B2. Ouvrir dans Claude Code, accepter la confiance du dossier"]
-  B2 --> B3["B3. claude plugin install, option --scope project"]
+  B2 --> B3["B3. claude plugin marketplace add, puis claude plugin install, option --scope project"]
   B3 --> B4["B4. npm ci, puis pip install -r requirements.txt"]
   B4 --> B5["B5. git config core.hooksPath .githooks"]
   B5 --> B6["B6. Règle ask du connecteur ElevenLabs, modèle Whisper"]
@@ -108,11 +108,15 @@ flowchart TD
 - **Lit** : `.claude/settings.json` : catalogue `hichamsbihi/studio-faceless`, plugin `studio-faceless@studio-faceless` activé, permissions.
 
 ### B3. Installer le plugin pour ce projet
-- **Qui** : propriétaire ou Claude (avec accord).
-- **Commande** :
+- **Qui** : propriétaire ou Claude (avec accord), dans un terminal Git Bash ouvert dans le dossier de la chaîne.
+- **Commandes**, dans cet ordre :
+  ```bash
+  claude plugin marketplace add hichamsbihi/studio-faceless --scope project
+  ```
   ```bash
   claude plugin install studio-faceless@studio-faceless --scope project
   ```
+- **Pourquoi la première** : le CLI ne lit pas le catalogue déclaré dans `.claude/settings.json` (`extraKnownMarketplaces`) d'un dossier qui ne lui a pas encore été confié ; sans elle, l'installation échoue avec « Plugin "studio-faceless" not found in marketplace » (Claude Code 2.1.169, constaté le 29/10/2026).
 - **Résultat** : le plugin est copié dans `~/.claude/plugins/cache/studio-faceless/studio-faceless/<version>/` (seul `plugins/studio-faceless/` est copié). Au début de chaque session et après un `/compact`, `hooks/regles_studio.py` injecte `REGLES_STUDIO.md` avec `${CLAUDE_PLUGIN_ROOT}` remplacé par ce dossier. Le garde-fou `hooks/garde_commandes.py` s'applique à toute la session, sous-agents compris.
 - **À vérifier** : ce que la commande change dans `.claude/settings.json` (le fichier active déjà le plugin) n'est pas décrit dans le dépôt.
 
@@ -175,6 +179,7 @@ La mise à jour automatique est **désactivée** pour un dépôt privé : rien n
 |---|---|---|
 | `claude plugin install` : accès refusé ou dépôt introuvable | identifiants Git absents, ou compte sans accès au dépôt privé | refaire A2 (`gh auth login`, `gh auth setup-git`) ; vérifier l'accès au dépôt |
 | Le catalogue n'est pas vu | confiance du dossier non accordée | accepter la confiance dans Claude Code, rouvrir le dossier |
+| `claude plugin install` : « Plugin "studio-faceless" not found in marketplace » | le CLI ne lit pas `extraKnownMarketplaces` de `.claude/settings.json` dans un dossier qui ne lui a pas encore été confié (Claude Code 2.1.169) | `claude plugin marketplace add hichamsbihi/studio-faceless --scope project`, puis relancer l'installation (B3) |
 | Les fichiers de `marque/` sont des textes de quelques lignes | clone fait sans `git lfs install` | `git lfs install`, puis `git lfs pull` dans la chaîne |
 | Crochet Git : sortie 2 | `git-lfs` absent du PATH | installer Git LFS |
 | `git commit` : « verifier_depot.py introuvable » | plugin pas installé, ou cache différent | refaire B3 ; ou définir `STUDIO_FACELESS_OUTILS` |

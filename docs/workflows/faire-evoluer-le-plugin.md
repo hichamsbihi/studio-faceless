@@ -97,7 +97,7 @@ flowchart TD
 - **Qui** : Studio Director.
 - **Écrit** : le champ `version` de `plugins/studio-faceless/.claude-plugin/plugin.json` (seul endroit : `marketplace.json` n'en porte pas).
 - **Pourquoi** : `version` fige la version installée et nomme le dossier du cache ; sans changement de ce nombre, `claude plugin update` n'apporte rien.
-- **Numérotation** : le dépôt n'impose pas de règle (une seule version à ce jour, `0.1.0`). Proposition de pratique, à confirmer : correctif → troisième nombre ; ajout de contenu → deuxième nombre.
+- **Numérotation** : le dépôt n'impose pas de règle (versions `0.1.0`, puis `0.1.1` pour des correctifs). Proposition de pratique, à confirmer : correctif → troisième nombre ; ajout de contenu → deuxième nombre.
 
 ### 4. Noter dans le journal
 - **Qui** : Studio Director.
@@ -111,7 +111,7 @@ flowchart TD
      ```bash
      python -I -B plugins/studio-faceless/outils/verifier_depot.py --tout
      ```
-     Il refuse : fichier de plus de 10 Mo hors LFS (ici il n'y a pas de LFS, donc tout gros fichier), média d'épisode, secret probable (clé d'API, jeton GitHub, clé privée, `Bearer`), chemin propre à une machine dans du code actif (hors `docs/` et `vendor/`). Code de sortie 0 ou 1.
+     Il refuse : fichier de plus de 10 Mo hors LFS (ici il n'y a pas de LFS, donc tout gros fichier), média d'épisode, secret probable (clé d'API, jeton GitHub, clé privée, `Bearer`), chemin propre à une machine dans du code actif (hors `docs/` et `vendor/`). Code de sortie 0 ou 1. Si `verifier_depot.py` change, lancer aussi son test : `python -I -B plugins/studio-faceless/outils/test_verifier_depot.py`.
   3. **Cohérence** : chaque chemin cité existe ; les renvois entre skills, agents et référentiels restent justes ; les numéros de section cités n'ont pas bougé ; les dates et les statuts sont portés. Une mission `studio-maintainer` avec un contrat (lecture du plugin, écriture limitée) peut le faire.
   4. **Aucun nom de chaîne ni de personne** ajouté dans une règle du plugin ; pas de chemin absolu de machine.
 - **Porte** : tant que l'un des contrôles échoue, retour à l'étape 2.

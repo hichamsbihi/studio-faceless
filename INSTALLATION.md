@@ -37,10 +37,14 @@ Les agents préchargent les skills HyperFrames 0.8.149. Le plus simple est de cl
    git clone https://github.com/<compte>/<depot-de-la-chaine>.git
    ```
 2. Ouvrir le dossier dans Claude Code et **accepter la confiance du dossier** : sans elle, Claude Code ignore le catalogue déclaré dans `.claude/settings.json`.
-3. Installer le plugin pour ce projet :
+3. Dans un terminal Git Bash ouvert dans le dossier de la chaîne, déclarer le catalogue du plugin, puis installer le plugin pour ce projet :
+   ```bash
+   claude plugin marketplace add hichamsbihi/studio-faceless --scope project
+   ```
    ```bash
    claude plugin install studio-faceless@studio-faceless --scope project
    ```
+   Sans la première commande, l'installation échoue avec « Plugin "studio-faceless" not found in marketplace » : le CLI ne lit pas le catalogue déclaré dans `.claude/settings.json` (`extraKnownMarketplaces`) d'un dossier qui ne lui a pas encore été confié (Claude Code 2.1.169, constaté le 29/10/2026).
 4. Dépendances de la chaîne : `npm ci` (HyperFrames 0.8.149, figé par `package-lock.json`), puis `pip install -r requirements.txt`.
 5. Contrôle avant commit : `git config core.hooksPath .githooks`.
 6. Connecteurs : ajouter à la liste `ask` de `.claude/settings.json` l'identifiant du connecteur ElevenLabs de la session (`mcp__<identifiant>`). Il dépend du compte et ne figure donc pas dans le squelette.

@@ -311,7 +311,7 @@ python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/verifier_depot.py --tout   tous les fi
 |---|---|
 | Taille | Plus de 10 Mo (10 × 1024 × 1024 octets) sans le filtre `lfs` (lu par `git check-attr filter`) : refus |
 | Média d'épisode | Un fichier sous `episodes/` d'extension vidéo, son, image, police, `.pdf` ou `.zip` : refus (sauvegarde externe, pas dépôt) |
-| Secret probable | Clés `sk-…`, `sk_…`, `xi-api-key: …`, `api_key: '…'`, jetons `ghp_…` et `github_pat_…`, `-----BEGIN … PRIVATE KEY-----`, en-tête `Bearer …` ; les valeurs de remplacement (`$`, `<`, `{`, `%`) sont ignorées |
+| Secret probable | Clés `sk-…`, `sk_…` (dont `sk_live_…`, `sk_test_…`) en début de jeton, c'est-à-dire non précédées d'une lettre, d'un chiffre, de `_` ou de `-` (« risk-… », « task-… » ou une URL en « dsk-… » ne sont pas des clés), `xi-api-key: …`, `api_key: '…'`, jetons `ghp_…` et `github_pat_…`, `-----BEGIN … PRIVATE KEY-----`, en-tête `Bearer …` ; les valeurs de remplacement (`$`, `<`, `{`, `%`) sont ignorées |
 | Chemin de machine | `C:/Users/<nom>` ou `/c/Users/<nom>` dans un fichier `.py .mjs .js .cjs .json .sh .ps1 .html .css` hors `episodes/`, `docs/` et tout dossier `vendor/` ; les marqueurs `<…>`, `{…}`, `nom`, `vous`, `you`, `user` sont tolérés |
 
 Les médias, les fichiers en LFS et ceux de plus de 3 Mo ne sont pas lus pour les secrets et les chemins.
@@ -325,6 +325,8 @@ Les médias, les fichiers en LFS et ceux de plus de 3 Mo ne sont pas lus pour le
 - Les règles LFS du squelette ne couvrent que `marque/**` et `templates/**` pour quelques extensions ; un binaire de plus de 10 Mo ailleurs ou d'une autre extension sera refusé.
 - Les fichiers Markdown ne passent pas le contrôle des chemins de machine (seulement celui des secrets).
 - Un secret dans un fichier de plus de 3 Mo n'est pas détecté.
+- Un segment d'URL qui commence lui-même par `sk-` suivi de 20 caractères reste signalé (faux positif possible).
+- **Test** de la détection des secrets (exemples de faux positifs et de vraies clés), depuis la racine du dépôt du plugin : `python -I -B plugins/studio-faceless/outils/test_verifier_depot.py` (29/10/2026).
 
 ---
 
@@ -492,7 +494,7 @@ Les chemins sont ramenés à un chemin relatif à la chaîne (`/c/Users/…` de 
 | Sous-agents | Studio Director ; les cinq agents (`research`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`) ; contrat de mission ; isolation ; un sous-agent ne voit pas la mémoire de Claude |
 | Parcours d'un épisode | Les onze étapes, du sujet à l'archivage |
 | Économie de tokens et de contexte | Sessions et `/compact` (150 à 200 k, fin d'étape, pause de plus d'une heure) ; sous-agents (jamais plus de 4 min sans action, une correction dans la même version : reprise du producteur si son cache est chaud, sinon un nouvel agent court) ; travail (lectures par plages, sorties courtes) |
-| Règles permanentes | Faire seulement ce qui est demandé ; décision / proposition / hypothèse / question ouverte ; **statuts** ; pas d'écoute déclarée sans écoute ; ne jamais écraser ; aucune publication, achat ou contournement ; médias réels sous licence libre ; pas de contamination entre épisodes ; concision |
+| Règles permanentes | Faire seulement ce qui est demandé ; décision / proposition / hypothèse / question ouverte ; **statuts** ; pas d'écoute déclarée sans écoute ; ne jamais écraser ; aucune publication, achat ou contournement ; médias réels, sous licence libre ou en citation encadrée par défaut (référentiel § 2 bis), licences libres seules par écart de chaîne ; pas de contamination entre épisodes ; concision |
 
 **Statuts** (section « Règles permanentes »)
 - décisions : `FIXÉ`, `VALIDÉ` (date et référence), `PROPOSÉ`, `PROVISOIRE`, `QUESTION OUVERTE` ;

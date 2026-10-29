@@ -40,7 +40,7 @@ flowchart TD
   A["1. Dossier vide"] --> B["2. Copier starter/ fichiers cachés compris"]
   B --> C["3. git init, git lfs install, core.hooksPath"]
   C --> D["4. Ouvrir dans Claude Code, accepter la confiance"]
-  D --> E["5. claude plugin install, option --scope project"]
+  D --> E["5. claude plugin marketplace add, puis claude plugin install, option --scope project"]
   E --> F["6. Dépendances : npm ci, pip, règle ask ElevenLabs, Whisper"]
   F --> G["7. Vérifier l'installation"]
   G --> H["8. Porte de départ : skill grilling"]
@@ -86,11 +86,15 @@ Les commandes se lancent depuis Git Bash (Node 22, nvm), dans le dossier de la c
 - **Lit** : `.claude/settings.json` (catalogue `hichamsbihi/studio-faceless`, plugin activé, permissions).
 
 ### 5. Installer le plugin pour ce projet
-- **Qui** : propriétaire ou Claude (avec son accord).
-- **Commande** :
+- **Qui** : propriétaire ou Claude (avec son accord), dans un terminal Git Bash ouvert dans le dossier de la chaîne.
+- **Commandes**, dans cet ordre :
+  ```bash
+  claude plugin marketplace add hichamsbihi/studio-faceless --scope project
+  ```
   ```bash
   claude plugin install studio-faceless@studio-faceless --scope project
   ```
+- **Pourquoi la première** : le CLI ne lit pas le catalogue déclaré dans `.claude/settings.json` (`extraKnownMarketplaces`) d'un dossier qui ne lui a pas encore été confié ; sans elle, l'installation échoue avec « Plugin "studio-faceless" not found in marketplace » (Claude Code 2.1.169, constaté le 29/10/2026 à la création d'une chaîne).
 - **Résultat** : le plugin arrive dans le cache `~/.claude/plugins/cache/studio-faceless/studio-faceless/<version>/` ; au début de chaque session, le hook `SessionStart` injecte les règles communes (`REGLES_STUDIO.md`).
 - **Attention** : à faire **avant le premier commit** : le crochet `pre-commit` cherche `verifier_depot.py` dans ce cache et refuse le commit (code 1, « verifier_depot.py introuvable : le plugin studio-faceless est-il installé ? ») s'il n'y est pas.
 
@@ -173,6 +177,7 @@ Une règle commune à toutes les chaînes ne s'écrit pas dans une chaîne : ell
 | Symptôme | Cause | Reprise |
 |---|---|---|
 | Le plugin n'est pas proposé à l'ouverture | confiance du dossier non accordée, ou `.claude/` non copié (fichier caché) | recopier `starter/.claude/settings.json`, rouvrir le dossier, accepter la confiance |
+| `claude plugin install` : « Plugin "studio-faceless" not found in marketplace » | le CLI ne lit pas `extraKnownMarketplaces` de `.claude/settings.json` dans un dossier qui ne lui a pas encore été confié (Claude Code 2.1.169) | `claude plugin marketplace add hichamsbihi/studio-faceless --scope project`, puis relancer l'installation (étape 5) |
 | `git commit` refusé : « verifier_depot.py introuvable » | plugin pas encore installé, ou cache absent | `claude plugin install … --scope project` ; ou `STUDIO_FACELESS_OUTILS` pointé sur le dossier `outils/` d'un clone |
 | `git commit` : sortie 2 d'un crochet LFS | `git-lfs` absent du PATH | installer Git LFS, relancer `git lfs install` |
 | `git commit` refusé pour un gros fichier | fichier > 10 Mo hors LFS, ou média sous `episodes/` | le placer en LFS (`marque/`) ou hors dépôt (médias d'épisode) |
