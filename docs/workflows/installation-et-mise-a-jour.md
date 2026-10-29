@@ -146,7 +146,7 @@ flowchart TD
 - **Qui** : Claude, à la demande du propriétaire.
 - **Invite à donner dans la chaîne** (texte de `INSTALLATION.md` § 5) :
   > Vérifie l'installation : liste les skills et agents `studio-faceless`, vérifie que les règles communes du studio sont arrivées au début de la session, lance `hyperframes check` sur le gabarit de séquence v3 du plugin copié dans un dossier temporaire, un rendu test de 3 secondes avec `--workers 1`, un contrôle `controle.py niveau` sur ce rendu et `controle.py chrome`. Vérifie à la fin qu'aucun Chrome ne reste ouvert.
-- **Ce que cela exerce** : les skills (`studio-faceless:episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`, `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`) et les cinq agents ; le hook `SessionStart` ; HyperFrames 0.8.149 (le gabarit v3 refuse un autre numéro) ; Node 22 ; FFmpeg ; `controle.py` (`numpy`).
+- **Ce que cela exerce** : les skills (`studio-faceless:episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`, `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`) et les cinq agents ; le hook `SessionStart` ; HyperFrames 0.8.149 (le gabarit v3 refuse un autre numéro) ; Node 22 ; FFmpeg ; `controle.py` (`numpy`).
 - **Règles de rendu** : `--workers 2` au plus ; jamais de `preview` sans demande ; vérifier à la fin qu'aucun Chrome de HyperFrames ne reste ouvert.
 - **Porte** : le propriétaire **lit le bilan avant de continuer**.
 

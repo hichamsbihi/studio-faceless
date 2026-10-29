@@ -48,7 +48,7 @@ Chaque workflow donne son déclencheur, ses acteurs, ses prérequis, ses étapes
 | [`outils-et-garde.md`](reference/outils-et-garde.md) | `outils/controle/controle.py`, `cartes/`, `rendu/`, archivage, contrôle du dépôt, tokens, sauvegarde, `hooks/`, `REGLES_STUDIO.md` |
 | [`referentiels.md`](reference/referentiels.md) | `referentiels/` : méthode de récit, qualité de réalisation, catalogue d'animations |
 | [`starter-et-depot.md`](reference/starter-et-depot.md) | `starter/` (squelette de chaîne) et les fichiers de la racine du dépôt |
-| [`skills-annexes.md`](reference/skills-annexes.md) | `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music` |
+| [`skills-annexes.md`](reference/skills-annexes.md) | `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design` |
 | [`vendor.md`](reference/vendor.md) | `vendor/claude-skills/` : les skills HyperFrames 0.8.149 figés, skill par skill |
 
 ## Vocabulaire

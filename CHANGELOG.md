@@ -2,6 +2,13 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 0.1.3 (29/10/2026)
+Nouveau skill `frontend-design`, ajouté à la demande de Hicham le 29/10/2026 pour des planches et des compositions d'un niveau plus professionnel.
+- `skills/frontend-design/` : copie du skill d'anthropics/skills (Apache 2.0, commit `ca45fc4`), avec son `LICENSE.txt` et un `PROVENANCE.md` (source, empreintes). Méthode de directeur artistique : plan de jetons relu contre le brief avant de construire, une seule idée forte, critique sur captures, liste des défauts visuels génériques.
+- Une section « Règles du studio » placée sous le titre l'étend aux planches de direction artistique et aux compositions HyperFrames, fait passer la marque validée de la chaîne avant ses préférences et rappelle les règles sur les images et les polices.
+- Trouvé avec `find-skills` ; écartés après lecture : `canvas-design` (affiches abstraites, polices à télécharger), `impeccable` (programme téléchargé au premier lancement), `design-taste-frontend` (scripts signalés par les audits, skills de génération d'images dans le même dépôt).
+- Listes des skills mises à jour : `README.md`, `DEMARRAGE.md`, `docs/README.md`, `docs/reference/skills-annexes.md`, `docs/reference/starter-et-depot.md`, `docs/workflows/installation-et-mise-a-jour.md`.
+
 ## 0.1.2 (29/10/2026)
 Trois nouveaux skills, ajoutés à la demande de Hicham le 29/10/2026 : `find-skills`, `elevenlabs-sound-effects` et `elevenlabs-music`.
 - `skills/find-skills/` : copie du skill de vercel-labs/skills (MIT, commit `773fb2c`), avec son `LICENSE` et un `PROVENANCE.md` (source, empreintes). Il sert à chercher des skills utiles au studio (premier usage : effets sonores et musique de fond).

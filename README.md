@@ -18,7 +18,7 @@ Le plugin ne dépend d'aucune chaîne : les mentions d'AA ou de StudioV1 n'y ser
 ## Contenu du plugin (`plugins/studio-faceless/`)
 | Élément | Contenu |
 |---|---|
-| `skills/` | `episode` (fabrication d'un épisode, du sujet au mix), `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder` (analyse d'une vidéo par Gemini), `grilling` et `grill-me` (portes de questions), `humanizer`, `javascript-animation`, `soundtrack`, `find-skills` (recherche de skills), `elevenlabs-sound-effects`, `elevenlabs-music` (effets sonores et musique générés) |
+| `skills/` | `episode` (fabrication d'un épisode, du sujet au mix), `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder` (analyse d'une vidéo par Gemini), `grilling` et `grill-me` (portes de questions), `humanizer`, `javascript-animation`, `soundtrack`, `find-skills` (recherche de skills), `elevenlabs-sound-effects`, `elevenlabs-music` (effets sonores et musique générés), `frontend-design` (conception visuelle et critique des planches et compositions) |
 | `agents/` | `research`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer` |
 | `hooks/` | garde-fou des commandes (par rôle) et injection des règles communes au début de chaque session |
 | `REGLES_STUDIO.md` | règles communes : outils, sous-agents, parcours d'un épisode, économie de tokens, statuts |
@@ -56,5 +56,6 @@ Commits courts, en français, préfixés par la zone : `plugin : …`, `skills :
 Dépôt privé, propriété de Hicham, tous droits réservés. Les contenus tiers gardent leur licence :
 - HyperFrames et ses skills : Apache-2.0 ;
 - `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music` : MIT (leur `LICENSE` et leur provenance sont dans leur dossier) ;
+- `frontend-design` : Apache 2.0, © Anthropic (son `LICENSE.txt` et sa provenance sont dans son dossier) ;
 - `skills/regarder/references/claude-video/` : MIT, © Bradley Bonanno (son `LICENSE` est dans le dossier) ;
 - polices du gabarit : SIL OFL.

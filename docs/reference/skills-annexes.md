@@ -1,6 +1,6 @@
 # Skills annexes du plugin
 
-Cette page décrit les huit skills « annexes » de `plugins/studio-faceless/skills/` : `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`. Les skills de métier (`episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`) sont décrits dans [`skill-episode.md`](skill-episode.md), [`publication.md`](publication.md) et [`son.md`](son.md).
+Cette page décrit les neuf skills « annexes » de `plugins/studio-faceless/skills/` : `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`. Les skills de métier (`episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`) sont décrits dans [`skill-episode.md`](skill-episode.md), [`publication.md`](publication.md) et [`son.md`](son.md).
 
 ## Table des matières
 - [Vue d'ensemble](#vue-densemble)
@@ -11,6 +11,7 @@ Cette page décrit les huit skills « annexes » de `plugins/studio-faceless/ski
 - [soundtrack](#soundtrack) : [SKILL.md](#skillssoundtrackskillmd), [LICENSE](#skillssoundtracklicense), [références](#skillssoundtrackreferencesai-musicmd), [script](#skillssoundtrackscriptssync-checkmjs), [templates](#templates-de-soundtrack)
 - [find-skills](#find-skills) : [SKILL.md](#skillsfind-skillsskillmd), [PROVENANCE.md](#skillsfind-skillsprovenancemd), [LICENSE](#skillsfind-skillslicense)
 - [elevenlabs-sound-effects et elevenlabs-music](#elevenlabs-sound-effects-et-elevenlabs-music)
+- [frontend-design](#frontend-design) : [SKILL.md](#skillsfrontend-designskillmd), [PROVENANCE.md](#skillsfrontend-designprovenancemd), [LICENSE.txt](#skillsfrontend-designlicensetxt)
 - [Points à vérifier et incohérences](#points-à-vérifier-et-incohérences)
 
 ## Vue d'ensemble
@@ -24,6 +25,7 @@ Cette page décrit les huit skills « annexes » de `plugins/studio-faceless/ski
 | `studio-faceless:find-skills` | vercel-labs/skills, commit `773fb2c`, copie du 29/10/2026 avec une section « Règles du studio » | MIT | `VALIDÉ` (Hicham, 29/10/2026) | Claude principal ou `research`, quand le propriétaire cherche un skill |
 | `studio-faceless:elevenlabs-sound-effects` | elevenlabs/skills `sound-effects`, commit `503d4e9`, copie du 29/10/2026 avec une section « Règles du studio » | MIT | `VALIDÉ` (Hicham, 29/10/2026) | Claude principal, **à la demande explicite du propriétaire**, son par son |
 | `studio-faceless:elevenlabs-music` | elevenlabs/skills `music`, même commit et même traitement | MIT | idem | idem |
+| `studio-faceless:frontend-design` | anthropics/skills `frontend-design`, commit `ca45fc4`, copie du 29/10/2026 avec une section « Règles du studio » | Apache 2.0 | `VALIDÉ` (Hicham, 29/10/2026) | Claude principal et les producteurs, pour les planches de direction artistique et les compositions |
 
 Aucun agent du plugin ne précharge un de ces skills (champ `skills:` des agents : voir [`agents.md`](agents.md)). Seul `grilling` est cité ailleurs dans le plugin (`REGLES_STUDIO.md`, `skills/episode/`) ; `grill-me` ne l'est que dans `README.md` et `CHANGELOG.md`, et `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music` ne sont cités que dans leurs propres dossiers (`find-skills` est aussi nommé dans la provenance de `humanizer`).
 
@@ -262,6 +264,22 @@ Cinq fichiers en anglais, lus à la demande par le skill.
 - **Contenu** : section « Règles du studio » (SDK Python `elevenlabs` figé dans le `requirements.txt` de la chaîne ; ni CLI, ni npm, ni `npx`, ni installateur ; clé `ELEVENLABS_API_KEY` posée par le propriétaire, que Claude ne lit jamais et dont il vérifie seulement l'existence ; provenance de chaque son ; forfait payant pour l'usage commercial, obligatoire pour la musique ; son illustratif ; connecteur ElevenLabs comme autre voie), puis le texte d'origine : démarrage, paramètres, formats, conseils de prompt, erreurs ; pour la musique, plans de composition, streaming, inpainting, finetunes, video-to-music (ces trois derniers seulement sur décision du propriétaire).
 - **Fichiers** : `SKILL.md`, `references/installation.md` (encadré du studio en tête : seule la section Python s'applique), `references/api_reference.md` (musique, inchangé), `LICENSE` (« Copyright (c) 2024 ElevenLabs »), `PROVENANCE.md` (source, empreintes d'origine et du studio, modifications).
 - **À savoir** : l'encadré « Setup » d'origine lançait `npx -y @elevenlabs/cli@latest onboard init` (version non figée, sans confirmation, connexion d'un compte) ; il est remplacé par un renvoi à la section du studio. Le garde-fou ne bloque pas `npx` hors HyperFrames : la règle tient par le texte du skill.
+
+## frontend-design
+
+### skills/frontend-design/SKILL.md
+- **Rôle** : méthode de directeur artistique pour des visuels qui ne ressemblent pas à des modèles par défaut. Copie d'anthropics/skills (`skills/frontend-design/SKILL.md`, commit `ca45fc4`, Apache 2.0), en anglais, avec une section « Règles du studio » en français sous le titre.
+- **Quand il sert** : planches de direction artistique des chaînes et compositions HyperFrames (premier usage, 29/10/2026 : planche de grammaire visuelle d'une chaîne, jugée trop schématique en v1).
+- **Contenu** : règles du studio (planches et compositions, marque validée d'abord, règles propres à la vidéo, images et polices) ; puis le texte d'origine : partir du sujet, typographie, structure, mouvement rare et orchestré, défauts visuels génériques à éviter, plan de jetons relu contre le brief avant de construire, retenue et critique sur captures, écriture.
+- **À savoir** : vise les interfaces web ; la section du studio écarte ce qui ne vaut que pour une interface. Pour le mouvement, `hyperframes-animation` fait foi.
+
+### skills/frontend-design/PROVENANCE.md
+- **Rôle** : trace l'origine du skill, ses empreintes et la modification du studio.
+- **Contenu** : statut `VALIDÉ` (Hicham, 29/10/2026) ; dépôt, commits de `SKILL.md` et de `LICENSE.txt` ; empreintes du `SKILL.md` d'origine, du `SKILL.md` du studio et de `LICENSE.txt` ; raison de la section ajoutée.
+
+### skills/frontend-design/LICENSE.txt
+- **Rôle** : texte de la licence Apache 2.0, exigé par la licence pour accompagner la copie.
+- **À savoir** : ne pas le modifier.
 
 ## Points à vérifier et incohérences
 - **`skills/javascript-animation/SKILL.md:84`** demande `npm i playwright-core`, alors que le garde-fou refuse `npm install` : ces scripts sont inutilisables tant que le propriétaire n'a pas décidé (voir aussi l'encadré `:11`).
