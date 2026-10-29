@@ -103,7 +103,7 @@ Le skill n'est pas dans le champ `skills:` du `motion-producer` (qui précharge 
 - **Liens** : cite `METHODE_RECIT.md` (§ 1, § 2, § 3, § 4), `DIRECTION_AUDIO.md` § 2, `rendu-collage.md` § 4, `direction/ECARTS.md`, `marque/son/`. Le skill `grilling` fixe la forme (voir [`skills-annexes.md`](skills-annexes.md)).
 - **À savoir**
   - Les réponses par défaut sont des points de départ, à adapter au sujet.
-  - Il n'y a pas de banque pour les étapes 8, 9, 11 et 13, bien que `SKILL.md` leur donne un intitulé de porte.
+  - Il n'y a pas de banque pour les étapes 8, 9, 11 et 13, bien que `SKILL.md` leur donne un intitulé de porte (décidé le 29/10/2026 : à créer au prochain épisode).
   - Les exemples « AA » sont des repères : les écarts de la chaîne (`direction/ECARTS.md`) l'emportent.
 
 ### skills/episode/references/socle.md
@@ -230,12 +230,12 @@ Une porte se pose avec le skill `studio-faceless:grilling` (alias utilisateur : 
 | 5 Socle | direction artistique, médias, sons, raccords | 5 : direction artistique ; médias à télécharger par le propriétaire ; sons ; raccords ; effets rares et quotas | La direction artistique, la liste de téléchargement, les sons, les raccords au pixel, les quotas | Base fixe de la marque plus une palette propre au sujet, testée sur une planche ; liste de liens avec noms imposés ; sons de `marque/son/` ; raccords écrits avant les lots ; un WHIP-JUMP par film, un surligneur deux fois au plus |
 | 6 Séquence témoin | quelle séquence, ce qu'elle doit prouver | 2 : quelle séquence ; ce qu'elle doit prouver | La séquence qui sert de recette | La plus riche en techniques nouvelles, à raccords indépendants ; elle prouve la recette d'image et sa grammaire de transitions |
 | 7 Production | lots, raccords, quotas | 2 : composition des lots ; que faire d'un défaut trouvé sur une planche | Les lots, la façon de corriger | Trois producteurs au plus, ordonnés par raccords ; correction sur place sans nouvelle version |
-| 8 Rendus | ordre | aucune banque | L'ordre de la file de rendus (non détaillé) | À vérifier |
-| 9 Collage en voix seule | marque, appel, jonctions | aucune banque | Non détaillé ; les jonctions se mesurent (`rendu-collage.md` § 3) | À vérifier |
+| 8 Rendus | ordre | aucune banque (à créer au prochain épisode) | L'ordre de la file de rendus (non détaillé) | À vérifier |
+| 9 Collage en voix seule | marque, appel, jonctions | aucune banque (à créer au prochain épisode) | Non détaillé ; les jonctions se mesurent (`rendu-collage.md` § 3) | À vérifier |
 | 10 Mix du film | musique, effets, niveaux, silences | 4 : effets à retenir ; niveaux par type ; où la musique continue ou se tait ; rappel d'abonnement | Le plan son | Effets des tableaux des producteurs sans les facultatifs ; niveaux de `rendu-collage.md` § 4 ; la musique continue aux jonctions et baisse en creux avant une révélation ; rappel à sa place |
-| 11 Retours | ce que le propriétaire a vu et entendu | aucune banque | Les corrections demandées (image sur place, son par remix) | À vérifier |
+| 11 Retours | ce que le propriétaire a vu et entendu | aucune banque (à créer au prochain épisode) | Les corrections demandées (image sur place, son par remix) | À vérifier |
 | 12 Publication | titre, miniature | 2 : titre ; crédits dans la description | Le titre et la décision sur les crédits | Trois titres vrais et différents puis le choix du propriétaire ; crédits selon sa décision pour l'épisode |
-| 13 Après la sortie | relevés, leçons | aucune banque | Non détaillé | À vérifier |
+| 13 Après la sortie | relevés, leçons | aucune banque (à créer au prochain épisode) | Non détaillé | À vérifier |
 
 ## Statuts portés par le skill
 
@@ -257,6 +257,6 @@ Relevés à la lecture. Les constats réglés par la correction du 28/10/2026 (r
 
 | # | Constat | Fichiers |
 |---|---|---|
-| 1 | Le tableau des étapes donne une « porte de questions » aux étapes 8, 9, 11 et 13 ; `grilles.md` n'a pas de banque pour elles. Les intitulés de `SKILL.md` ne reprennent pas toujours les questions réelles (par exemple « couches, renversement » à l'étape 2, « fiche d'ouverture, relances » à l'étape 3, « médias candidats » à l'étape 1). | `SKILL.md:37-50`, `grilles.md:12-65`, `etapes.md:3` |
+| 1 | Le tableau des étapes donne une « porte de questions » aux étapes 8, 9, 11 et 13 ; `grilles.md` n'a pas de banque pour elles (décidé le 29/10/2026 : à créer au prochain épisode). Les intitulés de `SKILL.md` ne reprennent pas toujours les questions réelles (par exemple « couches, renversement » à l'étape 2, « fiche d'ouverture, relances » à l'étape 3, « médias candidats » à l'étape 1). | `SKILL.md:37-50`, `grilles.md:12-65`, `etapes.md:3` |
 | 2 | Les emplacements du brief par séquence et du relevé musical ne sont pas indiqués. | `socle.md:44`, `socle.md:53-61` |
 | 3 | `REGLES_STUDIO.md` numérote le parcours de 1 à 11 ; le skill de 0 à 13. Ce n'est pas une contradiction mais une source de confusion quand on parle de « l'étape 6 ». | `REGLES_STUDIO.md:57-69`, `SKILL.md:37-50` |

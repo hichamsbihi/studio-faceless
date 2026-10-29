@@ -69,17 +69,22 @@ def planifier(ep, master_opt, garder, ajouts):
     if not master.is_file():
         sys.exit(f'Master introuvable : {master}')
     v_final = re.search(r'master-v(\d+)', master.name)
+    # Les fichiers d'un MP4 cité par le journal du master restent (v3 : le film en voix seule d'où le master est mixé)
+    texte = lire(master.parent / (master.stem + '.log.txt'))
+    cites = {Path(n).stem for n in re.findall(r'([\w.()\-]+\.mp4)', texte)}
     for p in master.parent.iterdir():
         m = re.search(r'master-v(\d+)', p.name)
-        if v_final and m and m.group(1) != v_final.group(1):
+        if v_final and m and m.group(1) != v_final.group(1) and not any(p.name.startswith(s + '.') for s in cites):
             essais[p] = 'master remplacé'
-    # Rendus retenus : noms de MP4 cités par le journal du master et par le script de montage final
-    texte = lire(master.parent / (master.stem + '.log.txt'))
+    # Rendus retenus : noms de MP4 cités par le journal du master et par le montage final
+    # (production/montage-* jusqu'au gabarit v2 ; episodes/<id>/montage/ et son montage.json depuis le v3)
     montages = [d for d in prod.glob('montage-*') if d.is_dir()] if prod.is_dir() else []
     finals = [d for d in montages if any(master.name in lire(f) for f in d.iterdir()
                                          if f.is_file() and f.suffix in ('.py', '.mjs', '.js', '.sh', '.md', '.txt'))]
+    if (ep / 'montage').is_dir():
+        finals.append(ep / 'montage')
     for d in finals:
-        texte += ''.join(lire(f) for f in d.iterdir() if f.is_file() and f.suffix in ('.py', '.mjs', '.js', '.sh'))
+        texte += ''.join(lire(f) for f in d.iterdir() if f.is_file() and f.suffix in ('.py', '.mjs', '.js', '.sh', '.json'))
     gardes = set(re.findall(r'([\w.()\-]+\.mp4)', texte))
     projets = [d for d in prod.iterdir() if d.is_dir()] if prod.is_dir() else []
     retenus = {d for d in projets if any(f.name in gardes for f in d.glob('*.mp4'))} | set(finals)

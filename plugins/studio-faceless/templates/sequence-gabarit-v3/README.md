@@ -80,7 +80,7 @@ La séquence 4 v3 dépend d'une caméra 2,5D maison, et son `check` signalait du
   - **un texte posé reste immobile** : jamais d'échelle, de flou ni de rotation animés sur un texte ou un bloc qui en contient. La brume et le grain (modes de fusion), les flous et `--workers 2` imposent un rendu recalé au pixel : seuls un texte immobile ou un glissement linéaire de 1 à 2 px entiers par image restent réguliers. Le mouvement d'un plan vient du papier, des photos de contexte et des photos en carte ;
   - transformations 2D seulement : jamais `perspective()` ni rotation 3D nulle (tremblement du texte, E003 séquence 4 v2) ;
   - aucun arrondi au pixel pendant un mouvement lent (`AA.f`) ;
-  - aucun plan figé plus de 2,5 s.
+  - aucune image immobile plus de 1 s (`REFERENTIEL_QUALITE_REALISATION.md` § 2 quater).
 - **Polices** : Newsreader par `@font-face` (fichier local) ; IBM Plex Mono injectée par le compilateur, depuis son cache.
 - **Taille** : un fichier de plus de 300 lignes déclenche `composition_file_too_large`. Un moment par fichier.
 

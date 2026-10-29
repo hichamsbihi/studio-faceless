@@ -205,7 +205,7 @@ flowchart TD
 - **Détail** : [`rendu-et-controle.md`](rendu-et-controle.md).
 
 ### 9. Collage en voix seule
-- **Porte** : le skill lui donne l'intitulé « marque, appel, jonctions » sans banque de questions (voir [les points à vérifier](../reference/skill-episode.md#points-à-vérifier-et-incohérences)).
+- **Porte** : le skill lui donne l'intitulé « marque, appel, jonctions » sans banque de questions (décidé le 29/10/2026 : à créer au prochain épisode ; voir [les points à vérifier](../reference/skill-episode.md#points-à-vérifier-et-incohérences)).
 - **Qui agit** : le Studio Director.
 - **Fichiers lus** : `episodes/<id>/montage/montage.json` (séquences, marque, outro, fondus, sortie), les MP4 et `pistes/stem-voix.wav` des séquences, la signature et l'outro de `marque/`.
 - **Commande** :
@@ -327,7 +327,7 @@ Aucune case ne remplace un visionnage ou une écoute du propriétaire. Un point 
 - [ ] `controle.py tout` : niveau, couleurs, licences, Chrome.
 - [ ] `controle.py tremblement` : aucune seconde signalée, ou chaque seconde vérifiée sur 10 images.
 - [ ] `controle.py son` avec la voix séparée : aucun trou, écrêtage ni clic isolé.
-- [ ] `controle.py planche` **regardée** : aucun cadre vide, aucun écran noir en milieu de séquence, aucune tenue sans mouvement au-delà de 2,5 s, texte lisible.
+- [ ] `controle.py planche` **regardée** : aucun cadre vide, aucun écran noir en milieu de séquence, aucune image immobile plus de 1 s, texte lisible.
 - [ ] README du producteur : fiche d'effets en tête, avec une raison à chaque choix ; chiffres-cibles mesurés (plein cadre ≥ 25 %, photo ≥ 45 % de la hauteur ≥ 55 % du temps, dessin ≥ 15 %, plus long plan ≤ 5 s, cadre vide 0 s, texte seul ≤ 1,5 s) ; tableau des effets proposés.
 - [ ] En-tête HTML sans texte nu ; snapshots pris aux instants retouchés après la dernière planche.
 - [ ] Aucune photo déjà prise ailleurs ; `PROVENANCE.md` à jour ; licences en attente listées (`controle.py licences`).

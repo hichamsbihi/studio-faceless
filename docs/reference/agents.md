@@ -204,7 +204,7 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 **Liens** : `skills/shorts/SKILL.md`, `skills/shorts/references/montage-vertical.md`, `brief-short.md`, `plateformes.md` ; `outils/shorts/` ; `outils/controle/` (Studio Director).
 
 **À savoir**
-- Le plugin ne livre aucun gabarit vertical dans `templates/` (seul existe `sequence-gabarit-v3/`). Le « gabarit vertical du kit » est préparé par le Studio Director ; sa source est à vérifier (voir « Écarts »).
+- Le plugin ne livre aucun gabarit vertical dans `templates/` (seul existe `sequence-gabarit-v3/`). Le « gabarit vertical du kit » est préparé par le Studio Director ; sa source est à vérifier (voir « Écarts »). Décidé le 29/10/2026 : à créer au pilote des shorts.
 - Contrairement au `motion-producer`, la correction se fait en nouvelle version.
 
 ### agents/studio-maintainer.md
@@ -247,7 +247,7 @@ Constats de lecture, du plus gênant au moins gênant. Les écarts réglés par 
 | # | Constat | Fichiers (lignes) |
 |---|---|---|
 | 1 | **Nombre d'instants de la planche** : 16 à 20 (agent, gabarit à 16) contre 24 dont 6 milieux de transition (contrat du producteur). | `agents/motion-producer.md:50`, `templates/sequence-gabarit-v3/README.md:64` contre `skills/episode/references/production.md:65` |
-| 2 | **Gabarit vertical des shorts** : exigé dans le kit shorts, mais aucun gabarit vertical n'existe dans `templates/` ; seul `sequence-gabarit-v3/` est livré. À vérifier : où le Studio Director le prend. | `agents/shorts-producer.md:31` et `48`, `skills/shorts/references/brief-short.md:16` |
+| 2 | **Gabarit vertical des shorts** : exigé dans le kit shorts, mais aucun gabarit vertical n'existe dans `templates/` ; seul `sequence-gabarit-v3/` est livré. À vérifier : où le Studio Director le prend. Décidé le 29/10/2026 : à créer au pilote des shorts. | `agents/shorts-producer.md:31` et `48`, `skills/shorts/references/brief-short.md:16` |
 | 3 | **Mot « dix »** : « jamais les dix ensemble », reste d'un ancien parcours (le DA n'a que deux skills `hyperframes-*` préchargés). | `agents/art-director.md:32` |
 | 4 | **Recherche : ordre de préférence et licence** : la liste des sources (Commons, puis Openverse/Flickr, puis Pexels/Mixkit) cohabite avec la règle « la licence ne compte pas » ; à lire ensemble (voir fiche). | `agents/research.md:33-43` |
 | 5 | **`CLAUDE.md` sous Linux ou macOS** : le hook compare `parts[-1] == 'claude.md'` après `os.path.normcase`, qui ne met pas en minuscules hors Windows ; la protection des `CLAUDE.md` par Write/Edit ne s'y déclencherait pas pour `CLAUDE.md`. À vérifier si une chaîne tourne hors Windows. | `hooks/garde_commandes.py:96`, `108` |

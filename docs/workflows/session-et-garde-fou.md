@@ -104,12 +104,12 @@ Un plugin ne peut pas fournir de permissions : elles sont dans le `.claude/setti
 
 | Liste | Contenu dans le squelette |
 |---|---|
-| `allow` | Les appels HyperFrames par `node node_modules/hyperframes/bin/hyperframes.mjs *`, `* node_modules/hyperframes/bin/hyperframes.mjs *`, `npx hyperframes *` ; `* render.mjs*` ; les variantes de `mix.py` (`python mix.py*`, `python -B mix.py*`, `python -I -B mix.py*`, `python3 …`, `py …`, avec ou sans chemin) |
+| `allow` | Les appels HyperFrames par `node node_modules/hyperframes/bin/hyperframes.mjs *`, `* node_modules/hyperframes/bin/hyperframes.mjs *`, `npx hyperframes *` ; `* render.mjs*` ; `assembler.py`, `mix_film.py` et `srt.py` de `outils/montage/` (`python *outils/montage/<outil>.py*`, `py …`) |
 | `deny` | `rm -rf *`, `rm -fr *`, `rm -r *` ; `npm install *`, `npm i *`, `npm uninstall *`, `npm update *` ; `npx hyperframes@*`, `npx hyperframes publish*`, `cloud*`, `cloudrun*`, `lambda*`, `auth*`, `upgrade*` |
 | `ask` | Aucune dans le squelette. Le propriétaire y ajoute l'identifiant du connecteur ElevenLabs de la session (`mcp__<identifiant>`, `INSTALLATION.md` § 4.6) : chaque appel au connecteur demande son accord. À défaut, Claude demande l'accord en conversation avant chaque lot, et aucun sous-agent n'appelle le connecteur (`DIRECTION_AUDIO.md` § 4) |
 
 - Le garde-fou du plugin et ces listes se **complètent** : le garde couvre ce que les motifs simples ne voient pas (options récursives n'importe où, rôles, zones protégées) ; les listes de la chaîne gardent la main du propriétaire. Comment Claude Code arbitre entre la décision d'un hook et les listes `allow` : voir sa documentation (à vérifier) ; une décision `deny` du hook n'est jamais contournée par le garde lui-même.
-- Les règles `mix.py` viennent des gabarits plus anciens (mix par séquence). Le gabarit v3 ne contient pas de `mix.py` : le mix se fait sur le film entier par `outils/montage/mix_film.py`.
+- Les règles `mix.py` venaient des gabarits plus anciens (mix par séquence) ; elles ont été remplacées le 29/10/2026 par celles des outils de montage. Le gabarit v3 ne contient pas de `mix.py` : le mix se fait sur le film entier par `outils/montage/mix_film.py`.
 - Modifier ces permissions est une décision du propriétaire ; aucun agent ne modifie `.claude/`.
 
 ---

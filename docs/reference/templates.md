@@ -146,7 +146,7 @@ templates/
 **À savoir**
 - Le chemin `${CLAUDE_PLUGIN_ROOT}` de la commande `cp` doit être remplacé par le chemin complet du plugin installé.
 - L'exemple du tableau (12,40 s ; « la fiche touche le mur ») est illustratif : il ne correspond pas aux moments d'exemple du gabarit (séquence de 12 s, fiche posée vers 5,7 s).
-- « Aucun plan figé plus de 2,5 s » : depuis le 28/10/2026, `REFERENTIEL_QUALITE_REALISATION.md` § 2 quater dit « aucune image immobile plus de 1 s » et que la règle la plus stricte s'applique (voir « Écarts »).
+- « Aucune image immobile plus de 1 s » (`REFERENTIEL_QUALITE_REALISATION.md` § 2 quater ; le gabarit disait 2,5 s jusqu'au 29/10/2026).
 - Le gabarit mêle des références propres à la chaîne d'origine (E001, E003, AA) à des consignes générales ; elles servent de provenance, pas de règle.
 
 ### templates/sequence-gabarit-v3/PROVENANCE.md
@@ -370,7 +370,7 @@ Constats de lecture, du plus gênant au moins gênant. Les écarts réglés par 
 | # | Constat | Fichiers (lignes) |
 |---|---|---|
 | 1 | **Planche** : 16 instants (gabarit), 16 à 20 (agent), 24 dont 6 milieux de transition (contrat du producteur). | `templates/sequence-gabarit-v3/README.md:64`, `agents/motion-producer.md:50`, `skills/episode/references/production.md:65` |
-| 2 | **Plan figé** : le gabarit dit « aucun plan figé plus de 2,5 s » ; le référentiel (28/10/2026) dit « aucune image immobile plus de 1 s » et que la règle la plus stricte s'applique. | `templates/sequence-gabarit-v3/README.md:83` contre `referentiels/REFERENTIEL_QUALITE_REALISATION.md:99` et `101` |
+| 2 | **Plan figé** : réglé le 29/10/2026, 1 s partout (décision D1). | — |
 | 3 | **Statuts** : le `BRIEF.md` utilise `proposée / validée / à revoir`, `candidat`, en minuscules ; les règles communes fixent `PROPOSÉ`, `VALIDÉ`… | `templates/BRIEF.episode.template.md:41`, `45` contre `REGLES_STUDIO.md:79-80` |
 | 4 | **Langues en dur** : le modèle de brief écrit encore « français pour les échanges, anglais pour le spectateur », alors que la langue se règle dans le `CLAUDE.md` de la chaîne (le modèle de `CLAUDE.md` d'épisode a été corrigé). | `templates/BRIEF.episode.template.md:3`, `31` contre `REGLES_STUDIO.md:3` |
 | 5 | **Nom de chaîne dans le plugin** : le dépôt dit que le plugin « ne contient aucun nom de chaîne » ; le gabarit cite AA, l'E001 et l'E003 (30 mentions de « AA » ou d'« Apparently » dans `templates/`), son code utilise l'objet `window.AA`, et `REGLES_STUDIO.md` nomme Apparently Athletic. | `README.md:16` (dépôt) contre `templates/sequence-gabarit-v3/PROVENANCE.md:3`, `index.html:8`, `README.md:3`, `REGLES_STUDIO.md:3` |

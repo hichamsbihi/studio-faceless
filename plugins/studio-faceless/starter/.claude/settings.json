@@ -16,14 +16,12 @@
       "Bash(* node_modules/hyperframes/bin/hyperframes.mjs *)",
       "Bash(npx hyperframes *)",
       "Bash(* render.mjs*)",
-      "Bash(python mix.py*)",
-      "Bash(python -B mix.py*)",
-      "Bash(python -I -B mix.py*)",
-      "Bash(python3 mix.py*)",
-      "Bash(py mix.py*)",
-      "Bash(python */mix.py*)",
-      "Bash(python -B */mix.py*)",
-      "Bash(python -I -B */mix.py*)"
+      "Bash(python *outils/montage/assembler.py*)",
+      "Bash(python *outils/montage/mix_film.py*)",
+      "Bash(python *outils/montage/srt.py*)",
+      "Bash(py *outils/montage/assembler.py*)",
+      "Bash(py *outils/montage/mix_film.py*)",
+      "Bash(py *outils/montage/srt.py*)"
     ],
     "deny": [
       "Bash(rm -rf *)",

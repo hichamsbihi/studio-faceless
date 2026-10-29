@@ -37,7 +37,7 @@ L'agent reçoit un **contrat de mission** (neuf champs, [`templates/CONTRAT_MISS
 - Les règles par défaut : `METHODE_RECIT.md` § 1 et § 5, `DIRECTION_AUDIO.md` (shorts), `REFERENTIEL_QUALITE_REALISATION.md` § 2 (effet diaporama).
 - Pour la voix : le modèle `ggml` de `transcrire.py` (gardé hors du projet ; tout téléchargement avec l'accord du propriétaire), Python avec numpy et scipy, FFmpeg.
 - Pour le montage : HyperFrames 0.8.149 figé, Node 22, un Chrome sans fenêtre ; rendus **un à la fois**, `--workers 2` au plus.
-- Un **gabarit vertical** dans le kit (`kit/shorts/gabarit/`) : le skill le suppose, mais le plugin n'en livre pas (voir [`publication.md`](../reference/publication.md#points-à-vérifier-relevés-à-la-lecture), point 3).
+- Un **gabarit vertical** dans le kit (`kit/shorts/gabarit/`) : le skill le suppose, mais le plugin n'en livre pas (décidé le 29/10/2026 : à créer au pilote des shorts ; voir [`publication.md`](../reference/publication.md#points-à-vérifier-relevés-à-la-lecture), point 2).
 
 ## Étapes
 | # | Qui | Lit | Écrit | Commande | Porte |
@@ -162,7 +162,7 @@ Détail dans [`plateformes.md`](../../plugins/studio-faceless/skills/shorts/refe
 - **Pourquoi deux durées** : un Short de plus d'une minute qui porte une revendication Content ID est bloqué partout sur YouTube ; TikTok et Facebook demandent plus d'une minute pour l'éligibilité à la monétisation (conditions non vérifiées le 19/10/2026).
 - **Mesures du journal à J+2 et J+7** : YouTube Studio (Analytics, Contenu, Shorts) — « How many chose to view », « Stayed to watch », « Engaged views », « Average view duration », « Subscribers », « How viewers find your Shorts », **« Viewers across formats »** (notre mesure de conversion) ; TikTok — Average watch time, Watched full video, Retention rate, New followers, Traffic source type (noms à confirmer dans l'appli) ; Facebook — noms à confirmer (API : `post_video_avg_time_watched`, `post_video_retention_graph`, `fb_reels_replay_count`, `post_video_followers`).
 - **Volume** : publier des Shorts ne pénalise pas la chaîne ; aucune donnée publiée de conversion Shorts vers vidéo longue, on mesure la nôtre.
-- **Journal** : aucun gabarit de `SHORTS_JOURNAL.md` n'est fourni ; le skill demande d'y noter les hooks retenus, les plateformes et les mesures.
+- **Journal** : aucun gabarit de `SHORTS_JOURNAL.md` n'est fourni (décidé le 29/10/2026 : à créer au pilote des shorts) ; le skill demande d'y noter les hooks retenus, les plateformes et les mesures.
 
 ## Erreurs fréquentes et reprises
 | Symptôme ou erreur | Cause | Reprise |

@@ -104,7 +104,7 @@ def c_planche(a):
     if r.returncode:
         sys.exit(r.stderr.decode(errors='replace'))
     print(f'Planche : {n} fichier(s) {base}-1.jpg…, une image toutes les {a.pas} s ({d:.1f} s de film).')
-    print('  À relire contre le contrat de plan : tenue ≤ 2,5 s sans mouvement, photos non répétées, couleurs, lisibilité.')
+    print('  À relire contre le contrat de plan : aucune image immobile plus de 1 s, photos non répétées, couleurs, lisibilité.')
     return 0
 
 

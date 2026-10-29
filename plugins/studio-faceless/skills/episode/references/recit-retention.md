@@ -58,7 +58,7 @@ Exemple AA : l'E007 suit ce patron :
 ## 6. Succession des séquences
 - Chaque séquence finit sur une question ouverte que la suivante reprend. Exemple AA (E007) : seq4 finit sur « who gets it? », seq5 ouvre sur « You might think the runner-up simply moves up ».
 - Raccords visuels exacts (`socle.md` § 7). La musique continue, ou se tait exprès.
-- Image : coupes plus serrées à l'ouverture qu'au milieu ; rien d'immobile plus de 2,5 s ; transitions variées, chacune avec son son ; dessins et schémas dans les passages d'explication.
+- Image : coupes plus serrées à l'ouverture qu'au milieu ; rien d'immobile plus de 1 s ; transitions variées, chacune avec son son ; dessins et schémas dans les passages d'explication.
 
 ## 7. Après la sortie
 - Rétention à 0:30, 1:00 et 2:00, comparée aux vidéos habituelles. Taux de clic au-delà d'environ 1 000 impressions.

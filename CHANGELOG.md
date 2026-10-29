@@ -28,3 +28,9 @@ Première version, tirée de StudioV1 (chaîne Apparently Athletic) dans son ét
   - rendu sans `--workers` refusé ;
   - codes de sortie de `controle.py` ;
   - modèle de `CLAUDE.md` d'épisode.
+- Décisions de Hicham du 29/10/2026 :
+  - D1 : aucune image immobile plus de 1 s, partout (référentiel § 2 ter et porte B, gabarit v3, `controle.py`, méthode de récit) ;
+  - D2 : le squelette autorise sans demande `assembler.py`, `mix_film.py` et `srt.py`, à la place des règles `mix.py` du gabarit v2 ;
+  - D3 : `archiver_episode.py` reconnaît le dossier `montage/` du parcours v3 et garde le film en voix seule d'où le master est mixé ; testé sur l'aperçu de l'E010 d'AA ;
+  - D4 : questions des portes 8, 9, 11 et 13 à écrire au prochain épisode ;
+  - D5 : gabarit vertical et journal des shorts à créer au pilote des shorts.

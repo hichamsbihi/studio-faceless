@@ -117,7 +117,7 @@ flowchart TD
 | « Règle incohérente : le master final serait classé comme essai » | Un `--essai` ou une règle couvre le master | Ajouter `--garder` sur le dossier du master |
 | Un dossier utile est classé en essai (ou l'inverse) | Règle de classement | `--garder CHEMIN` ou `--essai CHEMIN` ; rouvrir l'aperçu |
 | `_etude`, `_rendu-N`, `planche-1`, `controle-planche`, médias, voix restent dans le zip | L'outil ne les reconnaît pas seul | Un `--essai` par chemin (`etapes.md` § 13) |
-| « Montage final : non trouvé » dans l'aperçu | L'outil cherche les scripts dans `production/montage-*` ; le montage de la chaîne vit dans `episodes/<id>/montage/` | Pas bloquant : `montage/` part dans le zip (à vérifier sur une chaîne neuve) |
+| « Montage final : non trouvé » dans l'aperçu | Ni `episodes/<id>/montage/` (parcours v3, reconnu depuis le 29/10/2026) ni dossier `production/montage-*` qui cite le master | Pas bloquant : un dossier de montage non reconnu part dans le zip comme tout dossier non classé en essai ; vérifier la ligne « Projets retenus » de l'aperçu |
 | « Existe déjà, aucun écrasement » | Une exécution du même jour a déjà créé le zip ou un dossier de destination | Examiner l'état ; ne rien refaire sans comprendre ; ne pas supprimer (le propriétaire décide) |
 | « Zip partiel d'une exécution précédente » | `.partiel` resté d'un échec | Examiner ; le propriétaire décide de l'écarter ; relancer ensuite |
 | « Place insuffisante » | Moins de 1,1 × zip + 1 Go libres | Libérer de la place (par le propriétaire), relancer |

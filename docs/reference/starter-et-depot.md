@@ -105,12 +105,12 @@ Parcours qui l'utilise : [`../workflows/nouvelle-chaine.md`](../workflows/nouvel
   |---|---|
   | `extraKnownMarketplaces.studio-faceless.source` | GitHub, dépôt `hichamsbihi/studio-faceless` |
   | `enabledPlugins` | `studio-faceless@studio-faceless: true` |
-  | `permissions.allow` | HyperFrames par Node (`node node_modules/hyperframes/bin/hyperframes.mjs *`, avec ou sans préfixe) et `npx hyperframes *` ; `* render.mjs*` ; `mix.py` en huit variantes (`python`, `python -B`, `python -I -B`, `python3`, `py`, avec ou sans chemin) |
+  | `permissions.allow` | HyperFrames par Node (`node node_modules/hyperframes/bin/hyperframes.mjs *`, avec ou sans préfixe) et `npx hyperframes *` ; `* render.mjs*` ; `assembler.py`, `mix_film.py` et `srt.py` de `outils/montage/` (`python *outils/montage/<outil>.py*` et `py …`, soit six règles) |
   | `permissions.deny` | `rm -rf`, `rm -fr`, `rm -r` ; `npm install`, `npm i`, `npm uninstall`, `npm update` ; `npx hyperframes@*` (autre version) ; `npx hyperframes` + `publish`, `cloud`, `cloudrun`, `lambda`, `auth`, `upgrade` |
 - **Liens** : doublé par le garde-fou du plugin (`hooks/garde_commandes.py`, [`outils-et-garde.md`](outils-et-garde.md)), qui refuse aussi `npm add`, `hyperframes skills update`, etc. et **demande confirmation** pour `preview` ; il **refuse** un rendu sans `--workers 1` ou `2`.
 - **À savoir** :
   - **aucune règle `ask` n'est fournie** : le connecteur ElevenLabs de la session doit y être ajouté à la main (`mcp__<identifiant>`), car l'identifiant dépend du compte ([`../../INSTALLATION.md`](../../INSTALLATION.md), § 4, point 6) ;
-  - les règles `mix.py` et `render.mjs` viennent du gabarit v2 de StudioV1 ; le gabarit v3 du plugin n'a plus de `mix.py` (voix seule) mais la méthode des shorts le cite encore (`skills/shorts/references/montage-vertical.md`) : à vérifier avant de les retirer ;
+  - la règle `render.mjs` vient du gabarit v2 de StudioV1 ; les règles `mix.py` en sont venues aussi, mais elles ont été remplacées le 29/10/2026 (D2) par celles des trois outils de `outils/montage/` ;
   - le dépôt du catalogue est en dur (`hichamsbihi/studio-faceless`) : à changer si le dépôt est transféré.
 
 ### `.githooks/`
@@ -267,7 +267,7 @@ Chemins relatifs à la racine du dépôt (`studio-faceless/`).
 ## Points à vérifier et incohérences
 - **`starter/package-lock.json:2` et `:8`** : `apparently-athletic-studiov1` contre `starter/package.json:2` `ma-chaine`. Le plugin est présenté sans nom de chaîne (`README.md`, § Deux étages) : à nettoyer.
 - **`starter/.gitattributes:31-36`** : règles LFS sur `templates/**`, alors que le squelette n'a pas de dossier `templates/` (les modèles restent dans le plugin).
-- **`starter/.claude/settings.json:19-26`** : huit permissions `mix.py` héritées du gabarit v2 ; le gabarit v3 n'a plus de `mix.py` (`templates/sequence-gabarit-v3/README.md:8`). **`:18`** `render.mjs` : le gabarit v3 utilise `render.sh`.
+- **`starter/.claude/settings.json:18`** `render.mjs` : le gabarit v3 utilise `render.sh`. (Règles `mix.py` : réglé le 29/10/2026, D2.)
 - **`README.md:54-57`** (licences) ne cite pas la licence MIT de `plugins/studio-faceless/skills/regarder/references/claude-video/LICENSE` (« Copyright (c) 2026 Bradley Bonanno »).
 - **`plugins/studio-faceless/vendor/claude-skills/README.md`** annonce la licence Apache-2.0 des skills HyperFrames mais le dossier ne contient aucun fichier de licence (voir [`vendor.md`](vendor.md)).
 - **`README.md:51`** liste cinq préfixes de commit (`skills`, `agents`, `outils`, `garde`, `docs`) ; l'historique Git du dépôt emploie aussi `plugin :`.

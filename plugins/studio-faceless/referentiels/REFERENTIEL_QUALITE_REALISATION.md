@@ -60,7 +60,7 @@ Ces règles viennent des retours du propriétaire sur un épisode de la premièr
 - **Les images suivent la voix.**
   - Chaque phrase déclenche un événement visuel sur son premier mot (±2 images).
   - Les pauses sont tenues par l'image et le son.
-  - Aucun plan ne reste sans mouvement plus de 2,5 s. Ce mouvement vient des photos et des fonds, jamais du texte posé (voir « Aucune vibration »).
+  - Aucune image ne reste immobile plus de 1 s (§ 2 quater, 28/10/2026 ; 2,5 s auparavant). Ce mouvement vient des photos et des fonds, jamais du texte posé (voir « Aucune vibration »).
   - Pas de récitation ni de sensation de lecture.
 - **Plus de photos réelles**, pour garder « le lien de réalisme avec le spectateur ».
   - Un fond uni devient l'exception.
@@ -159,7 +159,7 @@ Une transformation qui n'apporte ni découverte ni changement de lecture est à 
 - **B — Technique et preuve du mouvement** : composition déterministe, médias valides, décodage complet, durée, fps, aucun flash, mauvais recadrage ni déformation.
   - Une planche de captures (16 à 20 instants) vérifie l'entrée, la transformation, la sortie et le raccord. Depuis le 18/10/2026, aucun essai de 8 à 15 s n'est plus demandé, même pour une technique nouvelle (validé sur AA).
   - On examine la planche d'images, le mouvement, la continuité de caméra, la lisibilité des sujets, la découverte réelle et le montage avec les plans voisins. Le jugement est perceptif, pas seulement chiffré.
-  - Depuis le 15/10/2026, aucun plan ne reste sans mouvement plus de 2,5 s (§2 ter). Une tenue sans information ni intention nouvelle se corrige ; une pause expressive reste permise si quelque chose y vit (lumière, profondeur, son).
+  - Depuis le 28/10/2026, aucune image ne reste immobile plus de 1 s (§ 2 quater ; 2,5 s du 15/10 au 28/10). Une tenue sans information ni intention nouvelle se corrige ; une pause expressive reste permise si quelque chose y vit (lumière, profondeur, son).
   - **Vibration** : différence entre images successives sur une zone censée être immobile, après réduction et léger flou, pour neutraliser le grain :
 
     `ffmpeg -i X.mp4 -vf "crop=W:H:X:Y,scale=iw/4:ih/4,gblur=sigma=2,tblend=all_mode=difference,signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=-" -f null -`

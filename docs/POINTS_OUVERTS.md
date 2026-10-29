@@ -2,14 +2,11 @@
 
 Ce qui reste à décider ou à vérifier dans le plugin, relevé pendant l'écriture de la documentation (28/10/2026). Un point réglé sort de cette liste et entre dans le [`CHANGELOG`](../CHANGELOG.md).
 
-## Décisions du propriétaire
+## Décisions et tâches
 | # | Point | Fichiers | Recommandation |
 |---|---|---|---|
-| D1 | **Image immobile** : la règle du 15/10 tolère 2,5 s sans mouvement (§ 2 ter, lignes 63 et 162) ; celle du 28/10 n'admet aucune image immobile plus d'1 s (§ 2 quater, ligne 101) | `referentiels/REFERENTIEL_QUALITE_REALISATION.md`, `templates/sequence-gabarit-v3/README.md` (« plan figé 2,5 s ») | La règle du 28/10 l'emporte : 1 s partout |
-| D2 | **Permissions du squelette** : `starter/.claude/settings.json` autorise sans demande `mix.py` (gabarit v2, absent du v3), mais ni `assembler.py`, ni `mix_film.py`, ni `srt.py` | `starter/.claude/settings.json` | Remplacer les règles `mix.py` par les trois outils de `outils/montage/`, comme `mix.py` l'était (validé sur AA, 18/10/2026) |
-| D3 | **Archivage** : `archiver_episode.py` cherche le montage final dans `production/montage-*`, alors que le parcours v3 le range dans `episodes/<id>/montage/`. L'aperçu dit alors « Montage final : non trouvé » | `outils/archiver_episode.py` (l. 76-91) | Corriger, puis tester sur l'aperçu de l'E009 ou de l'E010 avant toute exécution |
-| D4 | **Portes sans banque de questions** : `episode` prévoit une porte aux étapes 8, 9, 11 et 13, mais `grilles.md` n'a pas de questions pour elles | `skills/episode/SKILL.md`, `references/grilles.md` | Les écrire à partir du prochain épisode réel, pas avant |
-| D5 | **Shorts** : le skill (`PROPOSÉ`) suppose un gabarit vertical et un modèle de `SHORTS_JOURNAL.md`, absents du plugin | `skills/shorts/`, `agents/shorts-producer.md` | Les créer au pilote des shorts, quand la méthode sera validée |
+| D4 | **Portes sans banque de questions** : `episode` prévoit une porte aux étapes 8, 9, 11 et 13, mais `grilles.md` n'a pas de questions pour elles | `skills/episode/SKILL.md`, `references/grilles.md` | Décidé (Hicham, 29/10/2026) : à faire au prochain épisode |
+| D5 | **Shorts** : le skill (`PROPOSÉ`) suppose un gabarit vertical et un modèle de `SHORTS_JOURNAL.md`, absents du plugin | `skills/shorts/`, `agents/shorts-producer.md` | Décidé (Hicham, 29/10/2026) : à faire au pilote des shorts |
 
 ## Vérifications (Claude)
 | Point | Fichiers |

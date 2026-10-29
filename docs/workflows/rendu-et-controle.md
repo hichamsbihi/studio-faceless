@@ -58,7 +58,7 @@ Ce document décrit comment une séquence passe du projet livré par le producte
 **4. `tout`** : niveau (LUFS, crête vraie), couleurs retirées des films (dans `index.html` et `compositions/*.html`), licences en attente (lignes des `PROVENANCE.md`), Chrome. Il ne lance ni la planche, ni le tremblement, ni le son. Sur une séquence en voix seule, un écart de niveau est attendu (pas de cible de sonie avant le mix du film) : le lire comme tel (à vérifier sur un premier rendu).
 
 **5 et 8. La planche** : une image toutes les 4 s pour une séquence (toutes les 8 s pour le film collé). Claude ouvre les planches **une à la fois** et les compare au contrat de plan et à la fiche d'effets :
-- aucune tenue sans mouvement au-delà de 2,5 s ;
+- aucune image immobile plus de 1 s ;
 - lisibilité des textes ;
 - couleurs de la palette de la chaîne ;
 - photos non répétées d'une séquence à l'autre ;

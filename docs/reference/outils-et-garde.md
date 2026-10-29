@@ -234,14 +234,14 @@ python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/archiver_episode.py episodes/<id> --ex
 | `--essai CHEMIN` (répétable) | Ajoute un chemin aux essais (motif « désigné par --essai ») |
 
 **Ce que les règles classent en essais** (seulement quand c'est certain ; dans le doute, le fichier va dans le zip)
-- masters d'une autre version que le master final (`master remplacé`) ;
+- masters d'une autre version que le master final (`master remplacé`), sauf les fichiers d'un MP4 cité par le journal du master (le film en voix seule `…-voix.*` d'où le master est mixé), qui sont gardés ;
 - projets de production d'un groupe `…-vN` dont une autre version entre au master final (`version non retenue`), scripts `montage-*` qui n'ont pas produit le master (`montage non retenu`), dossiers de production commençant par `essai` ou `test` (`essai`) ;
 - MP4 d'un projet retenu qui ne figurent pas au master (`rendu non retenu`) ;
 - captures de contrôle : sous-dossiers `planche`, `planches`, `controle`, `controles`, `snapshots`, `captures` d'un projet ; `outputs/controle*` ; `controle-planche*` dans un dossier `miniature*` (`captures de contrôle`) ; `pistes/essai*` d'un projet (`essai de mix`) ;
 - dossiers de la racine de l'épisode commençant par `da-test`, `essai` ou `test` (`test de direction artistique`) ;
 - `PUBLICATION_vN.*` quand une version plus haute existe (`dossier de publication remplacé`).
 
-Les rendus « retenus » sont les MP4 cités par le journal du master (`<master>.log.txt`) et par les scripts du dossier `production/montage-*` qui cite le master.
+Les rendus « retenus » sont les MP4 cités par le journal du master (`<master>.log.txt`) et par le montage final : `episodes/<id>/montage/` (parcours v3 : ses scripts et ses `.json`, dont `montage.json`) ou le dossier `production/montage-*` dont un script cite le master (gabarits plus anciens).
 
 **Exécution** (ordre garanti)
 1. Refuse si le zip, `essais_<date>` ou `originaux_<date>` existe déjà, si la place libre est inférieure à 1,1 × la taille du zip + 1 Go, ou si un `.partiel` d'une exécution précédente traîne.
@@ -258,7 +258,7 @@ Les rendus « retenus » sont les MP4 cités par le journal du master (`<master>
 **À savoir**
 - **L'outil ne reconnaît pas seul** `_etude`, `_rendu-N`, `planche-1`, `controle-planche`, ni les médias et les voix de l'épisode : il faut un `--essai` par chemin de la corbeille, et noter la commande dans l'`ARCHIVE.md` (`etapes.md` § 13).
 - **Master** : sans `--master`, il prend la plus haute version de `outputs/*master-v*.mp4`. Le film en voix seule de même version porte le même numéro : donner `--master` vers le master mixé pour lever l'ambiguïté.
-- **Montage** : l'outil cherche les scripts de montage dans `production/montage-*`. Le montage de la chaîne actuelle vit dans `episodes/<id>/montage/` (config `montage.json`) : l'aperçu peut afficher « Montage final : non trouvé » ; `montage/` part alors dans le zip comme tout dossier non classé en essai. À vérifier sur un premier épisode de chaîne.
+- **Montage** (réglé le 29/10/2026, D3) : l'outil reconnaît `episodes/<id>/montage/` (parcours v3) comme montage final et lit ses `.json` (`montage.json`) pour trouver les séquences retenues ; il reconnaît aussi un dossier `production/montage-*` qui cite le master. L'aperçu n'affiche « Montage final : non trouvé » que si aucun des deux n'existe. Testé sur l'aperçu de l'E010 d'AA le 29/10/2026 : montage trouvé, séquences retenues trouvées, film en voix seule gardé. Pas encore essayé sur une chaîne neuve.
 - **Restauration** : dézipper l'archive dans l'épisode redonne les dossiers à l'identique ; avant que le propriétaire vide `_A_SUPPRIMER/`, tout se restaure en remettant les dossiers à leur place.
 - `.gitignore` de la chaîne ignore `_A_SUPPRIMER/`, `*.zip` et `*.partiel` : l'archive reste hors du dépôt Git ; elle est dans `episodes/`, donc dans la sauvegarde datée.
 - Le texte de `ARCHIVE.md` cite « validé sur AA, 21/10/2026 » : c'est la date de la règle d'origine.
