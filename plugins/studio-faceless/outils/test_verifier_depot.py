@@ -1,4 +1,4 @@
-"""Test de la détection des secrets (29/10/2026) et de la limite de taille de REGLES_STUDIO.md (0.2.2, 30/10/2026) de verifier_depot.py.
+"""Test de la détection des secrets (29/10/2026) et de la limite de taille de REGLES_STUDIO.md (0.2.3, 30/10/2026) de verifier_depot.py.
 
 Usage, depuis la racine du dépôt du plugin :
   python -I -B plugins/studio-faceless/outils/test_verifier_depot.py

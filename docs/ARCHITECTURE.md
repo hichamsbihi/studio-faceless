@@ -18,7 +18,8 @@ Un plugin **ignore** les champs `hooks`, `mcpServers` et `permissionMode` dans l
 | `motion-producer`, `shorts-producer` | producteur |
 | `art-director` | directeur-artistique |
 | `studio-maintainer` | mainteneur |
-| `research`, `reviewer`, Claude principal | aucun rôle : seules les règles communes s'appliquent |
+| `research`, Claude principal | aucun rôle : seules les règles communes s'appliquent |
+| `reviewer` | relecteur |
 
 Les chemins protégés sont relatifs au dossier de la chaîne (`CLAUDE_PROJECT_DIR`). Toute écriture par Write ou Edit dans le plugin installé est refusée.
 

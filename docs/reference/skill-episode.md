@@ -63,7 +63,7 @@ Le skill n'est pas dans le champ `skills:` du `motion-producer` (qui précharge 
   - Statut et origine : `VALIDÉ` pour la structure, rédigé le 24/10/2026 d'après un audit de la fabrication (étude AA).
   - « Ce qui fait foi » : l'ordre des sources (voir la vue d'ensemble).
   - « Huit règles qui évitent les reprises ».
-  - « État, reprise et contexte » (0.2.2) : `STATE.md` réécrit et `INDEX.md` mis à jour à chaque fin d'étape ; `/clear` à chaque fin de porte, pas `/compact` (124,6 k au premier appel après compactage, contre 81 à 88 k en session neuve : environ 40 k de plus à chaque appel) ; reprise = `INDEX.md` puis `STATE.md` seulement ; `/compact` permis au milieu d'une longue porte ; modèle du fil principal changé seulement après un `/clear` ; contrôle par `studio-faceless:reviewer` avant de montrer un script, une séquence ou le film.
+  - « État, reprise et contexte » (0.2.3) : `STATE.md` réécrit et `INDEX.md` mis à jour à chaque fin d'étape ; `/clear` à chaque fin de porte, pas `/compact` (124,6 k au premier appel après compactage, contre 81 à 88 k en session neuve : environ 40 k de plus à chaque appel) ; reprise = `INDEX.md` puis `STATE.md` seulement ; `/compact` permis au milieu d'une longue porte ; modèle du fil principal changé seulement après un `/clear` ; contrôle par `studio-faceless:reviewer` avant de montrer un script, une séquence ou le film.
   - « Les étapes » : tableau à cinq colonnes (n°, étape, porte, livrable, condition de passage), de 0 à 13.
   - « Avant de lancer un producteur » : liste de neuf cases (voix figée ; médias vérifiés et inscrits au `PROVENANCE.md` ; aucune photo prise ailleurs ; raccords au pixel ; cartes, logos et dessins prêts ; sons choisis dans `marque/son/` ; brief court ; gabarit v3 et en-têtes HTML contrôlés ; contrat de mission complet).
   - « Références » : les neuf fichiers avec leur rôle en une ligne.
@@ -76,7 +76,7 @@ Le skill n'est pas dans le champ `skills:` du `motion-producer` (qui précharge 
 
 ### skills/episode/references/etapes.md
 - **Rôle** : le détail de chaque étape, de 0 à 13, avec les entrées, la méthode et la sortie.
-- **Quand il sert** : Claude principal le lit au début de chaque étape. Il rappelle d'abord la règle de fin d'étape (0.2.2) : chaque étape se termine par la décision au `BRIEF.md` (statut et date), le `STATE.md` de l'épisode réécrit en entier (2,5 Ko au plus), la ligne de l'épisode mise à jour dans `episodes/INDEX.md`, puis un `/clear`. Les étapes 3, 8 et 10 renvoient au contrôle par `studio-faceless:reviewer` avant de montrer l'objet au propriétaire ; l'étape 0 crée aussi `STATE.md` et la ligne d'`INDEX.md`.
+- **Quand il sert** : Claude principal le lit au début de chaque étape. Il rappelle d'abord la règle de fin d'étape (0.2.3) : chaque étape se termine par la décision au `BRIEF.md` (statut et date), le `STATE.md` de l'épisode réécrit en entier (2,5 Ko au plus), la ligne de l'épisode mise à jour dans `episodes/INDEX.md`, puis un `/clear`. Les étapes 3, 8 et 10 renvoient au contrôle par `studio-faceless:reviewer` avant de montrer l'objet au propriétaire ; l'étape 0 crée aussi `STATE.md` et la ligne d'`INDEX.md`.
 - **Contenu**
   - § 0 Sujet : entrées (registre de `direction/LIGNE_EDITORIALE.md`, `docs/veille/`, bilans publiés), 5 à 8 candidats notés, vérification de la saturation, promesse en une phrase, titre de 60 caractères au plus ; création de `episodes/<id>/` depuis les modèles du plugin.
   - § 1 Recherche : `studio-faceless:research`, une mission par grande partie, rapports dans `research/` ; règle des médias candidats (aucun téléchargement à cette étape) ; points de vigilance dans le `CLAUDE.md` de l'épisode.
@@ -208,7 +208,7 @@ Le skill n'est pas dans le champ `skills:` du `motion-producer` (qui précharge 
 - **Quand il sert** : Claude principal à chaque fin de grande étape (état écrit, puis `/clear`) et quand il délègue une lecture ou une correction. Les règles communes (`REGLES_STUDIO.md`, « Économie de tokens et de contexte ») font foi ; ce fichier donne les mesures de l'E007 d'AA.
 - **Contenu**
   - Coûts constatés (producteur de séquence 330 à 460 k ; agent court de correction 170 à 200 k ; chercheur de médias 260 à 340 k ; reprise d'un producteur au cache froid : tout son contexte réécrit).
-  - Fin de porte (0.2.2) : sujet, recherche, angle, script, voix, socle, séquence témoin, chaque lot, collage et mix ; `STATE.md` réécrit, `INDEX.md` à jour, puis `/clear` et la mesure qui l'explique ; `/compact` permis au milieu d'une longue porte, avec sa consigne ; modèle du fil principal changé seulement après un `/clear`.
+  - Fin de porte (0.2.3) : sujet, recherche, angle, script, voix, socle, séquence témoin, chaque lot, collage et mix ; `STATE.md` réécrit, `INDEX.md` à jour, puis `/clear` et la mesure qui l'explique ; `/compact` permis au milieu d'une longue porte, avec sa consigne ; modèle du fil principal changé seulement après un `/clear`.
   - Lire peu : lectures par plages, une planche à la fois, sorties courtes, lectures lourdes à un sous-agent, ne jamais relire le `.output` d'un agent.
   - Déléguer juste : faits préparés avant la délégation, briefs courts, corrections dans la même version, attentes de rendu en tâche suivie.
   - Écrire court : rapports de 12 lignes au plus, états d'épisode d'une ligne par fait.

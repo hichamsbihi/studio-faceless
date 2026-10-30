@@ -1,6 +1,6 @@
 # Règles communes du studio : détail
 
-Suite des règles communes du studio (`REGLES_STUDIO.md`), à lire selon la mission, avec la même autorité. Les deux sections ci-dessous ont été déplacées mot pour mot depuis `REGLES_STUDIO.md` (0.2.2, 30/10/2026), qui est injecté au début de chaque session et que l'application tronque au-delà de 10 000 caractères. Dans ce fichier comme dans les autres fichiers du plugin, `${CLAUDE_PLUGIN_ROOT}` désigne le dossier du plugin installé, dont le chemin est donné par les règles communes injectées au début de la session ; dans une commande Bash, écrire ce chemin en entier.
+Suite des règles communes du studio (`REGLES_STUDIO.md`), à lire selon la mission, avec la même autorité. Les deux sections ci-dessous ont été déplacées mot pour mot depuis `REGLES_STUDIO.md` (0.2.3, 30/10/2026), qui est injecté au début de chaque session et que l'application tronque au-delà de 10 000 caractères. Dans ce fichier comme dans les autres fichiers du plugin, `${CLAUDE_PLUGIN_ROOT}` désigne le dossier du plugin installé, dont le chemin est donné par les règles communes injectées au début de la session ; dans une commande Bash, écrire ce chemin en entier.
 
 ## Moteur et outils
 - **HyperFrames 0.8.149**, figée dans le `package.json` de la chaîne. Aucune mise à jour (`upgrade`, `skills update`, `npm install` d'une autre version) sans décision du propriétaire.

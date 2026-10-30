@@ -85,7 +85,7 @@ Les binaires exclus sont sauvegardés par `sauvegarde-chaine.ps1` ([`archivage-e
 | Média d'épisode | Un fichier sous `episodes/` est une vidéo, un son, une image, un PDF, une police ou un zip | Le laisser hors du dépôt ; vérifier qu'il n'a pas été ajouté de force |
 | Secret probable | Clé d'API, jeton GitHub, clé privée, en-tête `Bearer` | Retirer le secret ; les clés restent dans le compte claude.ai et ses connecteurs |
 | Chemin de machine | `C:/Users/<nom>` ou `/c/Users/<nom>` dans un fichier de code actif (hors `episodes/`, `docs/`, `vendor/`) | Utiliser un chemin relatif, le `PATH` ou une variable (`HYPERFRAMES_FFMPEG_PATH`) |
-| Taille de `REGLES_STUDIO.md` (0.2.2, dépôt du plugin) | Plus de 9 000 caractères une fois `${CLAUDE_PLUGIN_ROOT}` remplacé par un chemin de cache type : l'application coupe le contexte du hook au-delà de 10 000 | Déplacer du texte dans `referentiels/REGLES_DETAIL.md` |
+| Taille de `REGLES_STUDIO.md` (0.2.3, dépôt du plugin) | Plus de 9 000 caractères une fois `${CLAUDE_PLUGIN_ROOT}` remplacé par un chemin de cache type : l'application coupe le contexte du hook au-delà de 10 000 | Déplacer du texte dans `referentiels/REGLES_DETAIL.md` |
 
 Un refus se corrige ; il ne se contourne pas par `--no-verify`. Détail et limites : [fiche de `verifier_depot.py`](../reference/outils-et-garde.md#outilsverifier_depotpy).
 

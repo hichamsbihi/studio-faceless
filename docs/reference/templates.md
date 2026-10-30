@@ -25,8 +25,8 @@ templates/
 ├── CONTRAT_MISSION.template.md       modèle du message de délégation à un agent
 ├── CLAUDE.episode.template.md        modèle du CLAUDE.md d'un épisode
 ├── BRIEF.episode.template.md         modèle du BRIEF.md (brief éditorial) d'un épisode
-├── STATE.template.md                 modèle du manifeste de reprise STATE.md d'un épisode (0.2.2)
-├── INDEX.template.md                 modèle de episodes/INDEX.md, une ligne par épisode (0.2.2)
+├── STATE.template.md                 modèle du manifeste de reprise STATE.md d'un épisode (0.2.3)
+├── INDEX.template.md                 modèle de episodes/INDEX.md, une ligne par épisode (0.2.3)
 └── sequence-gabarit-v3/              point de départ de chaque séquence (voix seule)
     ├── README.md  PROVENANCE.md      mode d'emploi, provenance et licences des matières
     ├── index.html                    composition racine 1920 × 1080
@@ -64,7 +64,7 @@ templates/
   | `décisions validées` | décision, date et référence, ou « aucune » |
   | `restrictions` | interdits propres à la mission |
 
-- **Section « Règles de la chaîne utiles à la mission »** (0.2.2) : 10 lignes au plus (protection des personnes, sources admises, langues, autres), recopiées du `CLAUDE.md` de la chaîne par l'orchestrateur, à la suite des neuf champs. **Obligatoire pour `research` et `studio-maintainer`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents.
+- **Section « Règles de la chaîne utiles à la mission »** (0.2.3) : 10 lignes au plus (protection des personnes, sources admises, langues, autres), recopiées du `CLAUDE.md` de la chaîne par l'orchestrateur, à la suite des neuf champs. **Obligatoire pour `research` et `studio-maintainer`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents.
 - **« Selon l'agent »** :
   - `research` : écriture toujours « aucun » ; section des règles de la chaîne obligatoire ;
   - `reviewer` : écriture toujours « aucun » ; le contrat nomme l'objet à contrôler (script, séquence ou film), ses fichiers et la durée visée ;
@@ -104,7 +104,7 @@ templates/
 - **Périmètre de l'épisode** : identifiant et sujet, brief de référence, travail actuellement autorisé, limites particulières (quatre champs à remplir).
 - **Structure et périmètre des sous-agents** : dossiers de l'épisode (`BRIEF.md`, `inputs/` en lecture seule, `research/`, `assets/` avec leur `PROVENANCE.md`, `kit/`, `production/<séquence>-vN/`, `montage/`, `outputs/`, `miniatures-vN/`) ; lecture par défaut d'un sous-agent (ce dossier, les référentiels utiles, les ressources approuvées listées ici) ; écriture seulement aux chemins du contrat ; constats techniques (HyperFrames, rendus), lus par `motion-producer` ; mémoire (un enseignement durable est proposé au propriétaire puis versé dans `direction/`, une technique d'animation dans la section MOTION_CATALOG de `direction/ECARTS.md`).
 - **Recherche et narration** : partir de la question du brief, relier les affirmations à des sources, distinguer faits, hypothèses et interprétations, ne pas promettre de découverte.
-- **Décisions et état** : décisions éditoriales consignées dans le brief avec leur statut ; toute modification importante du sujet, de l'angle ou de la promesse demande la validation de l'utilisateur ; deux lignes depuis la 0.2.2 : l'état courant renvoie à `STATE.md` (à lire seul pour reprendre, réécrit à chaque fin d'étape) et à `HISTORIQUE_ETAT.md`, puis la prochaine action autorisée (avant 0.2.2 : trois champs à renseigner, état actuel, dernier travail et points non résolus, prochaine action autorisée).
+- **Décisions et état** : décisions éditoriales consignées dans le brief avec leur statut ; toute modification importante du sujet, de l'angle ou de la promesse demande la validation de l'utilisateur ; deux lignes depuis la 0.2.3 : l'état courant renvoie à `STATE.md` (à lire seul pour reprendre, réécrit à chaque fin d'étape) et à `HISTORIQUE_ETAT.md`, puis la prochaine action autorisée (avant 0.2.3 : trois champs à renseigner, état actuel, dernier travail et points non résolus, prochaine action autorisée).
 - **Dernière ligne** : « Ce fichier définit des instructions ; il ne lance aucune action ni aucun processus autonome. »
 
 **Champs à remplacer** (entre crochets) : `[identifiant et sujet]` (titre), `[chemin du brief propre à cet épisode]`, `[à renseigner d'après la demande utilisateur]` (travail autorisé), `[à renseigner si nécessaire]` (limites), `[à renseigner]` (ressources approuvées du studio), `[à renseigner au fil de la production]` (constats techniques), `[non démarré / recherche / autre état explicitement établi]`, `[à renseigner]` (dernier travail), `[à renseigner ; ne pas supposer une autorisation de production]` (prochaine action).
@@ -131,7 +131,7 @@ templates/
 **À savoir** : les statuts du tableau (`proposée`, `validée`, `à revoir`) et du sujet (`candidat`, `validé pour recherche`) sont en minuscules ; `REGLES_STUDIO.md` fixe les statuts de décision `FIXÉ`, `VALIDÉ`, `PROPOSÉ`, `PROVISOIRE`, `QUESTION OUVERTE`. Utiliser les statuts de `REGLES_STUDIO.md` pour rester lisible par les contrôles (voir « Écarts »).
 
 ### templates/STATE.template.md et templates/INDEX.template.md
-**Rôle** (0.2.2, 30/10/2026) : modèles du manifeste de reprise d'un épisode (`episodes/<id>/STATE.md`) et de l'index des épisodes (`episodes/INDEX.md`). Génériques : ils ne contiennent aucun contenu d'un épisode réel ; ils ont été établis d'après les fichiers de reprise d'une chaîne qui les utilisait déjà.
+**Rôle** (0.2.3, 30/10/2026) : modèles du manifeste de reprise d'un épisode (`episodes/<id>/STATE.md`) et de l'index des épisodes (`episodes/INDEX.md`). Génériques : ils ne contiennent aucun contenu d'un épisode réel ; ils ont été établis d'après les fichiers de reprise d'une chaîne qui les utilisait déjà.
 
 **Quand ils servent** : `STATE.md` est créé à l'étape 0 du skill `episode` (avec le `CLAUDE.md` et le `BRIEF.md`) puis **réécrit en entier à chaque fin d'étape** ; `INDEX.md` reçoit une ligne par épisode, mise à jour au même moment. Après un `/clear`, la reprise lit seulement `INDEX.md`, puis le `STATE.md` indiqué (`skills/episode/SKILL.md`, « État, reprise et contexte » ; `references/tokens-contexte.md`).
 

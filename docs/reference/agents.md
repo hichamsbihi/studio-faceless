@@ -18,7 +18,7 @@ Ce document décrit les six agents du plugin `studio-faceless` : leur en-tête, 
 ## Vue d'ensemble
 - **Un agent est un sous-agent de Claude principal** (le Studio Director). Il est lancé par le Studio Director avec un **contrat de mission** (neuf champs, modèle : [`templates/CONTRAT_MISSION.template.md`](templates.md#templatescontrat_missiontemplatemd)). Les agents ne se délèguent rien entre eux (`REGLES_STUDIO.md`, « Sous-agents »).
 - **Noms** : une fois le plugin installé, chaque agent prend le préfixe du plugin : `studio-faceless:research`, `studio-faceless:reviewer`, `studio-faceless:art-director`, `studio-faceless:motion-producer`, `studio-faceless:shorts-producer`, `studio-faceless:studio-maintainer`. Le champ `name:` de l'en-tête garde le nom court ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Noms »).
-- **En-tête** : chaque fichier commence par un en-tête YAML : `name`, `description` (ce que Claude lit pour décider de déléguer), `tools`, `model`, `color`, `skills` (skills préchargés dans le contexte de l'agent, quand il y en a) et, pour `research` et `studio-maintainer` depuis la 0.2.2, `omitClaudeMd: true` : l'agent démarre sans le `CLAUDE.md` de la chaîne (champ qui demande Claude Code 2.1.271 ou plus ; en 2.1.169, version relevée sur la machine de mise au point, il n'a pas d'effet, à vérifier). Les règles de la chaîne dont ils ont besoin sont alors dans leur contrat, section « Règles de la chaîne utiles à la mission » ([`templates.md`](templates.md#templatescontrat_missiontemplatemd)). `reviewer` garde le `CLAUDE.md` : il contrôle les règles de la chaîne.
+- **En-tête** : chaque fichier commence par un en-tête YAML : `name`, `description` (ce que Claude lit pour décider de déléguer), `tools`, `model`, `color`, `skills` (skills préchargés dans le contexte de l'agent, quand il y en a) et, pour `research` et `studio-maintainer` depuis la 0.2.3, `omitClaudeMd: true` : l'agent démarre sans le `CLAUDE.md` de la chaîne (champ qui demande Claude Code 2.1.271 ou plus ; en 2.1.169, version relevée sur la machine de mise au point, il n'a pas d'effet, à vérifier). Les règles de la chaîne dont ils ont besoin sont alors dans leur contrat, section « Règles de la chaîne utiles à la mission » ([`templates.md`](templates.md#templatescontrat_missiontemplatemd)). `reviewer` garde le `CLAUDE.md` : il contrôle les règles de la chaîne.
 - **Un plugin ignore les champs `hooks`, `mcpServers` et `permissionMode`** de l'en-tête de ses agents ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Garde-fou »). Les limites par rôle viennent donc du hook du plugin (`hooks/garde_commandes.py`), qui reconnaît le rôle au champ `agent_type` : voir le tableau `ROLES` plus bas.
 - **Skills préchargés** : `hyperframes-*` sont des skills d'utilisateur (copiés dans `~/.claude/skills/`, voir [`vendor.md`](vendor.md)), sans préfixe ; `studio-faceless:…` sont les skills du plugin. Un agent ne voit ni la mémoire de Claude ni les autres épisodes : ce qu'il doit savoir est dans le contrat, `direction/`, les référentiels ou sa propre définition.
 - **Qui décide** : le propriétaire de la chaîne (nommé dans son `CLAUDE.md`) est le seul à valider. Aucun agent ne valide, ne publie, n'achète ni ne déclare une écoute ou un visionnage.
@@ -36,7 +36,7 @@ Workflows où ils interviennent : [`../workflows/recherche.md`](../workflows/rec
 | **Outils** | Read, Grep, Glob, WebFetch, WebSearch | Read, Grep, Glob, Bash | Read, Grep, Glob, Bash, WebFetch, WebSearch, Skill | Read, Write, Edit, Grep, Glob, Bash, Skill, ToolSearch, Monitor, TaskStop | idem `motion-producer` | Read, Grep, Glob, Bash, Edit, Write, WebFetch |
 | **Skills préchargés** | aucun | aucun | `hyperframes-creative`, `hyperframes-animation`, `studio-faceless:thumbnail-strategist` | `hyperframes-core`, `hyperframes-keyframes`, `hyperframes-animation` (WAAPI et CSS seulement) | `studio-faceless:shorts`, `hyperframes-core`, `hyperframes-keyframes` | aucun |
 | **`CLAUDE.md` de la chaîne** | omis (`omitClaudeMd`), règles dans le contrat | lu | lu | lu | lu | omis (`omitClaudeMd`), règles dans le contrat |
-| **Rôle du garde-fou** (`ROLES`) | aucun (pas d'outil d'écriture ni de Bash) | aucun : Bash n'est pas contraint par le hook, la lecture seule repose sur sa consigne | `directeur-artistique` | `producteur` | `producteur` | `mainteneur` |
+| **Rôle du garde-fou** (`ROLES`) | aucun (pas d'outil d'écriture ni de Bash) | `relecteur` (Bash en lecture et mesure seulement) | `directeur-artistique` | `producteur` | `producteur` | `mainteneur` |
 | **Droits d'écriture** | aucun | aucun (consigne : Bash pour lire et mesurer seulement) | aucun outil d'écriture ; Bash limité à `ffmpeg`, `ffprobe`, `mkdir` pour des images extraites dans le dossier du contrat | son dossier `episodes/<id>/production/<séquence>-vN/` | son dossier `episodes/<id>/production/short-0N-vM/` | Write et Edit seulement, dans ce que le contrat autorise ; jamais par Bash |
 | **Refusé par le garde-fou** | — | règles communes seulement | toute commande hors `ffmpeg`/`ffprobe`/`mkdir`, `-y`, sortie en zone protégée | citer `direction/`, `templates/`, `.claude/` ou un `CLAUDE.md` en Bash (sauf les chemins du plugin installé, sans « .. ») ; écrire dans `marque/` existant, `inputs/`, un MP4 existant | idem `motion-producer` | écriture Bash ; écriture dans `.claude/`, un projet de production, `marque/` existant, `inputs/`, un MP4 existant |
 | **Livrable** | 5 rubriques : faits, études, médias candidats, limites, fichiers lus | tableau point · verdict · minutage · preuve, 25 lignes au plus | storyboard (tableau) **ou** critique (5 à 10 problèmes), techniques à proposer, fichiers lus | dossier de séquence, `render.sh`, `README.md`, `PROVENANCE.md`, planche, rapport en 5 points | dossier de short, `render.sh` (deux rendus), `README.md`, `PROVENANCE.md`, rapport en 5 points | constats, changements, propositions non appliquées, risques |
@@ -52,7 +52,8 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 | `motion-producer`, `shorts-producer` | `producteur` |
 | `art-director` | `directeur-artistique` |
 | `studio-maintainer` | `mainteneur` |
-| `research`, `reviewer`, Claude principal | aucun rôle : seules les règles communes s'appliquent (le `reviewer` a Bash sans rôle : sa lecture seule repose sur sa consigne ; un rôle `relecteur` pourrait la faire imposer par le hook) |
+| `research`, Claude principal | aucun rôle : seules les règles communes s'appliquent |
+| `reviewer` | `relecteur` : en Bash, seules `ffprobe`, `ffmpeg` de mesure (`-f null`), `wc`, `ls`, `grep`, `head` et `tail`, sans redirection |
 
 **Règles communes à tous** (rôle ou non) : refus de la publication HyperFrames, du cloud, de la connexion, de `upgrade`, de `skills update`, de `npx hyperframes@…`, de l'installation npm, de la suppression récursive ou définitive, du vidage de la corbeille ; refus de **toute écriture par Write/Edit dans le plugin installé** ; demande de confirmation pour `preview` ; refus (`deny`, sans confirmation possible) d'un rendu direct sans `--workers 1` ou `2`.
 
@@ -85,12 +86,12 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 | `tools` | Read, Grep, Glob, WebFetch, WebSearch |
 | `model` | `sonnet` ; `color` : blue |
 | `skills` | aucun |
-| `omitClaudeMd` | `true` (0.2.2) : démarre sans le `CLAUDE.md` de la chaîne |
+| `omitClaudeMd` | `true` (0.2.3) : démarre sans le `CLAUDE.md` de la chaîne |
 | Rôle du garde-fou | aucun : il n'a ni Bash ni outil d'écriture |
 
 **Contenu**
 - **Contrat de mission** : écriture toujours « aucune ». S'il manque `episode_id`, l'objectif, le périmètre de lecture ou la section « Règles de la chaîne utiles à la mission », il ne commence pas et renvoie la liste des champs manquants.
-- **Sans `CLAUDE.md` de la chaîne** (`omitClaudeMd`, 0.2.2) : les règles de la chaîne utiles à la mission (protection des personnes, sources admises, langues) sont dans son contrat ; sinon il lit, par plages, seulement les sections que le contrat nomme.
+- **Sans `CLAUDE.md` de la chaîne** (`omitClaudeMd`, 0.2.3) : les règles de la chaîne utiles à la mission (protection des personnes, sources admises, langues) sont dans son contrat ; sinon il lit, par plages, seulement les sections que le contrat nomme.
 - **Périmètre** :
   - lit les fichiers du contrat, `direction/LIGNE_EDITORIALE.md`, `direction/ECARTS.md`, `referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2 bis (choix des médias), et `direction/references/` pour un besoin précis ;
   - n'ouvre aucun autre épisode, sauf fichiers listés au contrat ;
@@ -111,7 +112,7 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 - Pexels : ouvrir les pages une à une ; un déclenchement Cloudflare ne se contourne jamais.
 
 ### agents/reviewer.md
-**Rôle** : contrôle qualité en lecture seule d'un script, d'une séquence ou du film contre une liste, avant de les montrer au propriétaire. Il ne valide rien, ne corrige rien, ne déclare jamais avoir vu ou écouté. Ajouté en 0.2.2 (30/10/2026).
+**Rôle** : contrôle qualité en lecture seule d'un script, d'une séquence ou du film contre une liste, avant de les montrer au propriétaire. Il ne valide rien, ne corrige rien, ne déclare jamais avoir vu ou écouté. Ajouté en 0.2.3 (30/10/2026).
 
 **Quand il sert** : lancé par le Studio Director avec un contrat de mission qui nomme l'objet à contrôler et ses fichiers : script (étape 3), séquence (étape 8), film mixé (étape 10) du skill `episode`. Il travaille sur des fichiers : script, minutage, plan de plans, transcriptions, planches, mesures `ffprobe`.
 
@@ -123,7 +124,7 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 | `model` | `sonnet` ; `color` : yellow |
 | `skills` | aucun |
 | `omitClaudeMd` | absent : il **garde** le `CLAUDE.md` de la chaîne, qui porte les règles qu'il contrôle |
-| Rôle du garde-fou | aucun (voir « À savoir ») |
+| Rôle du garde-fou | `relecteur` |
 
 **Contenu**
 - **Liste de contrôle** : accroche (0 à 30 s : promesse, question) ; structure (séquences, relances, place du renversement) ; durée par rapport à la cible de la chaîne ou du `BRIEF.md` ; ton et registre de la chaîne ; protection des personnes (flou, bip, noms) ; sources et `PROVENANCE.md` ; règles propres de la chaîne (`CLAUDE.md`) et `direction/ECARTS.md`.
@@ -134,7 +135,7 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 **Liens** : `skills/episode/SKILL.md` (« État, reprise et contexte ») et `references/etapes.md` (étapes 3, 8 et 10) ; contrat : [`templates/CONTRAT_MISSION.template.md`](templates.md#templatescontrat_missiontemplatemd).
 
 **À savoir**
-- Le hook `garde_commandes.py` n'a pas de rôle pour lui (table `ROLES`) : il peut lancer des commandes Bash qui écrivent. La lecture seule repose sur sa consigne. Ajouter un rôle serait un changement du garde-fou, non fait en 0.2.2.
+- Le hook `garde_commandes.py` lui donne le rôle `relecteur` (0.2.3) : en Bash, seules `ffprobe`, `ffmpeg` de mesure (`-f null`), `wc`, `ls`, `grep`, `head` et `tail`, sans redirection ; il n'a ni Write ni Edit.
 - Sa `description` est en français, comme celles des autres agents.
 
 ### agents/art-director.md
@@ -250,7 +251,7 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 | `tools` | Read, Grep, Glob, Bash, Edit, Write, WebFetch |
 | `model` | `sonnet` ; `color` : green |
 | `skills` | aucun |
-| `omitClaudeMd` | `true` (0.2.2) : démarre sans le `CLAUDE.md` de la chaîne |
+| `omitClaudeMd` | `true` (0.2.3) : démarre sans le `CLAUDE.md` de la chaîne |
 | Rôle du garde-fou | `mainteneur` |
 
 **Limites du garde-fou (rôle `mainteneur`)**
@@ -258,7 +259,7 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 - Write et Edit refusés dans `.claude/`, un dossier **existant** de `marque/`, `episodes/<id>/inputs/`, un projet de production (`episodes/<id>/production/<…>`) et sur un MP4 existant. Le hook ne protège ni `direction/`, ni `templates/`, ni les `CLAUDE.md` pour ce rôle : c'est le contrat qui borne l'écriture.
 
 **Contenu**
-- **Sans `CLAUDE.md` de la chaîne** (`omitClaudeMd`, 0.2.2) : les règles de la chaîne utiles à la mission sont dans son contrat (section « Règles de la chaîne utiles à la mission ») ; sinon il lit, par plages, seulement les sections que le contrat nomme. Il lit toujours, avec Read, les `CLAUDE.md` qu'une mission de cohérence lui demande de contrôler.
+- **Sans `CLAUDE.md` de la chaîne** (`omitClaudeMd`, 0.2.3) : les règles de la chaîne utiles à la mission sont dans son contrat (section « Règles de la chaîne utiles à la mission ») ; sinon il lit, par plages, seulement les sections que le contrat nomme. Il lit toujours, avec Read, les `CLAUDE.md` qu'une mission de cohérence lui demande de contrôler.
 - **Cohérence** : directives (`CLAUDE.md` de chaque dossier, `direction/` dont `ECARTS.md`, `marque/`, `templates/`, `agents/`, `.claude/agents/`) et chemins ; doublons et contradictions ; les écarts de la chaîne l'emportent sur les règles par défaut.
 - **Fichiers** : repérer les temporaires inutiles et les proposer à la suppression avec la liste ; il ne supprime que ce que le contrat autorise nommément.
 - **Dépendances** : HyperFrames (le `package.json` fait foi), FFmpeg, Node, Python ; signaler une mise à jour, sans l'appliquer.

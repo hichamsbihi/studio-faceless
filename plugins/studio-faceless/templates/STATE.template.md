@@ -1,4 +1,4 @@
-<!-- Modèle du plugin studio-faceless (0.2.2). Copier dans `episodes/<id>/STATE.md` à la création de l'épisode, puis le RÉÉCRIRE EN ENTIER à chaque fin d'étape. 2,5 Ko au plus : un fait par ligne, rien de ce qui est déjà dans BRIEF.md ou CLAUDE.md. Le détail daté va dans `HISTORIQUE_ETAT.md` (journal, lu par grep). Retirer ce commentaire à la copie. -->
+<!-- Modèle du plugin studio-faceless (0.2.3). Copier dans `episodes/<id>/STATE.md` à la création de l'épisode, puis le RÉÉCRIRE EN ENTIER à chaque fin d'étape. 2,5 Ko au plus : un fait par ligne, rien de ce qui est déjà dans BRIEF.md ou CLAUDE.md. Le détail daté va dans `HISTORIQUE_ETAT.md` (journal, lu par grep). Retirer ce commentaire à la copie. -->
 # STATE <id-épisode> (manifeste de reprise, réécrit à chaque fin d'étape)
 
 Dernière mise à jour : <JJ/MM/AAAA>, fin de l'étape <n>. Pour reprendre : `episodes/INDEX.md`, puis ce fichier seul ; le détail est dans `CLAUDE.md` (règles) et `HISTORIQUE_ETAT.md` (journal, à lire par `grep`).

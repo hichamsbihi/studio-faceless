@@ -26,7 +26,7 @@ Ce document décrit le parcours complet d'un épisode (14 étapes, de 0 à 13), 
 | **Studio Director** (Claude principal) | Pose les portes de questions, rédige angle, script et briefs, prépare le kit, écrit les contrats, lance les rendus et les contrôles, colle, mixe, prépare la publication, archive. Il ne déclare jamais une écoute ni un visionnage. |
 | `studio-faceless:research` | Faits, études, médias candidats ; lecture seule (Read, Grep, Glob, WebFetch, WebSearch). Le Studio Director consigne ses résultats. |
 | `studio-faceless:motion-producer` | Mise en scène HyperFrames d'une séquence, jusqu'à `render.sh`, qu'il ne lance pas. |
-| `studio-faceless:reviewer` | Contrôle qualité en lecture seule d'un script (étape 3), d'une séquence (étape 8) ou du film (étape 10) contre une liste, **avant de les montrer au propriétaire** ; ne valide rien (0.2.2). |
+| `studio-faceless:reviewer` | Contrôle qualité en lecture seule d'un script (étape 3), d'une séquence (étape 8) ou du film (étape 10) contre une liste, **avant de les montrer au propriétaire** ; ne valide rien (0.2.3). |
 | `studio-faceless:art-director` | Critique indépendante d'un rendu, **à la demande du propriétaire** seulement. |
 | `studio-faceless:shorts-producer`, `studio-faceless:studio-maintainer` | Hors de ce parcours : shorts tirés d'un film terminé ([`shorts.md`](shorts.md)) ; cohérence et catalogue. |
 
@@ -40,7 +40,7 @@ Les sous-agents ne se délèguent rien entre eux. Fiches des agents : [`../refer
 
 ## Vue d'ensemble
 
-Une **porte de questions** précède chaque étape : le Studio Director pose les questions avec le skill `studio-faceless:grilling` (questions numérotées, réponse recommandée que « oui » accepte, tour par tour jusqu'à ce que plus rien ne soit ouvert). Les réponses vont au `BRIEF.md`, datées. Chaque étape finit par la décision au `BRIEF.md`, le `STATE.md` de l'épisode réécrit en entier (2,5 Ko au plus), la ligne de l'épisode mise à jour dans `episodes/INDEX.md`, puis un `/clear` (depuis la 0.2.2 ; un `/compact` remet dans le contexte skills et fichiers lus).
+Une **porte de questions** précède chaque étape : le Studio Director pose les questions avec le skill `studio-faceless:grilling` (questions numérotées, réponse recommandée que « oui » accepte, tour par tour jusqu'à ce que plus rien ne soit ouvert). Les réponses vont au `BRIEF.md`, datées. Chaque étape finit par la décision au `BRIEF.md`, le `STATE.md` de l'épisode réécrit en entier (2,5 Ko au plus), la ligne de l'épisode mise à jour dans `episodes/INDEX.md`, puis un `/clear` (depuis la 0.2.3 ; un `/compact` remet dans le contexte skills et fichiers lus).
 
 ```mermaid
 flowchart TD

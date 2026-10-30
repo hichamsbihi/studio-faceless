@@ -81,7 +81,7 @@ Les commandes se tapent dans **Git Bash**, dans le dossier de la chaîne, sauf m
 Avant chaque grande étape, Claude ouvre une porte avec le skill `studio-faceless:grilling`. Il pose des questions numérotées (Q1, Q2…), chacune avec sa réponse recommandée. Répondre « oui » accepte la réponse recommandée. Il les pose par séries, à mesure que les décisions se débloquent. La porte se ferme quand plus aucune question n'est ouverte. Les faits, Claude les cherche ; les décisions sont à toi. Les réponses vont au `BRIEF.md`, datées.
 
 ### Le rythme de travail (à chaque fin de grande étape)
-Source : [`REGLES_STUDIO.md`](plugins/studio-faceless/REGLES_STUDIO.md), « Économie de tokens et de contexte » (depuis la 0.2.2).
+Source : [`REGLES_STUDIO.md`](plugins/studio-faceless/REGLES_STUDIO.md), « Économie de tokens et de contexte » (depuis la 0.2.3).
 - Demande à Claude de réécrire `episodes/<id>/STATE.md` (un manifeste de 2,5 Ko au plus : étape courante, décisions validées, chemins, voix, budget restant, prochaine action) et de mettre à jour `episodes/INDEX.md`.
 - Lance ensuite `/clear` (et non `/compact`) : après un `/compact`, Claude Code remet dans le contexte les skills appelés et les fichiers lus, et le premier appel pèse 124,6 k contre 81 à 88 k dans une session neuve. Pour reprendre, Claude lit seulement `INDEX.md`, puis `STATE.md`.
 - `/compact` reste permis au milieu d'une longue porte (contexte au-delà de 150 à 200 k), après avoir écrit l'état. Ne change le modèle de Claude que juste après un `/clear`.

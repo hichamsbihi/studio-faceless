@@ -7,5 +7,5 @@
 - **Lecture préalable** : tous les fichiers copiés ont été lus avant l'intégration. Aucun appel réseau dans les modèles. Seul `references/ai-music.md` décrit un service payant (exclu). `render.mjs`, `asset-audit.mjs` (contrôle dynamique) et `layout-check.mjs` chargent `playwright-core`, qui n'est pas installé ; rien n'a été installé.
 - **Modifications locales** : un encadré « Adaptation studio-faceless » ajouté en tête du corps de chaque `SKILL.md`. Rien d'autre n'est modifié.
 
-## Réglage 0.2.2 (30/10/2026)
+## Réglage 0.2.3 (30/10/2026)
 - `disable-model-invocation: true` ajouté à l'en-tête des deux `SKILL.md` (`javascript-animation` et `soundtrack`), et un renvoi de `javascript-animation` vers `soundtrack` reformulé (Claude ne peut plus appeler `soundtrack` seul : le propriétaire l'appelle avec `/soundtrack`, ou Claude lit son fichier). Le reste du texte est inchangé.

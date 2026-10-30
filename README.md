@@ -29,7 +29,7 @@ Le plugin ne dépend d'aucune chaîne : les mentions d'AA ou de StudioV1 n'y ser
 | `starter/` | squelette d'une nouvelle chaîne |
 | `vendor/claude-skills/` | skills HyperFrames de la version 0.8.149, figés |
 
-Une fois installés, les skills et les agents portent le préfixe du plugin : `studio-faceless:episode`, `studio-faceless:motion-producer`. Depuis la 0.2.2, six skills (`humanizer`, `find-skills`, `javascript-animation`, `soundtrack`, `elevenlabs-music`, `elevenlabs-sound-effects`) ne sont plus proposés à Claude au démarrage : le propriétaire les appelle avec `/nom`.
+Une fois installés, les skills et les agents portent le préfixe du plugin : `studio-faceless:episode`, `studio-faceless:motion-producer`. Depuis la 0.2.3, six skills (`humanizer`, `find-skills`, `javascript-animation`, `soundtrack`, `elevenlabs-music`, `elevenlabs-sound-effects`) ne sont plus proposés à Claude au démarrage : le propriétaire les appelle avec `/nom`.
 
 ## Démarrer
 - **Commencer ici, pas à pas** : [`DEMARRAGE.md`](DEMARRAGE.md), de la machine vide à la première vidéo d'une nouvelle chaîne (installation, création de la chaîne, identité, fabrication, publication, archivage).

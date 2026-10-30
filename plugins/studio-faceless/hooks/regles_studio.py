@@ -3,7 +3,7 @@
 Injecte les règles communes du studio (REGLES_STUDIO.md) au début de chaque session, et après un /clear ou un /compact,
 avec les chemins du plugin installé à la place de ${CLAUDE_PLUGIN_ROOT}.
 Depuis 0.2.0 : lit la ligne « - **Domaine** : <domaine> » du CLAUDE.md de la chaîne et donne le chemin de son profil.
-Depuis 0.2.2 : l'application de bureau coupe tout additionalContext au-delà de 10 000 caractères (seul un aperçu de 2 Ko
+Depuis 0.2.3 : l'application de bureau coupe tout additionalContext au-delà de 10 000 caractères (seul un aperçu de 2 Ko
 arrive au modèle). REGLES_STUDIO.md doit donc rester court (le vérificateur du dépôt refuse plus de 9 000 caractères) ;
 si le texte final dépasse tout de même 9 500 caractères, une première ligne dit de lire le fichier en entier.
 """

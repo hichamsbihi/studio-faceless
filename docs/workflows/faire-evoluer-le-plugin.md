@@ -111,7 +111,7 @@ flowchart TD
      ```bash
      python -I -B plugins/studio-faceless/outils/verifier_depot.py --tout
      ```
-     Il refuse : fichier de plus de 10 Mo hors LFS (ici il n'y a pas de LFS, donc tout gros fichier), média d'épisode, secret probable (clé d'API, jeton GitHub, clé privée, `Bearer`), chemin propre à une machine dans du code actif (hors `docs/` et `vendor/`), et (0.2.2) un `REGLES_STUDIO.md` de plus de 9 000 caractères une fois le chemin du plugin substitué. Code de sortie 0 ou 1. Si `verifier_depot.py` change, lancer aussi son test : `python -I -B plugins/studio-faceless/outils/test_verifier_depot.py`.
+     Il refuse : fichier de plus de 10 Mo hors LFS (ici il n'y a pas de LFS, donc tout gros fichier), média d'épisode, secret probable (clé d'API, jeton GitHub, clé privée, `Bearer`), chemin propre à une machine dans du code actif (hors `docs/` et `vendor/`), et (0.2.3) un `REGLES_STUDIO.md` de plus de 9 000 caractères une fois le chemin du plugin substitué. Code de sortie 0 ou 1. Si `verifier_depot.py` change, lancer aussi son test : `python -I -B plugins/studio-faceless/outils/test_verifier_depot.py`.
   3. **Cohérence** : chaque chemin cité existe ; les renvois entre skills, agents et référentiels restent justes ; les numéros de section cités n'ont pas bougé ; les dates et les statuts sont portés. Une mission `studio-maintainer` avec un contrat (lecture du plugin, écriture limitée) peut le faire.
   4. **Aucun nom de chaîne ni de personne** ajouté dans une règle du plugin ; pas de chemin absolu de machine.
 - **Porte** : tant que l'un des contrôles échoue, retour à l'étape 2.
@@ -159,7 +159,7 @@ flowchart TD
 **Décision du propriétaire uniquement** (aucune mise à jour sans elle). Elle touche plusieurs endroits, tous à revoir en une seule version du plugin ; la liste vient d'une recherche de `0.8.149` dans le dépôt :
 - `plugins/studio-faceless/starter/package.json` et `package-lock.json` (à régénérer) ;
 - `plugins/studio-faceless/vendor/claude-skills/` : **nouvelle copie datée** des skills HyperFrames et `README.md` du dossier mis à jour ;
-- `referentiels/REGLES_DETAIL.md` (§ Moteur et outils, déplacé de `REGLES_STUDIO.md` en 0.2.2) ; `README.md` (règle d'or 5) ; `INSTALLATION.md` ; `NOUVELLE_CHAINE.md` ; `CHANGELOG.md` ;
+- `referentiels/REGLES_DETAIL.md` (§ Moteur et outils, déplacé de `REGLES_STUDIO.md` en 0.2.3) ; `README.md` (règle d'or 5) ; `INSTALLATION.md` ; `NOUVELLE_CHAINE.md` ; `CHANGELOG.md` ;
 - `hooks/garde_commandes.py` (messages « 0.8.149 figée » et règles contre l'autre version) ;
 - `agents/motion-producer.md` et `agents/shorts-producer.md` (« Version : celle de `package.json` ») ;
 - `templates/sequence-gabarit-v3/render.sh` (contrôle exact de la version) ;

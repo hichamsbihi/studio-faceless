@@ -286,6 +286,6 @@ Cinq fichiers en anglais, lus à la demande par le skill.
 ## Points à vérifier et incohérences
 - **`skills/javascript-animation/SKILL.md:84`** demande `npm i playwright-core`, alors que le garde-fou refuse `npm install` : ces scripts sont inutilisables tant que le propriétaire n'a pas décidé (voir aussi l'encadré `:11`).
 - **`skills/javascript-animation/SKILL.md:14`** cite `outils/capture.sh` « du projet » : il n'existe pas dans `plugins/studio-faceless/outils/` (à vérifier : outil de StudioV1 non repris, ou à fournir par la chaîne).
-- **`skills/humanizer/SKILL.md`** n'est cité par aucun autre fichier du plugin (ni l'étape « script » de `skills/episode/`) : son usage reste un essai d'AA, et depuis la 0.2.2 seul le propriétaire l'appelle (`/humanizer`).
+- **`skills/humanizer/SKILL.md`** n'est cité par aucun autre fichier du plugin (ni l'étape « script » de `skills/episode/`) : son usage reste un essai d'AA, et depuis la 0.2.3 seul le propriétaire l'appelle (`/humanizer`).
 - **`skills/javascript-animation/SKILL.md`** et **`skills/soundtrack/SKILL.md`** : texte en anglais avec un encadré en français ; en-tête `version: 0.4.1` (propre à l'amont).
 - `README.md` (racine) range `humanizer`, `javascript-animation` et `soundtrack` parmi les skills MIT ; les trois licences sont bien présentes, dont deux identiques (`javascript-animation`, `soundtrack`).

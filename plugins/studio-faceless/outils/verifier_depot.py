@@ -6,7 +6,7 @@ Refuse, dans les fichiers à committer :
 - un secret probable (clé d'API sk-… ou sk_… en début de jeton, jeton GitHub, clé privée, en-tête Bearer) ;
 - un chemin propre à une machine (C:/Users/<nom>, /c/Users/<nom>) dans un fichier de code actif (hors episodes/, docs/ et tout dossier vendor/, copie de tiers) ;
 - un REGLES_STUDIO.md de plus de 9 000 caractères une fois ${CLAUDE_PLUGIN_ROOT} remplacé par un chemin de cache type : l'application de bureau
-  coupe tout additionalContext du hook SessionStart au-delà de 10 000 caractères (0.2.2, mesure du 30/10/2026). Le détail va dans referentiels/REGLES_DETAIL.md.
+  coupe tout additionalContext du hook SessionStart au-delà de 10 000 caractères (0.2.3, mesure du 30/10/2026). Le détail va dans referentiels/REGLES_DETAIL.md.
 
 Usage, depuis la racine de la chaîne :
   python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/verifier_depot.py            fichiers indexés (git add), comme le crochet pre-commit
@@ -18,7 +18,7 @@ import os, re, subprocess, sys
 
 LIMITE = 10 * 1024 * 1024
 LIMITE_REGLES = 9000            # caractères de REGLES_STUDIO.md tel que le hook SessionStart l'injecte
-RACINE_TYPE = 'C:/Users/<nom>/.claude/plugins/cache/studio-faceless/studio-faceless/0.2.2'   # longueur type du chemin du plugin installé
+RACINE_TYPE = 'C:/Users/<nom>/.claude/plugins/cache/studio-faceless/studio-faceless/0.2.3'   # longueur type du chemin du plugin installé
 MEDIAS = {'.mp4', '.mov', '.webm', '.mkv', '.wav', '.mp3', '.m4a', '.aac', '.flac', '.png', '.jpg', '.jpeg', '.webp', '.gif',
           '.tif', '.tiff', '.pdf', '.ttf', '.otf', '.woff', '.woff2', '.zip'}
 CODE = {'.py', '.mjs', '.js', '.cjs', '.json', '.sh', '.ps1', '.html', '.css'}

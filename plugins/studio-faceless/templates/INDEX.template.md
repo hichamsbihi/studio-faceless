@@ -1,4 +1,4 @@
-<!-- Modèle du plugin studio-faceless (0.2.2). Copier dans `episodes/INDEX.md` à la création du premier épisode, supprimer la ligne d'exemple et ce commentaire. Une ligne par épisode, mise à jour à chaque fin d'étape. -->
+<!-- Modèle du plugin studio-faceless (0.2.3). Copier dans `episodes/INDEX.md` à la création du premier épisode, supprimer la ligne d'exemple et ce commentaire. Une ligne par épisode, mise à jour à chaque fin d'étape. -->
 # Index des épisodes
 
 Une ligne par épisode. Pour reprendre : lire seulement le `STATE.md` indiqué.

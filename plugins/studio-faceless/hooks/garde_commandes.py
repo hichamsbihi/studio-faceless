@@ -12,6 +12,7 @@ Pour tous :
   rendu direct sans `--workers 1` ou `2` ;
 - ask : aperçu HyperFrames.
 Par rôle, déduit du type d'agent (`agent_type` de l'entrée du hook, voir ROLES), ou option `--role` :
+- relecteur (reviewer) : seules ffprobe, ffmpeg de mesure (-f null), wc, ls, grep, head et tail ; aucune redirection ;
 - directeur-artistique : seules ffmpeg, ffprobe et mkdir ; pas d'écrasement (-y) ; sortie hors zones protégées ;
 - producteur : en Bash, aucune mention de direction/, templates/, .claude/ ou d'un CLAUDE.md (sauf les chemins du
   plugin installé, pour lancer ses outils, sans « .. »), et aucune écriture
@@ -158,6 +159,17 @@ def decide_bash(command, role, root):
     if recursive_rm(command):
         return 'deny', "suppression récursive : passer par la corbeille, avec accord"
 
+    if role == 'relecteur':
+        for seg in segments(command):
+            toks = tokens(seg)
+            h = head(toks)
+            if h not in ('ffprobe', 'ffmpeg', 'wc', 'ls', 'grep', 'head', 'tail'):
+                return 'deny', "relecteur : seules ffprobe, ffmpeg de mesure, wc, ls, grep, head et tail sont permises (refusé : " + seg[:120] + ")"
+            if h == 'ffmpeg' and not any(a == '-f' and b == 'null' for a, b in zip(toks, toks[1:])):
+                return 'deny', "relecteur : ffmpeg seulement pour mesurer (-f null -), sans fichier de sortie"
+            if [m for m in REDIRECT.findall(seg) if m.lower() not in ('/dev/null', 'nul', '$null')]:
+                return 'deny', "relecteur : aucune écriture (redirection refusée)"
+
     if role == 'directeur-artistique':
         for seg in segments(command):
             toks = tokens(seg)
@@ -219,7 +231,8 @@ def decide(command, role=None):
 
 # Type d'agent (sans le préfixe « studio-faceless: ») → rôle du garde-fou ; Claude principal n'a pas de rôle.
 ROLES = {'motion-producer': 'producteur', 'shorts-producer': 'producteur',
-         'art-director': 'directeur-artistique', 'studio-maintainer': 'mainteneur'}
+         'art-director': 'directeur-artistique', 'studio-maintainer': 'mainteneur',
+         'reviewer': 'relecteur'}
 
 
 def role_of(data):

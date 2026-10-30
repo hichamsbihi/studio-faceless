@@ -14,7 +14,7 @@ décisions validées : <décision, date et référence, ou « aucune »>
 restrictions : <interdits propres à la mission>
 ```
 
-**Règles de la chaîne utiles à la mission** (0.2.2) : une section de **10 lignes au plus**, recopiée par l'orchestrateur depuis le `CLAUDE.md` de la chaîne, à la suite des neuf champs. **Obligatoire pour `studio-faceless:research` et `studio-faceless:studio-maintainer`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents, qui le lisent.
+**Règles de la chaîne utiles à la mission** (0.2.3) : une section de **10 lignes au plus**, recopiée par l'orchestrateur depuis le `CLAUDE.md` de la chaîne, à la suite des neuf champs. **Obligatoire pour `studio-faceless:research` et `studio-faceless:studio-maintainer`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents, qui le lisent.
 
 ```text
 Règles de la chaîne utiles à la mission (10 lignes au plus, recopiées du CLAUDE.md de la chaîne)

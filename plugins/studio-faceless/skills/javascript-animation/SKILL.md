@@ -31,7 +31,7 @@ Run straight through. Pick sensible defaults and mention alternatives at deliver
 5. **Self-check, then render** (next section). Fix and re-check until clean.
 6. **Deliver:** the MP4 and the HTML (it plays live in a browser; clicking starts the sound). Then, in one or two lines, offer what can change: another look, AI music instead of synthesized, different length.
 
-For music, read `../soundtrack/SKILL.md` (the `studio-faceless:soundtrack` skill is blocked for automatic calls since 0.2.2: the channel owner calls it with `/soundtrack`, or you read its file; default: synthesized in the page with Web Audio, no key needed).
+For music, read `../soundtrack/SKILL.md` (the `studio-faceless:soundtrack` skill is blocked for automatic calls since 0.2.3: the channel owner calls it with `/soundtrack`, or you read its file; default: synthesized in the page with Web Audio, no key needed).
 
 ## Self-check (the agent does this; the user never sees it)
 

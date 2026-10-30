@@ -108,7 +108,7 @@ Fichier : [`musique-a-l-image.md`](../../plugins/studio-faceless/skills/directio
   5. *Sources et droits* : aucune nouvelle recherche musicale sans demande ; jamais « comme » un artiste ou un morceau connu ; journal de cues sans donnée inventée ;
   6. *Diagnostic rapide* : tableau symptôme, cause, correction (kitsch, lutte avec la voix, boucle qui claque, droits flous…).
 - **Liens** : `gabarits.md` (journal de cues), `DIRECTION_AUDIO.md` § 1-3.
-- **À savoir** : le § 5 renvoie à `DIRECTION_AUDIO.md` § 4 pour ElevenLabs (par l'API depuis la 0.2.2, connecteur claude.ai coupé par défaut, accord du propriétaire et coût annoncé avant chaque génération). Suno, Udio et équivalents restent exclus sans décision du propriétaire.
+- **À savoir** : le § 5 renvoie à `DIRECTION_AUDIO.md` § 4 pour ElevenLabs (par l'API depuis la 0.2.3, connecteur claude.ai coupé par défaut, accord du propriétaire et coût annoncé avant chaque génération). Suno, Udio et équivalents restent exclus sans décision du propriétaire.
 
 ### skills/direction-sonore/references/controle-et-mesure.md
 Fichier : [`controle-et-mesure.md`](../../plugins/studio-faceless/skills/direction-sonore/references/controle-et-mesure.md)

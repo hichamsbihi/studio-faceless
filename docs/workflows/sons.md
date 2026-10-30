@@ -33,7 +33,7 @@ Ce document décrit comment un épisode obtient ses musiques, ses ambiances et s
 ## Prérequis
 - `marque/son/README.md` de la chaîne : tableaux « Musiques » et « Effets et ambiances » (fichier, durée, épisode, rôle). Le squelette fournit les tableaux vides.
 - `referentiels/DIRECTION_AUDIO.md` (§ 1 dépenses, § 2 musique et effets, § 3 bibliothèque, § 4 ElevenLabs) et ses écarts dans `direction/ECARTS.md`.
-- Pour générer (0.2.2, 30/10/2026) : l'**API ElevenLabs** (SDK Python `elevenlabs`, clé dans la variable `ELEVENLABS_API_KEY`, jamais lue ni affichée) ; le connecteur claude.ai est coupé par défaut. Chaque génération demande l'accord du propriétaire, coût annoncé avant ; les skills `elevenlabs-*` sont appelés avec `/nom`, ou lus par Claude quand le propriétaire demande une génération.
+- Pour générer (0.2.3, 30/10/2026) : l'**API ElevenLabs** (SDK Python `elevenlabs`, clé dans la variable `ELEVENLABS_API_KEY`, jamais lue ni affichée) ; le connecteur claude.ai est coupé par défaut. Chaque génération demande l'accord du propriétaire, coût annoncé avant ; les skills `elevenlabs-*` sont appelés avec `/nom`, ou lus par Claude quand le propriétaire demande une génération.
 - Un abonnement **payant** pour un usage commercial des sons générés (selon l'aide d'ElevenLabs, le plan gratuit n'a pas de licence commerciale ; `skills/youtube-seo/references/description-et-credits.md`).
 - FFmpeg et FFprobe pour les mesures (commandes de `skills/direction-sonore/references/controle-et-mesure.md`).
 
