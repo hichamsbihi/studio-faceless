@@ -80,11 +80,7 @@ S'il manque le brief, le kit ou le dossier d'écriture, ne crée rien : renvoie 
 - **Une seule composition racine par dossier** : les autres vont dans `compositions/` et se rendent avec `-c`.
 - **Automation de volume** : ses valeurs sont absolues (elles remplacent `data-volume`).
 - **Vidéo source à images clés espacées** : elle se fige au rendu ; le kit la fournit déjà réencodée (sinon `-g 15`).
-- **Détourage des personnes** (validé sur AA, 28/10/2026, Q117 de l'E010 ; le propriétaire : « les images que tu cropes ne sont pas bien faites ») : prends d'abord les détourages du kit (`kit/media/detourages-vN/` et son README). S'il en manque un, utilise seulement l'outil de HyperFrames, en local (modèle `u2net_human_seg` ; jamais un autre outil ni un service en ligne) : `node node_modules/hyperframes/bin/hyperframes.mjs remove-background <photo> -o <ton dossier>/<nom>_brut.png`.
-  1. Recadre d'abord la photo autour de la personne : le modèle détoure tous les humains de l'image.
-  2. Resserre le masque de 2 px : `ffmpeg -i <nom>_brut.png -filter_complex "[0]format=rgba,split[c][a];[a]alphaextract,erosion,erosion,gblur=sigma=0.7[m];[c][m]alphamerge" <nom>.png`.
-  3. Une personne collée à une autre s'écarte par un polygone **multiplié** au masque du modèle ; jamais un détourage tracé seulement à la main en polygone.
-  4. Contrôle sur fond vert vif, en pleine taille : cheveux, mains, vêtements de la couleur du fond. Un membre perdu se coupe au cadre (aux hanches, par exemple) ; jamais de morceau flottant.
+- **Détourage** (validé sur AA, 28/10/2026, Q117 de l'E010 ; règle générale du plugin) : prends d'abord les détourages du kit (`kit/media/detourages-vN/` et son README) ; sinon, suis le skill `studio-faceless:remove-background` (outil de HyperFrames en local, méthode en quatre étapes pour les personnes ; jamais un autre outil ni un service en ligne).
 - **Chemins** : aucun chemin absolu vers FFmpeg ou Chrome dans un script. Utilise `HYPERFRAMES_FFMPEG_PATH` ou `ffmpeg`, et `HYPERFRAMES_FFPROBE_PATH`. Sans `HYPERFRAMES_BROWSER_PATH`, HyperFrames utilise son propre Chrome (`~/.cache/hyperframes/chrome`).
 - **Aucun aperçu** (`preview`) sans demande.
 - **Format par défaut** : MP4 1920 × 1080, 30 i/s, H.264, AAC 48 kHz.

@@ -214,7 +214,7 @@
 **Recette** : deux images réelles du même lieu ou du même objet, au même cadrage, à deux dates ; la seconde remplace la première par un volet ou un écran partagé, et un cercle ou une flèche montre la différence. **Attention** : dates sourcées ; forme d'ouverture admise par `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` § 2 (Ouverture).
 
 ### CUTOUT-FIGURE · La personne détourée
-**Recette** : une personne clé, détourée avec `remove-background` de HyperFrames (méthode : agent `motion-producer` § HyperFrames ; validé sur AA, 28/10/2026, Q117 de l'E010), en couleurs réelles, est posée dans un dessin, une carte ou un graphique, à 45 % de la hauteur au moins ; son étiquette entre en opacité ou en glissement au pixel entier. **Attention** : quelques personnes par film, photo libre créditée ; jamais de bichromie (validé sur AA, 26/10/2026).
+**Recette** : une personne clé, détourée avec `remove-background` de HyperFrames (méthode : skill `studio-faceless:remove-background` ; validé sur AA, 28/10/2026, Q117 de l'E010), en couleurs réelles, est posée dans un dessin, une carte ou un graphique, à 45 % de la hauteur au moins ; son étiquette entre en opacité ou en glissement au pixel entier. **Attention** : quelques personnes par film, photo libre créditée ; jamais de bichromie (validé sur AA, 26/10/2026).
 
 ### UNIT-ROWS · Le graphique en unités
 **Recette** : rangées d'unités (un essai = une case, un succès = une case remplie, la dernière en fraction) ; une seconde étude se lit dans la même grille, l'écart en couleur. **Attention** : valeurs publiées seulement.
