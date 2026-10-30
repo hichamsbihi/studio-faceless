@@ -17,7 +17,7 @@ Le propriétaire : « cette diversification d'effets, de transitions et cette im
 4. **Chaque média a un impact** :
    - plein cadre, ou au moins 45 % de la hauteur ;
    - une image de 800 px ou moins devient un tirage de 40 % de la hauteur au plus ;
-   - agrandissement de 1,6 fois au plus ;
+   - agrandissement de 1,3 fois au plus (VALIDÉ, Hicham, 30/10/2026 ; 1,6 avant) ;
    - aucune vignette.
 5. **Dessins et cartes** : au moins 15 % du temps, dans les passages d'explication. SVG au trait, couleur craie ou encre, tracé progressif ; mention « DIAGRAM » ou « Map: Natural Earth ».
 6. **Logos avec mesure** : un ou deux par passage, seulement s'ils aident ; couleurs d'origine.

@@ -11,7 +11,7 @@ Règles, domaine et outils versés de Maps & Means (StudioV2) au passage de cett
 - **Gabarit v3, `render.sh`** : garde HDR (refus si une vidéo HLG ou PQ est dans le projet de la séquence, `ffprobe` par `HYPERFRAMES_FFPROBE_PATH`) et rendu `--sdr`. **Changement de comportement** : un projet qui contient une vidéo HDR ne se rend plus ; la refaire en SDR avec `outils/medias/traiter.py`. Les `render.sh` déjà copiés dans les séquences ne changent pas.
 - **Skill `blender-pro`** (références MIT, `licences/`, `PROVENANCE.md`) : Blender 4.5 s'installe dans la chaîne (`outils/blender/`, hors dépôt, ajouté au `.gitignore` du starter), avec l'accord du propriétaire.
 - **Relecture indépendante** faite avant l'envoi (30/10/2026) ; corrigés : garde HDR muette sans `ffprobe`, `licences.json` faux qui bloquait tout `controle.py`, seuils de MM qui faisaient échouer `script.py` sur les autres chaînes, lien mort vers `calque360.py`, règle de méthode dans le fichier injecté.
-- **À trancher par le propriétaire** : agrandissement au plus 1,3 fois (MM, `pieges.md`) ou 1,6 fois (recette v3, `production.md` § 1) ; les deux sont écrits, le conflit est signalé.
+- **Agrandissement d'une image à l'écran** : 1,3 fois son pixel natif au plus, partout, recette v3 comprise (1,6 avant ; VALIDÉ, Hicham, 30/10/2026).
 
 ## 0.2.3 (30/10/2026)
 Suite de la 0.2.2 (commit bd994e5, déjà envoyé sur GitHub) : nouveau numéro pour que `claude plugin update` livre ces changements. Contexte de départ allégé et règles réellement injectées (VALIDÉ, Hicham, 30/10/2026, « Apply all », après l'audit du contexte de StudioV3 du même jour). Constats de l'audit :

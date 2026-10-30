@@ -15,7 +15,7 @@ Format : le piège, puis ce qu'on fait. Source entre parenthèses : les identifi
 - **Écran noir en milieu de séquence**, ou colonnes tracées avant leur contenu : le contenu se pose pendant le tracé (E007 seq2 v3).
 - **Filtres d'image** (grille de 6 px) : retirés à la demande du propriétaire (E007).
 - **Petites images agrandies** à la conversion (1920 px forcés) : convertir sans agrandir (E007 v2).
-- **Image agrandie à l'écran** : au-delà de son pixel natif, une image s'adoucit ; elle ne dépasse pas 1,3 fois son pixel natif quand elle reste à l'écran, et une archive en 640 × 480 va en cadre-témoin plutôt qu'en plein cadre (validé sur MM, 21/10/2026, audit de son pilote : un clip agrandi deux fois était visiblement mou ; proposé au plugin 0.3.0, PROPOSÉ). **Conflit à trancher** : la recette v3 (`production.md` § 1) tolère 1,6 fois pour un tirage de 800 px ou moins.
+- **Image agrandie à l'écran** : au-delà de son pixel natif, une image s'adoucit ; elle ne dépasse pas 1,3 fois son pixel natif quand elle reste à l'écran, et une archive en 640 × 480 va en cadre-témoin plutôt qu'en plein cadre (validé sur MM, 21/10/2026, audit de son pilote : un clip agrandi deux fois était visiblement mou ; proposé au plugin 0.3.0, PROPOSÉ). Limite de 1,3 fois retenue pour tout le plugin, y compris la recette v3 de `production.md` § 1, qui tolérait 1,6 (VALIDÉ, Hicham, 30/10/2026).
 - **Photo répétée** d'une séquence à l'autre : tenir la liste des photos prises (consignes communes).
 - **Logos partout** : avec mesure, un ou deux par passage (validé sur AA, 24/10/2026).
 
