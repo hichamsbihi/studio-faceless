@@ -1,5 +1,6 @@
 ---
 name: javascript-animation
+disable-model-invocation: true
 description: Canvas film drawn frame by frame in JavaScript, with no image assets (hand-drawn style, animated story or explainer drawn in code), rendered to MP4 with a self-check. Use only when the channel owner asks for an animation drawn in code. Not for data charts or 3D.
 version: 0.4.1
 ---

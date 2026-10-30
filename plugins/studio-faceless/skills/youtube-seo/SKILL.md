@@ -1,6 +1,6 @@
 ---
 name: youtube-seo
-description: YouTube publication file for an episode of a faceless documentary channel of the studio-faceless plugin — three title options, description whose first two lines carry the promise and the main query, chapters computed from the master log, CC BY credits from PROVENANCE.md unless the channel waives them in its direction/ECARTS.md (no sources synthesis, validated on AA 19/10/2026), AI voice and sound disclosure, long-tail tags and 1–3 hashtags for a new channel, pinned comment with full-credit replies, playlist, SRT, upload settings (altered or synthetic content, language), limit checks with the plugin's publication.py script (outils/controle), and J+2 / J+7 / J+28 reviews. Every rule is labelled Official / Observed / Hypothesis / Discarded folklore. Use when preparing, reviewing or checking the YouTube metadata of an episode before the channel owner uploads it. Claude never publishes, never connects to the channel and never announces search volumes.
+description: "YouTube publication file for an episode of a faceless documentary channel: three titles, description, chapters from the master log, CC BY credits, AI disclosure, tags, pinned comment, upload settings, limit checks and J+2 / J+7 / J+28 reviews. Use when preparing, reviewing or checking the YouTube metadata of an episode before the channel owner uploads it. Claude never publishes."
 ---
 
 # Dossier de publication YouTube

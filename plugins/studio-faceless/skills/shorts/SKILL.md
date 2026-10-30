@@ -1,6 +1,6 @@
 ---
 name: shorts
-description: Shorts method for a faceless documentary channel of the studio-faceless plugin — vertical 9:16 shorts cut from a published film of the channel, whose goals in order are to be watched to the end, to make the channel known and to bring viewers to the long film on YouTube, always with real value. Covers choosing complete curiosity loops (stakes, question, reversal) with a precise rehook to the film, writing a dedicated script with the hook in the first frame, the short brief, the 1080×1920 HyperFrames edit (first frame, word-by-word captions without text scaling, vertical recomposition, discreet channel logo, end bridge card, safe zones), platform rules for YouTube Shorts, TikTok and Facebook Reels, checks and the per-episode shorts log. Use when planning, writing, editing, checking or reviewing a short of the channel. Claude never publishes.
+description: "Shorts method for a faceless documentary channel: vertical 9:16 shorts cut from a published film, with the hook in the first frame, word-by-word captions, an end card to the long film, platform rules and checks. Use when planning, writing, editing, checking or reviewing a short of the channel. Claude never publishes."
 ---
 
 # Shorts

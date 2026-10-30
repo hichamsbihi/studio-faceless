@@ -1,6 +1,6 @@
 ---
 name: thumbnail-strategist
-description: Thumbnail method for a faceless documentary channel of the studio-faceless plugin — one promise shared by title and thumbnail, at least five truthful concepts built on a verified contradiction, three very different variants, the default grammar validated on AA (E003) (hand-cut famous face via CSS clip-path polygon, flat background in the story's colours, 2–4 words in Montserrat 900, short red arrow, flags), HTML/CSS 1280×720 render with HyperFrames' headless Chrome, measurable checks (size, weight, 168×94 and 320×180 previews, bottom-right corner, text contrast, light and dark feeds, internal feed board), YouTube Test & Compare protocol and per-episode thumbnail log. Use when planning, making, critiquing or checking a thumbnail of the channel, or preparing or reading a thumbnail A/B test. Real licensed photos only, never AI-generated images.
+description: "Thumbnail method for a faceless documentary channel: one promise shared with the title, five truthful concepts, three variants, HTML/CSS 1280x720 render, measurable checks and A/B test protocol. Use when planning, making, critiquing or checking a thumbnail, or preparing an A/B test. Real licensed photos only, never AI-generated images."
 ---
 
 # Miniatures

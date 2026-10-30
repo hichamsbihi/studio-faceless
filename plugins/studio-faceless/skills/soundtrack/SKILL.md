@@ -1,5 +1,6 @@
 ---
 name: soundtrack
+disable-model-invocation: true
 description: Code-synthesized soundtrack (Web Audio, rendered offline to WAV) for a canvas animation, or syncing given music to cuts, with a check of cuts on the beat and loudness jumps. Use only when the channel owner asks for music made in code or this sync check.
 version: 0.4.1
 ---

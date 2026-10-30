@@ -2,6 +2,11 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 0.2.2 (30/10/2026)
+Contexte de départ allégé (VALIDÉ, Hicham, 30/10/2026, après l'audit du contexte de StudioV3 : 85 k tokens au démarrage, dont environ 2,2 k pour le plugin).
+- `disable-model-invocation: true` sur six skills qu'aucun autre fichier du plugin n'appelle : `humanizer`, `find-skills`, `javascript-animation`, `soundtrack`, `elevenlabs-music`, `elevenlabs-sound-effects`. Ils restent appelables à la main avec `/nom` et ne pèsent plus au démarrage. Non touchés : `grilling`, `regarder`, `frontend-design` (appelés par d'autres fichiers), `shorts` et `thumbnail-strategist` (préchargés par des agents, ce que ce réglage interdit).
+- Descriptions raccourcies de `episode`, `youtube-seo`, `shorts` et `thumbnail-strategist` ; les déclencheurs d'usage sont conservés, le détail reste dans le corps de chaque skill.
+
 ## 0.2.1 (30/10/2026)
 Nouveau skill `remove-background`, règle générale du plugin (VALIDÉ, Hicham, 30/10/2026 : « rend remove-background général pour tout le plugin »).
 - `skills/remove-background/` : skill écrit sur Maps & Means (StudioV2) le 28/10/2026 d'après la référence des skills HyperFrames, généralisé : installation du modèle local avec l'accord du propriétaire, choix de la voie (personne, objet vu en petit, objet sur fond uni vu de près), masque déterministe, commande `hyperframes remove-background`, méthode en quatre étapes pour les personnes (Q117 de l'E010 d'AA), règles de composition. Les miniatures gardent leur détourage par polygone.

@@ -1,6 +1,6 @@
 ---
 name: episode
-description: Full making of a documentary episode for a faceless channel, from choosing the subject to the final film mix and master — question gates with the channel owner at every step (studio-faceless:grilling), the episode foundation (voice, kit, media lists the owner downloads by hand, maps, logos, sound library, pixel-exact junctions, short briefs), one test sequence validated before producers run in batches of three, in-place corrections, one render at a time, voice-only assembly then a single film mix, and the checks before showing the owner. Use whenever the channel owner starts, resumes or plans an episode, or asks how an episode is made. Not for shorts (studio-faceless:shorts), thumbnails (studio-faceless:thumbnail-strategist) or the YouTube file (studio-faceless:youtube-seo), which it calls at their step.
+description: "Full making of a documentary episode for a faceless channel, from subject choice to final film mix, with question gates with the channel owner at every step. Use whenever the channel owner starts, resumes or plans an episode, or asks how an episode is made. Not for shorts (studio-faceless:shorts), thumbnails (studio-faceless:thumbnail-strategist) or the YouTube file (studio-faceless:youtube-seo)."
 ---
 
 # Fabriquer un épisode de la chaîne
