@@ -27,14 +27,14 @@ Une chaîne est un dossier (et un dépôt Git privé) créé à partir du squele
 
 ## 2. Remplir l'identité (avec Claude, une porte de questions)
 À donner à Claude dans la nouvelle chaîne :
-> Nouvelle chaîne. Avec le skill `studio-faceless:grilling`, pose-moi les questions de départ, une porte à la fois : nom et promesse, public et langues, propriétaire, voix, territoires, principes, personnalité narrative, ce qui s'écarte des règles par défaut du plugin. Puis remplis `CLAUDE.md`, `direction/LIGNE_EDITORIALE.md` et `direction/ECARTS.md`, tout en `PROPOSÉ`, sans rien valider à ma place.
+> Nouvelle chaîne. Avec le skill `studio-faceless:grilling`, pose-moi les questions de départ, une porte à la fois : domaine (un profil de `plugins/studio-faceless/domaines/`, ou un nouveau domaine à créer selon `domaines/README.md`), nom et promesse, public et langues, propriétaire, voix, territoires, principes, personnalité narrative, ce qui s'écarte des règles par défaut du plugin. Puis remplis `CLAUDE.md`, `direction/LIGNE_EDITORIALE.md` et `direction/ECARTS.md`, tout en `PROPOSÉ`, sans rien valider à ma place.
 
 Ensuite viennent la marque (`marque/README.md` : logo, signature, appel, outro, couleurs, polices) et la bibliothèque de sons (`marque/son/README.md`), puis le premier épisode avec le skill `studio-faceless:episode`.
 
 ## 3. Ce qui se décide par chaîne
 | Où | Quoi |
 |---|---|
-| `CLAUDE.md` | propriétaire, langues, public, voix, règles propres, état |
+| `CLAUDE.md` | propriétaire, langues, public, voix, domaine, règles propres, état |
 | `direction/LIGNE_EDITORIALE.md` | identité, promesse, territoires, principes, personnalité narrative, sujets et registre des décisions |
 | `direction/ECARTS.md` | ce qui remplace une règle par défaut du plugin (référentiels, méthode de récit) ; **l'emporte** |
 | `marque/` | identité visuelle et sonore |

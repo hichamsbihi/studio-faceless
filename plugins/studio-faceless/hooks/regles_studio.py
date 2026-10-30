@@ -2,13 +2,32 @@
 
 Injecte les règles communes du studio (REGLES_STUDIO.md) au début de chaque session, et après un /compact,
 avec les chemins du plugin installé à la place de ${CLAUDE_PLUGIN_ROOT}.
+Depuis 0.2.0 : lit la ligne « - **Domaine** : <domaine> » du CLAUDE.md de la chaîne et donne le chemin de son profil.
 """
 import json
 import os
+import re
 import sys
 
 root = os.environ.get('CLAUDE_PLUGIN_ROOT') or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+racine = root.replace(chr(92), '/')
 with open(os.path.join(root, 'REGLES_STUDIO.md'), encoding='utf-8') as f:
-    texte = f.read().replace('${CLAUDE_PLUGIN_ROOT}', root.replace('\\', '/'))
+    texte = f.read().replace('${CLAUDE_PLUGIN_ROOT}', racine)
+
+chaine = os.environ.get('CLAUDE_PROJECT_DIR') or os.getcwd()
+try:
+    with open(os.path.join(chaine, 'CLAUDE.md'), encoding='utf-8') as f:
+        m = re.search(r'^\s*-\s*\*\*Domaine\*\*\s*:\s*`?([a-z0-9-]+)`?', f.read(), re.M)
+except OSError:
+    m = None
+if m and m.group(1) != 'aucun':
+    profil = os.path.join(root, 'domaines', m.group(1), 'DOMAINE.md')
+    if os.path.isfile(profil):
+        texte += ('\n\n## Domaine de la chaîne : ' + m.group(1) + '\nProfil : `' + racine + '/domaines/' + m.group(1)
+                  + '/DOMAINE.md` (sources, droits des images, risques, son, veille). Il remplace les règles par défaut ;'
+                  ' les écarts de la chaîne le remplacent. À lire selon la mission, comme `direction/ECARTS.md`.\n')
+    else:
+        texte += ('\n\n## Domaine de la chaîne : ' + m.group(1) + '\nAucun profil `domaines/' + m.group(1)
+                  + '/DOMAINE.md` dans le plugin : le signaler au propriétaire (`domaines/README.md`, « Créer un domaine »).\n')
 sys.stdout.buffer.write(json.dumps({'hookSpecificOutput': {
     'hookEventName': 'SessionStart', 'additionalContext': texte}}, ensure_ascii=False).encode('utf-8'))

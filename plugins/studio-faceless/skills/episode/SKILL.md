@@ -10,7 +10,8 @@ description: Full making of a documentary episode for a faceless channel, from c
 **Ce qui fait foi** (le propriétaire est celui que nomme le `CLAUDE.md` de la chaîne) :
 - les règles communes du studio (`${CLAUDE_PLUGIN_ROOT}/REGLES_STUDIO.md` : statuts, sous-agents, garde-fou, économie de tokens), injectées au début de chaque session, puis le `CLAUDE.md` de la chaîne (langues, propriétaire, règles propres) ;
 - les règles par défaut du plugin, dans `${CLAUDE_PLUGIN_ROOT}/referentiels/` : `REFERENTIEL_QUALITE_REALISATION.md` (médias § 2 bis, rythme § 2 ter), `DIRECTION_AUDIO.md` (mix § 3), `MOTION_CATALOG.md`, `METHODE_RECIT.md` ;
-- `direction/LIGNE_EDITORIALE.md` de la chaîne, et ses écarts dans `direction/ECARTS.md`, qui l'emportent sur les règles par défaut ;
+- le profil du domaine de la chaîne (`${CLAUDE_PLUGIN_ROOT}/domaines/<domaine>/DOMAINE.md`, domaine nommé dans le `CLAUDE.md` de la chaîne) : il remplace les règles par défaut, et les écarts de la chaîne le remplacent ;
+- `direction/LIGNE_EDITORIALE.md` de la chaîne, et ses écarts dans `direction/ECARTS.md`, qui l'emportent sur les règles par défaut et sur le domaine ;
 - `marque/README.md` et `marque/son/README.md` ;
 - le `CLAUDE.md` et le `BRIEF.md` de l'épisode.
 

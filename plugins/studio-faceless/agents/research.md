@@ -17,6 +17,7 @@ Le message de délégation suit le contrat de mission (neuf champs ; modèle : `
 - **Lecture** :
   - les fichiers du contrat ;
   - `direction/LIGNE_EDITORIALE.md` de la chaîne ;
+  - le profil du domaine de la chaîne (`${CLAUDE_PLUGIN_ROOT}/domaines/<domaine>/DOMAINE.md`, domaine nommé dans le `CLAUDE.md` de la chaîne) : il remplace les règles par défaut, et les écarts de la chaîne le remplacent (sources primaires, droits des images, pièges de faits) ;
   - `direction/ECARTS.md` de la chaîne : ses écarts l'emportent sur les règles par défaut du plugin ;
   - `${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md`, § 2 bis seulement, pour choisir des médias ;
   - `direction/references/` seulement pour un besoin précis.

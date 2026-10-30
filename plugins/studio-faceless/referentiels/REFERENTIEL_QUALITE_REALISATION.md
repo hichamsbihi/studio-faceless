@@ -72,7 +72,7 @@ Ces règles viennent des retours du propriétaire sur un épisode de la premièr
   2. Une photo nette en carte, avec une ombre profonde.
   3. Les fiches et le texte devant, avec au plus une légère rotation 2D fixe : jamais `perspective()` ni rotation 3D, qui font trembler le texte (E003).
 
-  La caméra se déplace dans la profondeur plutôt que de remplacer l'image. Pas de 3D (Three.js abandonné sur AA, 15/10/2026), pas de détourage automatique sans outil installé.
+  La caméra se déplace dans la profondeur plutôt que de remplacer l'image. Pas de 3D (Three.js abandonné sur AA, 15/10/2026), détourage des personnes avec l'outil de HyperFrames (§ 2 ter).
 - **Arrière-plan de la chaîne**, partout où il n'y a pas de photo plein cadre : un fond à couches (matière de fond, couche de contexte floutée, vignettage, brume, grain déterministe). Sa recette, ses matières et ses valeurs sont celles de la chaîne (`marque/README.md`, `direction/ECARTS.md`).
 - **Couleurs et polices des films** : `marque/README.md`.
 - **Aucune photo répétée** d'une séquence à l'autre dans un même film. Seule exception : un rappel voulu, consigné dans le README de la séquence. En cas de répétition, on la remplace par de la typographie, une animation ou une autre photo.
@@ -91,7 +91,7 @@ Ces règles viennent des retours du propriétaire sur un épisode de la premièr
   - logos avec mesure (un ou deux par passage, seulement s'ils aident) ; aucun filtre de grille ;
   - chiffres-cibles : plein cadre ≥ 25 % ; photo ≥ 45 % de la hauteur pendant ≥ 55 % du temps.
 - **Ajouts du 26/10/2026** (validé sur AA, étude AA du 26/10/2026 d'une chaîne de référence, Tifo Sports) :
-  - **personnes détourées** : quelques personnes clés par film, détourées à la main (`clip-path` en polygone, comme les miniatures ; le détourage automatique reste exclu sans outil installé), en couleurs réelles, jamais en bichromie. Elles se posent dans les dessins, cartes et graphiques, à 45 % de la hauteur au moins, et leur étiquette entre en opacité ou en glissement au pixel entier. Les grandes photos plein cadre restent intactes (fiche CUTOUT-FIGURE) ;
+  - **personnes détourées** : quelques personnes clés par film, détourées avec `remove-background` de HyperFrames, en local (modèle `u2net_human_seg`), jamais un autre outil ni un service en ligne (validé sur AA, 28/10/2026, Q117 de l'E010 ; remplace le `clip-path` en polygone tracé à la main, plugin 0.2.0 ; méthode : agent `motion-producer` § HyperFrames), en couleurs réelles, jamais en bichromie. Elles se posent dans les dessins, cartes et graphiques, à 45 % de la hauteur au moins, et leur étiquette entre en opacité ou en glissement au pixel entier. Les grandes photos plein cadre restent intactes (fiche CUTOUT-FIGURE) ;
   - **une idée abstraite = une métaphore dessinée** (argent, audience, temps, probabilité, risque), tirée de la matière du sujet, nommée dans le plan de plans et montrée sur le mot (fiche DRAWN-METAPHOR) ;
   - **effets choisis avant de construire** (le propriétaire : « obliger le producteur à bien choisir les effets avec une réflexion au préalable ; chaque vidéo doit être meilleure que la précédente »). Le producteur lit l'index de `${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md`, y compris les techniques vues chez Tifo, et écrit sa fiche d'effets avant toute scène (skill `studio-faceless:episode`, `references/production.md` § 2) ;
   - **non retenu** : la coupe franche par défaut et le changement de couleur de fond à chaque bloc. La recette v3 et le fond fixe restent la règle ; un changement de bloc se marque par l'impact (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 2) et par la nouvelle photo de contexte.
@@ -110,7 +110,7 @@ Ces règles viennent des retours du propriétaire sur la séquence témoin de l'
 
   Jamais deux fois de suite la même ; pas de fondu enchaîné par défaut. La fiche d'effets nomme le type et la raison de chaque transition.
 - **Les médias au bon moment, pas de collage de vidéos.** Un extrait ou une photo arrive quand la voix parle de ce qu'il montre, et il y est mis en valeur (cadre, rampe de vitesse, caméra qui bouge). Entre deux médias, les animations portent le récit. Une banque de plans est une réserve, jamais un remplissage ; chaque plan n'est attribué qu'à une séquence.
-- **Arrêt sur image** : 2 s au plus, avec une caméra qui bouge.
+- **Aucune image fixe tirée d'une vidéo** : ni arrêt sur image, ni capture. Une vidéo se montre en mouvement ; un moment à expliquer passe par un dessin (validé sur AA, 28/10/2026, Q95 de l'E010 ; remplace « arrêt sur image : 2 s au plus », plugin 0.2.0).
 - **Aucun temps sans voix ajouté.** Une pause écrite au script peut se retirer de la bande ; celles qui restent tombent sur une image réelle qui bouge (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 2).
 - **Jonctions vivantes** : les objets de jonction bougent (aiguille, pupille, craie qui frémit) ; ils ne sont au pixel que sur les 3 images de la jonction.
 - **Savoir-faire avant la fiche d'effets** : le producteur lit, dans `hyperframes-animation` (WAAPI et CSS seulement), les transitions de scène et les plans en plusieurs phases, et, dans `hyperframes-keyframes`, la caméra, les masques, les tracés et la profondeur.

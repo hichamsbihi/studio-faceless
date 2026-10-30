@@ -2,6 +2,14 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 0.2.0 (30/10/2026)
+Niveau « domaine » et deux règles de l'E010 d'AA devenues générales, au passage de StudioV1 au plugin (tableau de passage de StudioV1, recommandations 2 et 4, VALIDÉ, Hicham, 30/10/2026).
+- `domaines/` : `README.md` (ordre de priorité plugin < domaine < chaîne, brancher et créer un domaine), `_modele/DOMAINE.md` et premier profil `sport/DOMAINE.md` (sources primaires, droits des images dont les compétitions admises pour les vraies vidéos de match, pièges de faits, son, veille), tiré des règles d'AA.
+- `hooks/regles_studio.py` : lit la ligne `- **Domaine** : <domaine>` du `CLAUDE.md` de la chaîne et ajoute le chemin du profil aux règles communes ; signale un domaine sans profil. Une chaîne sans cette ligne reçoit les mêmes règles qu'avant.
+- `REGLES_STUDIO.md` : ordre de priorité et ligne « Règles du domaine » dans « Quoi lire » ; agents `research` et `art-director`, skill `episode` : lecture du profil du domaine ; `starter/CLAUDE.md` et `NOUVELLE_CHAINE.md` : le domaine est la première question d'une nouvelle chaîne.
+- `REFERENTIEL_QUALITE_REALISATION.md` § 2 quater : aucune image fixe tirée d'une vidéo (Q95 de l'E010), à la place de « arrêt sur image : 2 s au plus ».
+- `REFERENTIEL_QUALITE_REALISATION.md` § 2 ter, `MOTION_CATALOG.md` (CUTOUT-FIGURE), agent `motion-producer` : personnes détourées avec `remove-background` de HyperFrames en local et méthode en quatre étapes (Q117 de l'E010), à la place du `clip-path` tracé à la main. Les miniatures gardent leur détourage par polygone (`thumbnail-strategist`), Q117 ne visant que les films.
+
 ## 0.1.3 (29/10/2026)
 Nouveau skill `frontend-design`, ajouté à la demande de Hicham le 29/10/2026 pour des planches et des compositions d'un niveau plus professionnel.
 - `skills/frontend-design/` : copie du skill d'anthropics/skills (Apache 2.0, commit `ca45fc4`), avec son `LICENSE.txt` et un `PROVENANCE.md` (source, empreintes). Méthode de directeur artistique : plan de jetons relu contre le brief avant de construire, une seule idée forte, critique sur captures, liste des défauts visuels génériques.

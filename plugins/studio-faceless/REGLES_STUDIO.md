@@ -1,6 +1,6 @@
 # Règles communes du studio (plugin studio-faceless)
 
-Ces règles s'appliquent à toutes les chaînes qui utilisent le plugin. Elles sont injectées au début de chaque session. Le `CLAUDE.md` de la chaîne les complète et l'emporte en cas de conflit : il nomme le **propriétaire** (celui qui décide et valide), la langue des documents et celle du spectateur, le public et la voix. Ces règles viennent de StudioV1 (chaîne Apparently Athletic), où le propriétaire les a validées entre le 14 et le 28/10/2026.
+Ces règles s'appliquent à toutes les chaînes qui utilisent le plugin. Elles sont injectées au début de chaque session. Le `CLAUDE.md` de la chaîne les complète et l'emporte en cas de conflit : il nomme le **propriétaire** (celui qui décide et valide), la langue des documents et celle du spectateur, le public, la voix et le **domaine**. Ordre de priorité : règles par défaut du plugin, puis profil du domaine, puis écarts et `CLAUDE.md` de la chaîne ; le plus précis l'emporte. Partout où le plugin renvoie à `direction/ECARTS.md`, le profil du domaine s'applique avant lui. Ces règles viennent de StudioV1 (chaîne Apparently Athletic), où le propriétaire les a validées entre le 14 et le 28/10/2026.
 
 **Dossier du plugin** : dans les fichiers du plugin (README, modèles, références), la variable `CLAUDE_PLUGIN_ROOT` entre accolades désigne `${CLAUDE_PLUGIN_ROOT}`. Elle n'existe pas dans l'environnement de Bash : écrire ce chemin en entier dans les commandes.
 
@@ -12,7 +12,8 @@ Ces règles s'appliquent à toutes les chaînes qui utilisent le plugin. Elles s
 | Réalisation, image, montage | `${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` |
 | Voix, musique, ambiances, SFX, mixage | `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` |
 | Choisir ou documenter une technique d'animation | `${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md` (à la demande, une fiche à la fois) |
-| Écarts de la chaîne aux règles par défaut | `direction/ECARTS.md` : **ils l'emportent** |
+| Règles du domaine de la chaîne : sources, droits des images, risques, son, veille | `${CLAUDE_PLUGIN_ROOT}/domaines/<domaine>/DOMAINE.md`, domaine nommé dans le `CLAUDE.md` de la chaîne : il remplace les règles par défaut |
+| Écarts de la chaîne aux règles par défaut et au domaine | `direction/ECARTS.md` : **ils l'emportent** |
 | Marque : identité, signature, appels, outro ; bibliothèque de sons | `marque/README.md`, `marque/son/README.md` de la chaîne |
 | Travail sur un épisode | son `episodes/<id>/CLAUDE.md` et son `BRIEF.md` |
 | Fabriquer un épisode, du sujet au mix du film | skill `studio-faceless:episode` |

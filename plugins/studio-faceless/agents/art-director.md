@@ -20,6 +20,7 @@ Le message de délégation suit le contrat de mission (neuf champs ; modèle : `
 ## Périmètre
 - **Lecture** :
   - les fichiers du contrat ;
+  - le profil du domaine de la chaîne (`${CLAUDE_PLUGIN_ROOT}/domaines/<domaine>/DOMAINE.md`, domaine nommé dans le `CLAUDE.md` de la chaîne) : il remplace les règles par défaut, et les écarts de la chaîne le remplacent ;
   - `direction/ECARTS.md` de la chaîne : ses écarts l'emportent sur les règles par défaut du plugin ;
   - `${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` (« le référentiel ») ;
   - `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` et le skill `studio-faceless:direction-sonore` (tool Skill, plus préchargé depuis le 18/10/2026, validé sur AA), si le son est concerné ;

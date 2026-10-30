@@ -7,6 +7,7 @@
 - **Langues** : échanges, recherches et documents internes en <langue> ; tout ce que voit ou entend le spectateur en <langue du public>.
 - **Public** : <public visé>.
 - **Voix** : <voix de synthèse retenue (service, nom), réglages>.
+- **Domaine** : <nom d'un dossier de `domaines/` du plugin (`sport`…), ou « aucun »>.
 
 ## Quoi lire (propre à la chaîne)
 | Mission | Lire |

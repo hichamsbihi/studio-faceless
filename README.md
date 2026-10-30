@@ -25,6 +25,7 @@ Le plugin ne dépend d'aucune chaîne : les mentions d'AA ou de StudioV1 n'y ser
 | `referentiels/` | règles par défaut : `METHODE_RECIT`, `REFERENTIEL_QUALITE_REALISATION`, `DIRECTION_AUDIO`, `MOTION_CATALOG` |
 | `outils/` | contrôles (`controle/`), montage et mix du film (`montage/`), cartes, shorts, rendu, archivage, contrôle du dépôt, suivi des tokens |
 | `templates/` | gabarit de séquence v3, modèles de `CLAUDE.md` et de `BRIEF.md` d'épisode, contrat de mission |
+| `domaines/` | profils de domaine (`sport`) : règles communes aux chaînes d'un même sujet, entre les règles par défaut et la chaîne |
 | `starter/` | squelette d'une nouvelle chaîne |
 | `vendor/claude-skills/` | skills HyperFrames de la version 0.8.149, figés |
 
