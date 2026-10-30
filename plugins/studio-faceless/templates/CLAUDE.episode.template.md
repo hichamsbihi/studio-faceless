@@ -39,8 +39,7 @@ Modèle inactif tant qu'il n'est pas utilisé pour un épisode autorisé. À cop
 ## Décisions et état
 - Consigner les décisions éditoriales propres à l'épisode dans son brief, avec leur statut et la référence à la validation utilisateur ; ne pas les recopier ici.
 - Toute modification importante du sujet, de l'angle ou de la promesse nécessite la validation de l'utilisateur. Proposer les changements globaux à la direction sans les appliquer implicitement.
-- État actuel : [non démarré / recherche / autre état explicitement établi].
-- Dernier travail effectué et points non résolus : [à renseigner].
-- Prochaine action autorisée : [à renseigner ; ne pas supposer une autorisation de production].
+- **État courant : `STATE.md`** (à lire seul pour reprendre, avec `episodes/INDEX.md` ; le réécrire en entier à chaque fin d'étape, 2,5 Ko au plus ; modèle `${CLAUDE_PLUGIN_ROOT}/templates/STATE.template.md`). Journal complet : `HISTORIQUE_ETAT.md`, à lire par `grep`.
+- Prochaine action autorisée : [à renseigner dans `STATE.md` ; ne pas supposer une autorisation de production].
 
 Ce fichier définit des instructions ; il ne lance aucune action ni aucun processus autonome.

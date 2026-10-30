@@ -1,6 +1,6 @@
 # Référentiels du plugin
 
-Cette page décrit les quatre référentiels de `plugins/studio-faceless/referentiels/` : la méthode de récit, le référentiel de qualité de réalisation, le catalogue d'animations et (par renvoi) la direction audio. Ce sont les **règles par défaut** de toutes les chaînes.
+Cette page décrit les référentiels de `plugins/studio-faceless/referentiels/` : la méthode de récit, le référentiel de qualité de réalisation, le catalogue d'animations, (par renvoi) la direction audio et, depuis la 0.2.2, la suite des règles communes (`REGLES_DETAIL.md`). Ce sont les **règles par défaut** de toutes les chaînes.
 
 ## Table des matières
 - [Rôle des référentiels et ordre des règles](#rôle-des-référentiels-et-ordre-des-règles)
@@ -9,6 +9,7 @@ Cette page décrit les quatre référentiels de `plugins/studio-faceless/referen
   - [referentiels/REFERENTIEL_QUALITE_REALISATION.md](#referentielsreferentiel_qualite_realisationmd)
   - [referentiels/MOTION_CATALOG.md](#referentielsmotion_catalogmd)
   - [referentiels/DIRECTION_AUDIO.md](#referentielsdirection_audiomd)
+  - [referentiels/REGLES_DETAIL.md](#referentielsregles_detailmd)
 - [Tableau des 70 fiches du catalogue](#tableau-des-70-fiches-du-catalogue)
 - [Qui cite quoi](#qui-cite-quoi)
 - [Points à vérifier et tensions entre fichiers](#points-à-vérifier-et-tensions-entre-fichiers)
@@ -115,6 +116,7 @@ Le mot « validé sur AA, date » veut dire : décidé par le propriétaire d'AA
 ### referentiels/DIRECTION_AUDIO.md
 - **Rôle** : règles par défaut de la voix, de la musique, des ambiances, des effets et du mixage (cibles de livraison, chaîne ElevenLabs, contrôles).
 - **Documenté ailleurs** : fiche complète dans [`son.md`](son.md), avec le skill `direction-sonore`, `outils/montage/` et les scripts `transcrire.py` et `ralentir.py`. Cette page ne le décrit pas.
+- **§ 4 ElevenLabs depuis la 0.2.2** (30/10/2026) : ElevenLabs passe par l'API (SDK Python `elevenlabs`, variable `ELEVENLABS_API_KEY`, jamais lue ni affichée), pas par le connecteur claude.ai, coupé par défaut ; chaque génération demande l'accord du propriétaire, coût annoncé avant ; les skills `elevenlabs-*` sont appelés avec `/nom` ou lus par Claude quand le propriétaire demande une génération.
 - **Sections** (pour s'y repérer) : § 1 Décisions et contraintes · § 2 Principes · § 3 Mixage et livraison · § 4 ElevenLabs · § 5 Contrôles · Sources (consultées le 12/10/2026).
 - **Lien utile ici** : le catalogue y renvoie (`MATTER-WIPE`, bruit de matière) ; le référentiel de réalisation en fait sa porte D.
 
@@ -196,6 +198,12 @@ Ordre de l'index du fichier. « Épisodes » = historique d'AA ; « — (Tifo) �
 
 Statut de toutes les fiches : `expérimental`.
 
+### referentiels/REGLES_DETAIL.md
+- **Rôle** (0.2.2, 30/10/2026) : suite des règles communes du studio, avec la même autorité que `REGLES_STUDIO.md`. Elle reçoit, **mot pour mot**, les sections « Moteur et outils » (versions figées, navigateurs, outils, garde-fou par rôle, rendu, archivage, dépôt Git, suivi des tokens) et « Parcours d'un épisode » (les onze étapes), déplacées de `REGLES_STUDIO.md`.
+- **Pourquoi** : l'application de bureau coupe tout `additionalContext` au-delà de 10 000 caractères. `REGLES_STUDIO.md` en faisait 12 565 une fois le chemin substitué : seul un aperçu de 2 Ko arrivait au modèle, et les sections « Sous-agents », « Parcours d'un épisode », « Économie de tokens » et « Règles permanentes » n'étaient jamais lues. Il fait maintenant moins de 9 000 caractères ; ce fichier-ci n'est pas injecté.
+- **Quand il sert** : lu à la demande, selon la mission (ligne dédiée du tableau « Quoi lire » de `REGLES_STUDIO.md`) : avant un rendu, une commande d'outil, une question de garde-fou, ou pour le parcours d'un épisode. Il garde `${CLAUDE_PLUGIN_ROOT}` tel quel ; sa première phrase dit que le chemin est donné par les règles injectées.
+- **Contrôle** : `verifier_depot.py` refuse un `REGLES_STUDIO.md` de plus de 9 000 caractères (chemin du cache substitué). Le hook `regles_studio.py` ajoute en tête « Texte tronqué par l'app : lire <racine>/REGLES_STUDIO.md en entier. » si le texte injecté dépasse 9 500 caractères.
+
 ## Qui cite quoi
 | Référentiel | Cité par |
 |---|---|
@@ -203,6 +211,7 @@ Statut de toutes les fiches : `expérimental`.
 | `REFERENTIEL_QUALITE_REALISATION.md` | `REGLES_STUDIO.md` ; agents `art-director`, `motion-producer`, `research` ; skills `episode`, `shorts`, `javascript-animation` ; `outils/controle/` ; les trois modèles de `templates/` et le gabarit v3 ; `starter/direction/` |
 | `MOTION_CATALOG.md` | `REGLES_STUDIO.md` ; agents `art-director`, `motion-producer`, `studio-maintainer` ; skill `episode` ; `templates/CONTRAT_MISSION.template.md` et `CLAUDE.episode.template.md` ; `starter/direction/ECARTS.md` |
 | `DIRECTION_AUDIO.md` | voir [`son.md`](son.md) ; aussi `starter/marque/son/README.md` et `starter/direction/` |
+| `REGLES_DETAIL.md` | `REGLES_STUDIO.md` (tableau « Quoi lire » et renvois des deux sections déplacées) ; skill `episode` (« Ce qui fait foi ») |
 
 ## Points à vérifier et tensions entre fichiers
 - Les statuts « validé sur AA » sont des décisions d'AA : à confirmer par le propriétaire d'une autre chaîne avant de les reprendre telles quelles (écart dans son `ECARTS.md` sinon).

@@ -15,7 +15,7 @@ Une chaîne est un dossier (et un dépôt Git privé) créé à partir du squele
    ```bash
    git config core.hooksPath .githooks
    ```
-4. Dépendances : `npm ci` ne marche qu'avec un `package-lock.json` à jour. Le squelette fournit celui de HyperFrames 0.8.149 ; le propriétaire décide de l'installation. Suivre ensuite [`INSTALLATION.md`](INSTALLATION.md) § 4, points 4 à 7 : `pip install -r requirements.txt`, règle « ask » du connecteur ElevenLabs, modèle Whisper.
+4. Dépendances : `npm ci` ne marche qu'avec un `package-lock.json` à jour. Le squelette fournit celui de HyperFrames 0.8.149 ; le propriétaire décide de l'installation. Suivre ensuite [`INSTALLATION.md`](INSTALLATION.md) § 4, points 4 à 7 : `pip install -r requirements.txt`, clé `ELEVENLABS_API_KEY` posée par le propriétaire (pas de connecteur), modèle Whisper.
 5. Ouvrir le dossier dans Claude Code, accepter la confiance du dossier, puis, dans un terminal Git Bash ouvert dans ce dossier, déclarer le catalogue du plugin et installer le plugin :
    ```bash
    claude plugin marketplace add hichamsbihi/studio-faceless --scope project

@@ -25,7 +25,7 @@ Ce document décrit comment un épisode obtient ses musiques, ses ambiances et s
 | Acteur | Rôle |
 |---|---|
 | **Propriétaire** | Répond à la porte, **demande** toute génération, accorde le coût, **choisit lui-même les variantes**, écoute et approuve. |
-| **Studio Director** (Claude principal) | Puise dans la bibliothèque, repère, écrit contrat audio et feuille de repérage, **génère et télécharge** (seul à appeler le connecteur), consigne la provenance, verse le son approuvé dans `marque/son/`. |
+| **Studio Director** (Claude principal) | Puise dans la bibliothèque, repère, écrit contrat audio et feuille de repérage, **génère et télécharge** (seul à générer, par l'API), consigne la provenance, verse le son approuvé dans `marque/son/`. |
 | **`motion-producer`** | Propose ses effets dans un tableau du README de sa séquence (code, instant local, image qui le justifie, type, facultatif). **Ne mixe rien et n'a pas accès à ElevenLabs.** Peut charger le skill `direction-sonore` « si le brief ne suffit pas ». |
 | **`shorts-producer`**, **`art-director`** | Peuvent charger `direction-sonore` à la demande ; aucune génération. |
 | **`studio-maintainer`** | Ne génère ni ne mixe ; il ne peut pas écrire dans un dossier existant de `marque/`. |
@@ -33,7 +33,7 @@ Ce document décrit comment un épisode obtient ses musiques, ses ambiances et s
 ## Prérequis
 - `marque/son/README.md` de la chaîne : tableaux « Musiques » et « Effets et ambiances » (fichier, durée, épisode, rôle). Le squelette fournit les tableaux vides.
 - `referentiels/DIRECTION_AUDIO.md` (§ 1 dépenses, § 2 musique et effets, § 3 bibliothèque, § 4 ElevenLabs) et ses écarts dans `direction/ECARTS.md`.
-- Pour générer : le **connecteur ElevenLabs** ajouté au compte claude.ai du propriétaire, et son identifiant (`mcp__<identifiant>`) dans la liste `ask` du `.claude/settings.json` de la chaîne (`INSTALLATION.md` § 4, point 6 ; le squelette ne l'inclut pas, car il dépend du compte).
+- Pour générer (0.2.2, 30/10/2026) : l'**API ElevenLabs** (SDK Python `elevenlabs`, clé dans la variable `ELEVENLABS_API_KEY`, jamais lue ni affichée) ; le connecteur claude.ai est coupé par défaut. Chaque génération demande l'accord du propriétaire, coût annoncé avant ; les skills `elevenlabs-*` sont appelés avec `/nom`, ou lus par Claude quand le propriétaire demande une génération.
 - Un abonnement **payant** pour un usage commercial des sons générés (selon l'aide d'ElevenLabs, le plan gratuit n'a pas de licence commerciale ; `skills/youtube-seo/references/description-et-credits.md`).
 - FFmpeg et FFprobe pour les mesures (commandes de `skills/direction-sonore/references/controle-et-mesure.md`).
 
@@ -110,10 +110,7 @@ Ce document décrit comment un épisode obtient ses musiques, ses ambiances et s
 #### 11. Établir le besoin
 - **Qui** : Studio Director, après demande explicite du propriétaire.
 - **Conditions** : aucune génération ni dépense hors du budget explicitement autorisé par la mission ; aucun achat ; le propriétaire **choisit lui-même** les variantes ; aucune musique superposée sans demande.
-- **Vérifier le connecteur de la session** :
-  - connecteur de base : voix et effets, **pas de musique** ;
-  - connecteur complet : ajoute la musique (Eleven Music v2.5, 3 à 600 s, instrumental possible) ;
-  - sans le connecteur complet, le dire et proposer une autre solution.
+- **Musique par l'API** (skill `elevenlabs-music`) : Eleven Music v2.5, 3 à 600 s, instrumental possible ; annoncer le coût estimé et attendre l'accord du propriétaire.
 - **Autres sources musicales** : Suno, Udio et équivalents sont exclus sans décision du propriétaire. Une musique synthétisée en code (skill `soundtrack`) n'est possible que sur sa demande, en stem séparé, déclarée comme son construit.
 
 #### 12. Écrire les briefs
@@ -129,9 +126,9 @@ Ce document décrit comment un épisode obtient ses musiques, ses ambiances et s
 - **Garde-fou** : chaque appel passe par la règle `ask` du `.claude/settings.json` ; à défaut, Claude demande l'accord en conversation avant chaque lot. Regrouper : tous les nœuds, puis **un lancement par lot de 20 au plus**.
 
 #### 14. Générer et télécharger
-- **Qui** : Studio Director **seul**. Aucun sous-agent n'appelle le connecteur.
-- **Réglages** : `generations_count: 1` (quatre par défaut), ou 2 quand le propriétaire doit choisir entre variantes.
-- **Contrainte** : les liens de téléchargement expirent au bout de **2 h** ; télécharger tout de suite.
+- **Qui** : Studio Director **seul**. Aucun sous-agent ne génère.
+- **Réglages** : une génération par nœud, ou 2 quand le propriétaire doit choisir entre variantes (avec le connecteur, `generations_count` valait quatre par défaut).
+- **Contrainte** (constatée avec le connecteur) : les liens de téléchargement expiraient au bout de **2 h** ; télécharger tout de suite.
 - **Fichiers écrits** : dans le kit de l'épisode (`kit/media/audio/`), sans écraser.
 
 #### 15. Tri technique
@@ -188,7 +185,7 @@ flowchart TD
 | Piège | Ce qu'on fait |
 |---|---|
 | Générer sans demande, ou sans accord du coût | Interdit. Revenir à la bibliothèque ; demander l'accord en conversation avant chaque lot. |
-| Sous-agent qui appelle le connecteur | Interdit : seul le Studio Director génère. Un producteur qui a besoin d'un son neuf s'arrête et le signale. |
+| Sous-agent qui génère | Interdit : seul le Studio Director génère. Un producteur qui a besoin d'un son neuf s'arrête et le signale. |
 | Règle `ask` absente du `settings.json` | Le squelette ne l'inclut pas : l'ajouter (`INSTALLATION.md` § 4, point 6) ; à défaut, demander l'accord en conversation. |
 | Estimation de crédits prise pour le budget | Elle dépasse largement la facturation (35 facturés pour 115,5 estimés) : la lire sans s'y fier. |
 | Lien de téléchargement expiré | Les liens durent 2 h. Télécharger au moment de la génération. |

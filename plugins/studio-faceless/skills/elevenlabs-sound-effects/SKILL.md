@@ -16,7 +16,8 @@ Ajout du studio au texte d'origine, 29/10/2026 ; source, empreintes et modificat
 - **Génération** : seulement à la demande explicite du propriétaire, son par son, avec une estimation des crédits avant. Le fichier sort dans le dossier de travail de l'épisode ou de la marque ; sa provenance (prompt, modèle, paramètres, durée, date, forfait) va dans le `PROVENANCE.md` qui convient (bibliothèque : `marque/son/README.md` de la chaîne).
 - **Licence** : usage commercial (YouTube monétisé) seulement avec un forfait payant ; vérifier le forfait avant la première génération. Sur le forfait gratuit, le centre d'aide d'ElevenLabs exclut l'usage commercial et demande de citer elevenlabs.io.
 - **Emploi** : un son généré est illustratif et ne passe jamais pour le son réel d'un lieu ou d'un événement ; la chaîne peut en restreindre l'emploi (`direction/ECARTS.md`). Mix : `DIRECTION_AUDIO.md` § 3 et skill `direction-sonore`.
-- **Connecteur** : si le connecteur ElevenLabs de Claude est branché, il fait les mêmes générations sans clé ; le propriétaire choisit l'un ou l'autre.
+- **Connecteur** : le connecteur ElevenLabs de claude.ai est coupé par défaut et n'est pas utilisé ; on passe par l'API (`referentiels/DIRECTION_AUDIO.md` § 4, 30/10/2026).
+- **Appel** : l'appel automatique de ce skill est bloqué (`disable-model-invocation`, 0.2.2). Le propriétaire l'appelle avec `/elevenlabs-sound-effects`, ou Claude lit ce fichier quand il demande une génération ; chaque génération demande son accord, coût annoncé avant.
 
 Generate sound effects from text descriptions — supports looping, custom duration, and prompt adherence control.
 

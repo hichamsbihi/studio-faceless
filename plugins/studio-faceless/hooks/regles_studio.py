@@ -1,8 +1,11 @@
 """Hook SessionStart du plugin studio-faceless.
 
-Injecte les règles communes du studio (REGLES_STUDIO.md) au début de chaque session, et après un /compact,
+Injecte les règles communes du studio (REGLES_STUDIO.md) au début de chaque session, et après un /clear ou un /compact,
 avec les chemins du plugin installé à la place de ${CLAUDE_PLUGIN_ROOT}.
 Depuis 0.2.0 : lit la ligne « - **Domaine** : <domaine> » du CLAUDE.md de la chaîne et donne le chemin de son profil.
+Depuis 0.2.2 : l'application de bureau coupe tout additionalContext au-delà de 10 000 caractères (seul un aperçu de 2 Ko
+arrive au modèle). REGLES_STUDIO.md doit donc rester court (le vérificateur du dépôt refuse plus de 9 000 caractères) ;
+si le texte final dépasse tout de même 9 500 caractères, une première ligne dit de lire le fichier en entier.
 """
 import json
 import os
@@ -29,5 +32,7 @@ if m and m.group(1) != 'aucun':
     else:
         texte += ('\n\n## Domaine de la chaîne : ' + m.group(1) + '\nAucun profil `domaines/' + m.group(1)
                   + '/DOMAINE.md` dans le plugin : le signaler au propriétaire (`domaines/README.md`, « Créer un domaine »).\n')
+if len(texte) > 9500:
+    texte = "Texte tronqué par l'app : lire " + racine + "/REGLES_STUDIO.md en entier.\n\n" + texte
 sys.stdout.buffer.write(json.dumps({'hookSpecificOutput': {
     'hookEventName': 'SessionStart', 'additionalContext': texte}}, ensure_ascii=False).encode('utf-8'))

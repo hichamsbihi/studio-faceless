@@ -1,6 +1,6 @@
 ---
 name: thumbnail-strategist
-description: "Thumbnail method for a faceless documentary channel: one promise shared with the title, five truthful concepts, three variants, HTML/CSS 1280x720 render, measurable checks and A/B test protocol. Use when planning, making, critiquing or checking a thumbnail, or preparing an A/B test. Real licensed photos only, never AI-generated images."
+description: "Thumbnail method for a faceless documentary channel: one promise shared with the title, five truthful concepts, three variants, HTML/CSS 1280x720 render, measurable checks, A/B test protocol. Use when planning, making, critiquing or checking a thumbnail. Real licensed photos only, never AI images."
 ---
 
 # Miniatures
@@ -29,9 +29,9 @@ Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les
 1. **Promesse** : une seule promesse, portée à la fois par le titre et la miniature et tenue dès l'accroche de la vidéo. La miniature complète le titre sans le répéter. Voir `references/promesse-et-concepts.md`.
 2. **Au moins 5 concepts véridiques**, chacun fondé sur une contradiction vérifiée et sourcée ; aucune émotion ni pensée inventée prêtée à une personne réelle. Voir `references/promesse-et-concepts.md`.
 3. **3 variantes très différentes** retenues parmi les concepts (sujet, image, mécanisme du texte).
-4. **Grammaire** : par défaut celle de la miniature v4, validée sur AA (E003). Voir `references/grammaire-e003.md`, avec les leçons de l'E001 et les retours du propriétaire sur l'E003 (AA).
+4. **Grammaire** : par défaut celle de la miniature v4, validée sur AA (E003) : visage célèbre détouré à la main (polygone CSS `clip-path`), fond uni aux couleurs de l'histoire, 2 à 4 mots en Montserrat 900, courte flèche rouge, drapeaux. Voir `references/grammaire-e003.md`, avec les leçons de l'E001 et les retours du propriétaire sur l'E003 (AA).
 5. **Fabrication** : HTML/CSS 1280×720, détourage par polygone à partir d'une grille de coordonnées, rendu sans fenêtre. Voir `references/fabrication.md` et `scripts/miniature.py`.
-6. **Contrôles mesurables**, puis planche « flux » (analyse interne). Voir `references/controles.md`. Les mesures ne remplacent pas le regard du propriétaire.
+6. **Contrôles mesurables** (poids et taille, aperçus 168×94 et 320×180, coin inférieur droit, contraste du texte, fonds clair et sombre), puis planche « flux » (analyse interne). Voir `references/controles.md`. Les mesures ne remplacent pas le regard du propriétaire.
 7. **Test & Compare** et **journal de l'épisode**. Voir `references/test-et-journal.md`.
 
 ## Refus permanents

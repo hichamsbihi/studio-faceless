@@ -108,7 +108,7 @@ Fichier : [`musique-a-l-image.md`](../../plugins/studio-faceless/skills/directio
   5. *Sources et droits* : aucune nouvelle recherche musicale sans demande ; jamais « comme » un artiste ou un morceau connu ; journal de cues sans donnée inventée ;
   6. *Diagnostic rapide* : tableau symptôme, cause, correction (kitsch, lutte avec la voix, boucle qui claque, droits flous…).
 - **Liens** : `gabarits.md` (journal de cues), `DIRECTION_AUDIO.md` § 1-3.
-- **À savoir** : le § 5 renvoie à `DIRECTION_AUDIO.md` § 4 pour le connecteur ElevenLabs (connecteur de base sans musique, connecteur complet avec Eleven Music, accord du propriétaire). Suno, Udio et équivalents restent exclus sans décision du propriétaire.
+- **À savoir** : le § 5 renvoie à `DIRECTION_AUDIO.md` § 4 pour ElevenLabs (par l'API depuis la 0.2.2, connecteur claude.ai coupé par défaut, accord du propriétaire et coût annoncé avant chaque génération). Suno, Udio et équivalents restent exclus sans décision du propriétaire.
 
 ### skills/direction-sonore/references/controle-et-mesure.md
 Fichier : [`controle-et-mesure.md`](../../plugins/studio-faceless/skills/direction-sonore/references/controle-et-mesure.md)
@@ -178,12 +178,12 @@ Tableau de sept sujets :
 - *Transcription locale* (constaté en octobre 2026) : le FFmpeg installé contient le filtre `whisper` ; il lui faut un modèle `ggml` (par exemple `ggml-base.en.bin`, MIT, 148 Mo) gardé hors du projet, téléchargé avec l'accord du propriétaire ; découper par silences, `max_len=1` donne les mots à ±0,1 s ; chemins relatifs depuis le dossier du modèle (les « : » des lecteurs Windows cassent le filtre) ; échecs connus : l'alignement DTW sur la voix Zira, Scribe d'ElevenLabs (le propriétaire doit envoyer le fichier lui-même).
 
 #### § 4. ElevenLabs
-- Deux connecteurs possibles : le **connecteur de base** (voix et effets, **pas de musique**) et le **connecteur complet** (ajoute la musique, Eleven Music v2.5, 3 à 600 s, instrumental possible). Vérifier celui de la session avant de promettre une musique.
+- **Par l'API, pas par le connecteur** (30/10/2026) : SDK Python `elevenlabs`, clé dans `ELEVENLABS_API_KEY` (jamais lue ni affichée) ; connecteur claude.ai coupé par défaut ; chaque génération demande l'accord du propriétaire, coût annoncé avant ; les skills `elevenlabs-*` (appel automatique bloqué) sont appelés avec `/nom` ou lus par Claude quand le propriétaire demande une génération. Eleven Music : 3 à 600 s, instrumental possible.
 - Coûts constatés sur AA : effets environ 3,3 crédits par seconde ; musique environ 27,5 crédits par seconde et par variante (20/10/2026). L'estimation affichée dépasse largement la facturation (35 crédits facturés pour 115,5 estimés) : la lire sans en faire un budget.
 - Brief d'un son : action ou matière, proximité, énergie, durée, sec ou réverbéré, début et fin, exclusions, rôle dans la scène ; éléments générés séparément. Une génération par nœud (deux si le propriétaire doit choisir), prompt de 450 caractères au plus, liens de téléchargement valables 2 h.
 - Un « clic » généré contient souvent plusieurs attaques : mesurer les transitoires, garder une paire appui/relâchement calée sur l'image de contact.
-- Musique : puiser d'abord dans `marque/son/`. Avec le connecteur complet, montrer l'estimation et attendre l'accord. *Solution éprouvée sur AA* (15/10/2026, rechoisie le 20/10/2026, Eleven Music jugé trop cher) : nappes en boucle par le modèle d'effets (`loop: true`, 30 s, 2 variantes) ; le Studio Director garde la variante au raccord de boucle propre (écart d'énergie début/fin ≤ 1,5 dB) et la moins chargée entre 1 et 4 kHz, et nomme l'autre.
-- **Garde-fou** : chaque appel au connecteur passe par une règle `ask` du `.claude/settings.json` de la chaîne, sinon accord demandé en conversation avant chaque lot (lots de 20 nœuds au plus). **Aucun sous-agent n'appelle le connecteur** : le Studio Director génère, télécharge et consigne prompts, identifiants, empreintes et crédits.
+- Musique : puiser d'abord dans `marque/son/`. Montrer l'estimation et attendre l'accord. *Solution éprouvée sur AA* (15/10/2026, rechoisie le 20/10/2026, Eleven Music jugé trop cher) : nappes en boucle par le modèle d'effets (`loop: true`, 30 s, 2 variantes) ; le Studio Director garde la variante au raccord de boucle propre (écart d'énergie début/fin ≤ 1,5 dB) et la moins chargée entre 1 et 4 kHz, et nomme l'autre.
+- **Accord** : en conversation avant chaque lot (lots de 20 nœuds au plus). **Aucun sous-agent ne génère** : le Studio Director génère, télécharge et consigne prompts, identifiants, empreintes et crédits.
 - Les sons générés sont des illustrations : prompt, identifiant, crédits et licence de l'abonnement vont dans `PROVENANCE.md`.
 
 #### § 5. Contrôles
@@ -198,7 +198,7 @@ Huit références consultées le 12/10/2026 : S1 iZotope (superviseur son de *Cr
 - **À savoir** :
   - La cellule « Prise approuvée » du § 1 mêle la règle des films et celle des shorts : lire les deux avant de s'en servir pour un short.
   - Le § 3 contient deux niveaux de plafond qui ne se contredisent pas : la **cible de livraison** est ≤ −1,5 dBTP (mesurée sur le MP4 livré), le **limiteur du mix** travaille à −2,0 dBTP.
-  - La règle de dépense (§ 1) et le garde-fou (§ 4) s'ajoutent : aucune génération hors du budget autorisé par la mission, et chaque appel au connecteur passe par un accord du propriétaire.
+  - La règle de dépense (§ 1) et le garde-fou (§ 4) s'ajoutent : aucune génération hors du budget autorisé par la mission, et chaque génération passe par un accord du propriétaire.
 
 ---
 

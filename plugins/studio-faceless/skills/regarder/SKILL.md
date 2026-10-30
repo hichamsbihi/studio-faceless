@@ -1,11 +1,13 @@
 ---
 name: regarder
-description: Faire « regarder » une vidéo YouTube publique par Gemini, à partir de son lien et sans téléchargement, pour en analyser la narration et la rétention selon une grille fixe (promesse et emballage, accroche à 5, 15 et 30 s, personnages, relances, émotion, image et montage, son). À utiliser pour l'étude des chaînes concurrentes ou de référence et l'audit des épisodes publics de la chaîne. Jamais pour télécharger une vidéo, analyser une vidéo privée, ni écrire un script à notre place.
+description: "Have Gemini watch a public YouTube video from its link, no download, and analyse its narration and retention on a fixed grid (promise, hook at 5/15/30 s, relaunches, emotion, image, sound). Use to study reference channels and audit our public episodes. Never to download, or to write our script."
 ---
 
 # regarder : faire regarder une vidéo
 
 Skill créé sur AA le 23/10/2026 à la demande de son propriétaire (audit des sujets de l'E007 d'AA). Il reprend l'outil de l'autre chaîne du propriétaire (StudioV2, `mm-regarder`, 22/10/2026), lui-même inspiré du mode Gemini de claude-video (MIT, `references/claude-video/LICENSE`), sans téléchargement ni hook.
+
+À utiliser pour l'étude des chaînes concurrentes ou de référence et l'audit des épisodes publics de la chaîne. La grille fixe couvre la promesse et l'emballage, l'accroche à 5, 15 et 30 s, les personnages, les relances, l'émotion, l'image et le montage, le son (voir « Grille »).
 
 ## Usage
 ```bash
@@ -19,6 +21,7 @@ python -I ${CLAUDE_PLUGIN_ROOT}/outils/gemini/regarder.py "https://www.youtube.c
 - Le script refuse tout ce qui n'est pas un lien YouTube et n'écrase jamais un fichier : une nouvelle analyse va dans un nouveau fichier.
 
 ## Règles
+- **Jamais** pour télécharger une vidéo, analyser une vidéo privée ni écrire un script à notre place.
 - **Aucun téléchargement** de vidéo, même d'une seule. Vidéos **publiques** seulement ; jamais les vidéos privées de la chaîne (validé sur AA, 20/10/2026).
 - **Coût** : compte Gemini prépayé du propriétaire, partagé entre ses chaînes (plafond mensuel de 10 $ fixé par le propriétaire). Estimer avant chaque série : environ 100 jetons par seconde de vidéo en résolution basse et à 1 image par seconde, le double à 2. Le plafond de chaque mission est fixé par le propriétaire (exemple AA, audit E007 : 3 $). En cas de refus HTTP 402 (solde nul), s'arrêter et prévenir le propriétaire ; en cas de 429 (quota), reprendre plus tard, jamais avec une autre clé.
 - **La clé** (`GEMINI_API_KEY`, variables Windows du propriétaire) n'est jamais affichée, écrite ni passée en argument.

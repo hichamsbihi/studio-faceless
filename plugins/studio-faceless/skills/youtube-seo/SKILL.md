@@ -1,6 +1,6 @@
 ---
 name: youtube-seo
-description: "YouTube publication file for an episode of a faceless documentary channel: three titles, description, chapters from the master log, CC BY credits, AI disclosure, tags, pinned comment, upload settings, limit checks and J+2 / J+7 / J+28 reviews. Use when preparing, reviewing or checking the YouTube metadata of an episode before the channel owner uploads it. Claude never publishes."
+description: "YouTube publication file for an episode of a faceless documentary channel: titles, description, chapters, CC BY credits, AI-voice disclosure, tags, pinned comment, upload settings, limit checks, J+2/7/28 reviews. Use when preparing or checking an episode's YouTube metadata. Claude never publishes."
 ---
 
 # Dossier de publication YouTube
@@ -21,8 +21,8 @@ Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les
 1. **Lire par plages** : `BRIEF.md`, les fiches de narration vérifiées, le journal du collage en voix seule (`outputs/<nom>-voix.log.txt`, écrit par `assembler.py`), la décision de miniature, et les `PROVENANCE.md` des séquences et du kit pour les crédits, sauf écart de la chaîne (`direction/ECARTS.md`).
 2. **Une promesse** en une phrase, partagée par le titre et la miniature (`studio-faceless:thumbnail-strategist`) et tenue dès l'accroche du film.
 3. **Requêtes** : une principale dans la langue naturelle de la chaîne (anglais sur AA), 3 à 5 de longue traîne, indices gratuits datés, jamais de volume. Voir `references/requetes-titres-tags.md`.
-4. **Trois titres**, puis tags, hashtags et playlist : même référence.
-5. **Description, chapitres, crédits, déclaration des voix et sons générés, commentaire épinglé et réponse de crédits, SRT, réglages** : `references/description-et-credits.md`. **Pas de synthèse des sources** (validé sur AA, 19/10/2026, pour tous les épisodes).
+4. **Trois titres**, puis tags de longue traîne, 1 à 3 hashtags pour une chaîne neuve et playlist : même référence.
+5. **Description** (la promesse et la requête principale dans ses deux premières lignes), **chapitres** calculés depuis le journal du master, **crédits**, **déclaration des voix et sons générés**, **commentaire épinglé** et réponse de crédits complets, **SRT**, **réglages d'envoi** (contenu modifié ou synthétique, langue) : `references/description-et-credits.md`. **Pas de synthèse des sources** (validé sur AA, 19/10/2026, pour tous les épisodes).
 6. **Contrôle** : script de limites, puis liste de contrôle et fiche de conformité (`references/gabarit-et-controle.md`).
    ```
    python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/controle/publication.py chapitres episodes/<id>/outputs/<nom>-voix.log.txt --titre seq1="…" …

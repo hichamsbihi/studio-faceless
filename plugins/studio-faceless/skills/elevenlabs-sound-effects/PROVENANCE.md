@@ -21,3 +21,6 @@
 - `references/installation.md` : encadré du studio en tête (seule la section Python s'applique).
 - Raison : la mise en route d'origine installe une CLI par `npx` sans version ni confirmation et connecte un compte ; le studio garde le SDK Python figé et une clé posée par le propriétaire lui-même.
 - Aucune mise à jour sans décision du propriétaire.
+
+## Réglage 0.2.2 (30/10/2026)
+- `disable-model-invocation: true` ajouté à l'en-tête de `SKILL.md` (valeur du studio, absente de la source) : le skill n'est plus proposé à Claude au démarrage ; le propriétaire l'appelle avec `/elevenlabs-sound-effects`. Le reste du texte est inchangé.

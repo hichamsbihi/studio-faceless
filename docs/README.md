@@ -41,12 +41,12 @@ Chaque workflow donne son déclencheur, ses acteurs, ses prérequis, ses étapes
 | Document | Fichiers décrits |
 |---|---|
 | [`skill-episode.md`](reference/skill-episode.md) | `skills/episode/` : le skill et ses neuf références |
-| [`agents.md`](reference/agents.md) | `agents/` : les cinq agents, avec leurs outils, skills et limites |
-| [`templates.md`](reference/templates.md) | `templates/` : contrat de mission, modèles d'épisode, gabarit de séquence v3 |
+| [`agents.md`](reference/agents.md) | `agents/` : les six agents, avec leurs outils, skills et limites |
+| [`templates.md`](reference/templates.md) | `templates/` : contrat de mission, modèles d'épisode (dont `STATE.md` et `INDEX.md`), gabarit de séquence v3 |
 | [`son.md`](reference/son.md) | `skills/direction-sonore/`, `referentiels/DIRECTION_AUDIO.md`, `outils/montage/`, `transcrire.py`, `ralentir.py` |
 | [`publication.md`](reference/publication.md) | `skills/thumbnail-strategist/`, `youtube-seo/`, `shorts/`, `regarder/`, `outils/shorts/`, `publication.py`, `outils/gemini/` |
 | [`outils-et-garde.md`](reference/outils-et-garde.md) | `outils/controle/controle.py`, `cartes/`, `rendu/`, archivage, contrôle du dépôt, tokens, sauvegarde, `hooks/`, `REGLES_STUDIO.md` |
-| [`referentiels.md`](reference/referentiels.md) | `referentiels/` : méthode de récit, qualité de réalisation, catalogue d'animations |
+| [`referentiels.md`](reference/referentiels.md) | `referentiels/` : méthode de récit, qualité de réalisation, catalogue d'animations, direction audio, suite des règles communes (`REGLES_DETAIL.md`) |
 | [`starter-et-depot.md`](reference/starter-et-depot.md) | `starter/` (squelette de chaîne) et les fichiers de la racine du dépôt |
 | [`skills-annexes.md`](reference/skills-annexes.md) | `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design` |
 | [`vendor.md`](reference/vendor.md) | `vendor/claude-skills/` : les skills HyperFrames 0.8.149 figés, skill par skill |

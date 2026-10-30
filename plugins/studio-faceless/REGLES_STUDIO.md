@@ -15,62 +15,34 @@ Ces règles s'appliquent à toutes les chaînes qui utilisent le plugin. Elles s
 | Règles du domaine de la chaîne : sources, droits des images, risques, son, veille | `${CLAUDE_PLUGIN_ROOT}/domaines/<domaine>/DOMAINE.md`, domaine nommé dans le `CLAUDE.md` de la chaîne : il remplace les règles par défaut |
 | Écarts de la chaîne aux règles par défaut et au domaine | `direction/ECARTS.md` : **ils l'emportent** |
 | Marque : identité, signature, appels, outro ; bibliothèque de sons | `marque/README.md`, `marque/son/README.md` de la chaîne |
-| Travail sur un épisode | son `episodes/<id>/CLAUDE.md` et son `BRIEF.md` |
+| Moteur, outils, garde-fou, rendu ; parcours d'un épisode | `${CLAUDE_PLUGIN_ROOT}/referentiels/REGLES_DETAIL.md` (suite de ces règles) |
+| Travail sur un épisode | son `episodes/<id>/CLAUDE.md` et son `BRIEF.md` ; pour reprendre : `episodes/INDEX.md`, puis le `STATE.md` indiqué |
 | Fabriquer un épisode, du sujet au mix du film | skill `studio-faceless:episode` |
 | Miniatures | skill `studio-faceless:thumbnail-strategist` |
 | Dossier de publication YouTube | skill `studio-faceless:youtube-seo` |
 | Shorts | skill `studio-faceless:shorts` |
 
 ## Moteur et outils
-- **HyperFrames 0.8.149**, figée dans le `package.json` de la chaîne. Aucune mise à jour (`upgrade`, `skills update`, `npm install` d'une autre version) sans décision du propriétaire.
-- **Node 22 ou plus** est obligatoire. Sous Windows, passer par Git Bash (nvm, Node 22).
-- **Skills plus récents que le CLI** : `hyperframes usage` et `hyperframes figma` n'existent pas en 0.8.149, donc ignorer les consignes qui les appellent ; `play` se remplace par `preview`. En cas de doute : `hyperframes <commande> --help`.
-- **Navigateurs** : `check`, `snapshot`, `render` et `preview` lancent un Chrome sans fenêtre, un par processus de rendu. Rendre avec `--workers 2` au plus ; ne lancer `preview` que sur demande et l'arrêter juste après ; vérifier ensuite qu'aucun Chrome de HyperFrames ne reste ouvert.
-- **Outils du plugin** : `${CLAUDE_PLUGIN_ROOT}/outils/`, lancés depuis le dossier de la chaîne (`python -B "<chemin>"`). Contrôles : `outils/controle/` (mode d'emploi dans son `README.md`) :
-  - `transcrire.py` : la prise contre le texte ;
-  - `ralentir.py` : la narration ;
-  - `controle.py` : niveau, planche, vibration, tremblement, son, couleurs, photos répétées, licences, voix / reste, Chrome.
-- **Garde-fou** (hook du plugin, `${CLAUDE_PLUGIN_ROOT}/hooks/garde_commandes.py`) :
-  - pour tous, il refuse la publication, le cloud, la connexion, la mise à jour de HyperFrames ou des skills, l'installation npm, la suppression récursive ou définitive, le vidage de la corbeille et la modification du plugin installé ;
-  - il demande confirmation pour `preview`, et refuse un rendu sans `--workers 1` ou `2` ;
-  - par rôle, reconnu au type d'agent :
-    - le directeur artistique n'a droit qu'à `ffmpeg`, `ffprobe` et `mkdir`, sans écrasement ni sortie dans une zone protégée ;
-    - les producteurs ne touchent ni à `direction/`, `templates/`, `.claude/` et aux `CLAUDE.md` (ils peuvent lancer les outils du plugin), ni à un dossier existant de `marque/`, aux entrées d'un épisode ou à un MP4 existant ;
-    - le mainteneur n'écrit qu'avec Write ou Edit, jamais dans `.claude/`, un projet de production, un dossier existant de `marque/`, les entrées d'un épisode ou un MP4.
-  - Les permissions (allow, deny, ask) sont dans le `.claude/settings.json` de la chaîne.
-- **Rendu** : un à la fois, en tâche suivie, par `bash "${CLAUDE_PLUGIN_ROOT}/outils/rendu/rendre_si_libre.sh" <render.sh> <journal>`, qui attend la fin des rendus des autres sessions.
-- **Archivage** : `${CLAUDE_PLUGIN_ROOT}/outils/archiver_episode.py`. Un aperçu d'abord ; `--executer` seulement avec l'accord du propriétaire.
-- **Dépôt Git de la chaîne** : `verifier_depot.py` contrôle chaque commit (crochet `.githooks/pre-commit`). Claude fait les commits locaux et **ne pousse qu'avec l'accord du propriétaire, donné à chaque fois** ; il ne se connecte jamais au compte GitHub.
-- **Suivi des tokens** à chaque fin d'étape : `python -B "${CLAUDE_PLUGIN_ROOT}/outils/suivi_tokens.py" --depuis AAAA-MM-JJ`.
+Versions figées, navigateurs et rendus (`--workers 2` au plus), outils, garde-fou, dépôt Git, suivi des tokens : section « Moteur et outils » de `REGLES_DETAIL.md` (voir ci-dessus), à lire avant tout rendu ou toute commande d'outil.
 
 ## Sous-agents (`studio-faceless:<nom>`)
 - **Studio Director** : Claude principal reçoit les demandes du propriétaire et fait lui-même les petites tâches. Il délègue seulement quand c'est utile, coordonne, contrôle la cohérence et soumet au propriétaire. Les sous-agents ne se délèguent rien entre eux.
-- **Les cinq agents** :
+- **Les six agents** :
   - `research` : faits, études, médias candidats, en lecture seule ;
+  - `reviewer` : contrôle qualité en lecture seule d'un script, d'une séquence ou du film contre une liste, **avant de les montrer au propriétaire** ; ne valide rien ;
   - `art-director` : critique indépendante des rendus, **à la demande du propriétaire** ; storyboard seulement sur demande ; choisit lui-même les techniques d'animation et de transition d'un film ;
   - `motion-producer` : mise en scène HyperFrames d'une séquence, jusqu'à `render.sh` ;
   - `shorts-producer` : montage d'un short vertical tiré d'un film, jusqu'à `render.sh` ;
   - `studio-maintainer` : cohérence, catalogue ; aucune production.
-- **Contrat de mission** : toute délégation donne `episode_id` (ou « studio »), objectif, brief, fichiers autorisés en lecture, fichiers autorisés en écriture, sources communes, livrables, décisions validées et restrictions. Modèle : `${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`.
+- **Contrat de mission** : toute délégation donne `episode_id` (ou « studio »), objectif, brief, fichiers autorisés en lecture, fichiers autorisés en écriture, sources communes, livrables, décisions validées et restrictions. Modèle : `${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`. `research` et `studio-maintainer` démarrent sans le `CLAUDE.md` de la chaîne : leur contrat y recopie, en 10 lignes au plus, les règles de la chaîne utiles à la mission.
 - **Isolation** : un sous-agent ne lit pas les autres épisodes, sauf mention au contrat. Rien de propre à un épisode ne devient une règle de la chaîne sans accord du propriétaire, versé dans `direction/`.
 - Un sous-agent ne voit pas la mémoire de Claude : ce qu'il doit savoir est dans `direction/`, dans les référentiels, dans sa définition ou dans son contrat.
 
 ## Parcours d'un épisode
-La fabrication suit le skill `studio-faceless:episode`, du choix du sujet au mix du film : questions au propriétaire à chaque porte (skill `studio-faceless:grilling`), séquence témoin validée avant les lots de trois, corrections dans la même version, mix du film à la fin sur le film collé. Les étapes :
-1. **Sujet**, choisi avec le propriétaire, inscrit au registre de `direction/LIGNE_EDITORIALE.md` ; dossier `episodes/<id>/` créé à partir des modèles du plugin.
-2. **Recherche** par `research`, rapports dans `research/`.
-3. **Validation** de l'angle et du découpage par le propriétaire.
-4. **Fiches et scripts** : narration vérifiée phrase par phrase avec sa source, plan de plans, son. Le script part **sans balise de synthèse vocale par défaut**.
-5. **Voix off** : le propriétaire génère les prises ; Claude les vérifie (`transcrire.py`), les ralentit (`ralentir.py`) et prépare les repères mot à mot.
-6. **Kit de l'épisode**, préparé une seule fois : médias convertis avec leur provenance, bandes voix et repères, sons puisés dans `marque/son/`, gabarit de séquence v3, un brief court par séquence.
-7. **Mise en scène** : un `motion-producer` par séquence, avec un contrat de mission ; une séquence témoin d'abord, puis des lots de trois au plus. L'effet diaporama est interdit (`REFERENTIEL_QUALITE_REALISATION.md` § 2).
-8. **Rendu et contrôle**, sans agent : un rendu à la fois (`--workers 2`), puis `controle.py` (`tout`, `planche`, `tremblement`, `son`) ; Claude regarde la planche avant de montrer la séquence.
-9. **Retours** : corrections dans la même version ; une nouvelle version seulement pour un défaut majeur ; un rendu déjà fait est rangé dans `_rendu-N/`.
-10. **Collage** quand toutes les séquences sont validées : signature de la chaîne après l'intro, outro à la fin ; collage en voix seule, puis un seul mix du film (`${CLAUDE_PLUGIN_ROOT}/outils/montage/`).
-11. **Archivage** après la publication, avec l'accord du propriétaire : la vidéo finale et ses composants dans un zip vérifié ; les essais dans `_A_SUPPRIMER/<épisode>/`, que le propriétaire vide lui-même.
+Les onze étapes, du sujet à l'archivage : section « Parcours d'un épisode » de `REGLES_DETAIL.md` ; détail dans le skill `studio-faceless:episode`.
 
 ## Économie de tokens et de contexte
-- **Sessions** : on reste dans la session en cours. `/compact` dès que le contexte dépasse 150 à 200 k, à chaque fin d'étape et avant une pause de plus d'une heure. Avant, écrire l'état dans `BRIEF.md`, le `CLAUDE.md` de l'épisode ou la mémoire. Les lectures lourdes vont à un sous-agent qui ne renvoie qu'une synthèse.
+- **Sessions** : à chaque fin de porte, réécrire `episodes/<id>/STATE.md` (2,5 Ko au plus), mettre à jour `episodes/INDEX.md`, puis `/clear` ; on reprend en lisant seulement `INDEX.md` puis `STATE.md`. Un `/compact` remet dans le contexte les skills appelés et les fichiers lus : 124,6 k au premier appel, contre 81 à 88 k en session neuve (30/10/2026). Il reste permis au milieu d'une longue porte, après avoir écrit l'état. Le modèle du fil principal ne change que juste après un `/clear`. Les lectures lourdes vont à un sous-agent qui ne renvoie qu'une synthèse.
 - **Sous-agents** : jamais plus de 4 min sans action (leur cache dure 5 min) ; une tâche longue revient à Claude principal ; aucune demande de permission en attente pendant l'absence du propriétaire ; une correction se fait dans la même version : reprise du producteur si son cache est chaud, sinon un nouvel agent court (validé sur AA, 24/10/2026).
 - **Travail** : modifier plutôt que réécrire ; sorties de commandes courtes ; lectures par plages ; une planche d'images à la fois ; dans les contrats, des extraits utiles plutôt que des fichiers entiers.
 

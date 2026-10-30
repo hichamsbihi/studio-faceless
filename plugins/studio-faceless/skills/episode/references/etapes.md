@@ -1,6 +1,6 @@
 # Les étapes en détail
 
-Chaque étape commence par sa porte de questions (`grilles.md`) et finit par un état écrit dans le `CLAUDE.md` de l'épisode et une décision au `BRIEF.md`, avec son statut et sa date. Compacter le contexte à la fin de chaque grande étape (`tokens-contexte.md`).
+Chaque étape commence par sa porte de questions (`grilles.md`) et finit par la décision au `BRIEF.md` (statut et date), le `STATE.md` de l'épisode réécrit en entier (2,5 Ko au plus), la ligne de l'épisode mise à jour dans `episodes/INDEX.md`, puis un `/clear` (`tokens-contexte.md`). La reprise lit seulement `INDEX.md` et ce `STATE.md`.
 
 Les règles par défaut citées ici (`REFERENTIEL`, `DIRECTION_AUDIO`, `METHODE_RECIT`) sont dans `${CLAUDE_PLUGIN_ROOT}/referentiels/`. Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur ces règles.
 
@@ -8,7 +8,7 @@ Les règles par défaut citées ici (`REFERENTIEL`, `DIRECTION_AUDIO`, `METHODE_
 - **Entrées** : le registre (`direction/LIGNE_EDITORIALE.md`), la veille (`docs/veille/`) et les bilans des épisodes publiés.
 - **Méthode** : 5 à 8 candidats, notés selon `choix-sujet.md`. Vérifier la saturation : la même question a-t-elle été un succès récent d'une grande chaîne ? Écrire la promesse en une phrase, et le titre en 60 caractères au plus.
 - **Sujet qui surperforme ailleurs** : `choix-sujet.md` § 4 (vidIQ seulement sur demande du propriétaire ; on reprend le principe, jamais la vidéo). Étude d'une chaîne de référence : skill `studio-faceless:regarder`.
-- **Sortie** : `episodes/<id>/` créé depuis `${CLAUDE_PLUGIN_ROOT}/templates/` (`CLAUDE.episode`, `BRIEF.episode`) ; le sujet inscrit au registre.
+- **Sortie** : `episodes/<id>/` créé depuis `${CLAUDE_PLUGIN_ROOT}/templates/` (`CLAUDE.episode`, `BRIEF.episode`, `STATE`) ; la ligne de l'épisode ajoutée à `episodes/INDEX.md` (créé depuis `INDEX.template.md` s'il n'existe pas) ; le sujet inscrit au registre.
 
 ## 1. Recherche
 - `studio-faceless:research`, une mission par grande partie (faits, précédents, médias), avec un contrat de mission. Les rapports vont dans `research/`.
@@ -22,7 +22,7 @@ Les règles par défaut citées ici (`REFERENTIEL`, `DIRECTION_AUDIO`, `METHODE_
 
 ## 3. Script
 - Narration en anglais, chaque phrase avec sa source. Fiche d'ouverture en tête : phrase, image prévue et temps estimé pour chaque repère de 0 à 2:00.
-- Contrôles avant la voix (`recit-retention.md` § 5). Script ElevenLabs **sans balise** par défaut.
+- Contrôles avant la voix (`recit-retention.md` § 5). Script ElevenLabs **sans balise** par défaut. Avant de montrer le script au propriétaire : contrôle par `studio-faceless:reviewer`.
 - Phrases d'actualité marquées [MAJ], à revoir la veille de la sortie.
 
 ## 4. Voix
@@ -42,7 +42,7 @@ Voir `socle.md`. Le résultat, c'est le kit complet : direction artistique, méd
 Voir `production.md` : des lots de trois producteurs au plus, des raccords qui ne dépendent pas d'une séquence du même lot, et la vérification de chaque livrable. Corrections sur place.
 
 ## 8. Rendus
-Voir `rendu-collage.md` § 1–2 : un rendu à la fois, en file suivie, puis les contrôles standard et la planche regardée.
+Voir `rendu-collage.md` § 1–2 : un rendu à la fois, en file suivie, puis les contrôles standard et la planche regardée. Avant de montrer une séquence au propriétaire, `studio-faceless:reviewer` peut la contrôler sur les fichiers (minutage, plan, planche, mesures).
 
 ## 9. Collage en voix seule
 Voir `rendu-collage.md` § 3 : assembleur commun, journal du master, jonctions mesurées et fondus courts.
@@ -54,6 +54,8 @@ Voir `rendu-collage.md` § 4. La porte de questions fixe d'abord :
 - les jonctions musicales ;
 - les silences voulus ;
 - la place du rappel d'abonnement.
+
+Le mix fait, et avant de montrer le film au propriétaire : contrôle par `studio-faceless:reviewer`.
 
 ## 11. Retours du propriétaire
 - Une correction d'image se fait sur place dans la séquence, puis on la rend et on recolle. Une correction de son se fait par un remix, sans rendu.

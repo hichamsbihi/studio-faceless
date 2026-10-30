@@ -1,6 +1,6 @@
 ---
 name: episode
-description: "Full making of a documentary episode for a faceless channel, from subject choice to final film mix, with question gates with the channel owner at every step. Use whenever the channel owner starts, resumes or plans an episode, or asks how an episode is made. Not for shorts (studio-faceless:shorts), thumbnails (studio-faceless:thumbnail-strategist) or the YouTube file (studio-faceless:youtube-seo)."
+description: "Full making of a documentary episode for a faceless channel, from subject to final film mix, with a question gate with the owner at every step. Use when the owner starts, resumes or plans an episode. Not for shorts (shorts), thumbnails (thumbnail-strategist) or the YouTube file (youtube-seo)."
 ---
 
 # Fabriquer un épisode de la chaîne
@@ -8,7 +8,7 @@ description: "Full making of a documentary episode for a faceless channel, from 
 **Statut** : `VALIDÉ` pour la structure (validé sur AA, 24/10/2026 : dix recommandations, dont ce skill, la règle des médias, le mix du film à la fin, la séquence témoin). Deux références restent `PROPOSÉ` : `recit-retention.md` et `choix-sujet.md`, à valider par blocs (Méthode v1, étude AA, 23/10/2026). Rédigé par Claude le 24/10/2026, d'après un audit de la fabrication (étude AA, 24/10/2026).
 
 **Ce qui fait foi** (le propriétaire est celui que nomme le `CLAUDE.md` de la chaîne) :
-- les règles communes du studio (`${CLAUDE_PLUGIN_ROOT}/REGLES_STUDIO.md` : statuts, sous-agents, garde-fou, économie de tokens), injectées au début de chaque session, puis le `CLAUDE.md` de la chaîne (langues, propriétaire, règles propres) ;
+- les règles communes du studio : `${CLAUDE_PLUGIN_ROOT}/REGLES_STUDIO.md` (statuts, sous-agents, économie de tokens), injecté au début de chaque session, et sa suite `${CLAUDE_PLUGIN_ROOT}/referentiels/REGLES_DETAIL.md` (moteur, outils, garde-fou, parcours d'un épisode), à lire selon la mission ; puis le `CLAUDE.md` de la chaîne (langues, propriétaire, règles propres) ;
 - les règles par défaut du plugin, dans `${CLAUDE_PLUGIN_ROOT}/referentiels/` : `REFERENTIEL_QUALITE_REALISATION.md` (médias § 2 bis, rythme § 2 ter), `DIRECTION_AUDIO.md` (mix § 3), `MOTION_CATALOG.md`, `METHODE_RECIT.md` ;
 - le profil du domaine de la chaîne (`${CLAUDE_PLUGIN_ROOT}/domaines/<domaine>/DOMAINE.md`, domaine nommé dans le `CLAUDE.md` de la chaîne) : il remplace les règles par défaut, et les écarts de la chaîne le remplacent ;
 - `direction/LIGNE_EDITORIALE.md` de la chaîne, et ses écarts dans `direction/ECARTS.md`, qui l'emportent sur les règles par défaut et sur le domaine ;
@@ -22,7 +22,7 @@ Ce skill donne l'ordre, les portes et les listes de contrôle. Il ne recopie pas
 2. **L'image d'abord.** Un brief décrit des transformations d'images (photo réelle, dessin, carte, raccord de matière), jamais des lignes de texte. La recette v3 fait la base : `references/production.md` § 1.
 3. **Le socle est fini avant le premier producteur** :
    - la voix figée et ses repères ;
-   - les médias déposés et vérifiés ;
+   - les médias (listes que le propriétaire télécharge à la main), déposés et vérifiés ;
    - les cartes, les logos et les sons de la bibliothèque ;
    - les raccords au pixel ;
    - les briefs courts.
@@ -31,6 +31,13 @@ Ce skill donne l'ordre, les portes et les listes de contrôle. Il ne recopie pas
 6. **Un rendu à la fois**, en tâche suivie, après les contrôles. Claude regarde chaque planche avant de montrer quoi que ce soit.
 7. **Les séquences ne portent que la voix.** Le film se colle en voix seule, puis on fait un seul mix du film entier.
 8. **Claude n'écoute pas et ne déclare aucun visionnage.** Mesures techniques d'un côté, validation du propriétaire de l'autre.
+
+## État, reprise et contexte
+- **À chaque fin d'étape** : réécrire en entier `episodes/<id>/STATE.md`, un manifeste de 2,5 Ko au plus (étape courante, décisions `VALIDÉ`, chemins des médias, voix et `voice_id`, budget restant, prochaine action ; modèle `${CLAUDE_PLUGIN_ROOT}/templates/STATE.template.md`), et mettre à jour `episodes/INDEX.md` (une ligne par épisode ; modèle `INDEX.template.md`). Le détail daté va dans `HISTORIQUE_ETAT.md`.
+- **À chaque fin de porte** : `/clear`, pas `/compact`. Après un `/compact`, Claude Code remet dans le contexte le texte des skills appelés et les fichiers lus récemment : 124,6 k au premier appel, contre 81 à 88 k pour une session neuve, soit environ 40 k de plus à chaque appel (mesure du 30/10/2026). Les règles communes reviennent seules après un `/clear` (hook `SessionStart`).
+- **Reprise** : lire seulement `episodes/INDEX.md`, puis le `STATE.md` de l'épisode. Le `CLAUDE.md` de l'épisode, le `BRIEF.md` et `HISTORIQUE_ETAT.md` se lisent à la demande, par plages ou par `grep`.
+- `/compact` reste permis au milieu d'une longue porte, après avoir écrit l'état (consigne : `references/tokens-contexte.md`). Le modèle du fil principal ne change que juste après un `/clear`, jamais en cours de session.
+- **Avant de montrer** un script, une séquence ou le film au propriétaire : un contrôle par `studio-faceless:reviewer` (lecture seule, sur les fichiers ; il ne valide rien et n'a rien vu ni écouté).
 
 ## Les étapes
 | # | Étape | Porte de questions (`references/grilles.md`) | Livrable | Condition de passage |
@@ -72,4 +79,4 @@ Le détail de chaque étape est dans `references/etapes.md`.
 - `references/recit-retention.md` (`PROPOSÉ`) : patron du film, ouverture, relances, densité, succession des séquences.
 - `references/choix-sujet.md` (`PROPOSÉ`) : grille et promesse.
 - `references/pieges.md` : leçons de tous les épisodes, à compléter à chaque épisode.
-- `references/tokens-contexte.md` : compactages, lectures, délégations.
+- `references/tokens-contexte.md` : fin de porte (`/clear`), état, lectures, délégations.

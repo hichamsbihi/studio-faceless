@@ -1,6 +1,6 @@
 # Référence : les modèles (`templates/`)
 
-Ce document décrit chaque fichier du dossier `templates/` du plugin `studio-faceless` : le contrat de mission, les modèles de `CLAUDE.md` et de `BRIEF.md` d'un épisode, et le gabarit de séquence v3 (composition HyperFrames, scripts, matières, polices). Les fichiers du plugin font foi ; en cas d'écart, la documentation se corrige.
+Ce document décrit chaque fichier du dossier `templates/` du plugin `studio-faceless` : le contrat de mission, les modèles de `CLAUDE.md`, de `BRIEF.md` et de `STATE.md` d'un épisode, le modèle d'`INDEX.md` des épisodes, et le gabarit de séquence v3 (composition HyperFrames, scripts, matières, polices). Les fichiers du plugin font foi ; en cas d'écart, la documentation se corrige.
 
 ## Table des matières
 - [Vue d'ensemble](#vue-densemble)
@@ -8,6 +8,7 @@ Ce document décrit chaque fichier du dossier `templates/` du plugin `studio-fac
   - [templates/CONTRAT_MISSION.template.md](#templatescontrat_missiontemplatemd)
   - [templates/CLAUDE.episode.template.md](#templatesclaudeepisodetemplatemd)
   - [templates/BRIEF.episode.template.md](#templatesbriefepisodetemplatemd)
+  - [templates/STATE.template.md et templates/INDEX.template.md](#templatesstatetemplatemd-et-templatesindextemplatemd)
   - [templates/sequence-gabarit-v3/README.md](#templatessequence-gabarit-v3readmemd)
   - [templates/sequence-gabarit-v3/PROVENANCE.md](#templatessequence-gabarit-v3provenancemd)
   - [templates/sequence-gabarit-v3/index.html](#templatessequence-gabarit-v3indexhtml)
@@ -24,6 +25,8 @@ templates/
 ├── CONTRAT_MISSION.template.md       modèle du message de délégation à un agent
 ├── CLAUDE.episode.template.md        modèle du CLAUDE.md d'un épisode
 ├── BRIEF.episode.template.md         modèle du BRIEF.md (brief éditorial) d'un épisode
+├── STATE.template.md                 modèle du manifeste de reprise STATE.md d'un épisode (0.2.2)
+├── INDEX.template.md                 modèle de episodes/INDEX.md, une ligne par épisode (0.2.2)
 └── sequence-gabarit-v3/              point de départ de chaque séquence (voix seule)
     ├── README.md  PROVENANCE.md      mode d'emploi, provenance et licences des matières
     ├── index.html                    composition racine 1920 × 1080
@@ -44,7 +47,7 @@ templates/
 ### templates/CONTRAT_MISSION.template.md
 **Rôle** : modèle du message de délégation à un sous-agent, avec les neuf champs du contrat et le brief de séquence court destiné au `motion-producer`.
 
-**Quand il sert** : le Studio Director en recopie le bloc `text` dans **chaque** délégation (research, art-director, motion-producer, shorts-producer, studio-maintainer). C'est aussi la forme qu'attendent les agents : sans les champs essentiels, ils ne commencent pas et renvoient la liste des champs manquants.
+**Quand il sert** : le Studio Director en recopie le bloc `text` dans **chaque** délégation (research, reviewer, art-director, motion-producer, shorts-producer, studio-maintainer). C'est aussi la forme qu'attendent les agents : sans les champs essentiels, ils ne commencent pas et renvoient la liste des champs manquants.
 
 **Contenu**
 - **Bloc des neuf champs** (un champ sans objet vaut « aucun ») :
@@ -61,12 +64,14 @@ templates/
   | `décisions validées` | décision, date et référence, ou « aucune » |
   | `restrictions` | interdits propres à la mission |
 
+- **Section « Règles de la chaîne utiles à la mission »** (0.2.2) : 10 lignes au plus (protection des personnes, sources admises, langues, autres), recopiées du `CLAUDE.md` de la chaîne par l'orchestrateur, à la suite des neuf champs. **Obligatoire pour `research` et `studio-maintainer`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents.
 - **« Selon l'agent »** :
-  - `research` : écriture toujours « aucun » ;
+  - `research` : écriture toujours « aucun » ; section des règles de la chaîne obligatoire ;
+  - `reviewer` : écriture toujours « aucun » ; le contrat nomme l'objet à contrôler (script, séquence ou film), ses fichiers et la durée visée ;
   - `art-director` : écriture limitée au dossier des images extraites ;
   - `motion-producer` : il faut en plus le chemin du kit (`episodes/<id>/kit/`), un brief de séquence court et un dossier d'écriture exact `episodes/<id>/production/<séquence>-vN/` ; le producteur s'arrête à `render.sh` ; les restrictions rappellent l'interdiction de l'effet diaporama avec sa définition (`REFERENTIEL_QUALITE_REALISATION.md` § 2) ; une correction après visionnage se fait dans la même version (validé sur AA, 24/10/2026) : reprise du producteur si son cache est chaud, sinon un agent court avec un brief de quelques lignes ; nouvelle version seulement pour un défaut majeur ;
   - `shorts-producer` : kit shorts (`episodes/<id>/kit/shorts/`), brief de short, dossier `episodes/<id>/production/short-0N-vM/` ; mêmes règles que le producteur de séquences ;
-  - `studio-maintainer` : `episode_id` = « studio » ; sans écriture autorisée, il constate seulement.
+  - `studio-maintainer` : `episode_id` = « studio » ; sans écriture autorisée, il constate seulement ; section des règles de la chaîne obligatoire.
 - **Brief de séquence court** (une page, **3 Ko au plus**, validé sur AA le 18/10/2026). Le producteur ne lit que ce brief, le kit et le `CLAUDE.md` de l'épisode : les règles de `direction/` y sont recopiées en extraits de quelques lignes, jamais renvoyées à un fichier entier. Dix champs :
 
   | Champ | Contenu |
@@ -99,7 +104,7 @@ templates/
 - **Périmètre de l'épisode** : identifiant et sujet, brief de référence, travail actuellement autorisé, limites particulières (quatre champs à remplir).
 - **Structure et périmètre des sous-agents** : dossiers de l'épisode (`BRIEF.md`, `inputs/` en lecture seule, `research/`, `assets/` avec leur `PROVENANCE.md`, `kit/`, `production/<séquence>-vN/`, `montage/`, `outputs/`, `miniatures-vN/`) ; lecture par défaut d'un sous-agent (ce dossier, les référentiels utiles, les ressources approuvées listées ici) ; écriture seulement aux chemins du contrat ; constats techniques (HyperFrames, rendus), lus par `motion-producer` ; mémoire (un enseignement durable est proposé au propriétaire puis versé dans `direction/`, une technique d'animation dans la section MOTION_CATALOG de `direction/ECARTS.md`).
 - **Recherche et narration** : partir de la question du brief, relier les affirmations à des sources, distinguer faits, hypothèses et interprétations, ne pas promettre de découverte.
-- **Décisions et état** : décisions éditoriales consignées dans le brief avec leur statut ; toute modification importante du sujet, de l'angle ou de la promesse demande la validation de l'utilisateur ; trois champs à renseigner (état actuel, dernier travail et points non résolus, prochaine action autorisée).
+- **Décisions et état** : décisions éditoriales consignées dans le brief avec leur statut ; toute modification importante du sujet, de l'angle ou de la promesse demande la validation de l'utilisateur ; deux lignes depuis la 0.2.2 : l'état courant renvoie à `STATE.md` (à lire seul pour reprendre, réécrit à chaque fin d'étape) et à `HISTORIQUE_ETAT.md`, puis la prochaine action autorisée (avant 0.2.2 : trois champs à renseigner, état actuel, dernier travail et points non résolus, prochaine action autorisée).
 - **Dernière ligne** : « Ce fichier définit des instructions ; il ne lance aucune action ni aucun processus autonome. »
 
 **Champs à remplacer** (entre crochets) : `[identifiant et sujet]` (titre), `[chemin du brief propre à cet épisode]`, `[à renseigner d'après la demande utilisateur]` (travail autorisé), `[à renseigner si nécessaire]` (limites), `[à renseigner]` (ressources approuvées du studio), `[à renseigner au fil de la production]` (constats techniques), `[non démarré / recherche / autre état explicitement établi]`, `[à renseigner]` (dernier travail), `[à renseigner ; ne pas supposer une autorisation de production]` (prochaine action).
@@ -124,6 +129,19 @@ templates/
 **Liens** : cite `REFERENTIEL_QUALITE_REALISATION.md` § 3, `DIRECTION_AUDIO.md`, le skill `episode` ; cité par `CLAUDE.episode.template.md`.
 
 **À savoir** : les statuts du tableau (`proposée`, `validée`, `à revoir`) et du sujet (`candidat`, `validé pour recherche`) sont en minuscules ; `REGLES_STUDIO.md` fixe les statuts de décision `FIXÉ`, `VALIDÉ`, `PROPOSÉ`, `PROVISOIRE`, `QUESTION OUVERTE`. Utiliser les statuts de `REGLES_STUDIO.md` pour rester lisible par les contrôles (voir « Écarts »).
+
+### templates/STATE.template.md et templates/INDEX.template.md
+**Rôle** (0.2.2, 30/10/2026) : modèles du manifeste de reprise d'un épisode (`episodes/<id>/STATE.md`) et de l'index des épisodes (`episodes/INDEX.md`). Génériques : ils ne contiennent aucun contenu d'un épisode réel ; ils ont été établis d'après les fichiers de reprise d'une chaîne qui les utilisait déjà.
+
+**Quand ils servent** : `STATE.md` est créé à l'étape 0 du skill `episode` (avec le `CLAUDE.md` et le `BRIEF.md`) puis **réécrit en entier à chaque fin d'étape** ; `INDEX.md` reçoit une ligne par épisode, mise à jour au même moment. Après un `/clear`, la reprise lit seulement `INDEX.md`, puis le `STATE.md` indiqué (`skills/episode/SKILL.md`, « État, reprise et contexte » ; `references/tokens-contexte.md`).
+
+**Contenu**
+- **`STATE.template.md`** : un commentaire d'usage à retirer à la copie, puis cinq rubriques : étape courante ; décisions `VALIDÉ` (dont la voix et son `voice_id`, le film visé) ; chemins utiles (voix, médias, direction artistique, gabarits, rendus et leur statut) ; budget (total, consommé, reste, date de la dernière mesure `suivi_tokens.py`) ; prochaine action. **2,5 Ko au plus** une fois rempli : un fait par ligne, rien de ce qui est déjà dans le `BRIEF.md` ou le `CLAUDE.md` ; le détail daté va dans `HISTORIQUE_ETAT.md` (journal lu par `grep`).
+- **`INDEX.template.md`** : un commentaire d'usage à retirer, puis un tableau `Id · Sujet · Statut · Reprise` (lien vers le `STATE.md`) et une ligne d'exemple à remplacer.
+
+**Pourquoi** : un `/compact` remet dans le contexte les skills appelés et les fichiers lus (124,6 k au premier appel, contre 81 à 88 k pour une session neuve, mesure du 30/10/2026) ; écrire l'état puis faire `/clear` coûte moins cher.
+
+**Liens** : `skills/episode/SKILL.md`, `references/etapes.md` (en-tête et § 0), `references/tokens-contexte.md` ; `CLAUDE.episode.template.md` (ligne « État courant »).
 
 ### templates/sequence-gabarit-v3/README.md
 **Rôle** : mode d'emploi du gabarit de séquence v3 : ce qui change par rapport à la v2, le tableau des effets proposés, la liste des fichiers, l'utilisation pas à pas, les règles techniques et la palette.

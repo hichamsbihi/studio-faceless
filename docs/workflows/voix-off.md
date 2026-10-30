@@ -29,7 +29,7 @@ Dans les commandes, `${CLAUDE_PLUGIN_ROOT}` est le dossier du plugin installé. 
 |---|---|
 | **Propriétaire** | Choisit la voix, relit la liste des mots à réécouter, **génère les prises** (ElevenLabs), tranche un écart réel, fige la voix. |
 | **Studio Director** (Claude principal) | Prépare le script à générer, vérifie les prises, les ralentit, recale les repères, écrit le README de `kit/voix/`, note l'état. |
-| **Agents** | Aucun n'intervient. Les producteurs (`motion-producer`, `shorts-producer`) *reçoivent* les bandes plus tard. **Aucun sous-agent n'appelle le connecteur ElevenLabs** (`DIRECTION_AUDIO.md` § 4). |
+| **Agents** | Aucun n'intervient. Les producteurs (`motion-producer`, `shorts-producer`) *reçoivent* les bandes plus tard. **Aucun sous-agent n'appelle ElevenLabs** (`DIRECTION_AUDIO.md` § 4). |
 
 ## Prérequis
 - **Décisions et fichiers** :

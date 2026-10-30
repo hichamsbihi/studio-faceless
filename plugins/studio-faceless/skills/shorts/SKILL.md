@@ -1,6 +1,6 @@
 ---
 name: shorts
-description: "Shorts method for a faceless documentary channel: vertical 9:16 shorts cut from a published film, with the hook in the first frame, word-by-word captions, an end card to the long film, platform rules and checks. Use when planning, writing, editing, checking or reviewing a short of the channel. Claude never publishes."
+description: "Shorts method for a faceless documentary channel: vertical 9:16 shorts cut from a published film, hook in the first frame, word-by-word captions, end card to the film, platform rules, checks. Use when planning, writing, editing or reviewing a short. Claude never publishes."
 ---
 
 # Shorts
@@ -31,10 +31,10 @@ Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les
 | Légendes et crédits par plateforme | Claude principal prépare ; le propriétaire publie |
 
 ## Méthode, dans l'ordre
-1. **Choisir les boucles** dans le film approuvé. Voir `references/ecriture.md` § 1. En priorité, les boucles sur un objet ou un rituel visible du film, avec un titre « Why… » (validé sur AA, 26/10/2026, `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` § 5) ; le rythme de publication se décide après le pilote.
+1. **Choisir les boucles** dans le film approuvé : des boucles complètes (enjeu, question, retournement), avec une relance précise vers le film. Voir `references/ecriture.md` § 1. En priorité, les boucles sur un objet ou un rituel visible du film, avec un titre « Why… » (validé sur AA, 26/10/2026, `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` § 5) ; le rythme de publication se décide après le pilote.
 2. **Écrire le hook, le script et le pont.** Voir `references/ecriture.md` § 2 à 4.
 3. **Préparer le kit et le brief.** Voir `references/brief-short.md`.
-4. **Monter.** Voir `references/montage-vertical.md`.
+4. **Monter** en 1080×1920 avec HyperFrames : le hook dès la première image, sous-titres mot à mot sans changement d'échelle, recomposition verticale, logo discret de la chaîne, carton final qui sert de pont vers le film, zones de sécurité des plateformes (YouTube Shorts, TikTok, Facebook Reels). Voir `references/montage-vertical.md` et `references/plateformes.md`.
 5. **Contrôler** : `references/montage-vertical.md` § Contrôles et `references/ecriture.md` § 5.
 6. **Tenir le journal des shorts** de l'épisode (`episodes/<id>/SHORTS_JOURNAL.md`) : hooks retenus, plateformes, et mesures à J+2 et J+7. Les noms des mesures sont dans `references/plateformes.md`.
 

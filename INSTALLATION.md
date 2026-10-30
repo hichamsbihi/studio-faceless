@@ -13,7 +13,7 @@ Le studio tourne sous **Windows**, avec **Git Bash** pour les commandes de Claud
 | Claude Code | 2.1.169 ou plus | Claude, plugin, agents | application de bureau ou `claude` en terminal |
 
 - **Compte GitHub** du propriétaire, avec l'authentification à deux facteurs et l'accès aux dépôts privés.
-- **Compte claude.ai** avec les connecteurs de la chaîne (ElevenLabs pour la voix, la musique et les effets ; vidIQ en lecture seule).
+- **Compte ElevenLabs** et sa clé d'API (voix, musique et effets passent par l'API, pas par le connecteur claude.ai, coupé par défaut) ; **compte claude.ai** pour les autres connecteurs de la chaîne (vidIQ en lecture seule, sur demande).
 - **Chrome sans fenêtre** : HyperFrames télécharge `chrome-headless-shell` (environ 270 Mo) dans `~/.cache/hyperframes/` au premier contrôle ou rendu, avec l'accord du propriétaire.
 
 ## 2. Identifiants Git (une fois par machine)
@@ -47,7 +47,7 @@ Les agents préchargent les skills HyperFrames 0.8.149. Le plus simple est de cl
    Sans la première commande, l'installation échoue avec « Plugin "studio-faceless" not found in marketplace » : le CLI ne lit pas le catalogue déclaré dans `.claude/settings.json` (`extraKnownMarketplaces`) d'un dossier qui ne lui a pas encore été confié (Claude Code 2.1.169, constaté le 29/10/2026).
 4. Dépendances de la chaîne : `npm ci` (HyperFrames 0.8.149, figé par `package-lock.json`), puis `pip install -r requirements.txt`.
 5. Contrôle avant commit : `git config core.hooksPath .githooks`.
-6. Connecteurs : ajouter à la liste `ask` de `.claude/settings.json` l'identifiant du connecteur ElevenLabs de la session (`mcp__<identifiant>`). Il dépend du compte et ne figure donc pas dans le squelette.
+6. ElevenLabs : poser la clé d'API dans la variable d'environnement `ELEVENLABS_API_KEY` (le propriétaire la crée sur elevenlabs.io et la pose lui-même ; Claude ne la lit ni ne l'affiche jamais) ; le SDK Python `elevenlabs` s'installe seulement sur décision du propriétaire, à la version figée dans le `requirements.txt` de la chaîne (règle des skills `elevenlabs-*`; le squelette ne le contient pas). Aucune règle `ask` à ajouter : le connecteur est coupé, et chaque génération demande l'accord du propriétaire.
 7. Modèle Whisper pour le contrôle des prises : `ggml-base.en.bin`, hors du projet, téléchargé avec l'accord du propriétaire.
 
 ## 5. Vérifier

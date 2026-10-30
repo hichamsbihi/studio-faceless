@@ -123,7 +123,7 @@ Chaque fiche donne le dossier, le nombre de fichiers, le rôle d'après le `SKIL
 | `motion-producer` | `hyperframes-core`, `hyperframes-keyframes`, `hyperframes-animation` (WAAPI et CSS seulement) | `studio-faceless:direction-sonore`, `hyperframes-cli`, `hyperframes-audio` (brief ancien), `media-use` |
 | `shorts-producer` | `studio-faceless:shorts`, `hyperframes-core`, `hyperframes-keyframes` | `hyperframes-cli`, `hyperframes-animation`, `hyperframes-audio`, `media-use`, `studio-faceless:direction-sonore` |
 | `art-director` | `hyperframes-creative`, `hyperframes-animation`, `studio-faceless:thumbnail-strategist` | `studio-faceless:direction-sonore` ; « jamais les dix ensemble » |
-| `research`, `studio-maintainer` | aucun | — |
+| `research`, `reviewer`, `studio-maintainer` | aucun | — |
 
 Précisions : ce tableau reprend le champ `skills:` de l'en-tête de chaque définition dans `agents/` et les phrases « Skills » de leur corps. Un plugin ignore les champs `hooks`, `mcpServers` et `permissionMode` des en-têtes d'agent ([`../ARCHITECTURE.md`](../ARCHITECTURE.md)) ; que `skills:` soit honoré tel quel pour des skills d'utilisateur sans préfixe est **à vérifier** à la première session. Pas d'entretien d'intention ni de routage « création » du skill `hyperframes` pour les producteurs. Détail des agents : [`agents.md`](agents.md).
 

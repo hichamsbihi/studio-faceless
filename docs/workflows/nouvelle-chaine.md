@@ -103,7 +103,7 @@ Les commandes se lancent depuis Git Bash (Node 22, nvm), dans le dossier de la c
 - **Commandes et réglages** (détail : [`../../INSTALLATION.md`](../../INSTALLATION.md), § 4, points 4, 6 et 7) :
   - `npm ci` : installe HyperFrames **0.8.149**, figé par `package-lock.json` (jamais `npm install` : refusé par le garde-fou) ;
   - `pip install -r requirements.txt` : `numpy>=2.4` et `scipy>=1.17` pour les outils de contrôle ;
-  - connecteur ElevenLabs : ajouter à la liste `ask` de `.claude/settings.json` l'identifiant `mcp__<identifiant>` du connecteur de la session (il dépend du compte et n'est pas dans le squelette) ;
+  - ElevenLabs : par l'API, avec la clé posée par le propriétaire dans la variable `ELEVENLABS_API_KEY` ; le connecteur claude.ai est coupé par défaut, aucune règle `ask` à ajouter ;
   - modèle Whisper `ggml-base.en.bin` pour le contrôle des prises : hors du projet, téléchargé avec l'accord du propriétaire.
 - **Écrit** : `node_modules/` (ignoré par Git) ; la liste `ask` de `.claude/settings.json`.
 - **Note** : `NOUVELLE_CHAINE.md` ne reprend que `npm ci`. Les trois autres points viennent de `INSTALLATION.md` § 4 : ils valent aussi pour une nouvelle chaîne (à confirmer).

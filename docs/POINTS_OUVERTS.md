@@ -25,7 +25,9 @@ Ce qui reste à décider ou à vérifier dans le plugin, relevé pendant l'écri
 | Étude d'une chaîne de référence : l'API YouTube Data est citée, sans outil ni clé dans le plugin | `skills/thumbnail-strategist/`, `skills/youtube-seo/` |
 
 ## Non testé (le CLI `claude` de la machine n'est connecté à aucun compte)
-- l'arrivée de `REGLES_STUDIO.md` dans le contexte au début d'une vraie session, et après `/compact` ou `/reload-plugins` ;
+- l'arrivée de `REGLES_STUDIO.md` dans le contexte au début d'une vraie session, et après `/clear`, `/compact` ou `/reload-plugins` (depuis la 0.2.2, le texte injecté fait moins de 9 500 caractères ; à confirmer en session que l'aperçu de 2 Ko n'apparaît plus) ;
+- l'effet de `omitClaudeMd: true` sur `research` et `studio-maintainer` : le champ demande Claude Code 2.1.271 ou plus (2.1.169 sur la machine de mise au point) ;
+- l'effet réel de `disable-model-invocation` sur la liste des skills d'une session (`claude plugin details` ne le déduit pas de son estimation) ;
 - le `agent_type` reçu par le garde-fou dans un vrai sous-agent ;
 - le préchargement de `studio-faceless:thumbnail-strategist` et `studio-faceless:shorts` par les agents ;
 - le chemin du cache cherché par le crochet `pre-commit` d'une chaîne ;

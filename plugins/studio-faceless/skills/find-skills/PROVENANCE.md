@@ -18,3 +18,6 @@
 - Une section « Règles du studio studio-faceless (prioritaires sur la suite) » est insérée sous le titre ; le reste du texte est inchangé. La licence MIT permet la modification.
 - Raison : le texte d'origine lance `npx skills find` et installe par `npx skills add <skill> -g -y` (installation globale, sans confirmation). Le garde-fou refuse les installations npm, et aucun skill ne s'ajoute sans décision du propriétaire. La section reprend la méthode déjà suivie pour `humanizer` le 28/10/2026 : recherche sur skills.sh et GitHub par le web, vérification, copie à la main avec `LICENSE` et `PROVENANCE.md`, nouvelle version du plugin.
 - Aucune mise à jour sans décision du propriétaire.
+
+## Réglage 0.2.2 (30/10/2026)
+- `disable-model-invocation: true` ajouté à l'en-tête de `SKILL.md` (valeur du studio, absente de la source) : le skill n'est plus proposé à Claude au démarrage ; le propriétaire l'appelle avec `/find-skills`. Le reste du texte est inchangé.

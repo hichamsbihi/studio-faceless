@@ -41,7 +41,7 @@ Le studio tourne sous **Windows**, avec **Git Bash** pour les commandes de Claud
 
 Et :
 - un **compte GitHub** du propriétaire, avec l'authentification à deux facteurs et l'accès aux dépôts privés ;
-- un **compte claude.ai** avec les connecteurs de la chaîne (ElevenLabs pour la voix, la musique et les effets ; vidIQ en lecture seule) ;
+- un **compte ElevenLabs** et sa clé d'API, posée par le propriétaire dans la variable `ELEVENLABS_API_KEY` (le connecteur claude.ai d'ElevenLabs est coupé par défaut) ; un **compte claude.ai** pour les autres connecteurs de la chaîne (vidIQ en lecture seule, sur demande) ;
 - **Chrome sans fenêtre** : HyperFrames télécharge `chrome-headless-shell` (environ 270 Mo) dans `~/.cache/hyperframes/` au premier contrôle ou rendu, **avec l'accord du propriétaire**.
 
 ## Diagramme
@@ -54,7 +54,7 @@ flowchart TD
   B2 --> B3["B3. claude plugin marketplace add, puis claude plugin install, option --scope project"]
   B3 --> B4["B4. npm ci, puis pip install -r requirements.txt"]
   B4 --> B5["B5. git config core.hooksPath .githooks"]
-  B5 --> B6["B6. Règle ask du connecteur ElevenLabs, modèle Whisper"]
+  B5 --> B6["B6. Clé ElevenLabs (variable), modèle Whisper"]
   B6 --> C["C. Vérifier : bilan lu par le propriétaire"]
   C --> OK{"Bilan propre ?"}
   OK -- non --> R["Voir les erreurs fréquentes"]
@@ -138,7 +138,7 @@ flowchart TD
 
 ### B6. Connecteurs et modèle Whisper
 - **Qui** : propriétaire.
-- **Connecteur ElevenLabs** : ajouter à la liste `ask` de `.claude/settings.json` l'identifiant du connecteur de la session (`mcp__<identifiant>`). Il dépend du compte, donc il n'est pas dans le squelette.
+- **ElevenLabs** (30/10/2026) : par l'API, sans connecteur ; le propriétaire pose lui-même la clé dans la variable `ELEVENLABS_API_KEY` (Claude ne la lit ni ne l'affiche jamais, il vérifie seulement qu'elle existe). Aucune règle `ask` à ajouter : chaque génération demande l'accord du propriétaire en conversation.
 - **Modèle Whisper** `ggml-base.en.bin` pour le contrôle des prises : hors du projet, **téléchargé avec l'accord du propriétaire**.
 - **Chrome sans fenêtre** : téléchargé par HyperFrames au premier contrôle ou rendu (≈ 270 Mo, `~/.cache/hyperframes/`), avec l'accord du propriétaire.
 
@@ -146,7 +146,7 @@ flowchart TD
 - **Qui** : Claude, à la demande du propriétaire.
 - **Invite à donner dans la chaîne** (texte de `INSTALLATION.md` § 5) :
   > Vérifie l'installation : liste les skills et agents `studio-faceless`, vérifie que les règles communes du studio sont arrivées au début de la session, lance `hyperframes check` sur le gabarit de séquence v3 du plugin copié dans un dossier temporaire, un rendu test de 3 secondes avec `--workers 1`, un contrôle `controle.py niveau` sur ce rendu et `controle.py chrome`. Vérifie à la fin qu'aucun Chrome ne reste ouvert.
-- **Ce que cela exerce** : les skills (`studio-faceless:episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`, `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`) et les cinq agents ; le hook `SessionStart` ; HyperFrames 0.8.149 (le gabarit v3 refuse un autre numéro) ; Node 22 ; FFmpeg ; `controle.py` (`numpy`).
+- **Ce que cela exerce** : les skills (`studio-faceless:episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`, `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`) et les six agents ; le hook `SessionStart` ; HyperFrames 0.8.149 (le gabarit v3 refuse un autre numéro) ; Node 22 ; FFmpeg ; `controle.py` (`numpy`).
 - **Règles de rendu** : `--workers 2` au plus ; jamais de `preview` sans demande ; vérifier à la fin qu'aucun Chrome de HyperFrames ne reste ouvert.
 - **Porte** : le propriétaire **lit le bilan avant de continuer**.
 

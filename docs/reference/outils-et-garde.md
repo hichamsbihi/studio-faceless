@@ -297,7 +297,7 @@ powershell -File ${CLAUDE_PLUGIN_ROOT}/outils/sauvegarde-chaine.ps1 -Destination
 - Si un écart d'empreinte arrête la copie, le dossier daté reste partiel : ne pas le prendre pour une sauvegarde valide (absence de `MANIFEST.sha256.txt`).
 
 ### outils/verifier_depot.py
-**Rôle** : contrôle des fichiers à committer dans le dépôt Git de la chaîne : refuse un gros fichier hors Git LFS, un média d'épisode, un secret probable et un chemin propre à une machine dans un fichier de code actif.
+**Rôle** : contrôle des fichiers à committer dans le dépôt Git de la chaîne : refuse un gros fichier hors Git LFS, un média d'épisode, un secret probable, un chemin propre à une machine dans un fichier de code actif et, depuis la 0.2.2, un `REGLES_STUDIO.md` de plus de 9 000 caractères.
 
 **Quand il sert** : lancé automatiquement par le crochet `.githooks/pre-commit` de la chaîne avant chaque commit ; lancé à la main par Claude principal avant un envoi (`--tout`) ou pour comprendre un refus.
 
@@ -313,6 +313,7 @@ python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/verifier_depot.py --tout   tous les fi
 | Média d'épisode | Un fichier sous `episodes/` d'extension vidéo, son, image, police, `.pdf` ou `.zip` : refus (sauvegarde externe, pas dépôt) |
 | Secret probable | Clés `sk-…`, `sk_…` (dont `sk_live_…`, `sk_test_…`) en début de jeton, c'est-à-dire non précédées d'une lettre, d'un chiffre, de `_` ou de `-` (« risk-… », « task-… » ou une URL en « dsk-… » ne sont pas des clés), `xi-api-key: …`, `api_key: '…'`, jetons `ghp_…` et `github_pat_…`, `-----BEGIN … PRIVATE KEY-----`, en-tête `Bearer …` ; les valeurs de remplacement (`$`, `<`, `{`, `%`) sont ignorées |
 | Chemin de machine | `C:/Users/<nom>` ou `/c/Users/<nom>` dans un fichier `.py .mjs .js .cjs .json .sh .ps1 .html .css` hors `episodes/`, `docs/` et tout dossier `vendor/` ; les marqueurs `<…>`, `{…}`, `nom`, `vous`, `you`, `user` sont tolérés |
+| Taille de `REGLES_STUDIO.md` (0.2.2) | Tout fichier nommé `REGLES_STUDIO.md` de plus de 9 000 caractères une fois `${CLAUDE_PLUGIN_ROOT}` remplacé par un chemin de cache type (`C:/Users/<nom>/.claude/plugins/cache/studio-faceless/studio-faceless/0.2.2`) : refus. L'application de bureau coupe tout `additionalContext` du hook `SessionStart` au-delà de 10 000 caractères ; le détail va dans `referentiels/REGLES_DETAIL.md` |
 
 Les médias, les fichiers en LFS et ceux de plus de 3 Mo ne sont pas lus pour les secrets et les chemins.
 
@@ -326,7 +327,7 @@ Les médias, les fichiers en LFS et ceux de plus de 3 Mo ne sont pas lus pour le
 - Les fichiers Markdown ne passent pas le contrôle des chemins de machine (seulement celui des secrets).
 - Un secret dans un fichier de plus de 3 Mo n'est pas détecté.
 - Un segment d'URL qui commence lui-même par `sk-` suivi de 20 caractères reste signalé (faux positif possible).
-- **Test** de la détection des secrets (exemples de faux positifs et de vraies clés), depuis la racine du dépôt du plugin : `python -I -B plugins/studio-faceless/outils/test_verifier_depot.py` (29/10/2026).
+- **Test** de la détection des secrets (exemples de faux positifs et de vraies clés), depuis la racine du dépôt du plugin : `python -I -B plugins/studio-faceless/outils/test_verifier_depot.py` (29/10/2026) ; il teste aussi la limite de taille de `REGLES_STUDIO.md` (30/10/2026).
 
 ---
 
@@ -335,7 +336,7 @@ Les médias, les fichiers en LFS et ceux de plus de 3 Mo ne sont pas lus pour le
 ### outils/suivi_tokens.py
 **Rôle** : mesure la consommation de tokens des sessions de la chaîne en lisant les journaux de Claude Code, sans en afficher le contenu. Ne modifie aucun fichier.
 
-**Quand il sert** : lancé par Claude principal à chaque fin d'étape d'un épisode (`REGLES_STUDIO.md`), pour décider d'un `/compact` ou d'un changement de méthode ; les chiffres par étape se notent dans l'état de l'épisode.
+**Quand il sert** : lancé par Claude principal à chaque fin d'étape d'un épisode (`REGLES_STUDIO.md`), pour décider de la suite (état écrit, puis `/clear`, ou `/compact` au milieu d'une longue porte) ou d'un changement de méthode ; les chiffres par étape se notent dans l'état de l'épisode.
 
 **Usage**
 ```text
@@ -459,15 +460,15 @@ Les chemins sont ramenés à un chemin relatif à la chaîne (`/c/Users/…` de 
 - **Le garde-fou ne bloque pas** : `npm ci` et `npm run` (absents de la liste), un script Python lancé par fichier qui supprime ou écrit (seul `python -c` est examiné), `rmdir` sans option récursive. Le mainteneur peut donc lancer `python script.py`, mais sa mission le lui interdit.
 - Le chemin du plugin installé contient `.claude/` : `sans_plugin` le remplace par `PLUGIN` avant la règle (b), sauf s'il contient « .. » (alors il reste refusé). Un producteur peut donc lancer par Bash un outil du plugin (chemin complet, sans « .. »). Le gabarit vient quand même du kit, copié par le Studio Director. Cela ne vaut que si `CLAUDE_PLUGIN_ROOT` est défini dans l'environnement du hook.
 - Les comparaisons `claude.md` et les noms de zones s'appuient sur `os.path.normcase`, qui met en minuscules sous Windows seulement : sous un autre système, `CLAUDE.md` ne serait pas reconnu par la zone `core` (à vérifier).
-- Les permissions `allow`, `deny` et `ask` du `.claude/settings.json` de la chaîne s'ajoutent à ce garde-fou ; l'appel du connecteur ElevenLabs relève d'une règle `ask` de ce fichier, pas de ce script.
+- Les permissions `allow`, `deny` et `ask` du `.claude/settings.json` de la chaîne s'ajoutent à ce garde-fou ; la génération ElevenLabs passe par l'API, avec l'accord du propriétaire en conversation et le coût annoncé avant (`DIRECTION_AUDIO.md` § 4) ; ce script ne la contrôle pas.
 - La fonction `decide(command, role=None)` est conservée « pour les tests existants ».
 
 ### hooks/regles_studio.py
 **Rôle** : injecte les règles communes du studio (`REGLES_STUDIO.md`) dans le contexte de Claude au début de chaque session, avec le chemin réel du plugin à la place de `${CLAUDE_PLUGIN_ROOT}`.
 
-**Quand il sert** : lancé par Claude Code à l'événement `SessionStart` (démarrage ; la doc du script ajoute : après un `/compact`). Aucun humain ne le lance.
+**Quand il sert** : lancé par Claude Code à l'événement `SessionStart` (démarrage ; la doc du script ajoute : après un `/clear` ou un `/compact`). Aucun humain ne le lance.
 
-**Déroulement** : dossier du plugin = `CLAUDE_PLUGIN_ROOT`, sinon le dossier parent du dossier `hooks/` ; lit `REGLES_STUDIO.md` ; remplace chaque `${CLAUDE_PLUGIN_ROOT}` par le chemin (barres obliques normales) ; écrit sur la sortie standard `{"hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": "<texte>"}}` en UTF-8.
+**Déroulement** : dossier du plugin = `CLAUDE_PLUGIN_ROOT`, sinon le dossier parent du dossier `hooks/` ; lit `REGLES_STUDIO.md` ; remplace chaque `${CLAUDE_PLUGIN_ROOT}` par le chemin (barres obliques normales) ; écrit sur la sortie standard `{"hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": "<texte>"}}` en UTF-8. **Depuis la 0.2.2** : si le texte final (règles, plus la section du domaine) dépasse 9 500 caractères, une première ligne « Texte tronqué par l'app : lire <racine>/REGLES_STUDIO.md en entier. » est ajoutée, car l'application coupe tout `additionalContext` au-delà de 10 000 caractères.
 
 **Fichiers lus** : `REGLES_STUDIO.md`. **Écrits** : aucun. **Dépendances** : Python standard.
 
@@ -490,10 +491,10 @@ Les chemins sont ramenés à un chemin relatif à la chaîne (`/c/Users/…` de 
 | Introduction | Portée, rapport avec le `CLAUDE.md` de la chaîne (nomme le propriétaire, la langue des documents et celle du spectateur, le public, la voix) |
 | Dossier du plugin | Note sur `${CLAUDE_PLUGIN_ROOT}` : écrit entre accolades, remplacé à l'injection ; n'existe pas dans l'environnement de Bash |
 | Quoi lire selon la mission | Tableau mission → fichier : ligne éditoriale et écarts de la chaîne, `METHODE_RECIT`, `REFERENTIEL_QUALITE_REALISATION`, `DIRECTION_AUDIO`, `MOTION_CATALOG`, `marque/`, épisode, skills `episode`, `thumbnail-strategist`, `youtube-seo`, `shorts` |
-| Moteur et outils | HyperFrames 0.8.149 figée ; Node 22 ou plus ; skills plus récents que le CLI ; navigateurs (`--workers 2` au plus, `preview` sur demande) ; outils du plugin et `controle/` ; garde-fou (pour tous, par rôle) ; rendu par `rendre_si_libre.sh` ; archivage ; dépôt Git (commits locaux, envoi avec accord) ; suivi des tokens |
-| Sous-agents | Studio Director ; les cinq agents (`research`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`) ; contrat de mission ; isolation ; un sous-agent ne voit pas la mémoire de Claude |
-| Parcours d'un épisode | Les onze étapes, du sujet à l'archivage |
-| Économie de tokens et de contexte | Sessions et `/compact` (150 à 200 k, fin d'étape, pause de plus d'une heure) ; sous-agents (jamais plus de 4 min sans action, une correction dans la même version : reprise du producteur si son cache est chaud, sinon un nouvel agent court) ; travail (lectures par plages, sorties courtes) |
+| Moteur et outils | Depuis la 0.2.2, **renvoi** de deux lignes vers `referentiels/REGLES_DETAIL.md`, qui porte le texte d'origine : HyperFrames 0.8.149 figée ; Node 22 ou plus ; skills plus récents que le CLI ; navigateurs (`--workers 2` au plus, `preview` sur demande) ; outils du plugin et `controle/` ; garde-fou (pour tous, par rôle) ; rendu par `rendre_si_libre.sh` ; archivage ; dépôt Git (commits locaux, envoi avec accord) ; suivi des tokens |
+| Sous-agents | Studio Director ; les six agents (`research`, `reviewer`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`) ; contrat de mission (avec la section des règles de la chaîne pour les agents sans `CLAUDE.md`) ; isolation ; un sous-agent ne voit pas la mémoire de Claude |
+| Parcours d'un épisode | Depuis la 0.2.2, **renvoi** de deux lignes vers `referentiels/REGLES_DETAIL.md` : les onze étapes, du sujet à l'archivage |
+| Économie de tokens et de contexte | Sessions : fin de porte = `STATE.md` réécrit, `INDEX.md` à jour, puis `/clear` (un `/compact` remet dans le contexte skills et fichiers lus : 124,6 k contre 81 à 88 k), `/compact` permis au milieu d'une longue porte, modèle du fil principal changé seulement après un `/clear` ; sous-agents (jamais plus de 4 min sans action, une correction dans la même version : reprise du producteur si son cache est chaud, sinon un nouvel agent court) ; travail (lectures par plages, sorties courtes) |
 | Règles permanentes | Faire seulement ce qui est demandé ; décision / proposition / hypothèse / question ouverte ; **statuts** ; pas d'écoute déclarée sans écoute ; ne jamais écraser ; aucune publication, achat ou contournement ; médias réels, sous licence libre ou en citation encadrée par défaut (référentiel § 2 bis), licences libres seules par écart de chaîne ; pas de contamination entre épisodes ; concision |
 
 **Statuts** (section « Règles permanentes »)

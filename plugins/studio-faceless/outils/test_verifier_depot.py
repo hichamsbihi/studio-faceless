@@ -1,4 +1,4 @@
-"""Test de la détection des secrets de verifier_depot.py (29/10/2026).
+"""Test de la détection des secrets (29/10/2026) et de la limite de taille de REGLES_STUDIO.md (0.2.2, 30/10/2026) de verifier_depot.py.
 
 Usage, depuis la racine du dépôt du plugin :
   python -I -B plugins/studio-faceless/outils/test_verifier_depot.py
@@ -39,6 +39,27 @@ class Secret(unittest.TestCase):
         for texte in SECRETS:
             with self.subTest(texte=texte[:18]):
                 self.assertIsNotNone(verifier_depot.SECRET.search(texte))
+
+
+class TailleRegles(unittest.TestCase):
+    """REGLES_STUDIO.md est injecté par le hook SessionStart : l'application coupe tout ce qui dépasse 10 000 caractères."""
+
+    def test_le_chemin_est_compte(self):
+        # 20 renvois au dossier du plugin : le texte brut est court, le texte injecté est plus long
+        brut = '${CLAUDE_PLUGIN_ROOT}/x ' * 20
+        self.assertGreater(verifier_depot.taille_regles(brut), len(brut))
+
+    def test_limite(self):
+        self.assertLessEqual(verifier_depot.LIMITE_REGLES, 9000)
+        self.assertGreater(verifier_depot.taille_regles('a' * 9001), verifier_depot.LIMITE_REGLES)
+        self.assertLessEqual(verifier_depot.taille_regles('a' * 9000), verifier_depot.LIMITE_REGLES)
+
+    def test_regles_du_depot(self):
+        chemin = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'REGLES_STUDIO.md')
+        if not os.path.isfile(chemin):
+            self.skipTest('REGLES_STUDIO.md absent')
+        with open(chemin, encoding='utf-8') as f:
+            self.assertLessEqual(verifier_depot.taille_regles(f.read()), verifier_depot.LIMITE_REGLES)
 
 
 if __name__ == '__main__':

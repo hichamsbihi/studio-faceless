@@ -10,14 +10,14 @@ Ce document décrit ce qui se passe quand on ouvre une session dans une chaîne 
 - [Partie B : à chaque commande](#partie-b--à-chaque-commande)
 - [Rôle par type d'agent](#rôle-par-type-dagent)
 - [Permissions de la chaîne](#permissions-de-la-chaîne)
-- [Partie C : suivi des tokens et `/compact`](#partie-c--suivi-des-tokens-et-compact)
+- [Partie C : suivi des tokens, état et `/clear`](#partie-c--suivi-des-tokens-état-et-clear)
 - [Diagrammes](#diagrammes)
 - [Erreurs fréquentes et reprises](#erreurs-fréquentes-et-reprises)
 - [Fichiers de référence](#fichiers-de-référence)
 
 ## Déclencheur et résultat attendu
-- **Déclencheur** : l'ouverture d'une session de Claude Code dans le dossier d'une chaîne (ou un `/compact`), puis chaque appel à `Bash`, `PowerShell`, `Write`, `Edit` ou `NotebookEdit`, et la fin de chaque étape d'un épisode pour le suivi des tokens.
-- **Résultat attendu** : les règles communes du studio sont dans le contexte de Claude avec le chemin réel du plugin ; aucune commande dangereuse (publication, cloud, mise à jour de HyperFrames, installation npm, suppression récursive, rendu sans `--workers`) ne part sans décision ; chaque agent n'écrit que dans son périmètre ; le contexte reste sous 150 à 200 k.
+- **Déclencheur** : l'ouverture d'une session de Claude Code dans le dossier d'une chaîne (ou un `/clear`, ou un `/compact`), puis chaque appel à `Bash`, `PowerShell`, `Write`, `Edit` ou `NotebookEdit`, et la fin de chaque étape d'un épisode pour le suivi des tokens.
+- **Résultat attendu** : les règles communes du studio sont dans le contexte de Claude avec le chemin réel du plugin ; aucune commande dangereuse (publication, cloud, mise à jour de HyperFrames, installation npm, suppression récursive, rendu sans `--workers`) ne part sans décision ; chaque agent n'écrit que dans son périmètre ; le contexte reste sous 150 à 200 k, et chaque reprise lit seulement `episodes/INDEX.md` et le `STATE.md` de l'épisode.
 
 ## Acteurs
 | Acteur | Rôle |
@@ -25,7 +25,7 @@ Ce document décrit ce qui se passe quand on ouvre une session dans une chaîne 
 | **Propriétaire** | Accepte la confiance du dossier, répond aux demandes de confirmation (`ask`), décide des permissions de la chaîne et des mises à jour |
 | **Claude Code** | Exécute les hooks, applique les décisions (refus, confirmation) et les permissions |
 | **Studio Director** (Claude principal) | Sans rôle de garde-fou : seules les règles communes s'appliquent à lui ; il lance le suivi des tokens |
-| **Agents** | `motion-producer` et `shorts-producer` (rôle producteur), `art-director` (directeur-artistique), `studio-maintainer` (mainteneur) ; `research` sans rôle |
+| **Agents** | `motion-producer` et `shorts-producer` (rôle producteur), `art-director` (directeur-artistique), `studio-maintainer` (mainteneur) ; `research` et `reviewer` sans rôle |
 
 ## Prérequis
 - Plugin installé pour le projet (`claude plugin install studio-faceless@studio-faceless --scope project`) et déclaré dans le `.claude/settings.json` de la chaîne (`extraKnownMarketplaces`, `enabledPlugins`).
@@ -45,7 +45,7 @@ Ce document décrit ce qui se passe quand on ouvre une session dans une chaîne 
 | 3 | `regles_studio.py` | Lit `REGLES_STUDIO.md`, remplace chaque `${CLAUDE_PLUGIN_ROOT}` par le chemin du plugin installé, renvoie le texte comme contexte additionnel | `REGLES_STUDIO.md` |
 | 4 | Claude Code | Charge le `CLAUDE.md` de la chaîne (identité, propriétaire, langues, règles propres) | `CLAUDE.md` de la chaîne |
 | 5 | Claude (Studio Director) | Lit à la demande, selon la mission, ce que le tableau « Quoi lire selon la mission » désigne : `direction/ECARTS.md`, un référentiel, `marque/README.md`, le `CLAUDE.md` et le `BRIEF.md` de l'épisode | voir la fiche [`REGLES_STUDIO.md`](../reference/outils-et-garde.md#règles-communes) |
-| 6 | Claude Code | Après un `/compact`, relance l'étape 2 : les règles communes sont réinjectées | — |
+| 6 | Claude Code | Après un `/clear` ou un `/compact`, relance l'étape 2 : les règles communes sont réinjectées (si le texte dépasse 9 500 caractères, une première ligne dit de lire `REGLES_STUDIO.md` en entier : l'application coupe tout au-delà de 10 000) | — |
 
 Un plugin ne charge pas de `CLAUDE.md` à sa racine : c'est la raison d'être de ce hook.
 
@@ -106,7 +106,7 @@ Un plugin ne peut pas fournir de permissions : elles sont dans le `.claude/setti
 |---|---|
 | `allow` | Les appels HyperFrames par `node node_modules/hyperframes/bin/hyperframes.mjs *`, `* node_modules/hyperframes/bin/hyperframes.mjs *`, `npx hyperframes *` ; `* render.mjs*` ; `assembler.py`, `mix_film.py` et `srt.py` de `outils/montage/` (`python *outils/montage/<outil>.py*`, `py …`) |
 | `deny` | `rm -rf *`, `rm -fr *`, `rm -r *` ; `npm install *`, `npm i *`, `npm uninstall *`, `npm update *` ; `npx hyperframes@*`, `npx hyperframes publish*`, `cloud*`, `cloudrun*`, `lambda*`, `auth*`, `upgrade*` |
-| `ask` | Aucune dans le squelette. Le propriétaire y ajoute l'identifiant du connecteur ElevenLabs de la session (`mcp__<identifiant>`, `INSTALLATION.md` § 4.6) : chaque appel au connecteur demande son accord. À défaut, Claude demande l'accord en conversation avant chaque lot, et aucun sous-agent n'appelle le connecteur (`DIRECTION_AUDIO.md` § 4) |
+| `ask` | Aucune dans le squelette. Depuis la 0.2.2, ElevenLabs passe par l'API (SDK Python `elevenlabs`, clé dans la variable `ELEVENLABS_API_KEY`, jamais lue ni affichée) ; le connecteur claude.ai est coupé par défaut (30/10/2026) : Claude demande l'accord du propriétaire en conversation avant chaque génération, coût annoncé, et aucun sous-agent ne génère (`DIRECTION_AUDIO.md` § 4) |
 
 - Le garde-fou du plugin et ces listes se **complètent** : le garde couvre ce que les motifs simples ne voient pas (options récursives n'importe où, rôles, zones protégées) ; les listes de la chaîne gardent la main du propriétaire. Comment Claude Code arbitre entre la décision d'un hook et les listes `allow` : voir sa documentation (à vérifier) ; une décision `deny` du hook n'est jamais contournée par le garde lui-même.
 - Les règles `mix.py` venaient des gabarits plus anciens (mix par séquence) ; elles ont été remplacées le 29/10/2026 par celles des outils de montage. Le gabarit v3 ne contient pas de `mix.py` : le mix se fait sur le film entier par `outils/montage/mix_film.py`.
@@ -114,23 +114,23 @@ Un plugin ne peut pas fournir de permissions : elles sont dans le `.claude/setti
 
 ---
 
-## Partie C : suivi des tokens et `/compact`
+## Partie C : suivi des tokens, état et `/clear`
 
 ### Étapes (à chaque fin d'étape d'un épisode)
 | # | Qui | Quoi | Commande ou fichier |
 |---|---|---|---|
 | 1 | Studio Director | Mesurer la consommation des sessions depuis le début de l'épisode | `python -B <plugin>/outils/suivi_tokens.py --depuis AAAA-MM-JJ` (depuis la racine de la chaîne) |
 | 2 | Studio Director | Lire : contexte médian et maximal, contexte de départ, tokens effectifs, écritures de cache, pour la session principale et les sous-agents | sortie de l'outil |
-| 3 | Studio Director | Si le contexte dépasse **150 à 200 k**, ou à la fin d'une grande étape, ou avant une pause annoncée de plus d'une heure (le cache dure 1 h) : écrire l'état dans `BRIEF.md`, dans le `CLAUDE.md` de l'épisode ou dans la mémoire | fichiers de l'épisode |
-| 4 | Studio Director | Compacter avec la consigne : « garder les décisions VALIDÉES, les chemins et l'état des rendus ; oublier les sorties de commandes et les lectures » | `/compact` |
-| 5 | Claude Code | Réinjecte les règles communes au `SessionStart` suivant le compactage | `regles_studio.py` |
+| 3 | Studio Director | À la fin d'une grande étape (ou avant une pause annoncée de plus d'une heure, le cache dure 1 h) : réécrire en entier `episodes/<id>/STATE.md` (manifeste de 2,5 Ko au plus, modèle `templates/STATE.template.md`) et mettre à jour `episodes/INDEX.md` ; la décision va au `BRIEF.md`, le détail daté à `HISTORIQUE_ETAT.md` | fichiers de l'épisode |
+| 4 | Studio Director | `/clear` (pas `/compact`) : après un `/compact`, le texte des skills appelés et des fichiers lus revient dans le contexte, 124,6 k au premier appel contre 81 à 88 k en session neuve (mesure du 30/10/2026). Le modèle du fil principal ne change que juste après un `/clear`. Si le contexte dépasse **150 à 200 k** au milieu d'une longue porte, `/compact` reste permis après avoir écrit l'état, avec la consigne « garder les décisions VALIDÉES, les chemins et l'état des rendus ; oublier les sorties de commandes et les lectures » | `/clear` |
+| 5 | Claude Code | Réinjecte les règles communes au `SessionStart` suivant le `/clear` ou le compactage | `regles_studio.py` |
 | 6 | Studio Director | Noter les tokens par étape dans l'état de l'épisode | — |
 
-### Points de compactage (skill `episode`, `tokens-contexte.md`)
-Fin du sujet, de la recherche, de l'angle, du script, de la voix, du socle, de la séquence témoin, de chaque lot, du collage et du mix.
+### Fins de porte (skill `episode`, `tokens-contexte.md`)
+État écrit puis `/clear` à la fin du sujet, de la recherche, de l'angle, du script, de la voix, du socle, de la séquence témoin, de chaque lot, du collage et du mix.
 
 ### Règles d'économie
-- **Sessions** : on reste dans la session en cours ; pour reprendre après une coupure : `BRIEF.md`, le `CLAUDE.md` de l'épisode et la mémoire. Les lectures lourdes (audits de vidéos, rapports, journaux) vont à un sous-agent qui ne renvoie qu'une synthèse.
+- **Sessions** : un `/clear` à chaque fin de porte, après avoir écrit `STATE.md` et `INDEX.md` ; pour reprendre (après une coupure ou un `/clear`) : `episodes/INDEX.md`, puis le `STATE.md` indiqué, seulement ; le `CLAUDE.md` de l'épisode, le `BRIEF.md` et `HISTORIQUE_ETAT.md` à la demande. Les lectures lourdes (audits de vidéos, rapports, journaux) vont à un sous-agent qui ne renvoie qu'une synthèse.
 - **Sous-agents** : jamais plus de 4 min sans action (leur cache dure 5 min) ; une tâche longue revient à Claude principal ; aucune demande de permission en attente pendant l'absence du propriétaire (ce qui demande son accord se fait avant la délégation) ; une correction se fait dans la même version (reprise du producteur si son cache est chaud, sinon un agent court) ; les attentes de rendu se font en tâche suivie, jamais dans un sous-agent.
 - **Travail** : modifier plutôt que réécrire ; sorties de commandes courtes ; lectures par plages ; une planche d'images à la fois ; dans les contrats, des extraits utiles plutôt que des fichiers entiers.
 - **Coûts constatés** (AA, E007, 24/10/2026) : producteur de séquence 330 à 460 k ; agent court de correction 170 à 200 k ; chercheur de médias 260 à 340 k ; reprise d'un producteur au cache froid : tout son contexte réécrit.
@@ -178,11 +178,11 @@ flowchart TD
 ```mermaid
 flowchart TD
     A[Fin d'une étape] --> B[suivi_tokens.py --depuis date]
-    B --> C{Contexte au-dessus de 150 à 200 k ou grande étape ou pause longue ?}
+    B --> C{Fin de porte ou pause longue ?}
     C -->|non| D[Étape suivante]
-    C -->|oui| E[Écrire l'état dans BRIEF.md, CLAUDE.md de l'épisode, mémoire]
-    E --> F["Commande /compact avec la consigne"]
-    F --> G[SessionStart : règles réinjectées]
+    C -->|oui| E[Réécrire STATE.md, mettre à jour INDEX.md]
+    E --> F["Commande /clear"]
+    F --> G[SessionStart : règles réinjectées ; reprise par INDEX.md puis STATE.md]
     G --> D
 ```
 
@@ -200,7 +200,7 @@ flowchart TD
 | « le plugin installé ne se modifie pas depuis une chaîne » | `Write` ou `Edit` sur un fichier du cache du plugin | Modifier le dépôt du plugin, changer sa version, mettre à jour la chaîne (`faire-evoluer-le-plugin.md`) |
 | Demande de confirmation pour `preview` | Aperçu HyperFrames | Ne l'accepter que sur demande du propriétaire, l'arrêter aussitôt, vérifier ensuite qu'aucun Chrome ne reste (`controle.py chrome`) |
 | `suivi_tokens.py` n'affiche rien | Lancé hors de la racine de la chaîne, ou `--depuis` trop récent | Lancer depuis la racine, avec une date de début de l'épisode |
-| Contexte qui gonfle | Lectures entières, sorties longues, agents au cache froid | Lectures par plages, sous-agent de synthèse, `/compact` avec la consigne |
+| Contexte qui gonfle | Lectures entières, sorties longues, agents au cache froid, `/compact` à répétition | Lectures par plages, sous-agent de synthèse, état écrit puis `/clear` ; `/compact` avec la consigne seulement au milieu d'une longue porte |
 | Le garde-fou ne réagit plus | Le script plante (Python absent, JSON illisible : il sort alors sans rien dire) | Lancer `python -I <plugin>/hooks/garde_commandes.py` avec un JSON d'essai ; la plupart des erreurs de hook ne bloquent pas l'appel (à vérifier dans la documentation de Claude Code) |
 
 ## Fichiers de référence

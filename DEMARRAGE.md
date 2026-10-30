@@ -11,7 +11,7 @@ Guide pas à pas, en français, pour installer le studio `studio-faceless`, cré
   - il ne publie, n'achète et ne supprime rien ;
   - il fait des commits locaux ; il n'envoie vers GitHub qu'avec ton accord, donné à chaque fois, et ne se connecte jamais à ton compte ;
   - il ne déclare jamais une écoute ou un visionnage qui n'a pas eu lieu ;
-  - il n'appelle ElevenLabs, n'installe et ne télécharge rien sans ton accord ;
+  - il ne génère rien avec ElevenLabs (par l'API), n'installe et ne télécharge rien sans ton accord, coût annoncé avant ;
   - il n'écrase aucun travail : une nouvelle version va dans un nouveau dossier.
 
 ## Ce qu'il faut avant de commencer
@@ -19,7 +19,7 @@ Guide pas à pas, en français, pour installer le studio `studio-faceless`, cré
 |---|---|---|
 | Une machine Windows avec Git Bash | les commandes de Claude passent par Git Bash | [`INSTALLATION.md`](INSTALLATION.md) |
 | Un compte GitHub | authentification à deux facteurs, accès aux dépôts privés (le dépôt du plugin est privé) | [`INSTALLATION.md`](INSTALLATION.md) |
-| Un compte claude.ai avec les connecteurs | ElevenLabs (voix, effets ; le connecteur complet ajoute la musique) ; vidIQ en lecture seule, facultatif, seulement sur ta demande | [`INSTALLATION.md`](INSTALLATION.md), [`DIRECTION_AUDIO.md`](plugins/studio-faceless/referentiels/DIRECTION_AUDIO.md) § 4 |
+| Un compte ElevenLabs (clé d'API) ; un compte claude.ai si tu veux vidIQ | ElevenLabs par l'API (voix, effets, musique) : le connecteur claude.ai d'ElevenLabs reste coupé ; vidIQ en lecture seule, facultatif, seulement sur ta demande | [`INSTALLATION.md`](INSTALLATION.md), [`DIRECTION_AUDIO.md`](plugins/studio-faceless/referentiels/DIRECTION_AUDIO.md) § 4 |
 | Un forfait ElevenLabs payant | pour l'usage commercial des générations : selon l'aide d'ElevenLabs, le plan gratuit n'a pas de licence commerciale | `plugins/studio-faceless/skills/youtube-seo/references/description-et-credits.md`, l. 46 |
 | L'accès à YouTube Studio | pour régler la vidéo, la mettre en ligne et relever les bilans (Claude ne se connecte jamais à ta chaîne) | [`dossier-youtube.md`](docs/workflows/dossier-youtube.md) |
 | De la place disque et de la mémoire | Chrome sans fenêtre : environ 270 Mo ; modèle Whisper : 148 Mo ; mix d'un film de 9 min : 2 à 3 Go de mémoire ; archivage : 1,1 fois la taille du zip, plus 1 Go libres | [`INSTALLATION.md`](INSTALLATION.md), [`collage-et-mix.md`](docs/workflows/collage-et-mix.md), [`archivage-et-sauvegarde.md`](docs/workflows/archivage-et-sauvegarde.md) |
@@ -36,7 +36,7 @@ Elles viennent du [`README.md`](README.md). Elles valent pour tout ce guide.
 5. **HyperFrames reste figé en 0.8.149** : aucune mise à jour sans ta décision.
 
 > **Pas encore éprouvé.** La méthode et les outils viennent de StudioV1 (chaîne AA, la chaîne d'origine) et y ont servi. Ce qui n'a pas encore servi, c'est le plugin lui-même : le CLI `claude` de la machine où il a été écrit n'est connecté à aucun compte ([`docs/POINTS_OUVERTS.md`](docs/POINTS_OUVERTS.md), « Non testé »). En rédigeant ce guide, on a constaté que le dossier `~/.claude/plugins/` de cette machine ne contient aucun cache `studio-faceless` : **l'installation depuis GitHub n'a jamais été faite**. À confirmer à la première utilisation, selon `POINTS_OUVERTS.md` :
-> - l'arrivée de `REGLES_STUDIO.md` dans le contexte au début d'une vraie session, et après `/compact` ou `/reload-plugins` ;
+> - l'arrivée de `REGLES_STUDIO.md` dans le contexte au début d'une vraie session, et après `/clear`, `/compact` ou `/reload-plugins` ;
 > - le `agent_type` reçu par le garde-fou dans un vrai sous-agent (c'est lui qui donne le rôle) ;
 > - le préchargement de `studio-faceless:thumbnail-strategist` et de `studio-faceless:shorts` par les agents ;
 > - le chemin du cache cherché par le crochet `pre-commit` de la chaîne ;
@@ -81,12 +81,12 @@ Les commandes se tapent dans **Git Bash**, dans le dossier de la chaîne, sauf m
 Avant chaque grande étape, Claude ouvre une porte avec le skill `studio-faceless:grilling`. Il pose des questions numérotées (Q1, Q2…), chacune avec sa réponse recommandée. Répondre « oui » accepte la réponse recommandée. Il les pose par séries, à mesure que les décisions se débloquent. La porte se ferme quand plus aucune question n'est ouverte. Les faits, Claude les cherche ; les décisions sont à toi. Les réponses vont au `BRIEF.md`, datées.
 
 ### Le rythme de travail (à chaque fin de grande étape)
-Source : [`REGLES_STUDIO.md`](plugins/studio-faceless/REGLES_STUDIO.md), « Économie de tokens et de contexte ».
-- Reste dans la même session.
-- Demande à Claude d'écrire l'état dans le `BRIEF.md` et le `CLAUDE.md` de l'épisode.
-- Compacte le contexte dès qu'il dépasse 150 à 200 k, à chaque fin d'étape et avant une pause de plus d'une heure.
+Source : [`REGLES_STUDIO.md`](plugins/studio-faceless/REGLES_STUDIO.md), « Économie de tokens et de contexte » (depuis la 0.2.2).
+- Demande à Claude de réécrire `episodes/<id>/STATE.md` (un manifeste de 2,5 Ko au plus : étape courante, décisions validées, chemins, voix, budget restant, prochaine action) et de mettre à jour `episodes/INDEX.md`.
+- Lance ensuite `/clear` (et non `/compact`) : après un `/compact`, Claude Code remet dans le contexte les skills appelés et les fichiers lus, et le premier appel pèse 124,6 k contre 81 à 88 k dans une session neuve. Pour reprendre, Claude lit seulement `INDEX.md`, puis `STATE.md`.
+- `/compact` reste permis au milieu d'une longue porte (contexte au-delà de 150 à 200 k), après avoir écrit l'état. Ne change le modèle de Claude que juste après un `/clear`.
 
-> Écris l'état dans le BRIEF.md et le CLAUDE.md de l'épisode, puis je lance /compact. Consigne : garder les décisions VALIDÉES, les chemins et l'état des rendus ; oublier les sorties de commandes et les lectures.
+> Réécris le STATE.md de l'épisode et mets à jour l'INDEX.md, puis je lance /clear. Pour reprendre, tu liras seulement INDEX.md puis STATE.md.
 
 Claude peut mesurer la consommation à chaque fin d'étape :
 ```bash
@@ -98,7 +98,7 @@ Reste devant l'écran quand des agents travaillent : une demande de permission e
 - [Partie A — Préparer la machine (une fois)](#partie-a--préparer-la-machine-une-fois)
   [A1](#a1-installer-les-outils) · [A2](#a2-contrôler-les-versions) · [A3](#a3-connecter-la-machine-à-github) · [A4](#a4-cloner-le-dépôt-du-plugin) · [A5](#a5-copier-les-skills-hyperframes-figés) · [A6](#a6-brancher-les-connecteurs-du-compte) · [A7](#a7-préparer-le-modèle-whisper)
 - [Partie B — Créer la chaîne](#partie-b--créer-la-chaîne)
-  [B1](#b1-créer-le-dossier-de-la-chaîne) · [B2](#b2-initialiser-git-lfs-et-les-crochets) · [B3](#b3-ouvrir-le-dossier-dans-claude-code) · [B4](#b4-installer-le-plugin-pour-ce-projet) · [B5](#b5-installer-les-dépendances) · [B6](#b6-régler-le-connecteur-elevenlabs) · [B7](#b7-vérifier-linstallation) · [B8](#b8-poser-les-questions-de-départ) · [B9](#b9-remplir-lidentité-de-la-chaîne) · [B10](#b10-faire-le-premier-commit-local) · [B11](#b11-créer-le-dépôt-distant-privé)
+  [B1](#b1-créer-le-dossier-de-la-chaîne) · [B2](#b2-initialiser-git-lfs-et-les-crochets) · [B3](#b3-ouvrir-le-dossier-dans-claude-code) · [B4](#b4-installer-le-plugin-pour-ce-projet) · [B5](#b5-installer-les-dépendances) · [B6](#b6-régler-elevenlabs-clé-dapi) · [B7](#b7-vérifier-linstallation) · [B8](#b8-poser-les-questions-de-départ) · [B9](#b9-remplir-lidentité-de-la-chaîne) · [B10](#b10-faire-le-premier-commit-local) · [B11](#b11-créer-le-dépôt-distant-privé)
 - [Partie C — La première vidéo](#partie-c--la-première-vidéo)
   - Avant le collage : [C1](#c1-faire-linventaire-de-la-marque) · [C2](#c2-confirmer-la-voix-de-synthèse) · [C3](#c3-fixer-couleurs-couleurs-interdites-et-polices) · [C4](#c4-fabriquer-le-logo-et-la-bannière) · [C5](#c5-fabriquer-la-signature) · [C6](#c6-fabriquer-lappel-like-et-subscribe) · [C7](#c7-fabriquer-loutro) · [C8](#c8-contrôler-les-pièces-de-marque)
   - Fabrication : [C9](#c9-choisir-le-sujet) · [C10](#c10-faire-la-recherche) · [C11](#c11-valider-langle-et-le-découpage) · [C12](#c12-écrire-et-valider-le-script) · [C13](#c13-générer-les-prises-de-voix) · [C14](#c14-contrôler-les-prises-contre-le-texte) · [C15](#c15-ralentir-recaler-et-figer-la-voix) · [C16](#c16-fixer-la-direction-artistique-et-poser-le-gabarit) · [C17](#c17-réunir-les-médias) · [C18](#c18-préparer-les-sons) · [C19](#c19-finir-le-socle) · [C20](#c20-lancer-la-séquence-témoin) · [C21](#c21-rendre-et-valider-la-séquence-témoin) · [C22](#c22-produire-les-autres-séquences-par-lots-de-trois) · [C23](#c23-rendre-les-séquences-une-à-une) · [C24](#c24-coller-le-film-en-voix-seule) · [C25](#c25-mixer-le-film) · [C26](#c26-donner-tes-retours-et-approuver)
@@ -217,12 +217,12 @@ for s in hyperframes hyperframes-animation hyperframes-audio hyperframes-cli hyp
 
 ### A6. Brancher les connecteurs du compte
 - **Qui** : toi.
-- **À faire** : dans ton compte claude.ai, ajoute :
-  - le connecteur **ElevenLabs**. Le connecteur de base fait la voix et les effets, pas la musique ; le connecteur complet ajoute la musique (Eleven Music v2.5) ;
-  - si tu veux, **vidIQ** en lecture seule. Claude ne s'en sert que sur ta demande.
-- **Fichiers créés** : aucun. L'identifiant du connecteur ElevenLabs servira à l'étape B6.
+- **À faire** :
+  - **ElevenLabs** : crée ta clé d'API sur elevenlabs.io (Settings, API Keys). ElevenLabs passe par l'API, pas par le connecteur claude.ai, qui reste coupé (30/10/2026). Tu poseras la clé toi-même à l'étape B6 ;
+  - si tu veux, dans ton compte claude.ai, **vidIQ** en lecture seule. Claude ne s'en sert que sur ta demande.
+- **Fichiers créés** : aucun.
 - **Tu valides** : rien.
-- **Vérifier** : les fichiers du plugin ne disent pas comment constater qu'un connecteur est actif dans Claude Code : à vérifier. Tu le sauras à l'étape B6, quand Claude pourra donner l'identifiant du connecteur.
+- **Vérifier** : la clé existe sur elevenlabs.io ; ne la donne à personne et ne la colle jamais dans une conversation.
 - **Détail** : [`sons.md`](docs/workflows/sons.md), partie C ; [`DIRECTION_AUDIO.md`](plugins/studio-faceless/referentiels/DIRECTION_AUDIO.md) § 4.
 
 ### A7. Préparer le modèle Whisper
@@ -235,7 +235,7 @@ for s in hyperframes hyperframes-animation hyperframes-audio hyperframes-cli hyp
 
 > **À vérifier : la langue.** `ggml-base.en.bin` est un modèle **anglais**. Pour une chaîne dont le spectateur parle une autre langue, le contrôle des prises par `transcrire.py` n'est pas garanti : un modèle multilingue serait nécessaire, et les fichiers du plugin ne l'ont pas testé. Les valeurs par défaut de la voix (tempo ×0,97, débit visé de 130 à 135 mots par minute) ont aussi été validées sur AA, en anglais.
 
-**Tu es prêt pour la partie B quand** : les versions de A2 sont bonnes, `gh` est connecté, le clone est là, les dix skills sont dans `~/.claude/skills`, ElevenLabs est branché.
+**Tu es prêt pour la partie B quand** : les versions de A2 sont bonnes, `gh` est connecté, le clone est là, les dix skills sont dans `~/.claude/skills`, la clé ElevenLabs est créée.
 
 ---
 
@@ -342,16 +342,12 @@ grep -m1 '"version"' node_modules/hyperframes/package.json
   Réponse attendue : `"version": "0.8.149"`. Si `npm ci` échoue, vérifie Node 22 et ne tente jamais `npm install`.
 - **Détail** : [`nouvelle-chaine.md`](docs/workflows/nouvelle-chaine.md), étape 6.
 
-### B6. Régler le connecteur ElevenLabs
-- **Qui** : toi, ou Claude avec ton accord explicite. Modifier les permissions est une décision du propriétaire ; aucun agent ne modifie `.claude/`.
-- **À faire** : le squelette ne contient aucune règle `ask`, parce que l'identifiant du connecteur dépend de ton compte. Ajoute-le dans `permissions` de `.claude/settings.json`, pour que chaque appel au connecteur te demande ton accord :
-```json
-"ask": ["mcp__<identifiant>"]
-```
-  `<identifiant>` est celui du connecteur ElevenLabs de la session. Les fichiers ne disent pas où le lire ; Claude le voit dans le nom des outils du connecteur (à vérifier). Aucun sous-agent n'appelle ce connecteur.
-- **Fichiers créés** : `.claude/settings.json` modifié.
-- **Tu valides** : la règle.
-- **Vérifier** : le fichier contient la liste `ask` sous `permissions`. À défaut de la règle, Claude te demande quand même l'accord en conversation avant chaque lot.
+### B6. Régler ElevenLabs (clé d'API)
+- **Qui** : toi. Claude ne lit, n'affiche, ne demande ni n'écrit jamais la clé.
+- **À faire** : pose la clé dans la variable d'environnement `ELEVENLABS_API_KEY` de ta session Windows (ou dans un `.env` ignoré par Git), puis relance Claude Code. Le SDK Python `elevenlabs` ne s'installe que sur ta décision, à la version figée dans le `requirements.txt` de la chaîne. Aucune règle `ask` à ajouter : le connecteur est coupé, et chaque génération te demande ton accord en conversation, coût annoncé avant. Aucun sous-agent ne génère.
+- **Fichiers créés** : aucun.
+- **Tu valides** : la pose de la clé.
+- **Vérifier** : Claude peut seulement constater que la variable existe (réponse oui ou non), sans la lire.
 - **Détail** : [`session-et-garde-fou.md`](docs/workflows/session-et-garde-fou.md), « Permissions de la chaîne ».
 
 ### B7. Vérifier l'installation
@@ -363,7 +359,7 @@ grep -m1 '"version"' node_modules/hyperframes/package.json
   Au premier contrôle ou rendu, HyperFrames télécharge `chrome-headless-shell` (environ 270 Mo) dans `~/.cache/hyperframes/`. Réponds à la demande d'accord.
 - **Fichiers créés** : un dossier temporaire de test, et le Chrome dans `~/.cache/hyperframes/`. Rien dans la chaîne.
 - **Tu valides** : tu **lis le bilan avant de continuer**. C'est la porte.
-- **Vérifier** : le bilan liste les skills (`studio-faceless:episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`, `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`) et les cinq agents (`research`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`). Il montre les règles communes reçues, un `check` sans erreur, un rendu de 3 s, et `controle.py chrome` à 0. Si les règles communes ne sont pas visibles, redemande à Claude de les lister, puis vois « Si quelque chose bloque ».
+- **Vérifier** : le bilan liste les skills (`studio-faceless:episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`, `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`) et les six agents (`research`, `reviewer`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`). Il montre les règles communes reçues, un `check` sans erreur, un rendu de 3 s, et `controle.py chrome` à 0. Si les règles communes ne sont pas visibles, redemande à Claude de les lister, puis vois « Si quelque chose bloque ».
 - **Détail** : [`installation-et-mise-a-jour.md`](docs/workflows/installation-et-mise-a-jour.md), partie C.
 
 > **Pas encore éprouvé.** Ce contrôle est le premier test réel de l'arrivée des règles communes (`SessionStart`), du préchargement des skills par les agents et du rôle reçu par le garde-fou. Si un résultat surprend, note-le : il corrige la documentation du plugin.
@@ -743,7 +739,7 @@ cp -r "<plugin>/templates/sequence-gabarit-v3" episodes/episode-001/kit/gabarit
 - **Règle** : un épisode puise d'abord dans `marque/son/`. Comme elle est vide, la première vidéo doit **générer ses musiques, ambiances et effets**, un par un, avec ton accord. Les sons arrivent au mix du film, pas dans les séquences.
 - **À faire** :
 
-> Étape 5, les sons. Ma bibliothèque `marque/son/` est vide. Ouvre la porte « Quels sons ? » avec `studio-faceless:grilling`. Dis-moi quel connecteur ElevenLabs la session a (base ou complet, avec musique). Écris le contrat audio et la feuille de repérage, puis un brief par son (450 caractères au plus, des attributs, jamais « comme » un artiste). Montre-moi l'estimation en crédits et attends mon accord avant chaque lot. Aucune génération sans mon accord.
+> Étape 5, les sons. Ma bibliothèque `marque/son/` est vide. Ouvre la porte « Quels sons ? » avec `studio-faceless:grilling`. Les générations passent par l'API ElevenLabs (clé posée par moi), jamais par le connecteur. Écris le contrat audio et la feuille de repérage, puis un brief par son (450 caractères au plus, des attributs, jamais « comme » un artiste). Montre-moi l'estimation en crédits et attends mon accord avant chaque lot. Aucune génération sans mon accord.
 
   Ce que les fichiers écrivent :
   - **coûts constatés sur AA** (20/10/2026, [`DIRECTION_AUDIO.md`](plugins/studio-faceless/referentiels/DIRECTION_AUDIO.md) § 4) : effets environ 3,3 crédits par seconde ; musique environ 27,5 crédits par seconde et par variante ;
@@ -784,7 +780,7 @@ python -I -B "<plugin>/outils/cartes/cartes.py" SPEC.json --shp episodes/episode
   - contrat de mission complet.
 - **Fichiers créés** : `kit/donnees/` (si carte), `kit/RACCORDS.md`, `kit/CONSIGNES_COMMUNES_v1.md`, les briefs.
 - **Tu valides** : le feu vert de production.
-- **Vérifier** : toutes les cases sont cochées, et l'appel Like + Subscribe de C6 existe si une séquence le porte. Fais un point d'état et compacte (voir « Le rythme de travail »).
+- **Vérifier** : toutes les cases sont cochées, et l'appel Like + Subscribe de C6 existe si une séquence le porte. Réécris le `STATE.md`, mets à jour l'`INDEX.md`, puis je lance `/clear` (voir « Le rythme de travail »).
 - **Détail** : [`episode.md`](docs/workflows/episode.md#5-socle) ; [`sequence.md`](docs/workflows/sequence.md), partie A.
 
 ### C20. Lancer la séquence témoin
@@ -1178,7 +1174,7 @@ git push
 | `publication.py verifier` : « aucun titre trouvé » | bloc sous un titre sans le bon mot-clé | garde « Titres », « Description », « Tags », « Commentaire épinglé », « Réponse … », « Playlist » dans les titres |
 | Claude annonce avoir « écouté » ou « regardé » | interdit | statut `ECOUTE_A_FAIRE` ; seules des mesures sont possibles |
 | Une proposition est présentée comme validée | une absence d'objection a été prise pour un accord | remets `PROPOSÉ` ; seul toi valides |
-| Plus de contexte, coûts qui explosent | lectures entières, agents au cache froid | `/compact` avec la consigne, lectures par plages, un agent court par correction |
+| Plus de contexte, coûts qui explosent | lectures entières, agents au cache froid | état écrit (`STATE.md`) puis `/clear` ; `/compact` seulement au milieu d'une longue porte ; lectures par plages, un agent court par correction |
 
 ## Et ensuite
 

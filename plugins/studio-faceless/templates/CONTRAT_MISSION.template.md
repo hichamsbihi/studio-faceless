@@ -14,15 +14,26 @@ décisions validées : <décision, date et référence, ou « aucune »>
 restrictions : <interdits propres à la mission>
 ```
 
+**Règles de la chaîne utiles à la mission** (0.2.2) : une section de **10 lignes au plus**, recopiée par l'orchestrateur depuis le `CLAUDE.md` de la chaîne, à la suite des neuf champs. **Obligatoire pour `studio-faceless:research` et `studio-faceless:studio-maintainer`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents, qui le lisent.
+
+```text
+Règles de la chaîne utiles à la mission (10 lignes au plus, recopiées du CLAUDE.md de la chaîne)
+protection des personnes : <flou, bip, noms, adresses, plaques, mineurs, victimes, témoins : ce qui concerne la mission>
+sources admises : <ordre et exclusions utiles à la mission>
+langues : <langue des documents, langue de ce que voit ou entend le spectateur>
+autres : <exclusions, statuts, mentions obligatoires utiles à la mission, ou « aucune »>
+```
+
 **Selon l'agent** :
-- `studio-faceless:research` : écriture toujours « aucun ».
+- `studio-faceless:research` : écriture toujours « aucun » ; section « Règles de la chaîne utiles à la mission » obligatoire.
+- `studio-faceless:reviewer` : écriture toujours « aucun » ; le contrat nomme l'objet à contrôler (script, séquence ou film), ses fichiers (script, minutage, plan, transcriptions, planches, mesures) et la durée visée si elle ne vient pas du `BRIEF.md` ; il garde le `CLAUDE.md` de la chaîne.
 - `studio-faceless:art-director` : écriture limitée au dossier des images extraites.
 - `studio-faceless:motion-producer` (parcours raccourci, validé sur AA, 16/10/2026) : il faut aussi le chemin du **kit de l'épisode** (`episodes/<id>/kit/`), un **brief de séquence court** (modèle ci-dessous) et un dossier d'écriture exact (`episodes/<id>/production/<séquence>-vN/`).
   - Le producteur fait la mise en scène, sans images clés soumises au propriétaire ; il vérifie une planche, écrit `render.sh` et **s'arrête**. Le Studio Director lance le rendu et les contrôles.
   - Les restrictions rappellent l'interdiction de l'effet diaporama, avec sa définition (`${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2).
   - Une correction après visionnage se fait dans la même version (validé sur AA, 24/10/2026) : reprise du producteur si son cache est chaud, sinon un agent court, avec un brief de quelques lignes (ce qui change, fichiers et version de départ) ; une nouvelle version seulement pour un défaut majeur.
 - `studio-faceless:shorts-producer` (validé sur AA, 19/10/2026) : il faut le **kit shorts** (`episodes/<id>/kit/shorts/`), un **brief de short** (modèle : skill `studio-faceless:shorts`, `references/brief-short.md`) et un dossier d'écriture exact (`episodes/<id>/production/short-0N-vM/`). Mêmes règles que le producteur de séquences : il s'arrête à `render.sh`, et chaque correction est confiée à un nouvel agent.
-- `studio-faceless:studio-maintainer` : `episode_id` vaut « studio » ; sans écriture autorisée, il constate seulement.
+- `studio-faceless:studio-maintainer` : `episode_id` vaut « studio » ; sans écriture autorisée, il constate seulement ; section « Règles de la chaîne utiles à la mission » obligatoire.
 
 ## Brief de séquence court (producteur)
 Une page au plus, **3 Ko au plus** (validé sur AA, 18/10/2026). Le producteur ne lit rien d'autre que ce brief, le kit et le `CLAUDE.md` de l'épisode : les règles de `direction/` y sont recopiées en extraits de quelques lignes, jamais renvoyées à un fichier entier.

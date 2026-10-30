@@ -1,6 +1,6 @@
 ---
 name: direction-sonore
-description: Méthode de direction sonore des documentaires de la chaîne — contrat audio, repérage sonore (spotting) et feuille de repérage, couches, perspective et distance, ambiances sourcées, bruitages motivés, silences et respirations, J-cut, L-cut et ponts sonores, musique qui porte l'immersion et journal de cues (cue sheet), contrôle du mix livré (LUFS, true peak, mono, bande 1–4 kHz) et passes d'écoute. Use when planning, reviewing or checking the sound of a sequence, prototype or episode of the channel. Complète DIRECTION_AUDIO.md du plugin (règles par défaut, qui font foi sauf écart de la chaîne dans direction/ECARTS.md) et hyperframes-audio (mécanique HyperFrames) sans les remplacer.
+description: "Sound direction method for the channel's documentaries: audio contract, spotting, layers, perspective, sourced ambiences, motivated effects, silences, J-cuts and L-cuts, music, cue sheet, mix checks (LUFS, true peak, 1-4 kHz). Use when planning or checking the sound of a sequence or episode."
 ---
 
 # Direction sonore
@@ -21,12 +21,12 @@ Méthode et gabarits pour décider **ce que le son doit faire** dans un document
 
 ## Méthode, dans l'ordre
 1. **Contrat audio** de la séquence : rôle du son, hiérarchie d'écoute, sources disponibles et leurs droits, livrables, conditions d'écoute réellement disponibles. Gabarit : `references/gabarits.md`.
-2. **Repérage** avant tout son : une ligne par événement ou lit sonore, avec sa fonction, son statut et sa source. On ne sonorise pas chaque action visible. Voir `references/reperage-et-couches.md`.
+2. **Repérage** (feuille de repérage, ou spotting) avant tout son : une ligne par événement ou lit sonore, avec sa fonction, son statut et sa source. Ambiances sourcées et bruitages motivés seulement : on ne sonorise pas chaque action visible. Voir `references/reperage-et-couches.md`.
 3. **Couches et perspective** : peu de couches sous la voix, une distance et un point d'écoute cohérents avec l'image et le récit. Voir `references/reperage-et-couches.md`.
-4. **Relations son-image et transitions** : J-cut, L-cut, ponts, révélation par retrait, silences. Voir `references/transitions-et-silences.md`.
-5. **Musique** : depuis le 15/10/2026 (validé sur AA), elle porte l'immersion de chaque séquence. Elle est choisie selon la situation, s'entend vraiment, et on repère ses entrées, retraits et silences voulus. Les niveaux sont dans `DIRECTION_AUDIO.md` § 2 et 3. Voir aussi `references/musique-a-l-image.md`.
+4. **Relations son-image et transitions** : J-cut, L-cut, ponts sonores, révélation par retrait, silences et respirations. Voir `references/transitions-et-silences.md`.
+5. **Musique** : depuis le 15/10/2026 (validé sur AA), elle porte l'immersion de chaque séquence. Elle est choisie selon la situation, s'entend vraiment, et on repère ses entrées, retraits et silences voulus, au journal de cues (cue sheet). Les niveaux sont dans `DIRECTION_AUDIO.md` § 2 et 3. Voir aussi `references/musique-a-l-image.md`.
 6. **Mise en œuvre** dans HyperFrames : `hyperframes-audio` et la section HyperFrames de `DIRECTION_AUDIO.md` ; constats complémentaires dans `references/transitions-et-silences.md`. Depuis le 24/10/2026 (validé sur AA), la séquence ne porte que la voix : ces techniques s'appliquent au mix du film (`DIRECTION_AUDIO.md` § 3, `outils/montage/mix_film.py`), pas dans la composition de la séquence.
-7. **Contrôle** du MP4 livré (mesures), puis passes d'écoute. Les mesures ne valident jamais l'écoute. Voir `references/controle-et-mesure.md`.
+7. **Contrôle** du MP4 livré (mesures : LUFS, true peak, mono, bande 1–4 kHz), puis passes d'écoute. Les mesures ne valident jamais l'écoute. Voir `references/controle-et-mesure.md`.
 
 ## Refus permanents (validés sur AA)
 - Whoosh à chaque raccord, riser, impact ou « sting » de bande-annonce, musique décorative sans fonction de situation, battement de cœur.

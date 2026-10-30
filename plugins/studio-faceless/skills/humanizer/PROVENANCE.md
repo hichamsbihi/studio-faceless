@@ -21,3 +21,6 @@
 - Une passe sur la **narration anglaise seulement**, après le script v1 et avant les contrôles de densité ; le script est soumis avec la courte liste des tics corrigés.
 - Restent intouchables : les « But… » de l'évidence démentie (`${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` § 2, Ouverture), qui relèvent de l'exception du § 1 du skill ; la question de 0:45 ; les citations ; les faits sourcés.
 - Échantillon de voix : un script déjà validé de la chaîne, pour le style seulement (longueur des phrases, ponctuation, transitions) ; aucun de ses faits n'est repris.
+
+## Réglage 0.2.2 (30/10/2026)
+- `disable-model-invocation: true` ajouté à l'en-tête de `SKILL.md` (valeur du studio, absente de la source) : le skill n'est plus proposé à Claude au démarrage ; le propriétaire l'appelle avec `/humanizer`. Le reste du texte est inchangé.

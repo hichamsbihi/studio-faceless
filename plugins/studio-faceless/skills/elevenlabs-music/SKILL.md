@@ -17,7 +17,8 @@ Ajout du studio au texte d'origine, 29/10/2026 ; source, empreintes et modificat
 - **Licence** : usage commercial (YouTube monétisé) seulement avec un forfait payant ; vérifier le forfait avant la première génération. La génération de musique exige un forfait payant.
 - **Emploi** : un son généré est illustratif et ne passe jamais pour le son réel d'un lieu ou d'un événement ; la chaîne peut en restreindre l'emploi (`direction/ECARTS.md`). Mix : `DIRECTION_AUDIO.md` § 3 et skill `direction-sonore`.
 - **Sans décision du propriétaire** : ni finetune, ni inpainting, ni envoi de fichiers (`music.upload`, `video_to_music`) ; une vidéo envoyée à `video_to_music` est un rendu de la chaîne, jamais un média d'archive brut.
-- **Connecteur** : si le connecteur ElevenLabs de Claude est branché, il fait les mêmes générations sans clé ; le propriétaire choisit l'un ou l'autre.
+- **Connecteur** : le connecteur ElevenLabs de claude.ai est coupé par défaut et n'est pas utilisé ; on passe par l'API (`referentiels/DIRECTION_AUDIO.md` § 4, 30/10/2026).
+- **Appel** : l'appel automatique de ce skill est bloqué (`disable-model-invocation`, 0.2.2). Le propriétaire l'appelle avec `/elevenlabs-music`, ou Claude lit ce fichier quand il demande une génération ; chaque génération demande son accord, coût annoncé avant.
 
 Generate music from text prompts - supports instrumental tracks, songs with lyrics, and fine-grained control via composition plans.
 

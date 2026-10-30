@@ -111,7 +111,7 @@ flowchart TD
      ```bash
      python -I -B plugins/studio-faceless/outils/verifier_depot.py --tout
      ```
-     Il refuse : fichier de plus de 10 Mo hors LFS (ici il n'y a pas de LFS, donc tout gros fichier), média d'épisode, secret probable (clé d'API, jeton GitHub, clé privée, `Bearer`), chemin propre à une machine dans du code actif (hors `docs/` et `vendor/`). Code de sortie 0 ou 1. Si `verifier_depot.py` change, lancer aussi son test : `python -I -B plugins/studio-faceless/outils/test_verifier_depot.py`.
+     Il refuse : fichier de plus de 10 Mo hors LFS (ici il n'y a pas de LFS, donc tout gros fichier), média d'épisode, secret probable (clé d'API, jeton GitHub, clé privée, `Bearer`), chemin propre à une machine dans du code actif (hors `docs/` et `vendor/`), et (0.2.2) un `REGLES_STUDIO.md` de plus de 9 000 caractères une fois le chemin du plugin substitué. Code de sortie 0 ou 1. Si `verifier_depot.py` change, lancer aussi son test : `python -I -B plugins/studio-faceless/outils/test_verifier_depot.py`.
   3. **Cohérence** : chaque chemin cité existe ; les renvois entre skills, agents et référentiels restent justes ; les numéros de section cités n'ont pas bougé ; les dates et les statuts sont portés. Une mission `studio-maintainer` avec un contrat (lecture du plugin, écriture limitée) peut le faire.
   4. **Aucun nom de chaîne ni de personne** ajouté dans une règle du plugin ; pas de chemin absolu de machine.
 - **Porte** : tant que l'un des contrôles échoue, retour à l'étape 2.
@@ -148,18 +148,18 @@ flowchart TD
 ## Cas particuliers
 | Cas | À faire en plus |
 |---|---|
-| **Nouvel agent** | ajouter la ligne dans la table `ROLES` de `hooks/garde_commandes.py` si le rôle doit être contraint (sinon aucun rôle : seules les règles communes s'appliquent) ; les champs `hooks`, `mcpServers` et `permissionMode` de l'en-tête sont **ignorés** par un plugin ; mettre à jour `REGLES_STUDIO.md` (liste des agents) |
+| **Nouvel agent** | ajouter la ligne dans la table `ROLES` de `hooks/garde_commandes.py` si le rôle doit être contraint (sinon aucun rôle : seules les règles communes s'appliquent) ; les champs `hooks`, `mcpServers` et `permissionMode` de l'en-tête sont **ignorés** par un plugin ; mettre à jour `REGLES_STUDIO.md` (liste des agents) **sans dépasser 9 000 caractères** (le vérificateur du dépôt refuse davantage), et `README.md`, `docs/reference/agents.md` ; un agent sans `CLAUDE.md` (`omitClaudeMd: true`, Claude Code 2.1.271 ou plus) a besoin d'une section « Règles de la chaîne utiles à la mission » dans son contrat |
 | **Nouveau skill** | un dossier `skills/<nom>/SKILL.md` ; son nom court dans l'en-tête, le préfixe `studio-faceless:` vient du plugin ; l'ajouter au tableau de contenu de `README.md` et à `CHANGELOG.md` |
 | **Nouvelle technique d'animation** | une ligne d'index et une fiche de deux ou trois phrases (Recette, Attention) dans `MOTION_CATALOG.md`, statut `expérimental`, sans chemin ni temps de film ; chez une chaîne, dans la section MOTION_CATALOG de son `ECARTS.md` |
 | **Nouvel outil** | dans `outils/`, travaille dans le dossier de la chaîne (`CLAUDE_PROJECT_DIR`, sinon dossier courant), lancé depuis la racine de la chaîne ; documenter dans le `README.md` de son dossier |
 | **Changement des permissions** | impossible par le plugin : se fait dans `starter/.claude/settings.json` (nouvelles chaînes) et à la main dans chaque chaîne existante |
-| **Règle commune qui doit apparaître tout de suite** | `REGLES_STUDIO.md` est injecté **au début de chaque session et après `/compact`** : une session ouverte avant la mise à jour ne le voit qu'après rechargement (à vérifier) |
+| **Règle commune qui doit apparaître tout de suite** | `REGLES_STUDIO.md` est injecté **au début de chaque session, après `/clear` et après `/compact`** : une session ouverte avant la mise à jour ne le voit qu'après rechargement (à vérifier) |
 
 ## Monter la version de HyperFrames
 **Décision du propriétaire uniquement** (aucune mise à jour sans elle). Elle touche plusieurs endroits, tous à revoir en une seule version du plugin ; la liste vient d'une recherche de `0.8.149` dans le dépôt :
 - `plugins/studio-faceless/starter/package.json` et `package-lock.json` (à régénérer) ;
 - `plugins/studio-faceless/vendor/claude-skills/` : **nouvelle copie datée** des skills HyperFrames et `README.md` du dossier mis à jour ;
-- `REGLES_STUDIO.md` (§ Moteur et outils) ; `README.md` (règle d'or 5) ; `INSTALLATION.md` ; `NOUVELLE_CHAINE.md` ; `CHANGELOG.md` ;
+- `referentiels/REGLES_DETAIL.md` (§ Moteur et outils, déplacé de `REGLES_STUDIO.md` en 0.2.2) ; `README.md` (règle d'or 5) ; `INSTALLATION.md` ; `NOUVELLE_CHAINE.md` ; `CHANGELOG.md` ;
 - `hooks/garde_commandes.py` (messages « 0.8.149 figée » et règles contre l'autre version) ;
 - `agents/motion-producer.md` et `agents/shorts-producer.md` (« Version : celle de `package.json` ») ;
 - `templates/sequence-gabarit-v3/render.sh` (contrôle exact de la version) ;

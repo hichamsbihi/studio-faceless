@@ -19,17 +19,17 @@ Le plugin ne dépend d'aucune chaîne : les mentions d'AA ou de StudioV1 n'y ser
 | Élément | Contenu |
 |---|---|
 | `skills/` | `episode` (fabrication d'un épisode, du sujet au mix), `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder` (analyse d'une vidéo par Gemini), `grilling` et `grill-me` (portes de questions), `humanizer`, `javascript-animation`, `soundtrack`, `find-skills` (recherche de skills), `elevenlabs-sound-effects`, `elevenlabs-music` (effets sonores et musique générés), `frontend-design` (conception visuelle et critique des planches et compositions), `remove-background` (détourage avec l'outil de HyperFrames) |
-| `agents/` | `research`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer` |
+| `agents/` | `research`, `reviewer` (contrôle qualité en lecture seule), `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer` |
 | `hooks/` | garde-fou des commandes (par rôle) et injection des règles communes au début de chaque session |
-| `REGLES_STUDIO.md` | règles communes : outils, sous-agents, parcours d'un épisode, économie de tokens, statuts |
-| `referentiels/` | règles par défaut : `METHODE_RECIT`, `REFERENTIEL_QUALITE_REALISATION`, `DIRECTION_AUDIO`, `MOTION_CATALOG` |
+| `REGLES_STUDIO.md` | règles communes injectées à chaque session (moins de 9 000 caractères) : quoi lire, sous-agents, économie de tokens et de contexte, statuts et règles permanentes |
+| `referentiels/` | règles par défaut : `METHODE_RECIT`, `REFERENTIEL_QUALITE_REALISATION`, `DIRECTION_AUDIO`, `MOTION_CATALOG`, et `REGLES_DETAIL` (suite des règles communes : moteur et outils, parcours d'un épisode) |
 | `outils/` | contrôles (`controle/`), montage et mix du film (`montage/`), cartes, shorts, rendu, archivage, contrôle du dépôt, suivi des tokens |
-| `templates/` | gabarit de séquence v3, modèles de `CLAUDE.md` et de `BRIEF.md` d'épisode, contrat de mission |
+| `templates/` | gabarit de séquence v3, modèles de `CLAUDE.md`, de `BRIEF.md` et de `STATE.md` d'épisode, modèle d'`INDEX.md` des épisodes, contrat de mission |
 | `domaines/` | profils de domaine (`sport`) : règles communes aux chaînes d'un même sujet, entre les règles par défaut et la chaîne |
 | `starter/` | squelette d'une nouvelle chaîne |
 | `vendor/claude-skills/` | skills HyperFrames de la version 0.8.149, figés |
 
-Une fois installés, les skills et les agents portent le préfixe du plugin : `studio-faceless:episode`, `studio-faceless:motion-producer`.
+Une fois installés, les skills et les agents portent le préfixe du plugin : `studio-faceless:episode`, `studio-faceless:motion-producer`. Depuis la 0.2.2, six skills (`humanizer`, `find-skills`, `javascript-animation`, `soundtrack`, `elevenlabs-music`, `elevenlabs-sound-effects`) ne sont plus proposés à Claude au démarrage : le propriétaire les appelle avec `/nom`.
 
 ## Démarrer
 - **Commencer ici, pas à pas** : [`DEMARRAGE.md`](DEMARRAGE.md), de la machine vide à la première vidéo d'une nouvelle chaîne (installation, création de la chaîne, identité, fabrication, publication, archivage).
