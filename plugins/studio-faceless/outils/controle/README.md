@@ -15,7 +15,7 @@ Créés le 15/10/2026 (validé sur AA) et testés sur les rendus de l'épisode 0
 | **Son** (16/10/2026) | `controle.py son FILM.mp4 --reference PISTE_MIXEE.wav --voix STEM_VOIX.wav` | Aucun trou ni écrêtage ; aucun écart créé au rendu (gain MP4 / piste ≈ 0 dB ; +6 dB = double lecture) ; aucun clic isolé dans la voix. Un écart autour d'une attaque très brusque de la piste vient de l'AAC (pré-écho) et renvoie aux clics isolés | `DIRECTION_AUDIO.md` § 5 |
 | Couleurs retirées des films | `controle.py couleurs index.html [autres…]` | Aucune des couleurs retirées des films par `marque/README.md` de la chaîne (hex ou rgb), sauf la signature et l'outro (exemple AA : corail, charbon, ivoire) | `marque/README.md` |
 | Photos répétées | `controle.py doublons DOSSIER_SEQ1/media DOSSIER_SEQ2/media …` | Aucune photo, même redimensionnée (empreinte perceptive), dans deux séquences. Les fonds (`matieres/`, papier, brume, grain, logo, polices) et les photos copiées mais non citées dans un `.html` sont ignorés | § 2 ter |
-| Licences en attente | `controle.py licences DOSSIER […]` | Liste les lignes des `PROVENANCE.md` qui citent CC BY-SA ou une licence à vérifier (exemple AA : domaine public argentin ou brésilien, CC BY 2.0 BR). Une ligne « exclu » est normale | Brief de l'épisode |
+| Licences en attente | `controle.py licences DOSSIER […]` | Liste les lignes des `PROVENANCE.md` qui citent CC BY-SA ou une licence à vérifier (défaut, celui d'AA : CC BY-SA, domaine public argentin ou brésilien, CC BY 2.0 BR). Une chaîne écrit sa propre liste dans `direction/licences.json` (`{"en_attente": ["regex", …]}`, qui remplace le défaut ; ajouté le 30/10/2026). C'est un signal à relire, pas une exclusion : la règle par défaut (§ 2 bis) admet les médias non libres en citation encadrée. Une ligne « exclu » est normale | Brief de l'épisode |
 | Voix / reste (1–4 kHz) | `controle.py voix-reste VOIX.wav RESTE.wav` | Médiane ≥ 12 dB ; fenêtres sous 12 dB listées | `DIRECTION_AUDIO.md` § 5 |
 | Chrome de HyperFrames | `controle.py chrome` | 0 après un rendu ; ne jamais arrêter le Chrome d'un rendu parallèle | `CLAUDE.md` racine de la chaîne |
 | Bilan rapide | `controle.py tout FILM.mp4 --projet DOSSIER_DU_PROJET` | Niveau, couleurs, licences et Chrome d'un coup | — |
@@ -59,6 +59,18 @@ Bibliothèque standard seule ; il lit et affiche, n'écrit rien. Méthode : skil
 - `publication.py mot mots-seqN.json "premiers mots"` : temps d'une phrase dans une bande voix.
 
 Testé sur l'E003 d'AA le 16/10/2026 : 0 écart ; il retrouve les chapitres et les 417 caractères de tags du dossier fait à la main.
+
+## Outils versés de Maps & Means le 30/10/2026 (validés sur MM)
+Tous : bibliothèque standard, numpy ou FFmpeg, aucun appel réseau ; refusent d'écraser. Les réglages de MM sont des valeurs par défaut, à régler par chaîne (`direction/ECARTS.md`).
+
+| Outil | Rôle | Commande (depuis la racine de la chaîne) | Validé sur MM |
+|---|---|---|---|
+| `script.py` | Contrôle d'un script avant la voix : relances, chiffres, noms nouveaux, révélations, renversement, ancrages, modes de récit, « you », expressions relatives au jour (evergreen). Seuils de MM par défaut, réglables par `direction/script_seuils.json` de la chaîne ou `--seuils` | `python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/controle/script.py SCRIPT.md [--mpm 140] [--detail] [--seuils F.json]` | 23/10/2026 (evergreen 26/10, modes de récit 29/10, provisoire) |
+| `pauses.py` | Ajoute du silence dans les silences d'une narration (voix intacte), décale les repères | `… pauses.py SOURCE SORTIE PAUSES.json N [N…]` | 21/10/2026 |
+| `raccourcir.py` | Pendant inverse : ramène les pauses à une part de leur longueur (défaut 60 %, plancher 0,25 s), fenêtres gardées en option | `… raccourcir.py SOURCE SORTIE [--sequences 1-7] [--part 0.6] [--plancher 0.25] [--gardes G.json]` | 26/10/2026 |
+| `recaler.py` | Recale les repères mot à mot d'une bande ralentie (Whisper par morceaux, silences, alignement sur le texte) ; utilise `transcrire.py` | `… recaler.py BANDE.wav TEXTE.txt MODELE SORTIE_DOSSIER NOM` | 19/10/2026 |
+
+`remix.py` de MM n'est pas versé : il suppose un `mix.py` par séquence, que le gabarit v3 du plugin n'a pas (le son du film se mixe à la fin avec `montage/mix_film.py`). `recaler.py` ne se confond pas avec `outils/shorts/recaler.py` (repères d'un short). `pauses.py`, `raccourcir.py` et `recaler.py` lisent et écrivent les repères `seqN-mots.json` et `seqN-phrases.txt`.
 
 ## Ordre conseillé pour une séquence
 1. **À réception de la prise** : `transcrire.py --texte`, puis `--isoler` sur chaque écart douteux.

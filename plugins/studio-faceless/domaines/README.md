@@ -21,3 +21,4 @@ Une règle propre à l'identité d'une chaîne (nom, voix, palette, ton, concurr
 | Domaine | Chaînes | Depuis |
 |---|---|---|
 | `sport` | Apparently Athletic (StudioV1) | 0.2.0, 30/10/2026 |
+| `geo-economie` | Maps & Means (StudioV2) | 0.3.0, 30/10/2026 |

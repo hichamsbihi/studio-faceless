@@ -48,7 +48,32 @@ def couleurs_interdites():
 
 
 COULEURS_INTERDITES = couleurs_interdites()
-LICENCES_EN_ATTENTE = [r'BY-SA', r'PD-AR', r'PD-Brazil', r'BY 2\.0 BR', r'domaine public argentin']
+# Licences signalées par `licences` : par défaut celles de la première chaîne du studio (AA). Une chaîne écrit les siennes dans
+# direction/licences.json ({"en_attente": ["BY-SA", "regex…"]}, expressions régulières, casse ignorée) ; la liste du fichier
+# remplace celle-ci ({"en_attente": []} : rien n'est signalé). Ajouté le 30/10/2026 : la règle par défaut du plugin
+# (REFERENTIEL_QUALITE_REALISATION.md § 2 bis) admet les médias non libres en citation encadrée, donc cette liste n'est
+# qu'un signal à relire, jamais une exclusion, et elle appartient à la chaîne.
+FICHIER_LICENCES = os.path.join(os.environ.get('CLAUDE_PROJECT_DIR') or os.getcwd(), 'direction', 'licences.json')
+
+
+def licences_en_attente():
+    defaut = [r'BY-SA', r'PD-AR', r'PD-Brazil', r'BY 2\.0 BR', r'domaine public argentin']
+    if not os.path.isfile(FICHIER_LICENCES):
+        return defaut
+    try:
+        liste = json.load(open(FICHIER_LICENCES, encoding='utf-8'))['en_attente']
+        if not isinstance(liste, list) or not all(isinstance(m, str) and m.strip() for m in liste):
+            raise TypeError('une liste de chaînes non vides est attendue')
+        for m in liste:
+            re.compile(m)
+    except (OSError, ValueError, KeyError, TypeError, re.error) as e:
+        print(f'ATTENTION : {FICHIER_LICENCES} illisible ({e}) ; attendu {{"en_attente": ["regex", …]}} ; '
+              'liste par défaut employée', file=sys.stderr)
+        return defaut
+    return liste
+
+
+LICENCES_EN_ATTENTE = licences_en_attente()
 IMAGES = ('.jpg', '.jpeg', '.png', '.webp', '.tif', '.tiff')
 
 
@@ -482,7 +507,7 @@ def c_licences(a):
                 trouve += 1
                 print(f'{os.path.relpath(f)}:{n} : {line.strip()[:160]}')
     print(f'{len(prov)} PROVENANCE.md lus · {trouve} ligne(s) citant une licence en attente de décision '
-          '(CC BY-SA, domaine public argentin ou brésilien, CC BY 2.0 BR).')
+          f'(liste : {FICHIER_LICENCES if os.path.isfile(FICHIER_LICENCES) else "défaut du plugin : CC BY-SA, domaine public argentin ou brésilien, CC BY 2.0 BR"}).')
     print("  Une ligne qui dit « exclu » ou « non utilisé » est normale ; un média réellement utilisé sous ces licences ne l'est pas.")
     return 1 if trouve else 0
 

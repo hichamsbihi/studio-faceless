@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Cartes papier, modèle de l'E004 (aperçu)</title>
+<!--
+Aperçu de contrôle des cartes papier de l'épisode 004 (kit/cartes/papier/), capturé par snapshot (--at 0.5,1.5,2.5,3.5).
+Ce n'est pas une séquence : il montre comment poser le fond (relief à mer transparente sur la mer réglée) et les traits du .js,
+et vérifie le raccord du globe à la feuille (dernière image du vol de 2.8 à 50 % sur la carte d'Alaska).
+0 : Alaska, oléoduc entier ; 1 : Alaska + fin du vol s2-plongee à 50 % ; 2 : monde ; 3 : monde + fin du vol s7 v2 à 50 %.
+-->
+<style>
+html,body{margin:0;background:#1F2B24}
+#film{position:relative;width:1920px;height:1080px;overflow:hidden}
+.scene{position:absolute;inset:0;overflow:hidden;opacity:0;visibility:hidden;
+  background-color:#DCE5D3;background-image:repeating-linear-gradient(to bottom,transparent 0 24px,#AFC5A8 24px 26px)}
+.scene img.fond{position:absolute}
+.scene img.controle{position:absolute;left:0;top:0;width:1920px;height:1080px;opacity:.5}
+svg{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible}
+.cotes{fill:none;stroke:#1F2B24;stroke-width:1.4;stroke-linejoin:round}
+.front{fill:none;stroke:#1F2B24;stroke-width:1;stroke-dasharray:4 3;opacity:.8}
+.ol{fill:none;stroke:#1F2B24;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.pt{fill:#ECF0E6;stroke:#1F2B24;stroke-width:3}
+.et{font:600 20px monospace;fill:#1F2B24;letter-spacing:.06em}
+</style>
+<script src="alaska.js"></script>
+<script src="monde.js"></script>
+</head>
+<body>
+<div id="film" data-composition-id="e004-cartes-papier" data-start="0" data-width="1920" data-height="1080" data-duration="4" data-no-timeline>
+  <div id="s0" class="scene"></div>
+  <div id="s1" class="scene"></div>
+  <div id="s2" class="scene"></div>
+  <div id="s3" class="scene"></div>
+</div>
+<script>
+(function () {
+  const ns = 'http://www.w3.org/2000/svg', $ = id => document.getElementById(id);
+  function carte(parent, C, oleoduc, lieux) {
+    const r = C.relief, i = document.createElement('img');
+    i.className = 'fond'; i.src = r.fichier; i.style.cssText = `left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px`; parent.appendChild(i);
+    const s = document.createElementNS(ns, 'svg'); parent.appendChild(s);
+    const p = (d, cls) => { const e = document.createElementNS(ns, 'path'); e.setAttribute('d', d); e.setAttribute('class', cls); s.appendChild(e); return e; };
+    p(C.frontieres, 'front'); p(C.cotes, 'cotes');
+    if (oleoduc && C.oleoduc) p(C.oleoduc.d, 'ol');
+    for (const id of lieux || []) {
+      const [x, y] = C.lieux[id];
+      const c = document.createElementNS(ns, 'circle'); c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 7); c.setAttribute('class', 'pt'); s.appendChild(c);
+      const t = document.createElementNS(ns, 'text'); t.setAttribute('x', x + 14); t.setAttribute('y', y + 7); t.setAttribute('class', 'et'); t.textContent = id.toUpperCase(); s.appendChild(t);
+    }
+  }
+  function controle(parent, src) { const i = document.createElement('img'); i.className = 'controle'; i.src = src; parent.appendChild(i); }
+  const A = window.CARTES.alaska, M = window.CARTES.monde;
+  carte($('s0'), A, true, ['station-1', 'terminal-valdez', 'fairbanks', 'anchorage', 'juneau']);
+  carte($('s1'), A, true, ['station-1', 'terminal-valdez']); controle($('s1'), 'controle/s2-plongee-fin.png');
+  carte($('s2'), M, false, ['anchorage']);
+  carte($('s3'), M, false, []); controle($('s3'), 'controle/s7-orbite-fin.png');
+  function render(t) {
+    const n = Math.floor(t);
+    for (let k = 0; k < 4; k++) { const e = $('s' + k); e.style.opacity = k === n ? '1' : '0'; e.style.visibility = k === n ? 'inherit' : 'hidden'; }
+  }
+  window.addEventListener('hf-seek', e => render(e.detail.time));
+  render(0);
+})();
+</script>
+</body>
+</html>

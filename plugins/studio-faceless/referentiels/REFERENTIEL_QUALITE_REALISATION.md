@@ -33,6 +33,7 @@
 - Sensation de récitation ou de lecture : l'image ne suit pas le rythme de la voix (§2 ter).
 - Zoom permanent ou mouvement sur chaque phrase.
 - Statistiques sans unité, contexte ni source.
+- **Chiffre sans date de valeur** (validé sur MM, 19/10/2026, Q15 de sa feuille de route ; proposé au plugin 0.3.0, PROPOSÉ) : chaque chiffre cité a sa source et sa **date de valeur** (le jour, le trimestre ou l'année auxquels il se rapporte), distincte de la date de consultation ; il est **revérifié la veille de la génération de la voix**, avec le lien direct vers la valeur pour que la revérification soit rapide. Une incertitude se dit à l'écran (« estimates vary ») plutôt que de trancher sans preuve.
 - Faux documents, témoignages, portraits ou archives présentés comme authentiques.
 - Fabriquer de nombreuses variantes avant d'avoir testé la scène décisive.
 - Valider sur le lint, FFprobe ou une capture seule.
@@ -82,6 +83,7 @@ Ces règles viennent des retours du propriétaire sur un épisode de la premièr
   - **Un texte posé reste immobile** (validé sur AA, 20/10/2026 ; mesures de l'E005 du 19/10/2026) : entrée et sortie courtes, en glissement et en opacité ; jamais d'échelle ni de flou animés sur un texte ou un bloc qui en contient. L'échelle fait sauter les lettres. Le flou, la brume, le grain et `--workers 2` imposent un rendu recalé au pixel, où même un glissement lent saccade.
   - Interdits : secousse de caméra, valeurs aléatoires recalculées à chaque image hors du grain, arrondi au pixel pendant un mouvement lent.
   - Contrôle : porte B.
+- **Raccord vers la signature** (validé sur MM, 20/10/2026, règle générale le 21/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) : l'accroche finit par un noircissement animé en dégradé, puis la signature « allume la lumière ». C'est le raccord par défaut de chaque épisode ; la chaîne peut fixer le sien dans `direction/ECARTS.md`.
 
 - **Recette d'image v3** (validé sur AA, 24/10/2026, sur E007 seq5 v3 : « cette diversification d'effets, transitions et cette immersivité était celle que je recherchais » ; détail et contrat : skill `studio-faceless:episode`, `references/production.md` § 1 ; modèles : archives de la chaîne) :
   - un événement visuel toutes les 1,5 à 3 s ; aucun plan de plus de 5 s ; coupes sur la voix ; effets et transitions variés, tirés de la matière du sujet ;
@@ -153,6 +155,7 @@ Une transformation qui n'apporte ni découverte ni changement de lecture est à 
 ## 4. Portes de qualité
 - **A — Intention, avant toute animation lourde** : question de scène, matériaux licites, fiche de séquence validée.
   - Les médias se choisissent avant les effets. Plusieurs angles ou sources cohérentes quand ils existent vraiment ; jamais de travelling qui montrerait ce que la photo ne contient pas.
+  - **Lignes de source** (validé sur MM, 21/10/2026, audit de son pilote ; proposé au plugin 0.3.0, PROPOSÉ) : chaque mention de source écrite à l'écran est relue contre la recherche avant `render.sh`. Sur le pilote d'origine, quatre lignes fausses, vues seulement après le rendu, étaient restées dans le film en ligne.
   - Le producteur fixe lui-même ses images clés (entrée, découverte centrale, transformation, raccord, état final) et les vérifie sur sa planche de la porte B. Depuis le 15/10/2026, elles ne sont plus soumises au propriétaire (§3).
   - Les médias réels, ou leurs alternatives graphiques honnêtes, avec leur provenance et leurs droits.
   - S'il n'existe qu'une photo, le dire et construire une structure éditoriale plutôt que 40 s de zoom.
@@ -160,6 +163,8 @@ Une transformation qui n'apporte ni découverte ni changement de lecture est à 
 - **B — Technique et preuve du mouvement** : composition déterministe, médias valides, décodage complet, durée, fps, aucun flash, mauvais recadrage ni déformation.
   - Une planche de captures (16 à 20 instants) vérifie l'entrée, la transformation, la sortie et le raccord. Depuis le 18/10/2026, aucun essai de 8 à 15 s n'est plus demandé, même pour une technique nouvelle (validé sur AA).
   - On examine la planche d'images, le mouvement, la continuité de caméra, la lisibilité des sujets, la découverte réelle et le montage avec les plans voisins. Le jugement est perceptif, pas seulement chiffré.
+  - **Aucune clé avant sa valeur** (validé sur MM, 21/10/2026, audit de son pilote, séquences 5 et 8 ; proposé au plugin 0.3.0, PROPOSÉ) : une légende ou une étiquette n'apparaît pas avant la donnée qu'elle explique.
+  - **Aucun cadre ne naît vide** (validé sur MM, 21/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ ; complète la recette v3, `skills/episode/references/production.md` § 1) : un tableau, une colonne ou un cadre apparaît avec son contenu. Le producteur le vérifie sur sa planche, avant `render.sh` : sur le pilote d'origine, le défaut n'avait été vu que sur les MP4 de trois séquences, d'où trois nouvelles versions.
   - Depuis le 28/10/2026, aucune image ne reste immobile plus de 1 s (§ 2 quater ; 2,5 s du 15/10 au 28/10). Une tenue sans information ni intention nouvelle se corrige ; une pause expressive reste permise si quelque chose y vit (lumière, profondeur, son).
   - **Vibration** : différence entre images successives sur une zone censée être immobile, après réduction et léger flou, pour neutraliser le grain :
 

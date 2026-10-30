@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Globe 004</title>
+<!--
+Globe de l'épisode 004 (round « globe et cinématique », Hicham, 26/10/2026 : le globe pour voyager, la feuille pour compter).
+Mécanique reprise de episodes/episode-003-german-gold/kit/cartes/carte.html (relue le 26/10/2026) : MapLibre 6.13 en projection
+globe, pilotée image par image par capturer.mjs (window.__appliquer), positions écran exportées (window.__ancres). Aucune étiquette
+ni crédit incrustés : les producteurs les posent en 2D. Aucun réseau extérieur : servie par serve.py sur 127.0.0.1.
+Fonds : Blue Marble NG 2004 étalonné PRÉSENT (z0–4 monde, z5–6 Alaska–Alberta) ; D22 Sentinel-2 du 01/08/2025 à 10 m (v2, teinte rapprochée).
+Paramètres : ?v=<vue> [&cam=lon,lat,zoom,inclinaison,cap] [&traces=oleoduc:0.5] [&calques=alberta] [&alberta=0..1] [&voile=0..0.35] [&points=id,id] [&voir=1]
+-->
+<link rel="stylesheet" href="vendor/maplibre-6.13.0/maplibre-gl.css">
+<style>
+@font-face{font-family:'DM Mono';src:url(fonts/DMMono-Medium.ttf);font-weight:500}
+/* espace à l'encre (Q2) : un léger éclairci au centre, pour que le globe ne flotte pas sur un aplat */
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:radial-gradient(ellipse at 50% 46%,#27362D 0%,#1F2B24 55%,#18221C 100%)}
+#carte{position:absolute;inset:0}
+.et{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;font:500 22px 'DM Mono',monospace;letter-spacing:.08em;
+  color:#FCEFDD;text-shadow:0 0 6px rgba(0,0,0,.8);padding-bottom:30px}
+.et::after{content:'';position:absolute;left:50%;bottom:0;width:2px;height:24px;margin-left:-1px;background:#FCEFDD}
+</style>
+</head>
+<body>
+<div id="carte"></div>
+<div id="calques"></div>
+<script type="module">
+import * as maplibregl from './vendor/maplibre-6.13.0/maplibre-gl.mjs';
+maplibregl.setWorkerUrl(new URL('./vendor/maplibre-6.13.0/maplibre-gl-worker.mjs', import.meta.url).href);
+
+const Q = new URLSearchParams(location.search);
+const BASE = location.href.replace(/[^/?]*(\?.*)?$/, '');
+const U = p => BASE + p;                      // pas de new URL() : il coderait les accolades des tuiles
+const lire = p => fetch(U(p)).then(r => r.json());
+const [OLEODUC, ALBERTA, LIEUX, EMPRISES] = await Promise.all(['donnees/oleoduc.geojson', 'donnees/alberta.geojson', 'donnees/lieux.json', 'donnees/emprises-v2.json'].map(lire));
+const LIEU = Object.fromEntries(LIEUX.map(l => [l.id, l]));
+// couleurs « sur image » (charte § 7)
+const C = {encre: '#1F2B24', ivoire: '#FCEFDD', alberta: '#D1A5D4', ocre: '#E3A53A'};
+
+const CIEL = {'sky-color': '#5E7F94', 'horizon-color': '#C9D6D2', 'fog-color': '#B9C7C2', 'sky-horizon-blend': 0.5,
+              'horizon-fog-blend': 0.6, 'fog-ground-blend': 0.3, 'atmosphere-blend': 0.8};
+
+// Vues nommées. camera : centre [lon, lat], zoom, inclinaison, cap. Réglées sur captures (kit/cartes/README.md).
+const VUES = {
+  'pacifique': {camera: {center: [-162, 50], zoom: 1.75, pitch: 0, bearing: 0}},
+  'alaska':    {camera: {center: [-150.6, 63.9], zoom: 3.6, pitch: 0, bearing: 0}},
+  'alberta':   {camera: {center: [-114.6, 54.6], zoom: 4.6, pitch: 30, bearing: 10}},
+  'prudhoe':   {camera: {center: [-148.35, 70.12], zoom: 11.4, pitch: 30, bearing: 12}},
+  'orbite':    {camera: {center: [-140, 56], zoom: 1.85, pitch: 0, bearing: 0}},
+};
+const V = VUES[Q.get('v') || 'pacifique'] || VUES.pacifique;
+// &cam=lon,lat,zoom,inclinaison,cap : caméra donnée (réglage des vues sur captures)
+if (Q.get('cam')) { const [lo, la, z, p, b] = Q.get('cam').split(',').map(Number); V.camera = {center: [lo, la], zoom: z, pitch: p, bearing: b}; }
+
+const couper = (c, t) => {     // les t premiers de la longueur d'une ligne
+  if (t >= 1) return c; if (t <= 0) return c.slice(0, 1);
+  const d = [0]; for (let i = 1; i < c.length; i++) d.push(d[i - 1] + Math.hypot(c[i][0] - c[i - 1][0], (c[i][1] - c[i - 1][1]) * 2.2));
+  const cible = d[d.length - 1] * t; const i = d.findIndex(x => x >= cible);
+  const u = (cible - d[i - 1]) / (d[i] - d[i - 1] || 1);
+  return [...c.slice(0, i), [c[i - 1][0] + (c[i][0] - c[i - 1][0]) * u, c[i - 1][1] + (c[i][1] - c[i - 1][1]) * u]];
+};
+const ligne = c => ({type: 'Feature', properties: {}, geometry: {type: 'LineString', coordinates: c}});
+const LIGNES = {oleoduc: OLEODUC.geometry.coordinates};
+
+// Blue Marble (fonds/bm-v2 ; la v1 fonds/bm avait des traînées) : z0–4 monde ; z5–6 seulement sur l'Alaska et l'Alberta (preparer_globe.py, REGION) ; ailleurs le z4 agrandi
+const sources = {}, layers = [];
+sources.bm = {type: 'raster', tiles: [U('fonds/bm-v2/{z}/{x}/{y}.jpg')], tileSize: 256, maxzoom: 4};
+sources['bm-hd'] = {type: 'raster', tiles: [U('fonds/bm-v2/{z}/{x}/{y}.jpg')], tileSize: 256, minzoom: 5, maxzoom: 6, bounds: [-172, 45, -100, 73]};
+for (const id of ['bm', 'bm-hd']) layers.push({id, type: 'raster', source: id, paint: {'raster-fade-duration': 0}});
+// D22, vue 10 m v2 seule (preparer_globe.py s2v2) : fondue pendant qu'elle couvre encore tout le cadre (zoom 10,15 → 9,55).
+// La vue 40 m n'est plus employée : au recul, le bord en diagonale de sa zone sans données entrait dans le cadre dès le zoom 9,3.
+const FONDU_S2 = {'prudhoe-10m-v2': [9.55, 10.15]};
+for (const [id, [z0, z1]] of Object.entries(FONDU_S2)) {
+  const [lo0, la0, lo1, la1] = EMPRISES[id].lonlat;
+  sources[id] = {type: 'image', url: U(EMPRISES[id].fichier), coordinates: [[lo0, la1], [lo1, la1], [lo1, la0], [lo0, la0]]};
+  layers.push({id, type: 'raster', source: id, paint: {'raster-fade-duration': 0, 'raster-opacity': ['interpolate', ['linear'], ['zoom'], z0, 0, z1, 1]}});
+}
+// voile d'assombrissement (sous une couche de données)
+sources.voile = {type: 'geojson', data: {type: 'Feature', properties: {}, geometry: {type: 'Polygon', coordinates: [[[-180, -85], [180, -85], [180, 85], [-180, 85], [-180, -85]]]}}};
+layers.push({id: 'voile', type: 'fill', source: 'voile', paint: {'fill-color': C.encre, 'fill-opacity': 0}});
+// Alberta : aplat léger et contour mauve cerné d'encre (opacité pilotée : 0 → 1)
+sources.alberta = {type: 'geojson', data: ALBERTA};
+layers.push({id: 'alberta-fond', type: 'fill', source: 'alberta', layout: {visibility: 'none'}, paint: {'fill-color': C.alberta, 'fill-opacity': 0}});
+layers.push({id: 'alberta-cerne', type: 'line', source: 'alberta', layout: {visibility: 'none', 'line-join': 'round'}, paint: {'line-color': C.encre, 'line-width': 6, 'line-opacity': 0}});
+layers.push({id: 'alberta', type: 'line', source: 'alberta', layout: {visibility: 'none', 'line-join': 'round'}, paint: {'line-color': C.alberta, 'line-width': 3, 'line-opacity': 0}});
+// oléoduc : ivoire cerné d'encre (charte § 7, sur image), tracé progressif du nord au sud
+sources.oleoduc = {type: 'geojson', data: ligne(LIGNES.oleoduc.slice(0, 1))};
+layers.push({id: 'oleoduc-cerne', type: 'line', source: 'oleoduc', layout: {visibility: 'none', 'line-cap': 'round', 'line-join': 'round'},
+             paint: {'line-color': C.encre, 'line-width': ['interpolate', ['linear'], ['zoom'], 3, 5, 11, 8], 'line-opacity': 0.85}});
+layers.push({id: 'oleoduc', type: 'line', source: 'oleoduc', layout: {visibility: 'none', 'line-cap': 'round', 'line-join': 'round'},
+             paint: {'line-color': C.ivoire, 'line-width': ['interpolate', ['linear'], ['zoom'], 3, 2.6, 11, 4]}});
+sources.points = {type: 'geojson', data: {type: 'FeatureCollection', features: LIEUX.map(l => ({type: 'Feature', properties: {id: l.id}, geometry: {type: 'Point', coordinates: l.lonlat}}))}};
+layers.push({id: 'points', type: 'circle', source: 'points', layout: {visibility: 'none'}, filter: ['in', ['get', 'id'], ['literal', []]],
+  paint: {'circle-radius': 6, 'circle-color': C.ivoire, 'circle-stroke-color': C.encre, 'circle-stroke-width': 2.5, 'circle-pitch-alignment': 'map'}});
+
+const style = {version: 8, projection: {type: 'globe'}, sources, layers, sky: CIEL};
+const map = new maplibregl.Map({container: 'carte', style, interactive: false, attributionControl: false, fadeDuration: 0,
+  pixelRatio: 1, maxPitch: 60, canvasContextAttributes: {preserveDrawingBuffer: true, antialias: true}, ...V.camera});
+map.on('error', e => console.error('maplibre', e && e.error ? e.error.message : e));
+window.__map = map;
+
+// --- pilotage (capturer.mjs) ---------------------------------------------------------------------------------------
+// état : {camera, traces: {oleoduc: 0..1}, calques: ['alberta'], alberta: 0..1, voile: 0..0.35, points: [ids]}
+let etat = {traces: {}, calques: [], alberta: 0, voile: 0, points: []};
+function appliquer(e) {
+  etat = {...etat, ...e};
+  if (e.camera) map.jumpTo(e.camera);
+  const vis = id => (id in etat.traces || etat.calques.includes(id)) ? 'visible' : 'none';
+  for (const id of ['oleoduc', 'oleoduc-cerne']) map.setLayoutProperty(id, 'visibility', vis('oleoduc'));
+  if ('oleoduc' in etat.traces) map.getSource('oleoduc').setData(ligne(couper(LIGNES.oleoduc, etat.traces.oleoduc)));
+  for (const id of ['alberta', 'alberta-cerne', 'alberta-fond']) map.setLayoutProperty(id, 'visibility', vis('alberta'));
+  map.setPaintProperty('alberta', 'line-opacity', etat.alberta);
+  map.setPaintProperty('alberta-cerne', 'line-opacity', etat.alberta * 0.8);
+  map.setPaintProperty('alberta-fond', 'fill-opacity', etat.alberta * 0.32);
+  map.setPaintProperty('voile', 'fill-opacity', etat.voile);
+  map.setLayoutProperty('points', 'visibility', etat.points.length ? 'visible' : 'none');
+  map.setFilter('points', ['in', ['get', 'id'], ['literal', etat.points]]);
+}
+window.__pret = false;
+window.__appliquer = async (e, delai = 20000) => {   // applique un état et attend que la carte soit stable, 20 s au plus (false sinon)
+  window.__pret = false; appliquer(e); map.triggerRepaint();
+  const stable = await Promise.race([new Promise(r => map.once('idle', () => r(true))), new Promise(r => setTimeout(() => r(false), delai))]);
+  window.__pret = true; return stable;
+};
+window.__etat = () => ({charge: map.loaded(), tuiles: map.areTilesLoaded(), style: map.isStyleLoaded(), bouge: map.isMoving()});
+window.__ancres = () => {                 // positions écran des lieux et du bout du tracé (étiquettes 2D), visibilité de chaque lieu
+  const P = ll => { const p = map.project(ll); return [Math.round(p.x * 10) / 10, Math.round(p.y * 10) / 10]; };
+  const tr = map.transform, visible = ll => { try { return !tr.isPointOnMapSurface || tr.isPointOnMapSurface(map.project(ll)); } catch { return true; } };
+  const bouts = {};
+  if ('oleoduc' in etat.traces) { const c = couper(LIGNES.oleoduc, etat.traces.oleoduc); bouts.oleoduc = P(c[c.length - 1]); }
+  // échelle au centre de l'écran : mètres au sol par pixel, mesurés sur 0,01° de latitude (barres d'échelle, réglage des vues)
+  const c = map.getCenter(), a = map.project([c.lng, c.lat - 0.005]), b = map.project([c.lng, c.lat + 0.005]);
+  const m_par_px = Math.round(1111.95 / Math.hypot(b.x - a.x, b.y - a.y) * 100) / 100;
+  return {camera: {center: c.toArray(), zoom: map.getZoom(), pitch: map.getPitch(), bearing: map.getBearing()}, m_par_px,
+          lieux: Object.fromEntries(LIEUX.map(l => [l.id, P(l.lonlat)])), caches: LIEUX.filter(l => !visible(l.lonlat)).map(l => l.id), bouts};
+};
+window.__vues = Object.keys(VUES);
+map.once('idle', async () => {
+  await document.fonts.ready;
+  const traces = Object.fromEntries((Q.get('traces') || '').split(',').filter(Boolean).map(s => { const i = s.lastIndexOf(':'); return [s.slice(0, i), +s.slice(i + 1)]; }));
+  const liste = k => (Q.get(k) || '').split(',').filter(Boolean);
+  await window.__appliquer({traces, calques: liste('calques'), points: liste('points'), alberta: +(Q.get('alberta') || 0), voile: +(Q.get('voile') || 0)});
+  if (Q.get('voir') === '1') for (const l of LIEUX) {
+    const p = map.project(l.lonlat), el = document.createElement('div');
+    el.className = 'et'; el.textContent = l.nom; el.style.left = p.x + 'px'; el.style.top = p.y + 'px';
+    document.getElementById('calques').appendChild(el);
+  }
+});
+</script>
+</body>
+</html>

@@ -46,6 +46,9 @@ Les réponses par défaut ci-dessous sont des points de départ, à adapter au s
 - Quels raccords ? Défaut : écrits au pixel avant les lots ; les séquences d'un même lot ne dépendent pas l'une de l'autre.
 - Quels effets rares, avec leur quota ? Défaut : un WHIP-JUMP par film ; un surligneur deux fois au plus.
 
+## 5 bis. Maquette et test de décrochage
+- La faire ou non ? Défaut : la proposer ; le propriétaire décide, et note la première minute où il a envie de passer.
+
 ## 6. Séquence témoin
 - Quelle séquence ? Défaut : la plus riche en techniques nouvelles, avec des raccords indépendants.
 - Que doit-elle prouver ? Défaut : la recette d'image (vivacité, aucun vide incompris, dessins, cartes) et sa grammaire de transitions.

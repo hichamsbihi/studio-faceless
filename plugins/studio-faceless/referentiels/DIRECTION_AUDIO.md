@@ -77,6 +77,7 @@ Les pratiques propres à un épisode vont dans son `CLAUDE.md`.
 - En cas de concurrence : réduire ou déplacer la couche secondaire, puis revoir son arrangement, puis automatiser son gain. Corriger une fréquence seulement si le masquage est établi.
 - Sous la voix, la musique est atténuée de 3 à 5 dB (ducking doux, décision du 15/10/2026). Le carve fréquentiel reste **seulement si nécessaire** : la consigne du propriétaire prime sur le « carve by default » du skill.
 - Cibles de travail : 48 kHz, AAC-LC stéréo 48 kHz, **environ −16 LUFS** (plage −17 à −15), **true peak ≤ −1,5 dBTP**, mesurés sur le MP4 livré décodé.
+- **Une piste remontée seule passe dans son propre limiteur** (validé sur MM, 28/10/2026, constat du 27/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ). Le mix du film applique un gain final unique vers −16 LUFS, plafonné par la crête vraie : sur le film d'origine, +1,4 dB sur la seule voix d'une séquence a porté sa crête à −0,6 dBTP et fait tomber tout le film à −18,0 LUFS. Après le gain de la piste, `alimiter=level_in=1:level_out=1:limit=0.7079:attack=5:release=50:asc=0:level=0:latency=1` (plafond −3 dBFS, anticipation 5 ms, retour 50 ms, sans réglage automatique du niveau, latence compensée) ne touche que ses crêtes ; puis remesurer le film.
 - Écouter aussi en mono et sur un petit haut-parleur : aucune information essentielle ne doit dépendre de la stéréo ou du grave.
 
 **HyperFrames 0.8.149 (constaté)**

@@ -48,6 +48,7 @@ Ce skill donne l'ordre, les portes et les listes de contrôle. Il ne recopie pas
 | 3 | Script | fiche d'ouverture, densité, relances | `SEQUENCES_*_NARRATION.md`, script ElevenLabs sans balise | `VALIDÉ` ; contrôles avant la voix (`recit-retention.md`) |
 | 4 | Voix | voix, prononciations | prises vérifiées, ralenties, repères recalés (`kit/voix/`) | voix figée : plus aucune régénération sans le propriétaire |
 | 5 | Socle | direction artistique, médias, sons, raccords | kit complet (`references/socle.md`) | liste de contrôle « avant un producteur » cochée |
+| 5 bis | Maquette et test de décrochage (facultatif) | la faire ou non | une voix sur images sommaires, un rendu | la première minute de décrochage est corrigée avant les producteurs |
 | 6 | Séquence témoin | quelle séquence, ce qu'elle doit prouver | une séquence rendue | le propriétaire valide la recette sur elle |
 | 7 | Production | lots, raccords, quotas | séquences jusqu'à `render.sh` (`references/production.md`) | chaque planche regardée ; corrections faites sur place |
 | 8 | Rendus | ordre | MP4 contrôlés (`references/rendu-collage.md` § 1–2) | `MESURES_TECHNIQUES_OK` pour chaque séquence |

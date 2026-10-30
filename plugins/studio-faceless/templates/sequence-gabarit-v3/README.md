@@ -9,7 +9,7 @@ Les règles par défaut citées ici sont dans `${CLAUDE_PLUGIN_ROOT}/referentiel
 - **Effets proposés** : le producteur les liste dans le README de sa séquence (modèle ci-dessous) au lieu de les mixer.
 - **Recette d'image v3** (`${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2 ter ; skill `studio-faceless:episode`, `references/production.md` § 1) : vivacité, rien de vide qu'on ne comprend pas, dessins et cartes dans les passages d'explication, logos avec mesure, **aucune grille**.
 - **Contrôle de l'en-tête** : aucun texte nu dans `<head>`. Chaque commentaire s'ouvre par `<!--` et se ferme par `-->` (défaut de l'E007 seq2 v3).
-- **Inchangés** : le fond, les polices, la palette en variables, les moments d'exemple, `render.sh`, les règles techniques ci-dessous.
+- **Inchangés** : le fond, les polices, la palette en variables, les moments d'exemple, `render.sh` (sauf la garde HDR et `--sdr`, ajoutés le 30/10/2026), les règles techniques ci-dessous.
 
 ## Tableau des effets proposés (à recopier dans le README de la séquence)
 | Code | Instant local (s) | Image qui le justifie | Type (souffle, impact, montée, déclic, ambiance…) | Facultatif |
@@ -35,7 +35,7 @@ La séquence 4 v3 dépend d'une caméra 2,5D maison, et son `check` signalait du
 | `compositions/m01-titre.html` | Moment d'exemple : titre, mot clé surligné, ligne d'appoint |
 | `compositions/m02-fiche.html` | Moment d'exemple : fiche « papier » d'étude qui se pose, passage surligné |
 | `voix.py` | Piste son de la séquence : la voix seule (−18 LUFS d'écoute) et `pistes/stem-voix.wav` (gain 1) pour le mix du film |
-| `render.sh` | Rendu final : `--workers 2`, refuse d'écraser |
+| `render.sh` | Rendu final : `--workers 2`, `--sdr`, refuse les vidéos HDR de `media/`, refuse d'écraser |
 | `media/matieres/`, `media/fonts/` | Papier charbon, brumes, grain, Newsreader, avec leurs licences (`PROVENANCE.md`) |
 | `media/fonds/fond-exemple.jpg` | Fond de contexte calculé, **à remplacer** |
 

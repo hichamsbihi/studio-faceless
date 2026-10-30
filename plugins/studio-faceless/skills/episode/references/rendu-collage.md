@@ -40,7 +40,7 @@
   | papier, craie, surligneur, déclic | 20 |
 
   La baisse sous la voix active est de 3 à 5 dB (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 3 ; les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent).
-- **Fin du mix** : un seul gain final vers −16 LUFS intégrés, mesuré sur les séquences ; **la signature et l'outro gardent leur niveau d'origine** (Q13, validé sur AA, 24/10/2026) ; puis un limiteur à −2,0 dBTP. Les clics de voix sont atténués. L'écart de voix entre séquences se **mesure** et se rapporte, sans égalisation (Q14, validé sur AA, 24/10/2026).
+- **Fin du mix** : un seul gain final vers −16 LUFS intégrés, mesuré sur les séquences ; **la signature et l'outro gardent leur niveau d'origine** (Q13, validé sur AA, 24/10/2026) ; puis un limiteur à −2,0 dBTP. Une piste remontée seule passe d'abord dans son propre limiteur (`DIRECTION_AUDIO.md` § 3). Les clics de voix sont atténués. L'écart de voix entre séquences se **mesure** et se rapporte, sans égalisation (Q14, validé sur AA, 24/10/2026).
 - **Fin du film en douceur** (validé sur AA, 28/10/2026, Q71 de l'E009 ; `DIRECTION_AUDIO` § 3). Exemple AA : le dossier `montage/` de l'E009.
   - `montage.json` : fondu `"seqN>noir"` de 36 images (1,2 s), outro avec `noir_avant` 4,0, fondu `"noir>outro"` de 15 images (0,5 s).
   - `plan-son.json` : le morceau de fin part dans la dernière séquence, avec un `decalage` dans la source choisi pour que l'accord final tombe sur le noir ; `fin` `{"seq": "outro", "t": 0.5}` ; fondu d'entrée de 2 s, fondu de sortie de 0,8 s.

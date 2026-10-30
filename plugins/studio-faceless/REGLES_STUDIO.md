@@ -54,6 +54,7 @@ Les onze étapes, du sujet à l'archivage : section « Parcours d'un épisode »
   - production : `EN_COURS`, `MESURES_TECHNIQUES_OK`, `ECOUTE_A_FAIRE`, `CORRECTIONS_DEMANDEES`, `APPROUVE_PAR_<PROPRIETAIRE>` (date), `PUBLIE` (date et lien) ;
   - le catalogue garde les siens (`expérimental`, `à améliorer`, `validé`) ; les archives ne sont pas réécrites.
 - Ne jamais déclarer une écoute ou un visionnage qui n'a pas eu lieu ; séparer mesures techniques et validation humaine.
+- **Méthode de travail avec le propriétaire** (décisions par blocs, « explique-moi », liste unique de téléchargements) : `${CLAUDE_PLUGIN_ROOT}/referentiels/REGLES_DETAIL.md`, section du même nom.
 - Ne jamais écraser un travail antérieur : nouvelle version dans un nouveau dossier ; vérifier qu'un dossier n'existe pas avant de le créer. Claude ne supprime rien.
 - Aucune publication, aucun achat, aucun changement de forfait, aucun contournement de paywall ou de protection.
 - Médias réels : par défaut, choisis sur ce qu'ils apportent à la scène, sous licence libre ou non libres en citation encadrée (`${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2 bis, validé sur AA, 24 et 28/10/2026 ; règle par défaut fixée le 29/10/2026) ; une chaîne peut s'en tenir aux licences libres par un écart écrit dans `direction/ECARTS.md`. Provenance et licence de chaque média consignées dans le `PROVENANCE.md` du projet ; aucune image générée par IA, sauf écart écrit de la chaîne.

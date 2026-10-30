@@ -65,3 +65,11 @@
   - Vidéos libres génériques permises : jamais présentées comme l'événement ou l'organisation précis, aucune vidéo générée par IA, lots téléchargés avec l'accord du propriétaire.
 - **Choix des boucles** (validé sur AA, 26/10/2026, étude AA) : la forme ne change pas, chaque short reste tiré d'un film. En priorité, on choisit les boucles sur un objet ou un rituel visible du film, avec un titre « Why… ». Le rythme de publication se décide après le pilote.
 - **Fabrication** : agent dédié `studio-faceless:shorts-producer`, méthode dans le skill `studio-faceless:shorts`.
+
+## 6. Écriture : narration evergreen (validé sur MM, 26/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ)
+Demande du propriétaire : « pour que la vidéo soit evergreen, on évite de mettre this month, this week… ». La narration ne dit rien qui dépende du jour où elle est enregistrée ou regardée.
+- **Interdit** : « this month », « this week », « this year », « today », « now », « currently », « recently », « last year », « next year », « … ago », « today's governor »…
+- **À la place** : une date absolue (« in 2026 », « since 2016 », « by 2025 ») ou une forme qui reste vraie (« every year », « every spring », « for decades »). Un acteur se désigne par sa fonction datée (« in 2026, the governor proposed… ») ; les dates précises vont aussi à l'écran.
+- Les citations d'acteurs gardent leurs mots : elles sont datées par la voix ou par l'écran.
+- Une phrase qui doit rester d'actualité est marquée [MAJ] et revue la veille de la sortie (skill `studio-faceless:episode`, `references/etapes.md` § 3 et § 12).
+- Contrôle avant la voix : `${CLAUDE_PLUGIN_ROOT}/outils/controle/script.py`.

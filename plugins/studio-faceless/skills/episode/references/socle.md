@@ -46,6 +46,7 @@ Bandes montage et repères mot à mot recalés dans `kit/voix/`, avec leur READM
 ## 7. Raccords
 - Une fiche `kit/RACCORDS.md` donne, pour chaque jonction, l'image de sortie et l'image d'entrée **au pixel** : cadre, objet, position, lumière. Elle dit aussi ce qui change exprès.
 - Les lots de producteurs se composent pour qu'aucune séquence n'attende la sortie d'une autre du même lot. Sinon, on fixe d'avance l'image de jonction dans la fiche.
+- **Objets qui reviennent** (validé sur MM, 28/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) : tout objet repris d'une séquence à l'autre (un chèque, une fiche) est fixé dans le kit, position et contenu compris, avant les producteurs. Une séquence produite avant sa voisine garde ses paramètres de raccord dans un seul objet `RACCORD`. Sur le film d'origine, un chèque portait un montant alors que celui de la séquence d'avant était vierge.
 - Après un rendu, on réextrait l'image de raccord, car un élément retiré (exemple AA : la grille de l'E007) a pu changer.
 
 ## 8. Consignes communes et briefs

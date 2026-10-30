@@ -17,13 +17,15 @@ Les règles par défaut citées ici (`REFERENTIEL`, `DIRECTION_AUDIO`, `METHODE_
 
 ## 2. Angle et découpage
 - La question d'une phrase, la promesse, les couches et leurs révélations, le renversement vers 75 %, les séquences et la question qui finit chacune (`recit-retention.md`).
-- La signature de la chaîne vient après l'accroche (règle gardée).
+- La signature de la chaîne vient après l'accroche (règle gardée) ; le raccord par défaut y est un noircissement en dégradé (`REFERENTIEL` § 2 ter).
+- **Page de structure** (validé sur MM, 23/10/2026, bloc B de son audit stratégique ; proposé au plugin 0.3.0, PROPOSÉ) : la structure s'écrit en une page `script/STRUCTURE-vN.md` (question d'une phrase, promesse, couches et révélations, renversement, fin, séquences et durée de chacune), validée par le propriétaire avant le script.
 - Le rappel d'abonnement : sa place par défaut est vers 2:00, juste après l'ouverture d'une question (`METHODE_RECIT.md` § 1, validé sur AA, 26/10/2026) ; la porte la confirme ou l'écarte.
 
 ## 3. Script
 - Narration en anglais, chaque phrase avec sa source. Fiche d'ouverture en tête : phrase, image prévue et temps estimé pour chaque repère de 0 à 2:00.
 - Contrôles avant la voix (`recit-retention.md` § 5). Script ElevenLabs **sans balise** par défaut. Avant de montrer le script au propriétaire : contrôle par `studio-faceless:reviewer`.
-- Phrases d'actualité marquées [MAJ], à revoir la veille de la sortie.
+- Phrases d'actualité marquées [MAJ], à revoir la veille de la sortie. La narration évite d'abord tout ce qui dépend du jour de l'enregistrement (`METHODE_RECIT.md` § 6, evergreen).
+- **Revérification des chiffres la veille de la voix** : chaque chiffre est contrôlé de nouveau sur son lien direct, avec sa date de valeur (`REFERENTIEL` § 2) .
 
 ## 4. Voix
 - Le propriétaire génère les prises. Claude les vérifie (`${CLAUDE_PLUGIN_ROOT}/outils/controle/transcrire.py`) contre le texte validé, les ralentit (`ralentir.py`) et recale les repères mot à mot sur les vrais départs de la voix.
@@ -32,6 +34,10 @@ Les règles par défaut citées ici (`REFERENTIEL`, `DIRECTION_AUDIO`, `METHODE_
 
 ## 5. Socle
 Voir `socle.md`. Le résultat, c'est le kit complet : direction artistique, médias vérifiés, cartes, logos, sons, raccords, consignes communes, briefs.
+
+## 5 bis. Maquette et test de décrochage (validé sur MM, 23/10/2026, bloc B de son audit stratégique ; proposé au plugin 0.3.0, PROPOSÉ)
+- **Porte** : la faire ou non ; le propriétaire peut s'en passer pour un épisode.
+- **Si oui** : la voix posée sur des cartes et des images sommaires, sans finition, un seul rendu ; le propriétaire note la première minute où il a envie de passer. On corrige la structure ou le script avant de lancer les producteurs.
 
 ## 6. Séquence témoin
 - Le choix se fait en porte : la séquence qui porte le plus de techniques nouvelles, ou la plus difficile, et qui ne dépend d'aucune autre séquence pour ses raccords.
@@ -64,10 +70,13 @@ Le mix fait, et avant de montrer le film au propriétaire : contrôle par `studi
 ## 12. Publication
 - La miniature se fait avec `studio-faceless:thumbnail-strategist`, le dossier YouTube avec `studio-faceless:youtube-seo`, et le SRT avec `${CLAUDE_PLUGIN_ROOT}/outils/montage/srt.py`.
 - Avant la sortie, une passe d'actualité sur les phrases [MAJ].
+- **Titre** (validé sur MM, 21/10/2026, audit de son pilote ; proposé au plugin 0.3.0, PROPOSÉ) : la concurrence se contrôle avant de le fixer, par une recherche YouTube des titres proches ; un titre trop proche d'une vidéo existante se change. Un titre changé tard donne une nouvelle version du dossier de publication (`PUBLICATION_vN+1`).
+- **Miniature fournie par le propriétaire** (même validation) : Claude en note la source et la licence ; avec une seule miniature, il n'y a pas de Test & Compare.
 - Claude ne publie jamais.
 
 ## 13. Après la sortie
 - Bilans J+2, J+7 et J+28 (`studio-faceless:youtube-seo`) : rétention à 0:30, 1:00 et 2:00, et taux de clic au-delà d'environ 1 000 impressions.
+- **Relevé de la première minute** (validé sur MM, 23/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) : la rétention dans la première minute est relevée et comparée à celle des épisodes précédents.
 - Les leçons s'ajoutent à `pieges.md`, et les tokens par étape sont notés (`${CLAUDE_PLUGIN_ROOT}/outils/suivi_tokens.py`).
 - L'archivage se fait avec l'accord du propriétaire (ci-dessous).
 

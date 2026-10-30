@@ -42,3 +42,14 @@ Vérifiée le 24/10/2026 (étude AA) : **elle est fausse**.
 - Polygones seulement (pas de lignes ni de points du shapefile) ; pas de découpe au cadre : les tracés qui sortent du cadre sont coupés par le `viewBox` du SVG.
 - `equal-earth` avec un `meridien_central` éloigné de 0 : les pays qui traversent l'antiméridien ne sont pas recousus.
 - Les noms des pays sont ceux de Natural Earth (anglais, champ `ADMIN`).
+
+## Lecteurs et projections (versés de Maps & Means le 30/10/2026, validés sur MM)
+Trois modules complètent `cartes.py` sans le modifier. Ils servent aux cartes de relief, d'imagerie et de globe décrites dans `${CLAUDE_PLUGIN_ROOT}/domaines/geo-economie/cartes/README.md`. Python et numpy ; aucun appel réseau.
+
+| Module | Rôle | Validé sur MM |
+|---|---|---|
+| `proj.py` | Projections : Albers conique équivalente (paramètres à passer ; défaut = Alaska Albers EPSG:3338, exemple de MM), UTM (WGS84, zone à passer), Equal Earth et son inverse (Šavrič et al. 2018), Web Mercator et son inverse, `km(a, b)` | 26/10/2026 |
+| `shp.py` | Lit polygones, lignes et table DBF d'un shapefile dans le zip de Natural Earth (domaine public), sans bibliothèque SIG : `lire(zip, 'ne_10m_admin_0_countries')` | 26/10/2026 |
+| `cog.py` | Lit un niveau ou une zone d'un COG RVB 8 bits (Sentinel-2), écrit un PPM : `python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/cartes/cog.py TIF NIVEAU SORTIE.ppm [x0 y0 l h]` | 26/10/2026 |
+
+`cartes.py` lit un `.shp` à côté de son `.dbf` (polygones, cartes au trait SVG) ; `shp.py` lit l'archive zip telle que Natural Earth la publie (polygones et lignes, attributs). Les deux coexistent. Pour le monde, `equal_earth` de `proj.py` donne les mêmes formes que la projection `equal-earth` de `cartes.py`. Les données (Natural Earth, Sentinel-2, relief) ne sont pas dans le plugin : à télécharger pour l'épisode, avec l'accord du propriétaire.

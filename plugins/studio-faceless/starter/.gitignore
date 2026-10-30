@@ -62,3 +62,6 @@ episodes/**/captures/
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Blender installé dans la chaîne (skill studio-faceless:blender-pro), réinstallable depuis l archive officielle
+outils/blender/blender-*/
