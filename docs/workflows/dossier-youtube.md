@@ -29,7 +29,7 @@ Ce parcours couvre le dossier `PUBLICATION_vN.md` d'un épisode : trois titres, 
 | **Studio Director** (Claude principal) | Rédige le dossier, calcule les chapitres, fait le SRT, lance les contrôles, soumet, écrit les bilans. |
 | **`research`** | Lecture lourde des `PROVENANCE.md` pour les crédits, avec un contrat de mission : il renvoie la liste regroupée et la liste complète. Il **ne compile pas de sources** pour la description. |
 
-Interdits à Claude : publier, programmer, modifier une vidéo en ligne, se connecter à la chaîne ou à un outil qui peut y écrire (vidIQ, MCP tiers) ; annoncer ou estimer un volume de recherche.
+Interdits à Claude : publier, programmer, modifier une vidéo en ligne, se connecter à la chaîne ou à un outil qui peut y écrire (vidIQ, MCP tiers) ; annoncer ou estimer un volume de recherche. Seule exception, en lecture : `outils/recherche/youtube_retention.py` (API YouTube Analytics, accès OAuth en lecture seule accordé par le propriétaire, lancé par Claude principal ; 0.5.1).
 
 ## Prérequis
 - **Entrées de l'épisode** : `BRIEF.md` ; les fiches de narration vérifiées ; le **journal du collage en voix seule** `episodes/<id>/outputs/<nom>-voix.log.txt` (lignes `seqN début s → fin s`, écrit par `assembler.py` ; pas celui de `mix_film.py`) ; la décision de miniature ; les `PROVENANCE.md` des séquences, du kit, de la signature, de l'outro et de l'appel.

@@ -21,7 +21,8 @@ Un plugin **ignore** les champs `hooks`, `mcpServers` et `permissionMode` dans l
 | `studio-maintainer` | mainteneur |
 | `research`, Claude principal | aucun rôle : seules les règles communes s'appliquent |
 | `reviewer` | relecteur |
-| `strategist` | stratege : écrit dans `docs/` et `direction/BANQUE_SUJETS.md` seulement ; en Bash, outils Python du plugin, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` |
+| `strategist` | stratege : écrit dans `docs/` et `direction/BANQUE_SUJETS.md` seulement ; en Bash, outils Python du plugin (sauf `youtube_retention.py`), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` |
+| `media-fetcher` | telechargeur (0.6.0) : écrit sous `episodes/<id>/kit/media/source-vN/` seulement ; en Bash, `telecharger_medias.py` du plugin, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` |
 
 Les chemins protégés sont relatifs au dossier de la chaîne (`CLAUDE_PROJECT_DIR`). Toute écriture par Write ou Edit dans le plugin installé est refusée.
 

@@ -32,7 +32,7 @@ Ce document décrit comment un épisode obtient ses musiques, ses ambiances et s
 
 ## Prérequis
 - `marque/son/README.md` de la chaîne : tableaux « Musiques » et « Effets et ambiances » (fichier, durée, épisode, rôle). Le squelette fournit les tableaux vides.
-- `referentiels/DIRECTION_AUDIO.md` (§ 1 dépenses, § 2 musique et effets, § 3 bibliothèque, § 4 ElevenLabs) et ses écarts dans `direction/ECARTS.md`.
+- `referentiels/DIRECTION_AUDIO.md` (§ 1 dépenses, § 2 musique et effets, § 3 bibliothèque, § 4 ElevenLabs, § 4 bis Soundza) et ses écarts dans `direction/ECARTS.md`.
 - Pour générer (0.2.3, 30/10/2026) : l'**API ElevenLabs** (SDK Python `elevenlabs`, clé dans la variable `ELEVENLABS_API_KEY`, jamais lue ni affichée) ; le connecteur claude.ai est coupé par défaut. Chaque génération demande l'accord du propriétaire, coût annoncé avant ; les skills `elevenlabs-*` sont appelés avec `/nom`, ou lus par Claude quand le propriétaire demande une génération.
 - Un abonnement **payant** pour un usage commercial des sons générés (selon l'aide d'ElevenLabs, le plan gratuit n'a pas de licence commerciale ; `skills/youtube-seo/references/description-et-credits.md`).
 - FFmpeg et FFprobe pour les mesures (commandes de `skills/direction-sonore/references/controle-et-mesure.md`).
@@ -67,6 +67,13 @@ Ce document décrit comment un épisode obtient ses musiques, ses ambiances et s
 - **Qui** : Studio Director.
 - **Règle** (`DIRECTION_AUDIO.md` § 2, demande de l'E008 d'AA) : le vrai son d'un extrait passe sous la voix plutôt qu'une foule de bibliothèque. **Avant de le prévoir, on le transcrit** (`transcrire.py` ou le filtre `whisper`). S'il porte un commentaire (fréquent sur les vidéos d'instances ou de chaînes de diffusion), on ne l'emploie pas : une ambiance de `marque/son/` le remplace, et la description YouTube dit « Crowd sounds are illustrative » quand il s'agit d'une foule.
 - **Piège connu** : E009 d'AA, V1 et V2 portaient un commentaire anglais non vérifié.
+
+#### 5 bis. Sons de bibliothèque en ligne : Soundza (0.6.0, validé sur AA, 02/11/2026)
+- **Quand** : la bibliothèque de la chaîne ne suffit pas et le propriétaire accepte Soundza (musiques longues, foules, bruitages, textures). Deux candidats au plus par besoin.
+- **Qui** : Claude principal, par le serveur MCP `soundza` (recherche sans clé ; fichiers avec `SOUNDZA_API_KEY`, posée par le propriétaire dans l'environnement, jamais lue ni écrite) ; téléchargement de la version « original » dans `kit/media/source-vN/soundza/` (lien signé valable 15 minutes). `generate_sound` : jamais sans demande du propriétaire.
+- **Licence** (annoncée par Soundza) : libre, sans crédit obligatoire ; interdits : revendre ou redistribuer un son seul et non modifié, entraîner une IA ; aucune garantie de droits ni de Content ID ; sons faits par IA signalés par `ai_content`. **Le dépôt d'une chaîne qui garde des sons Soundza reste privé.** Crédit demandé, facultatif : une chaîne sans crédits l'écarte par un écart dans `direction/ECARTS.md`.
+- **Contrôle avant emploi** : `python -I -B "${CLAUDE_PLUGIN_ROOT}/outils/controle/mesurer_sons.py" <fichiers> --whisper <modèle ggml> [--boucle]` : format, canaux, niveau, crête vraie, boucle, parole possible. Résultats et SHA-1 au `PROVENANCE.md` du kit ; un son écarté par une mesure n'est pas proposé, un son qui passe attend l'écoute du propriétaire.
+- **Référence** : `DIRECTION_AUDIO.md` § 4 bis.
 
 ### Partie B : repérer le son (skill `direction-sonore`)
 

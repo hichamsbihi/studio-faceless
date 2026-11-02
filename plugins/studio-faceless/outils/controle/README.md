@@ -72,6 +72,13 @@ Tous : bibliothèque standard, numpy ou FFmpeg, aucun appel réseau ; refusent d
 
 `remix.py` de MM n'est pas versé : il suppose un `mix.py` par séquence, que le gabarit v3 du plugin n'a pas (le son du film se mixe à la fin avec `montage/mix_film.py`). `recaler.py` ne se confond pas avec `outils/shorts/recaler.py` (repères d'un short). `pauses.py`, `raccourcir.py` et `recaler.py` lisent et écrivent les repères `seqN-mots.json` et `seqN-phrases.txt`.
 
+## `mesurer_sons.py` : un son de bibliothèque avant emploi (0.6.0, validé sur AA le 02/11/2026)
+`python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/controle/mesurer_sons.py FICHIER [FICHIER …] [--whisper CHEMIN/ggml-base.en.bin] [--crete-max 0] [--boucle]`
+
+Généralisé de `mesurer_sons.py` de l'E011 d'AA (sons Soundza). Par fichier : codec, fréquence d'échantillonnage, canaux, profondeur, durée, niveau intégré (LUFS), crête vraie (dBTP), part de l'énergie entre 1 et 4 kHz, raccord de boucle (énergie des 100 premières et dernières ms), puis une liste « À VOIR » : codage 8 bits (μ-law), fréquence sous 32 kHz, crête vraie au-dessus de `--crete-max` (0 dBTP par défaut ; un son à +0,7 dBTP a été écarté sur AA), écart de boucle au-delà de 1,5 dB avec `--boucle`, **parole possible** avec `--whisper`.
+- **Parole** : le filtre `whisper` de FFmpeg transcrit le fichier (modèle ggml gardé hors du projet, comme pour `transcrire.py` ; tout téléchargement avec l'accord du propriétaire). Les étiquettes de bruit de Whisper (« [Music] », « (crowd cheering) », « [Applause] ») sont retirées ; s'il reste des mots, le fichier est signalé et le propriétaire l'écoute. Un modèle anglais ne reconnaît pas un chant dans une autre langue : l'absence de mot ne prouve pas l'absence de parole.
+- Aucun fichier écrit. Les mesures écartent un son ; elles ne le valident jamais (`DIRECTION_AUDIO.md` § 4 bis et § 5). Python, numpy, FFmpeg et ffprobe (`HYPERFRAMES_FFMPEG_PATH` / `HYPERFRAMES_FFPROBE_PATH`, sinon le `PATH`). Essai : `outils/test_mesurer_sons.py`.
+
 ## Ordre conseillé pour une séquence
 1. **À réception de la prise** : `transcrire.py --texte`, puis `--isoler` sur chaque écart douteux.
 2. `ralentir.py`, puis `transcrire.py` sur la bande ralentie, pour les repères.

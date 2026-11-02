@@ -16,7 +16,7 @@ Les réponses par défaut ci-dessous sont des points de départ, à adapter au s
 - Quel est le renversement vers 75 % ? Défaut : un fait sourcé qui change le sens de la question.
 - Y a-t-il une personne ou un cas à suivre ? Défaut : un cas par couche, pas forcément une personne pour tout le film (Méthode, étude AA, bloc 3).
 - Faut-il une carte ? Défaut : seulement si un lieu porte l'argument.
-- Le sujet est-il saturé ? Défaut : si une grande chaîne a eu un succès sur la même question dans les 12 derniers mois, on écrit un angle nettement différent avant de commencer.
+- Le sujet est-il saturé ? Défaut : si une grande chaîne a eu un succès sur la même question dans les 12 derniers mois, on écrit un angle nettement différent avant de commencer (sauf écart de la chaîne dans `direction/ECARTS.md`, `choix-sujet.md` § 1).
 - Durée et nombre de séquences ? Défaut : 8 à 10 min, 6 ou 7 séquences. Le premier sujet « Why » qui s'y prête est l'essai de 6 à 7 min, environ 5 séquences (validé sur AA, 26/10/2026, `METHODE_RECIT.md` § 4).
 
 ## 1. Recherche
@@ -35,6 +35,8 @@ Les réponses par défaut ci-dessous sont des points de départ, à adapter au s
 ## 3. Script
 - Densité : au plus trois chiffres d'affilée, chaque chiffre clé en paire ou comparé à un repère, chaque inconnu expliqué en moins de 5 s. Défaut : contrôlé et signalé avant la voix.
 - Une balise d'émotion est-elle vraiment nécessaire ? Défaut : non.
+- Où tombent les pauses de révélation ? Défaut : prévues dès le script, une phrase courte avant chaque révélation sur image réelle (0,5 à 1 s au plus), puis ajoutées aux bandes avec `outils/controle/pauses.py` (validé sur AA, 02/11/2026 ; `pieges.md`, Son).
+- Le script suit-il l'essai « Illusion of Novelty » de la chaîne ? Défaut : non, sauf essai écrit dans `direction/ECARTS.md` ; sinon note de l'ouverture par `reviewer` avant la voix (`recit-retention.md` § 8).
 
 ## 4. Voix
 - Quelle voix ElevenLabs ? Défaut : celle validée pour la chaîne, ou proposée par Claude puis validée.
@@ -42,8 +44,8 @@ Les réponses par défaut ci-dessous sont des points de départ, à adapter au s
 
 ## 5. Socle
 - Quelle direction artistique : palette de l'épisode, motif matériel, mondes par séquence ? Défaut : la base fixe de la marque, plus une palette propre au sujet, testée sur une planche.
-- Quels médias le propriétaire télécharge-t-il ? Défaut : une liste de liens, chacun avec le nom imposé et la taille, et un dossier de dépôt.
-- Quels sons ? Défaut : puisés dans `marque/son/` ; aucune génération sans demande.
+- Quels médias télécharger ? Défaut : une liste unique de liens, chacun avec le nom imposé, la taille et le rôle, validée en un seul accord ; Claude la télécharge (outil ou `media-fetcher`) dans `kit/media/source-vN/`, et le propriétaire ne prend que ce qui est refusé (`manuel/`) (validé sur AA, 02/11/2026).
+- Quels sons ? Défaut : puisés dans `marque/son/` ; aucune génération sans demande ; Soundza seulement si le propriétaire l'accepte (`DIRECTION_AUDIO.md` § 4 bis).
 - Quels raccords ? Défaut : écrits au pixel avant les lots ; les séquences d'un même lot ne dépendent pas l'une de l'autre.
 - Quels effets rares, avec leur quota ? Défaut : un WHIP-JUMP par film ; un surligneur deux fois au plus.
 

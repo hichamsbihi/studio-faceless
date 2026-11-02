@@ -19,11 +19,11 @@ Le plugin ne dépend d'aucune chaîne : les mentions d'AA ou de StudioV1 n'y ser
 | Élément | Contenu |
 |---|---|
 | `skills/` | `episode` (fabrication d'un épisode, du sujet au mix), `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder` (analyse d'une vidéo par Gemini), `grilling` (portes de questions), `humanizer` (surcouche de relecture des scripts, appelée par le propriétaire), `find-skills` (recherche de skills), `elevenlabs-sound-effects`, `elevenlabs-music` (effets sonores et musique générés), `frontend-design` (conception visuelle et critique des planches et compositions), `remove-background` (détourage avec l'outil de HyperFrames), `blender-pro` (3D avec Blender installé dans la chaîne) |
-| `agents/` | sept agents : `research`, `reviewer` (contrôle qualité en lecture seule), `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`, `strategist` (positionnement, titres et banque de sujets d'une chaîne, une phase par appel) |
+| `agents/` | huit agents : `research`, `reviewer` (contrôle qualité en lecture seule), `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`, `strategist` (positionnement, titres et banque de sujets d'une chaîne, une phase par appel), `media-fetcher` (téléchargement d'une liste de médias validée par le propriétaire) |
 | `hooks/` | garde-fou des commandes (par rôle) et injection des règles communes au début de chaque session |
 | `REGLES_STUDIO.md` | règles communes injectées à chaque session (moins de 9 000 caractères) : quoi lire, sous-agents, économie de tokens et de contexte, statuts et règles permanentes |
 | `referentiels/` | règles par défaut : `METHODE_RECIT`, `REFERENTIEL_QUALITE_REALISATION`, `DIRECTION_AUDIO`, `MOTION_CATALOG`, et `REGLES_DETAIL` (suite des règles communes : moteur et outils, parcours d'un épisode) |
-| `outils/` | contrôles (`controle/`), montage et mix du film (`montage/`), cartes, shorts, rendu, archivage, contrôle du dépôt, suivi des tokens |
+| `outils/` | contrôles (`controle/`, dont `mesurer_sons.py`), montage et mix du film (`montage/`), médias (`medias/`, dont `telecharger_medias.py`), voix par l'API ElevenLabs (`voix/`), recherche, cartes, shorts, rendu, archivage, contrôle du dépôt, suivi des tokens |
 | `templates/` | gabarit de séquence v3, modèles de `CLAUDE.md`, de `BRIEF.md` et de `STATE.md` d'épisode, modèle d'`INDEX.md` des épisodes, contrat de mission |
 | `domaines/` | profils de domaine (`sport`, `geo-economie`) : règles communes aux chaînes d'un même sujet, entre les règles par défaut et la chaîne |
 | `starter/` | squelette d'une nouvelle chaîne |
@@ -43,7 +43,7 @@ Une fois installés, les skills et les agents portent le préfixe du plugin : `s
 1. **Seul le propriétaire valide.** Une proposition n'est pas une décision ; chaque décision est datée.
 2. **Claude ne publie, n'achète ni ne supprime rien.** Les essais retirés à l'archivage vont dans `_A_SUPPRIMER/`, que le propriétaire vide lui-même. Aucun envoi vers GitHub sans son accord, donné à chaque fois.
 3. **On n'écrase jamais un travail** : une nouvelle version va dans un nouveau dossier.
-4. **Médias réels**, choisis sur ce qu'ils apportent à la scène : sous licence libre ou non libres en citation encadrée (`REFERENTIEL_QUALITE_REALISATION.md` § 2 bis) ; une chaîne peut s'en tenir aux licences libres par un écart. Provenance consignée dans un `PROVENANCE.md`. Aucune image générée par IA, sauf écart écrit de la chaîne.
+4. **Médias réels**, choisis sur ce qu'ils apportent à la scène : sous licence libre ou non libres en citation encadrée (`REFERENTIEL_QUALITE_REALISATION.md` § 2 bis) ; une chaîne peut s'en tenir aux licences libres par un écart. Téléchargement par Claude (ou `media-fetcher`) d'une liste validée par le propriétaire, sans contournement. Provenance consignée dans un `PROVENANCE.md`. Aucune image générée par IA, sauf écart écrit de la chaîne.
 5. **HyperFrames reste figé en 0.8.149** : aucune mise à jour sans décision du propriétaire.
 
 ## Faire évoluer le plugin

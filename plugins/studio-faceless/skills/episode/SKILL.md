@@ -22,7 +22,7 @@ Ce skill donne l'ordre, les portes et les listes de contrôle. Il ne recopie pas
 2. **L'image d'abord.** Un brief décrit des transformations d'images (photo réelle, dessin, carte, raccord de matière), jamais des lignes de texte. La recette v3 fait la base : `references/production.md` § 1.
 3. **Le socle est fini avant le premier producteur** :
    - la voix figée et ses repères ;
-   - les médias (listes que le propriétaire télécharge à la main), déposés et vérifiés ;
+   - les médias (liste validée par le propriétaire, téléchargée par Claude ou par `studio-faceless:media-fetcher`, validé sur AA, 02/11/2026), déposés et vérifiés ;
    - les cartes, les logos et les sons de la bibliothèque ;
    - les raccords au pixel ;
    - les briefs courts.
@@ -62,7 +62,7 @@ Le détail de chaque étape est dans `references/etapes.md`.
 
 ## Avant de lancer un producteur (liste de contrôle)
 - [ ] Voix figée ; repères mot à mot recalés ; durée de chaque bande montage.
-- [ ] Médias de la séquence déposés par le propriétaire, vérifiés (empreinte, image regardée) et inscrits au `PROVENANCE.md` du kit avec leur source.
+- [ ] Médias de la séquence déposés (téléchargés ou remis par le propriétaire), vérifiés (empreinte, image regardée) et inscrits au `PROVENANCE.md` du kit avec leur source.
 - [ ] Aucune photo prise par une autre séquence, sauf les rappels voulus inscrits au `BRIEF.md`.
 - [ ] Image d'entrée et image de sortie écrites au pixel. Chaque séquence d'un même lot a des raccords qui ne dépendent pas d'une autre séquence de ce lot.
 - [ ] Cartes, logos et dessins de référence prêts dans le kit (`${CLAUDE_PLUGIN_ROOT}/outils/cartes/`).

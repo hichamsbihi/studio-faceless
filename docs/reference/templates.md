@@ -47,7 +47,7 @@ templates/
 ### templates/CONTRAT_MISSION.template.md
 **Rôle** : modèle du message de délégation à un sous-agent, avec les neuf champs du contrat et le brief de séquence court destiné au `motion-producer`.
 
-**Quand il sert** : le Studio Director en recopie le bloc `text` dans **chaque** délégation (research, reviewer, art-director, motion-producer, shorts-producer, studio-maintainer, strategist). C'est aussi la forme qu'attendent les agents : sans les champs essentiels, ils ne commencent pas et renvoient la liste des champs manquants.
+**Quand il sert** : le Studio Director en recopie le bloc `text` dans **chaque** délégation (research, reviewer, art-director, motion-producer, shorts-producer, studio-maintainer, strategist, media-fetcher). C'est aussi la forme qu'attendent les agents : sans les champs essentiels, ils ne commencent pas et renvoient la liste des champs manquants.
 
 **Contenu**
 - **Bloc des neuf champs** (un champ sans objet vaut « aucun ») :
@@ -73,6 +73,7 @@ templates/
   - `shorts-producer` : kit shorts (`episodes/<id>/kit/shorts/`), brief de short, dossier `episodes/<id>/production/short-0N-vM/` ; mêmes règles que le producteur de séquences ;
   - `studio-maintainer` : `episode_id` = « studio » ; sans écriture autorisée, il constate seulement ; section des règles de la chaîne obligatoire ;
   - `strategist` (0.4.0) : `episode_id` = « studio » ; deux champs en plus, `phase` (`dossier`, `brief`, `conseil`, `titres`, `sujets` ou `banque`) et `session` (`docs/strategie/<AAAA-MM-JJ>-<sujet>/`) ; écriture dans `docs/` de la chaîne, et dans `direction/BANQUE_SUJETS.md` seulement si « décisions validées » cite l'accord daté du propriétaire ; section des règles de la chaîne obligatoire (ligne `pour strategist`).
+  - `media-fetcher` (0.6.0) : `episode_id` de l'épisode ; écriture limitée à `episodes/<id>/kit/media/source-vN/` ; le contrat donne la liste JSON à télécharger, la décision datée du propriétaire qui la valide, le dépôt et le robot (`--agent-utilisateur` : nom et adresse de la chaîne, jamais un e-mail) ; section des règles de la chaîne obligatoire.
 - **Brief de séquence court** (une page, **3 Ko au plus**, validé sur AA le 18/10/2026). Le producteur ne lit que ce brief, le kit et le `CLAUDE.md` de l'épisode : les règles de `direction/` y sont recopiées en extraits de quelques lignes, jamais renvoyées à un fichier entier. Dix champs :
 
   | Champ | Contenu |

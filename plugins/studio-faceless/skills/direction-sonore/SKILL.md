@@ -18,10 +18,11 @@ Méthode et gabarits pour décider **ce que le son doit faire** dans un document
 - Préparer le son d'une séquence, d'un prototype ou d'un épisode (avant fabrication).
 - Revoir un mix, diagnostiquer un défaut, préparer la note de contrôle d'un MP4.
 - Ne pas l'utiliser pour générer de la musique ou des sons : toute génération passe par les règles de dépense de `DIRECTION_AUDIO.md` et l'accord du propriétaire.
+- **Sons de bibliothèque en ligne** (Soundza, validé sur AA, 02/11/2026) : licence, sons faits par IA, crédit, dépôt privé, téléchargement et contrôle avant emploi (`outils/controle/mesurer_sons.py` : format, niveau, crête vraie, Whisper pour une parole) sont dans `DIRECTION_AUDIO.md` § 4 bis ; `generate_sound` jamais sans demande du propriétaire.
 
 ## Méthode, dans l'ordre
 1. **Contrat audio** de la séquence : rôle du son, hiérarchie d'écoute, sources disponibles et leurs droits, livrables, conditions d'écoute réellement disponibles. Gabarit : `references/gabarits.md`.
-2. **Repérage** (feuille de repérage, ou spotting) avant tout son : une ligne par événement ou lit sonore, avec sa fonction, son statut et sa source. Ambiances sourcées et bruitages motivés seulement : on ne sonorise pas chaque action visible. Voir `references/reperage-et-couches.md`.
+2. **Repérage** (feuille de repérage, ou spotting) avant tout son : une ligne par événement ou lit sonore, avec sa fonction, son statut et sa source (un son de bibliothèque en ligne est mesuré avant d'être repéré : `DIRECTION_AUDIO.md` § 4 bis). Ambiances sourcées et bruitages motivés seulement : on ne sonorise pas chaque action visible. Voir `references/reperage-et-couches.md`.
 3. **Couches et perspective** : peu de couches sous la voix, une distance et un point d'écoute cohérents avec l'image et le récit. Voir `references/reperage-et-couches.md`.
 4. **Relations son-image et transitions** : J-cut, L-cut, ponts sonores, révélation par retrait, silences et respirations. Voir `references/transitions-et-silences.md`.
 5. **Musique** : depuis le 15/10/2026 (validé sur AA), elle porte l'immersion de chaque séquence. Elle est choisie selon la situation, s'entend vraiment, et on repère ses entrées, retraits et silences voulus, au journal de cues (cue sheet). Les niveaux sont dans `DIRECTION_AUDIO.md` § 2 et 3. Voir aussi `references/musique-a-l-image.md`.

@@ -22,7 +22,7 @@ Ce document décrit une mission de l'agent `research` : le contrat que lui écri
 ## Acteurs
 | Acteur | Rôle |
 |---|---|
-| **Propriétaire** | Répond à la porte de questions, valide l'angle (étape 2), télécharge à la main les médias retenus, tranche les points signalés (légendes d'auteur, risques d'image). |
+| **Propriétaire** | Répond à la porte de questions, valide l'angle (étape 2), valide la liste de téléchargement des médias retenus (Claude les télécharge ; lui ne prend que les fichiers refusés), tranche les points signalés (légendes d'auteur, risques d'image). |
 | **Studio Director** | Pose les questions, écrit le contrat, lance l'agent, consigne et relit le rapport, dresse la liste de téléchargement, vérifie les fichiers déposés. |
 | **Éclaireur Perplexity** | Agent général (`general-purpose`) limité par son contrat aux outils Perplexity : un `perplexity_research` par partie, rapport écrit par lui dans `research/perplexity/R-*.md`. Des pistes et des sources primaires, aucun fait vérifié (0.5.0, validé sur AA, 02/11/2026). |
 | **`research`** | Cherche, vérifie, note ; lecture seule (Read, Grep, Glob, WebFetch, WebSearch). Ne décide rien. |
@@ -100,9 +100,9 @@ flowchart TD
 - *Qui* : Studio Director. *Écrit* : `episodes/<id>/research/R-*.md` (motif donné par le skill `episode` ; le reste du nom n'est pas imposé). Il relit les contradictions, signale au propriétaire les **légendes d'auteur** importées de Flickr (ce sont des témoignages : citation courte, entre guillemets, attribuée) et les risques d'image, puis pose les questions ouvertes.
 - Pour un extrait vidéo : en regarder une planche avant de le décrire ou de l'attribuer à une séquence (`pieges.md`, E009).
 
-**10. Liste de téléchargement pour le propriétaire** (socle, `socle.md` § 4)
-- *Qui* : Studio Director. *Écrit* : `episodes/<id>/kit/DEMANDE_TELECHARGEMENTS_vN.md` : pour chaque fichier, le lien de la page (pour Commons : « Original file »), le **nom imposé**, la taille et le rôle dans la scène ; et le dossier de dépôt créé à l'avance, `kit/media/source-vN/manuel/`.
-- *Le propriétaire* télécharge **à la main** (aucun téléchargement en lot ; Wikimedia répond 429 aux téléchargements automatiques).
+**10. Liste de téléchargement validée par le propriétaire** (socle, `socle.md` § 4 ; validé sur AA, 02/11/2026)
+- *Qui* : Studio Director. *Écrit* : `episodes/<id>/kit/DEMANDE_TELECHARGEMENTS_vN.md` : pour chaque fichier, le lien de la page (pour Commons : « Original file »), le **nom imposé**, la taille et le rôle dans la scène ; et le dossier de dépôt créé à l'avance, `kit/media/source-vN/` (dont `manuel/`).
+- *Le propriétaire* valide la liste en **un seul accord**. *Claude* télécharge ensuite (`outils/medias/telecharger_medias.py`, lui-même ou par `studio-faceless:media-fetcher`) : robot identifié par l'adresse de la chaîne (jamais un e-mail), 3 à 4 s entre deux fichiers, attente doublée après un 429, aucun écrasement, aucun contournement (Cloudflare, accès payant, connexion, CAPTCHA, filigrane). Un fichier refusé va à la liste « à télécharger par le propriétaire » (`manuel/`) ; un fichier hors de la liste attend son accord.
 
 **11. Vérifier le dépôt**
 - *Qui* : Studio Director : SHA-1 comparés à ceux de Commons quand l'API les donne ; dimensions ; planche de tous les fichiers, regardée (on écarte filigrane, mauvais sujet, date fausse, mineur identifiable) ; conversions sans agrandissement (1920 px au plus) dans `kit/media/photos-vN/` et `logos-vN/` ; section au `kit/PROVENANCE.md` (source, auteur, licence ou « citation », SHA-1, date et lieu, remarque).
@@ -121,7 +121,7 @@ Les licences sont **notées telles quelles** (CC BY, CC BY-SA, NC, domaine publi
 | **Resource Boy** | Sans attribution ; sans redistribution des fichiers seuls ; la licence est copiée à côté du fichier. |
 | **Médias non libres** | Citation encadrée (`REFERENTIEL` § 2 bis) : la photo est le sujet de ce que dit la voix, reste à l'écran le temps utile, est créditée ; trouvée là où elle est librement accessible (article, site de l'organisation, Wikipédia), jamais en retirant un filigrane ni en contournant un accès payant. |
 | **Vraies vidéos d'événement** | Permises pour les compétitions et instances listées dans `direction/ECARTS.md` ; un vrai moment se montre en vraie vidéo, jamais en animation. Extraits de 6 s au plus à l'écran ; fichiers tirés de YouTube permis quand c'est nécessaire, dans la meilleure définition. |
-| **Logos** | Permis quand le film en a besoin (organisations, instances, compétitions, trophées, médias cités), avec mesure. Pris sur Wikipédia ou Commons et téléchargés par le propriétaire ; ils arrivent souvent en WebP et se convertissent en PNG (`socle.md` § 5). |
+| **Logos** | Permis quand le film en a besoin (organisations, instances, compétitions, trophées, médias cités), avec mesure. Pris sur Wikipédia ou Commons, sur la liste de téléchargement ; ils arrivent souvent en WebP et se convertissent en PNG (`socle.md` § 5). |
 
 **Refus** : aucun média d'une chaîne étudiée comme référence (liste dans `direction/ECARTS.md`) ; aucun média présenté pour ce qu'il n'est pas (lieu, date, niveau de jeu, personnes) ; aucune image générée présentée comme archive ; aucune image retournée ou maquillée pour échapper à la détection. Les exigences de l'épisode (`episodes/<id>/CLAUDE.md`) s'ajoutent.
 
@@ -133,7 +133,7 @@ Les licences sont **notées telles quelles** (CC BY, CC BY-SA, NC, domaine publi
 | L'agent renvoie une liste de champs | Contrat sans `episode_id`, objectif ou périmètre de lecture | Compléter le contrat, relancer |
 | Impossible de consigner le rapport | L'agent n'a aucun outil d'écriture | Le Studio Director écrit `research/R-*.md` |
 | Vérification Cloudflare sur Pexels | Requêtes trop rapides | Ralentir, ouvrir les pages une à une ; ne jamais contourner |
-| Wikimedia répond 429 | Téléchargement automatique | Le propriétaire télécharge à la main depuis la liste |
+| Wikimedia répond 429 | Téléchargement trop rapide ou robot anonyme | L'outil double l'attente et s'arrête à trois essais ; le fichier va à `manuel/`, le propriétaire le télécharge depuis la liste |
 | Média sous filigrane ou aperçu d'agence | Mauvaise source | Refus, même gratuit ; chercher la page librement accessible |
 | Photo mal identifiée (une demi-finale prise pour une finale) | Légende non vérifiée | La légende dit exactement ce que montre la photo ; date et lieu établis (EXIF, révision Commons) |
 | Extrait décrit sans avoir été regardé | Description faite sur la provenance seule | Regarder une planche de chaque extrait avant de l'attribuer à une séquence (`pieges.md`, E009) |

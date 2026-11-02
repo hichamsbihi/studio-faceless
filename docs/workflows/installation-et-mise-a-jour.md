@@ -37,7 +37,7 @@ Le studio tourne sous **Windows**, avec **Git Bash** pour les commandes de Claud
 | nvm pour Windows, puis Node | Node **22.0.0** | HyperFrames (Node 22 ou plus obligatoire) | `winget install CoreyButler.NVMforWindows`, puis `nvm install 22.0.0` et `nvm use 22.0.0` |
 | Python | 3.14 (3.12 au moins) | outils, garde-fou, mix | `winget install Python.Python.3.14` |
 | FFmpeg | 9.0 | tout le son et l'image | `winget install Gyan.FFmpeg` |
-| Claude Code | 2.1.169 ou plus | Claude, plugin, agents | application de bureau ou `claude` en terminal |
+| Claude Code | 2.1.271 ou plus | Claude, plugin, agents (le champ `omitClaudeMd` de `research`, `studio-maintainer`, `strategist` et `media-fetcher` demande cette version) | application de bureau ou `claude` en terminal |
 
 Et :
 - un **compte GitHub** du propriétaire, avec l'authentification à deux facteurs et l'accès aux dépôts privés ;

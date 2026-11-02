@@ -6,7 +6,7 @@ Les règles par défaut citées ici (`REFERENTIEL`, `DIRECTION_AUDIO`, `METHODE_
 
 ## 0. Sujet
 - **Entrées** : le registre (`direction/LIGNE_EDITORIALE.md`), la veille (`docs/veille/`) et les bilans des épisodes publiés.
-- **Méthode** : 5 à 8 candidats, notés selon `choix-sujet.md`. Vérifier la saturation : la même question a-t-elle été un succès récent d'une grande chaîne ? Écrire la promesse en une phrase, et le titre en 60 caractères au plus.
+- **Méthode** : 5 à 8 candidats, notés selon `choix-sujet.md`. Vérifier la saturation, sauf écart de la chaîne dans `direction/ECARTS.md` : la même question a-t-elle été un succès récent d'une grande chaîne ? Écrire la promesse en une phrase, et le titre en 60 caractères au plus.
 - **Sujet qui surperforme ailleurs** : `choix-sujet.md` § 4 (vidIQ seulement sur demande du propriétaire ; on reprend le principe, jamais la vidéo). Étude d'une chaîne de référence : skill `studio-faceless:regarder`.
 - **Sortie** : `episodes/<id>/` créé depuis `${CLAUDE_PLUGIN_ROOT}/templates/` (`CLAUDE.episode`, `BRIEF.episode`, `STATE`) ; la ligne de l'épisode ajoutée à `episodes/INDEX.md` (créé depuis `INDEX.template.md` s'il n'existe pas) ; le sujet inscrit au registre.
 
@@ -29,7 +29,9 @@ Les règles par défaut citées ici (`REFERENTIEL`, `DIRECTION_AUDIO`, `METHODE_
 - **Revérification des chiffres la veille de la voix** : chaque chiffre est contrôlé de nouveau sur son lien direct, avec sa date de valeur (`REFERENTIEL` § 2) .
 
 ## 4. Voix
-- Le propriétaire génère les prises. Claude les vérifie (`${CLAUDE_PLUGIN_ROOT}/outils/controle/transcrire.py`) contre le texte validé, les ralentit (`ralentir.py`) et recale les repères mot à mot sur les vrais départs de la voix.
+- **Claude génère les prises par l'API ElevenLabs** (validé sur AA, 02/11/2026, Q35 de son E011) : `${CLAUDE_PLUGIN_ROOT}/outils/voix/generer_voix.py`, d'abord à blanc (découpage et coût annoncé), puis `--executer --confirme-credits N` **après l'accord du propriétaire sur le coût** (`DIRECTION_AUDIO.md` § 4). Le propriétaire peut aussi fournir lui-même les prises.
+- Claude vérifie les prises (`${CLAUDE_PLUGIN_ROOT}/outils/controle/transcrire.py`) contre le texte validé, les ralentit (`ralentir.py`) et recale les repères mot à mot sur les vrais départs de la voix.
+- Les pauses de révélation sont prévues dès le script et mesurées sur les bandes avant de figer la voix (`pieges.md`, Son).
 - Bandes montage (silences S1…, pauses de respiration) dans `kit/voix/`.
 - **La voix se fige ici.** Toute nouvelle prise après cette étape oblige à recaler toutes les séquences.
 
@@ -76,7 +78,7 @@ Le mix fait, et avant de montrer le film au propriétaire : contrôle par `studi
 - Claude ne publie jamais.
 
 ## 13. Après la sortie
-- Bilans J+2, J+7 et J+28 (`studio-faceless:youtube-seo`) : rétention à 0:30, 1:00 et 2:00, et taux de clic au-delà d'environ 1 000 impressions.
+- Bilans J+2, J+7 et J+28 (`studio-faceless:youtube-seo`) : rétention à 0:30, 1:00 et 2:00, et taux de clic au-delà d'environ 1 000 impressions. Un épisode écrit en essai (par exemple la méthode « Illusion of Novelty », `recit-retention.md` § 8) a en plus son bilan de J+7 selon le protocole de l'essai.
 - **Relevé de la première minute** (validé sur MM, 23/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) : la rétention dans la première minute est relevée et comparée à celle des épisodes précédents.
 - Les leçons s'ajoutent à `pieges.md`, et les tokens par étape sont notés (`${CLAUDE_PLUGIN_ROOT}/outils/suivi_tokens.py`).
 - L'archivage se fait avec l'accord du propriétaire (ci-dessous).

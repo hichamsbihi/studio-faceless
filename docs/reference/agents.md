@@ -1,6 +1,6 @@
 # Référence : les agents du plugin (`agents/`)
 
-Ce document décrit les sept agents du plugin `studio-faceless` : leur en-tête, ce qu'ils lisent, ce qu'ils écrivent, ce que le garde-fou leur interdit, ce qu'ils livrent et qui les appelle. Les fichiers de `agents/` font foi ; en cas d'écart, la documentation se corrige.
+Ce document décrit les huit agents du plugin `studio-faceless` : leur en-tête, ce qu'ils lisent, ce qu'ils écrivent, ce que le garde-fou leur interdit, ce qu'ils livrent et qui les appelle. Les fichiers de `agents/` font foi ; en cas d'écart, la documentation se corrige.
 
 ## Table des matières
 - [Vue d'ensemble](#vue-densemble)
@@ -14,12 +14,13 @@ Ce document décrit les sept agents du plugin `studio-faceless` : leur en-tête,
   - [agents/shorts-producer.md](#agentsshorts-producermd)
   - [agents/studio-maintainer.md](#agentsstudio-maintainermd)
   - [agents/strategist.md](#agentsstrategistmd)
+  - [agents/media-fetcher.md](#agentsmedia-fetchermd)
 - [Écarts et points à vérifier relevés dans ces fichiers](#écarts-et-points-à-vérifier-relevés-dans-ces-fichiers)
 
 ## Vue d'ensemble
 - **Un agent est un sous-agent de Claude principal** (le Studio Director). Il est lancé par le Studio Director avec un **contrat de mission** (neuf champs, modèle : [`templates/CONTRAT_MISSION.template.md`](templates.md#templatescontrat_missiontemplatemd)). Les agents ne se délèguent rien entre eux (`REGLES_STUDIO.md`, « Sous-agents »).
-- **Noms** : une fois le plugin installé, chaque agent prend le préfixe du plugin : `studio-faceless:research`, `studio-faceless:reviewer`, `studio-faceless:art-director`, `studio-faceless:motion-producer`, `studio-faceless:shorts-producer`, `studio-faceless:studio-maintainer`, `studio-faceless:strategist` (0.4.0). Le champ `name:` de l'en-tête garde le nom court ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Noms »).
-- **En-tête** : chaque fichier commence par un en-tête YAML : `name`, `description` (ce que Claude lit pour décider de déléguer), `tools`, `model`, `color`, `skills` (skills préchargés dans le contexte de l'agent, quand il y en a) et, pour `research`, `studio-maintainer` (depuis la 0.2.3) et `strategist` (0.4.0), `omitClaudeMd: true` : l'agent démarre sans le `CLAUDE.md` de la chaîne (champ qui demande Claude Code 2.1.271 ou plus ; l'application de bureau fait tourner son propre Claude Code, 2.1.309 le 02/11/2026, donc il y agit ; seule la copie du terminal, 2.1.169 sur la machine de mise au point, peut être plus ancienne). Claude principal tourne sur Opus (validé sur AA, 02/11/2026) : les agents en `model: inherit` (`art-director`, `motion-producer`, `shorts-producer`, `strategist`) le suivent ; `research`, `reviewer` et `studio-maintainer` restent en `sonnet`. Les règles de la chaîne dont ils ont besoin sont alors dans leur contrat, section « Règles de la chaîne utiles à la mission » ([`templates.md`](templates.md#templatescontrat_missiontemplatemd)). `reviewer` garde le `CLAUDE.md` : il contrôle les règles de la chaîne.
+- **Noms** : une fois le plugin installé, chaque agent prend le préfixe du plugin : `studio-faceless:research`, `studio-faceless:reviewer`, `studio-faceless:art-director`, `studio-faceless:motion-producer`, `studio-faceless:shorts-producer`, `studio-faceless:studio-maintainer`, `studio-faceless:strategist` (0.4.0), `studio-faceless:media-fetcher` (0.6.0). Le champ `name:` de l'en-tête garde le nom court ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Noms »).
+- **En-tête** : chaque fichier commence par un en-tête YAML : `name`, `description` (ce que Claude lit pour décider de déléguer), `tools`, `model`, `color`, `skills` (skills préchargés dans le contexte de l'agent, quand il y en a) et, pour `research`, `studio-maintainer` (depuis la 0.2.3), `strategist` (0.4.0) et `media-fetcher` (0.6.0), `omitClaudeMd: true` : l'agent démarre sans le `CLAUDE.md` de la chaîne (champ qui demande Claude Code 2.1.271 ou plus ; l'application de bureau fait tourner son propre Claude Code, 2.1.309 le 02/11/2026, donc il y agit ; seule la copie du terminal, 2.1.169 sur la machine de mise au point, peut être plus ancienne). Claude principal tourne sur Opus (validé sur AA, 02/11/2026) : les agents en `model: inherit` (`art-director`, `motion-producer`, `shorts-producer`, `strategist`) le suivent ; `research`, `reviewer` et `studio-maintainer` restent en `sonnet`. Les règles de la chaîne dont ils ont besoin sont alors dans leur contrat, section « Règles de la chaîne utiles à la mission » ([`templates.md`](templates.md#templatescontrat_missiontemplatemd)). `reviewer` garde le `CLAUDE.md` : il contrôle les règles de la chaîne.
 - **Un plugin ignore les champs `hooks`, `mcpServers` et `permissionMode`** de l'en-tête de ses agents ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Garde-fou »). Les limites par rôle viennent donc du hook du plugin (`hooks/garde_commandes.py`), qui reconnaît le rôle au champ `agent_type` : voir le tableau `ROLES` plus bas.
 - **Skills préchargés** : `hyperframes-*` sont des skills d'utilisateur (copiés dans `~/.claude/skills/`, voir [`vendor.md`](vendor.md)), sans préfixe ; `studio-faceless:…` sont les skills du plugin. Un agent ne voit ni la mémoire de Claude ni les autres épisodes : ce qu'il doit savoir est dans le contrat, `direction/`, les référentiels ou sa propre définition.
 - **Qui décide** : le propriétaire de la chaîne (nommé dans son `CLAUDE.md`) est le seul à valider. Aucun agent ne valide, ne publie, n'achète ni ne déclare une écoute ou un visionnage.
@@ -45,6 +46,8 @@ Workflows où ils interviennent : [`../workflows/recherche.md`](../workflows/rec
 | **Peut lancer un rendu ?** | non | non | non | non : il écrit `render.sh` et s'arrête | non : idem | non | non |
 | **Correction après retour** | un nouvel agent | un nouvel agent | un nouvel agent | dans la même version : reprise si le cache est chaud, sinon agent court | nouvelle version, par un nouvel agent | nouvelle mission | nouveau fichier (`…_v2`) par un nouvel appel |
 
+**`media-fetcher` (0.6.0)** n'a pas de colonne ici : sa fiche, en fin de section « Fiches », donne les mêmes rubriques (outils Read, Write, Bash, Glob, Grep ; `sonnet` ; couleur orange ; `omitClaudeMd` ; rôle `telechargeur` ; écriture sous `episodes/<id>/kit/media/source-vN/` ; appelé à l'étape 5, médias du socle).
+
 ## Garde-fou : ce qui est imposé et ce qui repose sur la consigne
 Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents compris. Il déduit le rôle de `agent_type` (préfixe `studio-faceless:` retiré) :
 
@@ -55,7 +58,8 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 | `studio-maintainer` | `mainteneur` |
 | `research`, Claude principal | aucun rôle : seules les règles communes s'appliquent |
 | `reviewer` | `relecteur` : en Bash, seules `ffprobe`, `ffmpeg` de mesure (`-f null`), `wc`, `ls`, `grep`, `head` et `tail`, sans redirection |
-| `strategist` | `stratege` : Write et Edit seulement dans `docs/` et `direction/BANQUE_SUJETS.md` ; en Bash, `python` sur les outils du plugin, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` |
+| `strategist` | `stratege` : Write et Edit seulement dans `docs/` et `direction/BANQUE_SUJETS.md` ; en Bash, `python` sur les outils du plugin (sauf `youtube_retention.py`, réservé à Claude principal depuis la 0.6.0), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` |
+| `media-fetcher` | `telechargeur` (0.6.0) : Write et Edit seulement sous `episodes/<id>/kit/media/source-vN/` ; en Bash, `python` sur `outils/medias/telecharger_medias.py` du plugin installé seul (liste sous `kit/`, dépôt et manifeste sous `source-vN/`), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` ; ni `curl` ni `wget`, aucun script en ligne |
 
 **Règles communes à tous** (rôle ou non) : refus de la publication HyperFrames, du cloud, de la connexion, de `upgrade`, de `skills update`, de `npx hyperframes@…`, de l'installation npm, de la suppression récursive ou définitive, du vidage de la corbeille ; refus de **toute écriture par Write/Edit dans le plugin installé** ; demande de confirmation pour `preview` ; refus (`deny`, sans confirmation possible) d'un rendu direct sans `--workers 1` ou `2`.
 
@@ -103,7 +107,7 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 - **Méthode, études** : référence complète, ce qu'elles montrent et ne montrent pas (population, méthode) ; une association n'est pas une causalité.
 - **Méthode, médias** : ordre de préférence Wikimedia Commons (dernière révision, revue FlickreviewR, licence, SHA-1 par l'API), puis Openverse et Flickr en CC, puis Pexels ou Mixkit. Règles propres à chaque source (Commons, légendes d'auteur Flickr = témoignages, Pexels et Cloudflare, Mixkit `videoRestricted` refusé, FootageCrate, Resource Boy). Règle par défaut (`REFERENTIEL_QUALITE_REALISATION.md` § 2 bis) : choisir sur ce que le média apporte à la scène, gratuit, sans filigrane, jamais de filigrane retiré ni d'accès payant contourné ; vraies vidéos d'événement permises (compétitions listées dans `direction/ECARTS.md`) ; extraits de 6 s au plus ; source exacte notée pour remplacer vite le média.
 - **Refus** : média d'une chaîne étudiée comme référence (liste dans `direction/ECARTS.md`), média présenté pour ce qu'il n'est pas, image générée présentée comme archive.
-- **Téléchargements** : aucun. Le propriétaire télécharge à la main, d'après la liste que dresse le Studio Director (liens exacts, nom imposé, taille).
+- **Téléchargements** : aucun. Le Studio Director dresse la liste (liens exacts, nom imposé, taille) que le propriétaire valide ; Claude la télécharge ensuite, lui-même ou par `media-fetcher` (0.6.0, validé sur AA, 02/11/2026) ; le propriétaire ne prend que les fichiers refusés (`manuel/`).
 - **Livrable** (court, en français) : 1. faits (affirmation · source · statut) ; 2. études (référence · apport · limites) ; 3. médias candidats (lien · auteur · licence · contenu · fonction · risques) ; 4. limites, risques, questions ouvertes ; 5. fichiers locaux lus.
 
 **Liens** : cité par `REGLES_STUDIO.md`, `skills/episode/SKILL.md` (étape 1), `skills/episode/references/socle.md` § 4 ; contrat : [`templates/CONTRAT_MISSION.template.md`](templates.md#templatescontrat_missiontemplatemd).
@@ -305,6 +309,35 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 
 ---
 
+### agents/media-fetcher.md
+**Rôle** (0.6.0, validé sur AA, 02/11/2026, Q56 et Q57 de son E011) : télécharger les médias d'une **liste validée par le propriétaire**, dans le kit de l'épisode, sous le nom imposé, et rendre un manifeste. Il ne cherche, ne choisit et ne juge aucun média (`research` et le Studio Director). Règle : `REFERENTIEL_QUALITE_REALISATION.md` § 2 bis, « téléchargement des médias ».
+
+**Quand il sert** : à l'étape 5 (médias du socle), quand le Studio Director préfère ne pas porter le téléchargement dans son contexte. Le Studio Director peut aussi lancer lui-même l'outil.
+
+**En-tête**
+| Champ | Valeur |
+|---|---|
+| `name` | `media-fetcher` |
+| `tools` | Read, Write, Bash, Glob, Grep (ni WebSearch, ni Edit) |
+| `model` | `sonnet` ; `color` : orange |
+| `skills` | aucun |
+| `omitClaudeMd` | `true` : démarre sans le `CLAUDE.md` de la chaîne |
+| Rôle du garde-fou | `telechargeur` |
+
+**Limites du garde-fou (rôle `telechargeur`)** : Write et Edit seulement sous `episodes/<id>/kit/media/source-vN/` ; en Bash, seule `python` sur `outils/medias/telecharger_medias.py` du plugin installé (le chemin du plugin doit figurer en entier dans la commande ; la liste se lit sous `episodes/<id>/kit/`, le dépôt et le manifeste s'écrivent sous `source-vN/`), plus `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` ; aucun script en ligne, ni `curl` ni `wget`. Essai : `outils/test_garde_commandes.py`.
+
+**Contenu**
+- Contrat : neuf champs, plus la **liste JSON**, la décision datée du propriétaire qui la valide, le dépôt `kit/media/source-vN/` et le **robot** (`--agent-utilisateur` : nom et adresse de la chaîne, jamais une adresse e-mail) ; section « Règles de la chaîne utiles à la mission » obligatoire.
+- Méthode : vérifier la liste, aperçu sans `--executer`, puis téléchargement par l'outil, puis manifeste.
+- Interdits : aucun contournement (Cloudflare, accès payant, connexion, CAPTCHA, filigrane, autre adresse) ; aucun fichier hors de la liste ; aucun fichier de YouTube ni son de Soundza (clé du propriétaire et outils MCP : Claude principal) ; aucune vérification d'image (dimensions, planche, `PROVENANCE.md` : Studio Director).
+- **Livrable** : manifeste (réf. · fichier · SHA-1 · taille · statut), liste « à télécharger par le propriétaire » (`manuel/`), écarts, risques.
+
+**À savoir**
+- Un fichier refusé n'est jamais retenté autrement : l'outil l'écrit dans `manuel/A_TELECHARGER_PAR_LE_PROPRIETAIRE_<date>.md`.
+- Un plugin ignore le champ `mcpServers` : l'agent n'a pas les outils du serveur `soundza`.
+
+---
+
 ## Écarts et points à vérifier relevés dans ces fichiers
 Constats de lecture, du plus gênant au moins gênant. Les écarts réglés par la correction du 28/10/2026 (rendu sans `--workers` refusé, corrections d'une séquence dans la même version, catalogue et plugin installé, `PROVENANCE.md` du gabarit, plage de lecture de l'index du catalogue) ont été retirés.
 
@@ -315,4 +348,4 @@ Constats de lecture, du plus gênant au moins gênant. Les écarts réglés par 
 | 3 | **Mot « dix »** : « jamais les dix ensemble », reste d'un ancien parcours (le DA n'a que deux skills `hyperframes-*` préchargés). | `agents/art-director.md:32` |
 | 4 | **Recherche : ordre de préférence et licence** : la liste des sources (Commons, puis Openverse/Flickr, puis Pexels/Mixkit) cohabite avec la règle « la licence ne compte pas » ; à lire ensemble (voir fiche). | `agents/research.md:33-43` |
 | 5 | **`CLAUDE.md` sous Linux ou macOS** : le hook compare `parts[-1] == 'claude.md'` après `os.path.normcase`, qui ne met pas en minuscules hors Windows ; la protection des `CLAUDE.md` par Write/Edit ne s'y déclencherait pas pour `CLAUDE.md`. À vérifier si une chaîne tourne hors Windows. | `hooks/garde_commandes.py:96`, `108` |
-| 6 | **`omitClaudeMd` et version de Claude Code** : le champ demande la 2.1.271 ou plus ; l'application de bureau fait tourner son propre Claude Code (2.1.309 le 02/11/2026), où il devrait agir (déduit de la version) ; seule la copie du terminal peut être plus ancienne (2.1.169 sur la machine de mise au point) : `research`, `studio-maintainer` et `strategist` y garderaient le `CLAUDE.md`. | `agents/research.md`, `agents/studio-maintainer.md`, `agents/strategist.md` |
+| 6 | **`omitClaudeMd` et version de Claude Code** : le champ demande la 2.1.271 ou plus ; l'application de bureau fait tourner son propre Claude Code (2.1.309 le 02/11/2026), où il devrait agir (déduit de la version) ; seule la copie du terminal peut être plus ancienne (2.1.169 sur la machine de mise au point) : `research`, `studio-maintainer`, `strategist` et `media-fetcher` y garderaient le `CLAUDE.md`. | `agents/research.md`, `agents/studio-maintainer.md`, `agents/strategist.md` |

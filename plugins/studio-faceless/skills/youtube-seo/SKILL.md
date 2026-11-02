@@ -32,7 +32,7 @@ Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les
 8. **Après publication** : bilans J+2, J+7, J+28, sans toucher un titre qui marche (`references/apres-publication.md`).
 
 ## Refus permanents
-- Publier, programmer, modifier une vidéo en ligne, se connecter à la chaîne ou à un outil capable d'y écrire (vidIQ, MCP tiers) : jamais par Claude.
+- Publier, programmer, modifier une vidéo en ligne, se connecter à la chaîne ou à un outil capable d'y écrire (vidIQ, MCP tiers) : jamais par Claude. **Seule exception, en lecture** (0.5.1, précisé en 0.6.0) : `outils/recherche/youtube_retention.py` lit la rétention de la chaîne par l'API YouTube Analytics, avec l'accès OAuth en lecture seule que le propriétaire accorde lui-même ; lancé par Claude principal, jamais par un sous-agent, il n'écrit rien sur la chaîne.
 - Annoncer, estimer ou recopier un volume de recherche, ou un gain de CTR sans source officielle.
 - Titre, miniature, tag ou hashtag qui promet ce que le film ne montre pas, nom de personne ou de marque absent du film, liste de mots-clés dans la description (`[Officiel]` aide 146402 : contraire au règlement sur le spam).
 - **Omettre un crédit CC BY sans écart écrit de la chaîne.** Par défaut, chaque média CC BY est crédité (auteur, source, licence, mention « adapted ») dans le bloc PHOTO CREDITS et la réponse 1 au commentaire épinglé, à partir des `PROVENANCE.md` (validé sur AA, 19/10/2026 ; règle par défaut du plugin, Hicham, 28/10/2026). Une chaîne peut s'en écarter dans `direction/ECARTS.md` (exemple AA : aucun crédit dans le dossier depuis le 24/10/2026). La déclaration des voix et sons générés reste toujours dans la description.

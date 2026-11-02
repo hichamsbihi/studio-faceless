@@ -146,7 +146,7 @@ FFmpeg :
 ```powershell
 winget install Gyan.FFmpeg
 ```
-Claude Code (2.1.271 ou plus : le champ `omitClaudeMd` de `research`, `studio-maintainer` et `strategist` le demande) : l'application de bureau, ou la commande `claude` en terminal. Les fichiers du plugin ne donnent pas de commande d'installation pour Claude Code.
+Claude Code (2.1.271 ou plus : le champ `omitClaudeMd` de `research`, `studio-maintainer`, `strategist` et `media-fetcher` le demande) : l'application de bureau, ou la commande `claude` en terminal. Les fichiers du plugin ne donnent pas de commande d'installation pour Claude Code. **Piège** (constaté sur AA, 02/11/2026) : l'application de bureau et le terminal font tourner chacun leur copie de Claude Code, de versions différentes ; `claude --version` ne donne que celle du terminal. La copie qui fait tourner la session est désignée par la variable `CLAUDE_CODE_EXECPATH` (`skills/episode/references/pieges.md`, Technique).
 - **Fichiers créés** : aucun dans un projet.
 - **Tu valides** : rien.
 - **Vérifier** : étape A2.
@@ -347,10 +347,11 @@ grep -m1 '"version"' node_modules/hyperframes/package.json
 
 ### B6. Régler ElevenLabs (clé d'API)
 - **Qui** : toi. Claude ne lit, n'affiche, ne demande ni n'écrit jamais la clé.
-- **À faire** : pose la clé dans la variable d'environnement `ELEVENLABS_API_KEY` de ta session Windows (ou dans un `.env` ignoré par Git), puis relance Claude Code. Le SDK Python `elevenlabs` ne s'installe que sur ta décision, à la version figée dans le `requirements.txt` de la chaîne. Aucune règle `ask` à ajouter : le connecteur est coupé, et chaque génération te demande ton accord en conversation, coût annoncé avant. Aucun sous-agent ne génère.
-  Trois autres clés se posent de la même façon, par toi, dans l'environnement ; Claude ne les lit ni ne les affiche, et aucune n'est écrite dans un fichier :
+- **À faire** : pose la clé dans la variable d'environnement `ELEVENLABS_API_KEY` de ta session Windows (ou dans un `.env` ignoré par Git), puis relance Claude Code. Le SDK Python `elevenlabs` ne s'installe que sur ta décision, à la version figée dans le `requirements.txt` de la chaîne. Aucune règle `ask` à ajouter : le connecteur est coupé, et chaque génération te demande ton accord en conversation, coût annoncé avant. Aucun sous-agent ne génère. Depuis la 0.6.0, Claude génère les prises de narration par l'API (`outils/voix/generer_voix.py` : il te donne le coût, et n'appelle l'API qu'avec `--executer --confirme-credits N` après ton accord) ; une clé à droits restreints (sans lecture du solde, des modèles ni des voix) suffit, le coût annoncé est alors une estimation.
+  Quatre autres clés se posent de la même façon, par toi, dans l'environnement ; Claude ne les lit ni ne les affiche, et aucune n'est écrite dans un fichier :
   - `YOUTUBE_API_KEY` (API YouTube Data v3, créée par toi) : `outils/recherche/youtube_chaine.py` et l'agent `strategist`, pour relever les vidéos d'une chaîne ; sans elle, l'outil s'arrête ;
   - accès YouTube Analytics (client OAuth de l'étape A6) : aucune variable. Au premier lancement de `youtube_retention.py`, ton navigateur s'ouvre ; tu te connectes, tu choisis la chaîne et tu accordes toi-même la lecture seule (l'écran « application non validée » est normal : c'est la tienne). En mode Test, Google retire l'accès au bout de 7 jours : l'outil redemande l'accord ;
+  - `SOUNDZA_API_KEY` (compte Soundza, gratuit, clé créée sur la page développeurs de Soundza) ou connexion OAuth proposée par le serveur : sons de bibliothèque (`DIRECTION_AUDIO.md` § 4 bis, 0.6.0), sur ton accord seulement. Le serveur MCP `soundza` (adresse donnée par Soundza, `https://mcp.soundza.com/mcp` le 02/11/2026) se déclare une fois par chaîne, en portée `local`, avec la commande de la page développeurs de Soundza. **La clé ne s'écrit jamais dans la commande ni dans un fichier** : vérifie toi-même que la configuration du serveur ne la contient pas en clair (constaté une fois sur AA). Les recherches marchent sans clé ; les fichiers demandent la clé ou la connexion. Le dépôt d'une chaîne qui garde des sons Soundza reste privé. Redémarre l'application après la déclaration ;
   - `GEMINI_API_KEY` : le skill `regarder` (`regarder.py`) et `relire.py` ; un contenu inédit ne part chez Google qu'avec la clé du palier payant, décision à toi ;
   - `PERPLEXITY_API_KEY` (compte Perplexity, API payante) : l'éclaireur de l'étape 1 du skill `episode` (0.5.0). Le serveur MCP se déclare une fois par chaîne, en portée `local` (hors Git), depuis le dossier de la chaîne :
     ```bash
@@ -728,20 +729,20 @@ cp -r "<plugin>/templates/sequence-gabarit-v3" episodes/episode-001/kit/gabarit
 
 ### C17. Réunir les médias
 Étape 5, deuxième partie.
-- **Qui** : Claude et l'agent `studio-faceless:research` cherchent ; **toi tu télécharges à la main** ; Claude vérifie et convertit.
+- **Qui** : Claude et l'agent `studio-faceless:research` cherchent ; **tu valides la liste en un seul accord** ; Claude la télécharge (`outils/medias/telecharger_medias.py`, lui-même ou par `studio-faceless:media-fetcher`, 0.6.0) ; tu ne prends que les fichiers que le site refuse ; Claude vérifie et convertit.
 - **À faire** :
 
 > Étape 5, les médias : pour chaque moment de la voix, lance `studio-faceless:research` pour trouver la meilleure image, gratuite et sans filigrane (deux candidats au plus par moment), sans rien télécharger. Puis écris `kit/DEMANDE_TELECHARGEMENTS_v1.md` : pour chaque fichier, le lien de la page (pour Commons, « Original file »), le nom imposé, la taille et le rôle dans la scène. Crée le dossier de dépôt `kit/media/source-v1/manuel/`.
 
-  Tu télécharges chaque fichier depuis la liste, sous le nom imposé (Wikimedia répond 429 aux téléchargements automatiques). Tu préviens Claude. Il vérifie :
+  Tu valides la liste. Claude télécharge chaque fichier sous le nom imposé, dans `kit/media/source-v1/` (aperçu d'abord, puis téléchargement : robot identifié par l'adresse de ta chaîne, jamais ton e-mail ; quelques secondes entre deux fichiers ; aucun écrasement ; aucun contournement de Cloudflare, de paywall, de connexion ni de CAPTCHA). Un fichier refusé est inscrit dans `kit/media/source-v1/manuel/A_TELECHARGER_PAR_LE_PROPRIETAIRE_<date>.md` : tu le télécharges toi-même sous le nom imposé et tu préviens Claude. Il vérifie (fichiers téléchargés ou déposés par toi) :
   - les SHA-1, comparés à ceux de Commons quand l'API les donne ; les dimensions ;
   - une planche de tous les fichiers, regardée : il écarte filigrane, mauvais sujet, date fausse, mineur identifiable ;
   - les conversions sans agrandissement (1920 px au plus) dans `kit/media/photos-v1/` et `logos-v1/` ;
   - une section par fichier au `kit/PROVENANCE.md` (source, auteur, licence ou « citation », SHA-1, date et lieu, remarque).
 
   Règles : médias réels, aucune image générée par IA ; une photo appartient à **une seule séquence** (rappels voulus inscrits au `BRIEF.md`) ; extraits vidéo de 6 s au plus, réencodés avec `-g 15` pour qu'ils ne se figent pas au rendu ; planche de chaque extrait regardée avant de le décrire. Les vraies vidéos d'événements ne sont admises que pour les compétitions et instances listées dans ton `ECARTS.md` (B8).
-- **Fichiers créés** : `kit/DEMANDE_TELECHARGEMENTS_v1.md`, `kit/media/source-v1/manuel/` (tes téléchargements), `kit/media/photos-v1/`, `kit/media/logos-v1/`, `kit/PROVENANCE.md`.
-- **Tu valides** : tes téléchargements ; les risques de droits que Claude te signale.
+- **Fichiers créés** : `kit/DEMANDE_TELECHARGEMENTS_v1.md`, `kit/media/source-v1/` (téléchargements et `MANIFESTE_TELECHARGEMENT_<date>.json`), `kit/media/source-v1/manuel/` (ce que tu télécharges toi-même), `kit/media/photos-v1/`, `kit/media/logos-v1/`, `kit/PROVENANCE.md`.
+- **Tu valides** : la liste de téléchargement ; les risques de droits que Claude te signale.
 - **Vérifier** : chaque fichier a sa section de provenance avec son SHA-1 ; `controle.py licences` ne signale aucune licence en attente ni exclue.
 - **Détail** : [`recherche.md`](docs/workflows/recherche.md) ; [`episode.md`](docs/workflows/episode.md#5-socle).
 
@@ -1142,7 +1143,7 @@ git push
 | `controle.py` : `ModuleNotFoundError: numpy` | dépendances Python manquantes | `pip install -r requirements.txt` |
 | `transcrire.py` : modèle introuvable | le modèle est gardé hors du projet | retrouve-le ou retélécharge-le avec ton accord (A7) |
 | Un Chrome reste ouvert (`controle.py chrome` ne répond pas 0) | `check`, `snapshot`, `render` ou `preview` interrompu | si un rendu d'une autre session tourne, **ne touche à rien** ; sinon prévenir toi : le plugin n'écrit pas de procédure de fermeture (à vérifier). Un rendu arrêté par `TaskStop` laisse son `node` : `taskkill //T //F //PID <pid>` |
-| Wikimedia répond 429 | téléchargement automatique | tu télécharges à la main depuis la liste |
+| Wikimedia répond 429 | téléchargement trop rapide ou robot anonyme | l'outil double l'attente et s'arrête à trois essais ; tu télécharges à la main les fichiers de `manuel/` |
 | Un script Python plante sur des accents | console en cp1252 | `sys.stdout.reconfigure(encoding="utf-8")` dans le script en cause |
 
 ### Garde-fou

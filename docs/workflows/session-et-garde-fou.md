@@ -25,7 +25,7 @@ Ce document décrit ce qui se passe quand on ouvre une session dans une chaîne 
 | **Propriétaire** | Accepte la confiance du dossier, répond aux demandes de confirmation (`ask`), décide des permissions de la chaîne et des mises à jour |
 | **Claude Code** | Exécute les hooks, applique les décisions (refus, confirmation) et les permissions |
 | **Studio Director** (Claude principal) | Sans rôle de garde-fou : seules les règles communes s'appliquent à lui ; il lance le suivi des tokens |
-| **Agents** | `motion-producer` et `shorts-producer` (rôle producteur), `art-director` (directeur-artistique), `studio-maintainer` (mainteneur), `reviewer` (relecteur, depuis la 0.2.3), `strategist` (stratege, 0.4.0) ; `research` sans rôle |
+| **Agents** | `motion-producer` et `shorts-producer` (rôle producteur), `art-director` (directeur-artistique), `studio-maintainer` (mainteneur), `reviewer` (relecteur, depuis la 0.2.3), `strategist` (stratege, 0.4.0), `media-fetcher` (telechargeur, 0.6.0) ; `research` sans rôle |
 
 ## Prérequis
 - Plugin installé pour le projet (`claude plugin install studio-faceless@studio-faceless --scope project`) et déclaré dans le `.claude/settings.json` de la chaîne (`extraKnownMarketplaces`, `enabledPlugins`).
@@ -93,7 +93,8 @@ Le tableau complet (douze motifs, la suppression récursive, les zones protégé
 | `art-director` | directeur-artistique | Seulement `ffmpeg`, `ffprobe` et `mkdir`, pour écrire des images extraites dans le dossier de travail du contrat | Toute autre commande ; `ffmpeg -y` ; toute sortie dans `direction/`, `templates/`, `.claude/`, un `CLAUDE.md`, un dossier existant de `marque/`, `inputs/`, un projet de production ou un MP4 existant |
 | `studio-maintainer` | mainteneur | Écrire avec `Write` et `Edit` (cohérence, catalogue), lire avec Bash | Toute écriture par Bash (redirection, `cp`, `mv`, `tee`, `touch`, `mkdir`, `sed -i`, `ffmpeg`, script en ligne qui écrit…) ; avec Write et Edit : `.claude/`, un dossier existant de `marque/`, `inputs/`, un projet de production, un MP4 existant |
 | `reviewer` | relecteur (0.2.3) | Lire ; en Bash, mesurer | En Bash, tout sauf `ffprobe`, `ffmpeg` de mesure (`-f null`), `wc`, `ls`, `grep`, `head` et `tail` ; toute redirection ; il n'a ni Write ni Edit |
-| `strategist` | stratege (0.4.0) | Écrire avec Write et Edit dans `docs/` et `direction/BANQUE_SUJETS.md` ; en Bash, `python` sur les outils du plugin installé, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` | Toute écriture ailleurs ; toute autre commande Bash ; un script en ligne ; un outil dont un chemin d'entrée ou de sortie est hors de `docs/` |
+| `strategist` | stratege (0.4.0) | Écrire avec Write et Edit dans `docs/` et `direction/BANQUE_SUJETS.md` ; en Bash, `python` sur les outils du plugin installé, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` | Toute écriture ailleurs ; toute autre commande Bash ; un script en ligne ; un outil dont un chemin d'entrée ou de sortie est hors de `docs/` ; `youtube_retention.py` (accès OAuth à la chaîne : Claude principal seulement, 0.6.0) |
+| `media-fetcher` | telechargeur (0.6.0) | Écrire avec Write et Edit sous `episodes/<id>/kit/media/source-vN/` ; en Bash, `python` sur `outils/medias/telecharger_medias.py` du plugin installé seul, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` | Toute écriture ailleurs ; `curl`, `wget` et toute autre commande Bash ; un script en ligne ; une liste hors de `kit/` ; un dépôt ou un manifeste hors de `source-vN/` |
 
 Conséquences pour un contrat de mission :
 - Un producteur reçoit les extraits utiles de `direction/` et des `CLAUDE.md` dans son brief ; il n'a pas à les lire par Bash.

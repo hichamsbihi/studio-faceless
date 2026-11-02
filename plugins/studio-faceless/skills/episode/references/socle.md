@@ -22,10 +22,11 @@ Bandes montage et repères mot à mot recalés dans `kit/voix/`, avec leur READM
 
 ## 4. Médias
 1. **Recherche** (`studio-faceless:research`, sans téléchargement), pour chaque moment de la voix : la meilleure image du moment, gratuite et sans filigrane, avec sa source. Deux candidats au plus par moment. Vraies vidéos d'événements permises (compétitions et instances admises : `direction/ECARTS.md`) et fichiers tirés de YouTube permis en HD quand c'est nécessaire (validé sur AA, 28/10/2026) ; extraits vidéo de 6 s au plus (`REFERENTIEL` § 2 bis).
-2. **Liste de téléchargement** pour le propriétaire (`kit/DEMANDE_TELECHARGEMENTS_vN.md`) :
-   - pour chaque fichier, le lien de la page (pour Commons : cliquer sur « Original file »), le nom imposé, la taille et le rôle dans la scène ;
-   - un dossier de dépôt créé à l'avance (`kit/media/source-vN/manuel/`).
-3. **Vérification du dépôt** par Claude :
+2. **Liste de téléchargement** validée par le propriétaire (`kit/DEMANDE_TELECHARGEMENTS_vN.md`, et sa forme JSON pour l'outil) :
+   - pour chaque fichier, le lien de la page ou du fichier, le nom imposé, la taille et le rôle dans la scène ; une liste unique, **un seul accord** du propriétaire avant tout téléchargement (`REGLES_DETAIL.md`) ;
+   - un dossier de dépôt créé à l'avance (`kit/media/source-vN/`, dont `manuel/` pour ce que Claude ne peut pas prendre).
+   - **Téléchargement** (validé sur AA, 02/11/2026 ; `REFERENTIEL` § 2 bis) : Claude lance `${CLAUDE_PLUGIN_ROOT}/outils/medias/telecharger_medias.py`, ou en charge `studio-faceless:media-fetcher` par un contrat de mission ; aperçu d'abord, puis `--executer`. L'outil rend un manifeste (réf., fichier, SHA-1, taille, statut). Un fichier refusé (Cloudflare, accès payant, connexion, 429 persistant) va à la liste « à télécharger par le propriétaire » (`manuel/`), sans contournement.
+3. **Vérification du dépôt** par Claude (téléchargé par l'outil ou déposé à la main) :
    - les SHA-1, comparés à ceux de Commons quand l'API les donne ;
    - les dimensions ;
    - une planche de tous les fichiers, regardée : on écarte filigrane, mauvais sujet, date fausse, mineur identifiable ;
@@ -34,13 +35,14 @@ Bandes montage et repères mot à mot recalés dans `kit/voix/`, avec leur READM
 4. **Répartition** : une photo appartient à une seule séquence, sauf les rappels voulus inscrits au `BRIEF.md`. La liste des photos prises est donnée à chaque producteur.
 
 ## 5. Cartes, logos, dessins
-- **Cartes** au trait : `${CLAUDE_PLUGIN_ROOT}/outils/cartes/cartes.py` (Natural Earth 1:50m, téléchargé par le propriétaire) produit le SVG en 1920 × 1080, en `currentColor`, et les positions des villes en pixels. Une carte par lieu qui porte l'argument ; jamais de carte en décor répété.
-- **Logos** : de Wikipédia ou Commons, téléchargés par le propriétaire ; ils arrivent souvent en WebP et se convertissent en PNG. Avec mesure : un ou deux par passage, seulement s'ils aident.
+- **Cartes** au trait : `${CLAUDE_PLUGIN_ROOT}/outils/cartes/cartes.py` (Natural Earth 1:50m, téléchargé avec l'accord du propriétaire) produit le SVG en 1920 × 1080, en `currentColor`, et les positions des villes en pixels. Une carte par lieu qui porte l'argument ; jamais de carte en décor répété.
+- **Logos** : de Wikipédia ou Commons, sur la liste de téléchargement (§ 4) ; ils arrivent souvent en WebP et se convertissent en PNG. Avec mesure : un ou deux par passage, seulement s'ils aident.
 - **Dessins de référence** pour les passages d'explication : extraits de compositions passées, rangés dans `kit/references-vN/` avec un README qui donne les lignes utiles. Exemple AA : le schéma de Turin de l'E003, rangé dans les archives de la chaîne.
 
 ## 6. Sons
 - Puisés dans `marque/son/` (son catalogue et son README), copiés dans `kit/media/audio/musique/` et `sfx/`.
 - Aucun appel à ElevenLabs sans demande du propriétaire ; un son neuf approuvé rejoint ensuite la bibliothèque.
+- **Sons de Soundza** (bibliothèque en ligne, gratuite ; validé sur AA, 02/11/2026) : sur demande ou accord du propriétaire, après la bibliothèque de la chaîne. Recherche et téléchargement par Claude principal (serveur MCP `soundza`, clé `SOUNDZA_API_KEY` dans l'environnement, jamais écrite), dans `kit/media/source-vN/soundza/`, deux candidats au plus par besoin ; **contrôle** par `outils/controle/mesurer_sons.py` (format, canaux, niveau, crête vraie, boucle, parole par Whisper), puis écoute du propriétaire. Licence, sons faits par IA, crédit et **dépôt privé** : `DIRECTION_AUDIO.md` § 4 bis. `generate_sound` jamais sans demande du propriétaire.
 - **Relevé musical** par morceau : tempo, boucles sur des mesures entières, silences voulus, rôle par séquence. Il servira au mix du film (`rendu-collage.md` § 4).
 
 ## 7. Raccords

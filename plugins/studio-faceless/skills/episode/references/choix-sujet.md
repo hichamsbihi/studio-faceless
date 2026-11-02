@@ -16,6 +16,8 @@ Six critères notés de 1 à 5. Trois comptent double : demande, nom connu, méd
 
 **Seuil** : 33/45 au moins, et aucun critère double sous 3. Le propriétaire choisit parmi les trois premiers. Exemple AA : l'E007 avait 38/45 (audit du 23/10/2026).
 
+**Une chaîne peut écarter ce contrôle dans `direction/ECARTS.md`** (critère « place libre » et recherche de concurrence du § 4, point 3) : un sujet déjà traité ailleurs n'est alors jamais exclu, et l'écart dit comment le critère se note. `studio-faceless:strategist` fait de même : il ne recoupe avec d'autres chaînes que si `ECARTS.md` le demande (exemple AA : jamais, validé le 02/11/2026).
+
 ## 2. Vérifications en plus (prompt d'une autre chaîne, transposé)
 - **Compris par un non-initié** (éliminatoire, validé sur AA, 26/10/2026, `METHODE_RECIT.md` § 4, Sujet et titre) : la question se comprend sans connaître le milieu (exemple AA : ni le club ni la ligue), et l'anomalie se montre en une image ; sinon, on reformule l'angle ou on écarte le sujet.
 - **Un motif écrit** par l'acteur lui-même : règle, contrat, décision, déclaration. C'est ce qui permet une révélation neutre.
@@ -30,6 +32,7 @@ Six critères notés de 1 à 5. Trois comptent double : demande, nom connu, méd
 - **Format guide** (essai validé sur AA le 26/10/2026) : un épisode au titre « Every [x] explained », porté par une question centrale et une enquête, jugé sur ses chiffres avant toute série.
 - La miniature montre la contradiction sans répéter le titre, et n'affirme que ce que le film montre (`studio-faceless:thumbnail-strategist`).
 - La promesse est tenue dans les 30 premières secondes. Le sujet du titre est à l'écran ou nommé dans les 5 premières.
+- **Essai en cours sur AA** (`PROPOSÉ`, 02/11/2026) : l'angle d'un sujet connu se formule comme une nouveauté posée contre la croyance courante (méthode « Illusion of Novelty », protocole de bilan : `recit-retention.md` § 8).
 - Trois titres et trois miniatures peuvent passer en Test & Compare avant de juger un sujet.
 
 ## 4. Repérer un sujet qui surperforme et en reprendre le principe (`PROPOSÉ`)
@@ -42,7 +45,7 @@ Six critères notés de 1 à 5. Trois comptent double : demande, nom connu, méd
    - **garde-fous** (validé sur MM, 28/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) : vidIQ en lecture seule, aucune connexion de chaîne, aucune action sur YouTube ; chaque appel coûte 5 crédits et `vidiq_balance` est gratuit, donc vérifier le solde avant un lot et annoncer le coût du lot ; éviter `vidiq_channel_stats`, dont la sortie (statistiques quotidiennes) est très lourde pour le contexte, `vidiq_channel_videos` suffisant pour les médianes et les percées ;
    - **saturation en requêtes courtes** : des requêtes longues et précises (« why Iceland produces aluminium without bauxite ») sont revenues vides ; la contre-épreuve en 3 ou 4 mots a changé deux verdicts. Toujours doubler une requête vide ou mince par une requête courte ;
    - **formats mêlés** : Shorts, extraits de journal télévisé et directs comptent dans les vues ; lire la durée avant de conclure (le verdict d'un sujet tenait à un extrait de 50 s).
-3. **Concurrence** de chaque candidat : une recherche triée par vues (`youtube_search` de vidIQ, ou l'API YouTube Data sur les vidéos de plus de 3 min). Un sujet déjà gagné par une grande chaîne demande un angle nettement différent (critère « place libre »).
+3. **Concurrence** de chaque candidat : une recherche triée par vues (`youtube_search` de vidIQ, ou l'API YouTube Data sur les vidéos de plus de 3 min). Un sujet déjà gagné par une grande chaîne demande un angle nettement différent (critère « place libre »), sauf si la chaîne a écarté ce contrôle dans `direction/ECARTS.md` (§ 1).
 4. **Reprendre le principe, jamais la vidéo** :
    - on garde ce qui a fait le succès : la question, l'anomalie, l'objet concret, la forme du titre ;
    - l'angle, la question précise, les faits (vérifiés par `studio-faceless:research`), le récit et la mise en scène sont les nôtres ;

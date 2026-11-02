@@ -210,7 +210,7 @@ Chemins relatifs à la racine du dépôt (`studio-faceless/`).
 ### racine : INSTALLATION.md
 - **Rôle** : mode d'emploi pour **installer une machine** et brancher une chaîne existante, puis mettre à jour le plugin. Versions de référence : celles de la machine du 28/10/2026.
 - **Quand il sert** : au premier jour sur une machine, ou à chaque changement de machine. Le propriétaire installe les prérequis ; Claude peut dérouler la suite avec son accord.
-- **Contenu** : 1 Prérequis (Git + LFS 3.6.1, GitHub CLI, nvm puis Node 22.0.0, Python 3.14, FFmpeg 9.0, Claude Code 2.1.169 ou plus ; compte GitHub avec 2FA ; compte claude.ai avec connecteurs ; Chrome sans fenêtre ≈ 270 Mo) · 2 Identifiants Git (`gh auth login`, `gh auth setup-git`) · 3 Skills HyperFrames figés · 4 Brancher une chaîne existante (7 points) · 5 Vérifier (invite à donner à Claude) · 6 Mettre à jour le plugin.
+- **Contenu** : 1 Prérequis (Git + LFS 3.6.1, GitHub CLI, nvm puis Node 22.0.0, Python 3.14, FFmpeg 9.0, Claude Code 2.1.271 ou plus ; compte GitHub avec 2FA ; compte claude.ai avec connecteurs ; Chrome sans fenêtre ≈ 270 Mo) · 2 Identifiants Git (`gh auth login`, `gh auth setup-git`) · 3 Skills HyperFrames figés · 4 Brancher une chaîne existante (7 points) · 5 Vérifier (invite à donner à Claude) · 6 Mettre à jour le plugin.
 - **Liens** : workflow détaillé dans [`../workflows/installation-et-mise-a-jour.md`](../workflows/installation-et-mise-a-jour.md) ; skills figés : [`vendor.md`](vendor.md).
 - **À savoir** : le studio tourne sous **Windows avec Git Bash** ; `node` en PowerShell peut être une version trop ancienne.
 

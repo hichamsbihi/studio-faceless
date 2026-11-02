@@ -172,7 +172,7 @@ Fichier : [`SKILL.md`](../../plugins/studio-faceless/skills/youtube-seo/SKILL.md
   - *Ordre de préséance* : décisions du propriétaire (`BRIEF.md`, éléments déjà `VALIDÉ`, mots exclus) ; `CLAUDE.md` de la chaîne et `direction/` ; aide officielle de YouTube ; le skill. Les écarts de `direction/ECARTS.md` l'emportent sur les règles par défaut.
   - *Étiquettes de preuve* : `[Officiel]`, `[Observé]`, `[Hypothèse]`, `[Folklore écarté]`.
   - *Méthode en huit étapes* : lire par plages ; une promesse ; requêtes ; trois titres ; description, chapitres, crédits, déclarations, commentaire, SRT, réglages ; contrôle (deux commandes `publication.py`) ; soumission au propriétaire ; après publication.
-  - *Refus permanents* : publier, programmer, se connecter à la chaîne ou à un outil capable d'y écrire (vidIQ, MCP tiers) ; annoncer ou recopier un volume de recherche ; promesse que le film ne tient pas ; liste de mots-clés dans la description ; **omettre un crédit CC BY sans écart écrit de la chaîne** ; écraser un dossier.
+  - *Refus permanents* : publier, programmer, se connecter à la chaîne ou à un outil capable d'y écrire (vidIQ, MCP tiers), à une seule exception en lecture seule, `youtube_retention.py` (accès OAuth accordé par le propriétaire, 0.5.1) ; annoncer ou recopier un volume de recherche ; promesse que le film ne tient pas ; liste de mots-clés dans la description ; **omettre un crédit CC BY sans écart écrit de la chaîne** ; écraser un dossier.
   - *Livrable* : `PUBLICATION_vN.md` et `PUBLICATION_vN.en.srt` (le suffixe de langue suit la langue de la chaîne).
 - **Liens** : les cinq `references/`, `outils/controle/publication.py`, `skills/thumbnail-strategist/SKILL.md`, `skills/episode/references/etapes.md`.
 - **À savoir** :

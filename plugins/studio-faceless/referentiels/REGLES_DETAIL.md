@@ -12,7 +12,9 @@ Suite des règles communes du studio (`REGLES_STUDIO.md`), à lire selon la miss
 - **Outils du plugin** : `${CLAUDE_PLUGIN_ROOT}/outils/`, lancés depuis le dossier de la chaîne (`python -B "<chemin>"`). Contrôles : `outils/controle/` (mode d'emploi dans son `README.md`) :
   - `transcrire.py` : la prise contre le texte ;
   - `ralentir.py` : la narration ;
-  - `controle.py` : niveau, planche, vibration, tremblement, son, couleurs, photos répétées, licences, voix / reste, Chrome.
+  - `controle.py` : niveau, planche, vibration, tremblement, son, couleurs, photos répétées, licences, voix / reste, Chrome ;
+  - `mesurer_sons.py` : sons de bibliothèque avant emploi (format, niveau, crête vraie, boucle, parole).
+- **Médias et voix** (0.6.0, validé sur AA, 02/11/2026) : `outils/medias/telecharger_medias.py` (liste validée : aperçu, puis `--executer`) et `outils/voix/generer_voix.py` (appel payant : coût annoncé, `--executer --confirme-credits N` après l'accord du propriétaire) ; modes d'emploi dans les `README.md` de leurs dossiers. Les clés (`ELEVENLABS_API_KEY`, `SOUNDZA_API_KEY`) restent dans l'environnement : Claude ne les lit, ne les écrit et ne les affiche jamais.
 - **Garde-fou** (hook du plugin, `${CLAUDE_PLUGIN_ROOT}/hooks/garde_commandes.py`) :
   - pour tous, il refuse la publication, le cloud, la connexion, la mise à jour de HyperFrames ou des skills, l'installation npm, la suppression récursive ou définitive, le vidage de la corbeille et la modification du plugin installé ;
   - il demande confirmation pour `preview`, et refuse un rendu sans `--workers 1` ou `2` ;
@@ -27,4 +29,4 @@ Suite des règles communes du studio (`REGLES_STUDIO.md`), à lire selon la miss
 La fabrication suit le skill `studio-faceless:episode` (`${CLAUDE_PLUGIN_ROOT}/skills/episode/SKILL.md`, tableau « Les étapes », étapes 0 à 13, du sujet à l'archivage ; détail dans `references/etapes.md`), qui fait foi : questions au propriétaire à chaque porte (skill `studio-faceless:grilling`), séquence témoin validée avant les lots de trois, corrections dans la même version, un seul mix du film à la fin sur le film collé. La liste des étapes n'est pas recopiée ici : l'ancienne, à onze étapes, était numérotée autrement que le skill.
 
 ## Méthode de travail avec le propriétaire
-- **Méthode de travail avec le propriétaire** (validé sur MM, 21/10/2026, bloc 8 de l'audit de son pilote ; proposé au plugin 0.3.0, PROPOSÉ) : une décision se présente par blocs, un à la fois (repris, changé, douteux, puis une recommandation) ; « explique-moi » ne modifie rien ; les téléchargements d'un lot tiennent en une liste unique (nom, source, taille) et un seul accord.
+- **Méthode de travail avec le propriétaire** (validé sur MM, 21/10/2026, bloc 8 de l'audit de son pilote ; proposé au plugin 0.3.0, PROPOSÉ) : une décision se présente par blocs, un à la fois (repris, changé, douteux, puis une recommandation) ; « explique-moi » ne modifie rien ; les téléchargements d'un lot tiennent en une liste unique (nom, source, taille) et un seul accord du propriétaire avant tout téléchargement (par Claude ou par `studio-faceless:media-fetcher`, validé sur AA, 02/11/2026 : `REFERENTIEL_QUALITE_REALISATION.md` § 2 bis) ; un fichier hors de la liste attend un nouvel accord.

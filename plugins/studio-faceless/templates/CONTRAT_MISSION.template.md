@@ -14,7 +14,7 @@ décisions validées : <décision, date et référence, ou « aucune »>
 restrictions : <interdits propres à la mission>
 ```
 
-**Règles de la chaîne utiles à la mission** (0.2.3) : une section de **10 lignes au plus**, recopiée par l'orchestrateur depuis le `CLAUDE.md` de la chaîne, à la suite des neuf champs. **Obligatoire pour `studio-faceless:research`, `studio-faceless:studio-maintainer` et `studio-faceless:strategist`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents, qui le lisent.
+**Règles de la chaîne utiles à la mission** (0.2.3) : une section de **10 lignes au plus**, recopiée par l'orchestrateur depuis le `CLAUDE.md` de la chaîne, à la suite des neuf champs. **Obligatoire pour `studio-faceless:research`, `studio-faceless:studio-maintainer`, `studio-faceless:strategist` et `studio-faceless:media-fetcher`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents, qui le lisent.
 
 ```text
 Règles de la chaîne utiles à la mission (10 lignes au plus, recopiées du CLAUDE.md de la chaîne)
@@ -36,6 +36,7 @@ pour strategist : <propriétaire, domaine, chaînes sœurs, chaînes de référe
 - `studio-faceless:shorts-producer` (validé sur AA, 19/10/2026) : il faut le **kit shorts** (`episodes/<id>/kit/shorts/`), un **brief de short** (modèle : skill `studio-faceless:shorts`, `references/brief-short.md`) et un dossier d'écriture exact (`episodes/<id>/production/short-0N-vM/`). Mêmes règles que le producteur de séquences : il s'arrête à `render.sh`, et chaque correction est confiée à un nouvel agent.
 - `studio-faceless:studio-maintainer` : `episode_id` vaut « studio » ; sans écriture autorisée, il constate seulement ; section « Règles de la chaîne utiles à la mission » obligatoire.
 - `studio-faceless:strategist` (0.4.0) : `episode_id` vaut « studio » ; deux champs en plus, `phase` (`dossier`, `brief`, `conseil`, `titres`, `sujets` ou `banque`) et `session` (`docs/strategie/<AAAA-MM-JJ>-<sujet>/`) ; écriture dans `docs/`, et dans `direction/BANQUE_SUJETS.md` seulement si « décisions validées » cite l'accord daté du propriétaire ; section « Règles de la chaîne utiles à la mission » obligatoire (propriétaire, langues, domaine, chaînes sœurs, chaînes de référence).
+- `studio-faceless:media-fetcher` (0.6.0) : `episode_id` de l'épisode ; écriture limitée à `episodes/<id>/kit/media/source-vN/` ; le contrat donne la **liste JSON** à télécharger (dans `episodes/<id>/kit/`), la décision datée du propriétaire qui la valide (« décisions validées »), le dossier de dépôt et le **robot** (`--agent-utilisateur` : un nom et l'adresse de la chaîne, jamais une adresse e-mail) ; section « Règles de la chaîne utiles à la mission » obligatoire (sources admises, exclusions, langues).
 
 ## Brief de séquence court (producteur)
 Une page au plus, **3 Ko au plus** (validé sur AA, 18/10/2026). Le producteur ne lit rien d'autre que ce brief, le kit et le `CLAUDE.md` de l'épisode : les règles de `direction/` y sont recopiées en extraits de quelques lignes, jamais renvoyées à un fichier entier.

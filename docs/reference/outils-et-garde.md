@@ -15,6 +15,8 @@ Les fichiers du plugin font foi : en cas d'écart, la fiche se corrige. Les chem
 - [Règles communes](#règles-communes) : `REGLES_STUDIO.md`
 - [Workflows liés](#workflows-liés)
 
+Depuis la 0.6.0, trois outils nouveaux sont décrits dans leur `README.md` et dans les références de leur sujet : `outils/medias/telecharger_medias.py` (téléchargement d'une liste validée ; **appelle le réseau**), `outils/voix/` (`generer_voix.py`, appel payant à l'API ElevenLabs avec coût annoncé et confirmation ; `info_elevenlabs.py`) et `outils/controle/mesurer_sons.py` (sons de bibliothèque avant emploi) ; essais hors réseau : `outils/test_telecharger_medias.py`, `test_generer_voix.py`, `test_mesurer_sons.py`, `test_garde_commandes.py`. Ces outils refusent d'écraser comme les autres.
+
 Les autres outils sont décrits ailleurs : `ralentir.py` et `transcrire.py` dans [`son.md`](son.md), `publication.py` dans [`publication.md`](publication.md), `outils/montage/` dans [`son.md`](son.md), `outils/shorts/` et `outils/gemini/` dans [`publication.md`](publication.md).
 
 ---
@@ -398,7 +400,8 @@ python -B ${CLAUDE_PLUGIN_ROOT}/outils/suivi_tokens.py --depuis AAAA-MM-JJ
 | `art-director` | `directeur-artistique` |
 | `reviewer` | `relecteur` (0.2.3) : en Bash, seules `ffprobe`, `ffmpeg` de mesure (`-f null`), `wc`, `ls`, `grep`, `head` et `tail`, sans redirection |
 | `studio-maintainer` | `mainteneur` |
-| `strategist` | `stratege` (0.4.0) : Write et Edit dans `docs/` et `direction/BANQUE_SUJETS.md` seulement ; en Bash, `python` sur les outils du plugin, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd`, sans script en ligne ni écriture hors de `docs/` |
+| `strategist` | `stratege` (0.4.0) : Write et Edit dans `docs/` et `direction/BANQUE_SUJETS.md` seulement ; en Bash, `python` sur les outils du plugin (sauf `youtube_retention.py`, refusé depuis la 0.6.0 : accès OAuth à la chaîne, réservé à Claude principal), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd`, sans script en ligne ni écriture hors de `docs/` |
+| `media-fetcher` | `telechargeur` (0.6.0) : Write et Edit seulement sous `episodes/<id>/kit/media/source-vN/` ; en Bash, `python` sur `outils/medias/telecharger_medias.py` du plugin installé seul (chemin complet ; la liste se lit sous `episodes/<id>/kit/`, `--racine` et `--manifeste` sont sous `source-vN/`), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` ; aucun script en ligne, ni `curl` ni `wget` ; toute cible d'écriture (redirection, `cp`…) hors de `source-vN/` est refusée |
 | Claude principal, `research`, tout autre type | aucun rôle : seules les règles pour tous s'appliquent |
 
 Le préfixe de plugin (`studio-faceless:`) est retiré avant la recherche.
@@ -512,7 +515,7 @@ Les chemins sont ramenés à un chemin relatif à la chaîne (`/c/Users/…` de 
 | Dossier du plugin | Note sur `${CLAUDE_PLUGIN_ROOT}` : écrit entre accolades, remplacé à l'injection ; n'existe pas dans l'environnement de Bash |
 | Quoi lire selon la mission | Tableau mission → fichier : ligne éditoriale et écarts de la chaîne, `METHODE_RECIT`, `REFERENTIEL_QUALITE_REALISATION`, `DIRECTION_AUDIO`, `MOTION_CATALOG`, `marque/`, épisode, skills `episode`, `thumbnail-strategist`, `youtube-seo`, `shorts` |
 | Moteur et outils | Depuis la 0.2.3, **renvoi** de deux lignes vers `referentiels/REGLES_DETAIL.md`, qui porte le texte d'origine : HyperFrames 0.8.149 figée ; Node 22 ou plus ; skills plus récents que le CLI ; navigateurs (`--workers 2` au plus, `preview` sur demande) ; outils du plugin et `controle/` ; garde-fou (pour tous, par rôle) ; rendu par `rendre_si_libre.sh` ; archivage ; dépôt Git (commits locaux, envoi avec accord) ; suivi des tokens |
-| Sous-agents | Studio Director (sur Opus, 0.4.1) ; les sept agents (`research`, `reviewer`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`, `strategist`) ; contrat de mission (avec la section des règles de la chaîne pour les agents sans `CLAUDE.md`) ; isolation ; un sous-agent ne voit pas la mémoire de Claude |
+| Sous-agents | Studio Director (sur Opus, 0.4.1) ; les huit agents (`research`, `reviewer`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`, `strategist`, `media-fetcher`) ; contrat de mission (avec la section des règles de la chaîne pour les agents sans `CLAUDE.md`) ; isolation ; un sous-agent ne voit pas la mémoire de Claude |
 | Parcours d'un épisode | Depuis la 0.2.3, **renvoi** de deux lignes vers `referentiels/REGLES_DETAIL.md`, qui renvoie lui-même au skill `episode` (étapes 0 à 13, du sujet à l'archivage) depuis la 0.4.0 |
 | Économie de tokens et de contexte | Sessions (0.4.1, plus de `/clear`) : fin de porte = `STATE.md` réécrit, `INDEX.md` à jour, puis un `/compact` proposé au propriétaire avec sa consigne (coût connu : skills et fichiers lus remis dans le contexte, 124,6 k contre 81 à 88 k), rappel du hook `contexte_alerte.py` dès 200 k, jamais de changement de modèle en cours de session ; sous-agents (jamais plus de 4 min sans action, une correction dans la même version : reprise du producteur si son cache est chaud, sinon un nouvel agent court) ; travail (lectures par plages, sorties courtes) |
 | Règles permanentes | Faire seulement ce qui est demandé ; décision / proposition / hypothèse / question ouverte ; **statuts** ; pas d'écoute déclarée sans écoute ; ne jamais écraser ; aucune publication, achat ou contournement ; médias réels, sous licence libre ou en citation encadrée par défaut (référentiel § 2 bis), licences libres seules par écart de chaîne ; pas de contamination entre épisodes ; concision |

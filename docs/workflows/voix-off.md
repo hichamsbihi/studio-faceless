@@ -27,8 +27,8 @@ Dans les commandes, `${CLAUDE_PLUGIN_ROOT}` est le dossier du plugin installé. 
 ## Acteurs
 | Acteur | Rôle dans ce parcours |
 |---|---|
-| **Propriétaire** | Choisit la voix, relit la liste des mots à réécouter, **génère les prises** (ElevenLabs), tranche un écart réel, fige la voix. |
-| **Studio Director** (Claude principal) | Prépare le script à générer, vérifie les prises, les ralentit, recale les repères, écrit le README de `kit/voix/`, note l'état. |
+| **Propriétaire** | Choisit la voix, relit la liste des mots à réécouter, **accepte le coût annoncé** de chaque génération (ou génère lui-même les prises dans ElevenLabs), tranche un écart réel, fige la voix. |
+| **Studio Director** (Claude principal) | Prépare le script à générer, **génère les prises par l'API après l'accord sur le coût** (0.6.0), les vérifie, les ralentit, recale les repères, écrit le README de `kit/voix/`, note l'état. |
 | **Agents** | Aucun n'intervient. Les producteurs (`motion-producer`, `shorts-producer`) *reçoivent* les bandes plus tard. **Aucun sous-agent n'appelle ElevenLabs** (`DIRECTION_AUDIO.md` § 4). |
 
 ## Prérequis
@@ -63,10 +63,11 @@ Dans les commandes, `${CLAUDE_PLUGIN_ROOT}` est le dossier du plugin installé. 
 - **Fichiers écrits** : le texte à transmettre au propriétaire, par séquence, avec la liste des mots à réécouter.
 - **Porte** : le script est `VALIDÉ` (étape 3). Il ne change plus : toute modification de texte après les prises oblige à refaire la prise.
 
-### 3. Le propriétaire génère les prises
-- **Qui** : propriétaire, dans ElevenLabs. Claude ne génère pas la voix dans ce parcours.
-- **Fichiers écrits** : les prises, rangées dans les entrées de l'épisode (`episodes/<id>/inputs/voix/`, chemin donné par `etapes.md` § 13). Ces fichiers sont des **entrées protégées** : les producteurs et le mainteneur ne peuvent pas les modifier.
-- **Porte** : aucune ; Claude attend le dépôt des prises.
+### 3. Les prises sont générées par Claude (API) ou fournies par le propriétaire
+- **Qui** : Claude principal, par l'API ElevenLabs, après l'accord du propriétaire et le coût annoncé (0.6.0, validé sur AA, 02/11/2026, Q35 de son E011) ; ou le propriétaire, dans ElevenLabs, qui dépose les prises. Aucun sous-agent n'appelle ElevenLabs.
+- **Commande (Claude)** : `outils/voix/generer_voix.py` (mode d'emploi : `outils/voix/README.md`). D'abord **à blanc** : découpage du script en prises, caractères, mots, **coût annoncé** en crédits ; le coût est donné au propriétaire. Après son accord seulement : la même commande avec `--executer --confirme-credits N` (N = le coût annoncé). Aucun fichier écrasé, le premier échec arrête tout, un manifeste (SHA-1, crédits annoncés, réglages) est écrit. La clé `ELEVENLABS_API_KEY` reste dans l'environnement : jamais lue ni affichée par Claude. `info_elevenlabs.py` lit, si la clé le permet, le facteur de coût des modèles et le solde.
+- **Fichiers écrits** : les prises, dans le dossier donné par `--sortie` (exemple AA : `episodes/<id>/kit/voix/prises/`) ; si le propriétaire les fournit, dans les entrées de l'épisode (`episodes/<id>/inputs/voix/`, chemin donné par `etapes.md` § 13), **entrées protégées** que les producteurs et le mainteneur ne peuvent pas modifier.
+- **Porte** : l'accord du propriétaire sur le coût annoncé ; pour des prises fournies, Claude attend leur dépôt.
 
 ### 4. Contrôle de la prise contre le texte
 - **Qui** : Studio Director, dès réception de chaque prise.
@@ -150,7 +151,7 @@ Dans les commandes, `${CLAUDE_PLUGIN_ROOT}` est le dossier du plugin installé. 
 ## Diagramme
 ```mermaid
 flowchart TD
-    A["Script VALIDÉ, sans balise"] --> B["Propriétaire génère les prises (ElevenLabs)"]
+    A["Script VALIDÉ, sans balise"] --> B["Claude génère les prises par l'API après accord sur le coût annoncé (ou le propriétaire les fournit)"]
     B --> C["transcrire.py --texte : prise contre texte"]
     C --> D{"Écart réel après --isoler ?"}
     D -- "oui" --> E["Signalé au propriétaire : il décide"]

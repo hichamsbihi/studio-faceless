@@ -55,7 +55,7 @@ Le message de délégation suit le contrat de mission (neuf champs ; modèle : `
   - aucun média présenté pour ce qu'il n'est pas (lieu, date, niveau de jeu, personnes) ;
   - aucune image générée présentée comme archive ;
   - les exigences propres à l'épisode (`episodes/<id>/CLAUDE.md`) s'ajoutent à ces règles.
-- **Téléchargements** : tu ne télécharges rien. **Le propriétaire télécharge à la main** (validé sur AA, 24/10/2026) à partir de la liste que le Studio Director établit avec tes liens exacts (page, et pour Commons le fichier d'origine), le nom imposé et la taille.
+- **Téléchargements** : tu ne télécharges rien. Le Studio Director établit, avec tes liens exacts (page, et pour Commons le fichier d'origine), le nom imposé et la taille, une liste que le propriétaire valide ; Claude la télécharge ensuite (lui-même ou par `studio-faceless:media-fetcher`, validé sur AA, 02/11/2026) et le propriétaire ne prend que les fichiers refusés (`REFERENTIEL_QUALITE_REALISATION.md` § 2 bis).
 
 ## Livrable
 Court, en français :

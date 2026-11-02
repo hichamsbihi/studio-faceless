@@ -20,7 +20,11 @@ Par rôle, déduit du type d'agent (`agent_type` de l'entrée du hook, voir ROLE
 - mainteneur : n'écrit qu'avec Write et Edit (aucune écriture en Bash), jamais dans .claude/, un projet de
   production, un dossier existant de marque/, des entrées d'épisode ou un MP4 ;
 - stratege (strategist) : écrit seulement dans docs/ et direction/BANQUE_SUJETS.md ; en Bash, seules python (outils
-  du plugin installé), ls, wc, grep, head, tail, mkdir et cd, sans script en ligne ni écriture hors de docs/.
+  du plugin installé, sauf youtube_retention.py, réservé à Claude principal), ls, wc, grep, head, tail, mkdir et cd,
+  sans script en ligne ni écriture hors de docs/.
+- telechargeur (media-fetcher, 0.6.0) : écrit seulement sous episodes/<id>/kit/media/source-vN/ ; en Bash, seules python
+  (outils/medias/telecharger_medias.py du plugin installé, dont les chemins sont sous ce dossier), ls, wc, grep, head, tail,
+  mkdir et cd, sans script en ligne : ni curl ni wget, tout passe par l'outil (pause, agent identifié, aucun écrasement).
 """
 import json
 import os
@@ -218,6 +222,8 @@ def decide_bash(command, role, root):
             if h in ('python', 'python3', 'py'):
                 if 'PLUGIN' not in sans_plugin(seg):
                     return 'deny', "stratège : python seulement pour les outils du plugin installé"
+                if re.search(r'youtube_retention', seg, I):
+                    return 'deny', "stratège : youtube_retention.py (accès OAuth à la chaîne) est réservé à Claude principal"
                 # Un outil écrit par son argument de sortie, que write_targets ne voit pas : tout chemin hors du plugin reste dans docs/.
                 for a in tokens(sans_plugin(seg))[1:]:
                     if a.startswith('-') or a.startswith('@') or a == 'PLUGIN' or a.startswith('PLUGIN/') or a.startswith('PLUGIN\\'):
@@ -227,6 +233,42 @@ def decide_bash(command, role, root):
             for t in write_targets(seg):
                 if not ecriture_stratege(project_rel(t, root)):
                     return 'deny', "stratège : écriture seulement dans docs/ de la chaîne (refusé : " + t[:120] + ")"
+
+    if role == 'telechargeur':
+        if INLINE_CODE.search(command):
+            return 'deny', "téléchargeur : aucun script en ligne ; seulement telecharger_medias.py"
+        for seg in segments(command):
+            toks = tokens(seg)
+            h = head(toks)
+            if h not in ('python', 'python3', 'py', 'ls', 'wc', 'grep', 'head', 'tail', 'mkdir', 'cd'):
+                return 'deny', "téléchargeur : seules python (telecharger_medias.py), ls, wc, grep, head, tail, mkdir et cd sont permises (refusé : " + seg[:120] + ")"
+            if h in ('python', 'python3', 'py'):
+                apres = tokens(seg)[1:]
+                script = next((t for t in apres if not t.startswith('-')), '')
+                if sans_plugin(script) != 'PLUGIN' or not script.replace('\\', '/').endswith('/outils/medias/telecharger_medias.py'):
+                    return 'deny', "téléchargeur : python seulement pour outils/medias/telecharger_medias.py du plugin installé"
+                option = None                                                   # option dont la valeur suit
+                for a in apres[apres.index(script) + 1:]:
+                    if option is None and a.startswith('-'):
+                        nom, egal, valeur = a.partition('=')
+                        if nom not in OPTIONS_TELECHARGEUR or (egal and OPTIONS_TELECHARGEUR[nom] is None):
+                            return 'deny', "téléchargeur : option inconnue ou abrégée de telecharger_medias.py (refusé : " + a[:120] + ")"
+                        if OPTIONS_TELECHARGEUR[nom] is None:
+                            continue
+                        if not egal:
+                            option = nom
+                            continue
+                        a = valeur
+                    else:
+                        nom, option = option, None
+                    if nom is not None and not OPTIONS_TELECHARGEUR[nom]:
+                        continue                                                # robot, pause, essais : pas un chemin
+                    rel = project_rel(a, root)                                  # tout autre argument est un chemin, même avec une espace
+                    if not (ecriture_telechargeur(rel) if nom else lecture_telechargeur(rel)):   # dépôt et manifeste sous source-vN ; la liste sous kit/
+                        return 'deny', "téléchargeur : liste sous episodes/<id>/kit/, dépôt et manifeste sous episodes/<id>/kit/media/source-vN/ (refusé : " + a[:120] + ")"
+            for t in write_targets(seg):
+                if not ecriture_telechargeur(project_rel(t, root)):
+                    return 'deny', "téléchargeur : écriture seulement sous episodes/<id>/kit/media/source-vN/ (refusé : " + t[:120] + ")"
 
     for rx, why in ASK_TEXT:
         if rx.search(command):
@@ -241,10 +283,34 @@ def ecriture_stratege(rel):
     return rel is not None and (rel.lower().startswith('docs/') or rel.lower() == 'direction/banque_sujets.md')
 
 
+# Options de telecharger_medias.py : True, la valeur est un chemin où l'outil écrit ; False, une valeur qui n'est pas un chemin ;
+# None, sans valeur. L'outil refuse les abréviations (allow_abbrev=False) : seuls les noms entiers sont connus ici.
+OPTIONS_TELECHARGEUR = {'--racine': True, '--manifeste': True, '--agent-utilisateur': False, '--pause': False,
+                        '--essais': False, '--executer': None}
+
+
+DEPOT_TELECHARGEMENT = re.compile(r'^episodes/[^/]+/kit/media/source-v\d+(/|$)', re.IGNORECASE)
+
+
+LISTE_TELECHARGEMENT = re.compile(r'^episodes/[^/]+/kit/', re.IGNORECASE)
+
+
+def ecriture_telechargeur(rel):
+    """Le téléchargeur dépose dans kit/media/source-vN/ de l'épisode ; rien d'autre."""
+    return rel is not None and bool(DEPOT_TELECHARGEMENT.match(rel))
+
+
+def lecture_telechargeur(rel):
+    """Il lit sa liste dans le kit de l'épisode."""
+    return rel is not None and bool(LISTE_TELECHARGEMENT.match(rel))
+
+
 def decide_write(path, role, root):
     rel = project_rel(path, root)
     if role == 'stratege':
         return None if ecriture_stratege(rel) else ('deny', "stratège : écriture seulement dans docs/ et direction/BANQUE_SUJETS.md")
+    if role == 'telechargeur':
+        return None if ecriture_telechargeur(rel) else ('deny', "téléchargeur : écriture seulement sous episodes/<id>/kit/media/source-vN/")
     if role == 'producteur':
         why = protected(rel, root, {'core', 'marque', 'inputs', 'mp4'})
     elif role == 'mainteneur':
@@ -262,7 +328,7 @@ def decide(command, role=None):
 # Type d'agent (sans le préfixe « studio-faceless: ») → rôle du garde-fou ; Claude principal n'a pas de rôle.
 ROLES = {'motion-producer': 'producteur', 'shorts-producer': 'producteur',
          'art-director': 'directeur-artistique', 'studio-maintainer': 'mainteneur',
-         'reviewer': 'relecteur', 'strategist': 'stratege'}
+         'reviewer': 'relecteur', 'strategist': 'stratege', 'media-fetcher': 'telechargeur'}
 
 
 def role_of(data):

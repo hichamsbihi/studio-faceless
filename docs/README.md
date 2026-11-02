@@ -41,11 +41,11 @@ Chaque workflow donne son déclencheur, ses acteurs, ses prérequis, ses étapes
 | Document | Fichiers décrits |
 |---|---|
 | [`skill-episode.md`](reference/skill-episode.md) | `skills/episode/` : le skill et ses neuf références |
-| [`agents.md`](reference/agents.md) | `agents/` : les sept agents, avec leurs outils, skills et limites |
+| [`agents.md`](reference/agents.md) | `agents/` : les huit agents, avec leurs outils, skills et limites |
 | [`templates.md`](reference/templates.md) | `templates/` : contrat de mission, modèles d'épisode (dont `STATE.md` et `INDEX.md`), gabarit de séquence v3 |
 | [`son.md`](reference/son.md) | `skills/direction-sonore/`, `referentiels/DIRECTION_AUDIO.md`, `outils/montage/`, `transcrire.py`, `ralentir.py` |
 | [`publication.md`](reference/publication.md) | `skills/thumbnail-strategist/`, `youtube-seo/`, `shorts/`, `regarder/`, `outils/shorts/`, `publication.py`, `outils/gemini/` |
-| [`outils-et-garde.md`](reference/outils-et-garde.md) | `outils/controle/controle.py`, `cartes/`, `rendu/`, archivage, contrôle du dépôt, tokens, sauvegarde, `hooks/`, `REGLES_STUDIO.md` |
+| [`outils-et-garde.md`](reference/outils-et-garde.md) | `outils/controle/controle.py`, `mesurer_sons.py`, `medias/telecharger_medias.py`, `voix/`, `cartes/`, `rendu/`, archivage, contrôle du dépôt, tokens, sauvegarde, `hooks/`, `REGLES_STUDIO.md` |
 | [`referentiels.md`](reference/referentiels.md) | `referentiels/` : méthode de récit, qualité de réalisation, catalogue d'animations, direction audio, suite des règles communes (`REGLES_DETAIL.md`) |
 | [`starter-et-depot.md`](reference/starter-et-depot.md) | `starter/` (squelette de chaîne) et les fichiers de la racine du dépôt |
 | [`skills-annexes.md`](reference/skills-annexes.md) | `grilling`, `humanizer`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design` |

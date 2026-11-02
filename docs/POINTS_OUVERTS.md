@@ -21,9 +21,21 @@ Ce qui reste à décider ou à vérifier dans le plugin, relevé pendant l'écri
 | Texte de la licence Apache-2.0 absent de `vendor/` (le paquet `hyperframes` n'en fournit pas) | `vendor/claude-skills/README.md` |
 | `regarder.py` : Windows seulement sans variable d'environnement ; liens `/shorts/` refusés ; deux nouvelles tentatives automatiques après une erreur 429 | `outils/gemini/regarder.py`, `skills/regarder/SKILL.md` l. 26-27 |
 
+## Ouvert depuis la 0.6.0 (02/11/2026)
+| Point | Fichiers |
+|---|---|
+| **Jamais lancés en vrai** (essais hors réseau seulement) : `telecharger_medias.py` (Commons, Pexels, liens directs), `generer_voix.py --executer` et `info_elevenlabs.py` (appels payants ou de compte), `mesurer_sons.py --whisper`. Le premier emploi sur une chaîne les éprouve | `outils/medias/`, `outils/voix/`, `outils/controle/mesurer_sons.py`, `outils/test_*.py` |
+| **Le rôle `telechargeur` et l'agent `media-fetcher`** : le garde-fou est essayé sur des entrées simulées (`outils/test_garde_commandes.py`), pas dans une vraie session ; `agent_type` reçu dans un vrai sous-agent : même point non testé que ci-dessous | `hooks/garde_commandes.py`, `agents/media-fetcher.md` |
+| **Soundza par un sous-agent** : un plugin ignore `mcpServers`, `media-fetcher` n'a donc pas les outils du serveur ; le téléchargement d'un son reste à Claude principal (lien signé de 15 minutes). À revoir si un sous-agent peut un jour recevoir ces outils | `agents/media-fetcher.md`, `referentiels/DIRECTION_AUDIO.md` § 4 bis |
+| **Déclaration du serveur MCP `soundza`** : adresse relevée sur la page développeurs de Soundza (02/11/2026) ; la commande exacte (OAuth ou en-tête avec la clé en variable d'environnement) n'est pas figée dans le plugin, pour qu'aucune clé ne soit écrite en clair | `DEMARRAGE.md` B6 |
+| **Licence de Soundza** : relevée le 02/11/2026 sur le serveur et la page développeurs ; à relire avant un nouvel usage (elle peut changer) | `referentiels/DIRECTION_AUDIO.md` § 4 bis |
+| **Essai « Illusion of Novelty »** : `PROPOSÉ` jusqu'au bilan de J+7 de l'E011 d'AA (seuils de la chaîne) ; la grille de note est une paraphrase du document de Kallaway, jamais une copie ; version du PDF non datée dans la chaîne | `skills/episode/references/recit-retention.md` § 8 |
+| **`CLAUDE_CODE_EXECPATH`** : le piège des copies de Claude Code est repris de l'audit du 02/11/2026 ; la lecture de la version à partir de cette variable n'a pas été refaite pour la 0.6.0 | `skills/episode/references/pieges.md` |
+| Shorts : les docs `docs/reference/publication.md` et `docs/workflows/shorts.md` disent encore que le propriétaire génère la prise du short ; les voix de shorts n'ont pas été reprises dans la décision Q35 (film) | `docs/workflows/shorts.md`, `docs/reference/publication.md` |
+
 ## Non testé (le CLI `claude` de la machine n'est connecté à aucun compte)
 - l'arrivée de `REGLES_STUDIO.md` dans le contexte au début d'une vraie session, et après `/clear`, `/compact` ou `/reload-plugins` (depuis la 0.2.3, le texte injecté fait moins de 9 500 caractères ; à confirmer en session que l'aperçu de 2 Ko n'apparaît plus) ;
-- `omitClaudeMd: true` sur `research`, `studio-maintainer` et `strategist` : le champ demande Claude Code 2.1.271 ou plus. L'application de bureau fait tourner son propre Claude Code (2.1.309 le 02/11/2026) : il devrait y agir (déduit de la version, pas encore observé sur un sous-agent). Une copie du terminal plus ancienne l'ignore : sur la machine de mise au point, le `claude` du terminal est un 2.1.76 depuis le 02/11/2026, la copie winget un 2.1.292 ;
+- `omitClaudeMd: true` sur `research`, `studio-maintainer`, `strategist` et `media-fetcher` : le champ demande Claude Code 2.1.271 ou plus. L'application de bureau fait tourner son propre Claude Code (2.1.309 le 02/11/2026) : il devrait y agir (déduit de la version, pas encore observé sur un sous-agent). Une copie du terminal plus ancienne l'ignore : sur la machine de mise au point, le `claude` du terminal est un 2.1.76 depuis le 02/11/2026, la copie winget un 2.1.292 ;
 - l'effet réel de `disable-model-invocation` sur la liste des skills d'une session (`claude plugin details` ne le déduit pas de son estimation) ;
 - le `agent_type` reçu par le garde-fou dans un vrai sous-agent ;
 - le préchargement de `studio-faceless:thumbnail-strategist` et `studio-faceless:shorts` par les agents ;

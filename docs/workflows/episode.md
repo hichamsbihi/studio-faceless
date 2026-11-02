@@ -22,7 +22,7 @@ Ce document décrit le parcours complet d'un épisode (14 étapes, de 0 à 13), 
 
 | Acteur | Rôle dans le parcours |
 |---|---|
-| **Propriétaire** | Choisit le sujet, valide l'angle, le script, la séquence témoin et le master. Génère les prises de voix. Télécharge à la main les médias de la liste et les données de cartes. Regarde et écoute. Publie. Vide `_A_SUPPRIMER/`. Donne les accords ponctuels (téléchargement du modèle de transcription, appel ElevenLabs, `--executer` de l'archivage, envoi Git). |
+| **Propriétaire** | Choisit le sujet, valide l'angle, le script, la séquence témoin et le master. Accepte le coût annoncé des prises de voix (Claude les génère par l'API ; le propriétaire peut aussi les fournir). Valide la liste de téléchargement des médias (Claude la télécharge ; le propriétaire ne prend que les fichiers refusés) et décide des données de cartes. Regarde et écoute. Publie. Vide `_A_SUPPRIMER/`. Donne les accords ponctuels (téléchargement du modèle de transcription, appel ElevenLabs, `--executer` de l'archivage, envoi Git). |
 | **Studio Director** (Claude principal) | Pose les portes de questions, rédige angle, script et briefs, prépare le kit, écrit les contrats, lance les rendus et les contrôles, colle, mixe, prépare la publication, archive. Il ne déclare jamais une écoute ni un visionnage. |
 | `studio-faceless:research` | Faits, études, médias candidats ; lecture seule (Read, Grep, Glob, WebFetch, WebSearch). Le Studio Director consigne ses résultats. |
 | `studio-faceless:motion-producer` | Mise en scène HyperFrames d'une séquence, jusqu'à `render.sh`, qu'il ne lance pas. |
@@ -123,7 +123,7 @@ flowchart TD
 
 ### 4. Voix
 - **Porte** : `grilles.md` § 4 (quelle voix ; mots à réécouter).
-- **Qui agit** : le propriétaire génère les prises dans ElevenLabs et les dépose dans `inputs/voix/`. Le Studio Director les vérifie contre le texte validé, les ralentit et recale les repères mot à mot sur les vrais départs de la voix. Aucun sous-agent n'appelle ElevenLabs ; une génération par Claude passe par l'API et demande l'accord du propriétaire, coût annoncé avant.
+- **Qui agit** : Claude génère les prises par l'API ElevenLabs après l'accord du propriétaire sur le coût annoncé (`outils/voix/generer_voix.py`, 0.6.0, validé sur AA le 02/11/2026 ; le propriétaire peut aussi les fournir, dans `inputs/voix/`). Le Studio Director les vérifie contre le texte validé, les ralentit et recale les repères mot à mot sur les vrais départs de la voix. Aucun sous-agent n'appelle ElevenLabs : chaque appel payant est annoncé avec son coût et confirmé par le propriétaire. Détail : [`voix-off.md`](voix-off.md).
 - **Commandes** :
   ```bash
   python -I -B "${CLAUDE_PLUGIN_ROOT}/outils/controle/transcrire.py" inputs/voix/<prise>.mp3 --modele <dossier>/ggml-base.en.bin --sortie <dossier-sortie> --texte <texte>.txt
@@ -138,7 +138,7 @@ flowchart TD
 
 ### 5. Socle
 - **Porte** : `grilles.md` § 5 (direction artistique, médias à télécharger, sons, raccords, effets rares et quotas).
-- **Qui agit** : le Studio Director construit le kit **une seule fois**, avant le premier producteur. `research` cherche les médias (deux candidats au plus par moment de la voix). Le propriétaire télécharge à la main. `art-director` n'intervient que sur demande ([`critique-da.md`](critique-da.md)).
+- **Qui agit** : le Studio Director construit le kit **une seule fois**, avant le premier producteur. `research` cherche les médias (deux candidats au plus par moment de la voix). Claude télécharge la liste validée par le propriétaire (`outils/medias/telecharger_medias.py`, lui-même ou par `media-fetcher`, 0.6.0) ; le propriétaire ne prend que les fichiers refusés. `art-director` n'intervient que sur demande ([`critique-da.md`](critique-da.md)).
 - **Fichiers créés** dans `episodes/<id>/kit/` :
 
   | Pièce | Fichier ou dossier |
@@ -146,7 +146,7 @@ flowchart TD
   | Gabarit de séquence v3 | `kit/gabarit/` |
   | Voix | `kit/voix/` (étape 4) |
   | Direction artistique | une page courte (motif matériel, monde et transition par partie, trois moments à réussir par séquence, quotas) ; planche de test validée par le propriétaire. Le README du gabarit la nomme `DIRECTION_ARTISTIQUE` : emplacement exact à vérifier |
-  | Liste de téléchargement | `kit/DEMANDE_TELECHARGEMENTS_vN.md` (lien de la page, nom imposé, taille, rôle) ; dépôt `kit/media/source-vN/manuel/` |
+  | Liste de téléchargement | `kit/DEMANDE_TELECHARGEMENTS_vN.md` (lien de la page, nom imposé, taille, rôle) et sa forme JSON pour l'outil ; dépôt `kit/media/source-vN/` (manifeste `MANIFESTE_TELECHARGEMENT_<date>.json`, `soundza/` pour les sons de Soundza) ; fichiers refusés dans `kit/media/source-vN/manuel/` |
   | Médias vérifiés et convertis | `kit/media/photos-vN/`, `kit/media/logos-vN/` (1920 px au plus, sans agrandissement) ; `kit/PROVENANCE.md` (source, auteur, licence, SHA-1, date et lieu) |
   | Cartes | `kit/donnees/<nom>/<nom>.svg` et `villes-px.json` |
   | Dessins de référence | `kit/references-vN/` avec un README |
@@ -159,7 +159,7 @@ flowchart TD
   ```bash
   # Gabarit (après avoir vérifié que episodes/<id>/kit/gabarit n'existe pas)
   cp -r "${CLAUDE_PLUGIN_ROOT}/templates/sequence-gabarit-v3" episodes/<id>/kit/gabarit
-  # Cartes au trait (le shapefile Natural Earth est téléchargé par le propriétaire)
+  # Cartes au trait (le shapefile Natural Earth est téléchargé avec l'accord du propriétaire)
   python -I -B "${CLAUDE_PLUGIN_ROOT}/outils/cartes/cartes.py" SPEC.json --shp episodes/<id>/kit/donnees/ne_50m_admin_0_countries/ne_50m_admin_0_countries.shp --out episodes/<id>/kit/donnees
   ```
   Extraits vidéo : les réencoder avec `-g 15` dès le kit, pour qu'ils ne se figent pas au rendu.
@@ -298,7 +298,7 @@ D'après `pieges.md` (les identifiants E001 à E009 sont ceux d'AA).
 | Accroche figée, puis collage de vidéos | Animations qui vivent, transition pensée à chaque coupe, médias quand la voix en parle (`REFERENTIEL_QUALITE_REALISATION.md` § 2 quater) |
 | Petites images agrandies à la conversion | Convertir sans agrandir (1920 px au plus) |
 | Photo répétée d'une séquence à l'autre | Tenir la liste des photos prises ; `controle.py doublons` avant le collage |
-| Wikimedia répond 429 | Le propriétaire télécharge à la main |
+| Wikimedia répond 429 | `telecharger_medias.py` double l'attente et s'arrête à trois essais ; le fichier refusé va à `manuel/`, au propriétaire |
 | Image sous filigrane ou aperçu d'agence | Refusée, même gratuite |
 | Carte du monde « corrigée » par un producteur | Aucun producteur ne retouche une projection ; Equal Earth pour le monde |
 | Extrait décrit sans être regardé ; son d'un extrait prévu sans transcription | Planche de chaque extrait avant de le décrire ; transcrire le son, une ambiance de `marque/son/` remplace un commentaire |
