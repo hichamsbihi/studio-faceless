@@ -2,6 +2,11 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 0.3.1 (02/11/2026)
+Leçons de l'E010 d'AA versées aux pièges du skill `episode` (VALIDÉ, Hicham, 02/11/2026, « oui »). Celles qui étaient déjà dans le plugin depuis la 0.2.0 (aucune image fixe tirée d'une vidéo, détourage avec `remove-background`, `snapshot --describe false`) ne sont pas répétées.
+- `skills/episode/references/pieges.md` : rangées d'unités identiques (« tableau périodique »), photo forte devenue motif, passages tout en dessin, ouverture de séquence presque vide, ralentis des résumés de match, règlement lu en entier avant un renversement, nom d'un prix secondaire, identifiant en double, durée sans voix ajoutée, porte du collage qui oublie la fin en douceur, appel à s'abonner hors du collage, `publication.py verifier` sur le journal du film voix, chemins absolus en tâche détachée, enveloppe des musiques, `niveau_lu` appliqué avant la baisse sous la voix.
+- Aucune règle par défaut ne change : le niveau de musique plus haut (environ 7 LU sous la voix) et les miniatures retouchées par IA restent des écarts d'AA (`direction/ECARTS.md` de la chaîne).
+
 ## 0.3.0 (30/10/2026)
 Règles, domaine et outils versés de Maps & Means (StudioV2) au passage de cette chaîne au plugin (relevés A et B du 30/10/2026, dix décisions VALIDÉES par Hicham le 30/10/2026). Les règles venues de MM sont `PROPOSÉ` dans le plugin jusqu'à leur premier emploi sur une autre chaîne. Suivi détaillé : `docs/CHANTIER_0.3.0_regles.md` et `docs/CHANTIER_0.3.0_outils.md`.
 - **Domaine `geo-economie`** (`domaines/geo-economie/DOMAINE.md`) : pas de conseil d'investissement (avertissement mot pour mot), neutralité géopolitique, sources de données et de médias, grammaire des cartes ; références et modèles MapLibre dans `domaines/geo-economie/cartes/` (modèles de l'E004 de MM, à adapter : ils supposent l'étalonnage de MM).
