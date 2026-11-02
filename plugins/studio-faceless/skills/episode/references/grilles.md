@@ -21,6 +21,7 @@ Les réponses par défaut ci-dessous sont des points de départ, à adapter au s
 
 ## 1. Recherche
 - Quelles parties méritent une mission chacune ? Défaut : le cas central, les précédents ou le mécanisme, puis les médias.
+- Éclaireur Perplexity : combien d'appels ? Défaut : un `perplexity_research` par partie, lancés ensemble, aucun `perplexity_ask` (`etapes.md` § 1) ; sans serveur `perplexity` dans la session, `research` seul.
 - Quels points de vigilance (procédure en cours, personnes à protéger, chiffres de presse non officiels) ? Défaut : écrits dans le `CLAUDE.md` de l'épisode.
 
 ## 2. Angle et découpage

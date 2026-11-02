@@ -43,7 +43,7 @@ Ce skill donne l'ordre, les portes et les listes de contrôle. Il ne recopie pas
 | # | Étape | Porte de questions (`references/grilles.md`) | Livrable | Condition de passage |
 |---|---|---|---|---|
 | 0 | Sujet | candidats, grille, promesse | `episodes/<id>/` créé, sujet au registre | le propriétaire choisit parmi les trois premiers |
-| 1 | Recherche | parties à chercher, médias candidats | `research/R-*.md` (`studio-faceless:research`) | faits sourcés ; médias candidats sans téléchargement |
+| 1 | Recherche | parties à chercher, éclaireur, médias candidats | `research/perplexity/R-*.md` (éclaireur Perplexity), puis `research/R-*.md` (`studio-faceless:research`) | faits relus à la source ; médias candidats sans téléchargement |
 | 2 | Angle et découpage | question, couches, renversement, séquences | `ANGLE_DECOUPAGE_vN.md` | `VALIDÉ` par le propriétaire |
 | 3 | Script | fiche d'ouverture, densité, relances | `SEQUENCES_*_NARRATION.md`, script ElevenLabs sans balise | `VALIDÉ` ; contrôles avant la voix (`recit-retention.md`) |
 | 4 | Voix | voix, prononciations | prises vérifiées, ralenties, repères recalés (`kit/voix/`) | voix figée : plus aucune régénération sans le propriétaire |

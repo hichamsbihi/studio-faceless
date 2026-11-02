@@ -75,7 +75,7 @@ flowchart TD
 | Étape | Qui agit / outil | Fichiers créés (dans `episodes/<id>/` sauf mention) | Statut posé | Détail |
 |---|---|---|---|---|
 | 0 Sujet | Studio Director + propriétaire | `CLAUDE.md`, `BRIEF.md` ; ligne au registre de `direction/LIGNE_EDITORIALE.md` | sujet « candidat » puis « validé pour recherche » | [`../reference/skill-episode.md`](../reference/skill-episode.md) |
-| 1 Recherche | `research` (contrat de mission) | `research/R-*.md` | faits « vérifié / plausible / non vérifié » | [`recherche.md`](recherche.md) |
+| 1 Recherche | éclaireur Perplexity, puis `research` (contrat de mission) | `research/perplexity/R-*.md`, `research/R-*.md` | faits « vérifié / plausible / non vérifié » | [`recherche.md`](recherche.md) |
 | 2 Angle | Studio Director | `ANGLE_DECOUPAGE_vN.md` | `VALIDÉ` (propriétaire) | cette page |
 | 3 Script | Studio Director | `SEQUENCES_*_NARRATION.md`, script sans balise | `VALIDÉ` (propriétaire) | cette page |
 | 4 Voix | propriétaire (prises), `transcrire.py`, `ralentir.py` | `inputs/voix/`, `kit/voix/` | voix figée | [`voix-off.md`](voix-off.md) |
@@ -100,9 +100,9 @@ flowchart TD
 
 ### 1. Recherche
 - **Porte** : `grilles.md` § 1 (parties qui méritent une mission ; points de vigilance).
-- **Qui agit** : `studio-faceless:research`, une mission par grande partie (le cas central, les précédents ou le mécanisme, les médias), avec un contrat de mission dont l'écriture est « aucune ». Le Studio Director consigne les résultats.
+- **Qui agit** : d'abord l'éclaireur Perplexity (0.5.0, si la session a le serveur `perplexity`) : un agent général par partie, un `perplexity_research`, rapport `research/perplexity/R-*.md`, des pistes et aucun fait vérifié. Puis `studio-faceless:research`, qui ouvre chaque source et fait seul les médias, une mission par grande partie (le cas central, les précédents ou le mécanisme, les médias), avec un contrat de mission dont l'écriture est « aucune ». Le Studio Director consigne les résultats.
 - **Fichiers lus par l'agent** : ceux du contrat, `direction/LIGNE_EDITORIALE.md`, `direction/ECARTS.md`, `REFERENTIEL_QUALITE_REALISATION.md` § 2 bis.
-- **Fichiers créés** : `research/R-*.md`. Les points de vigilance (procédure en cours, personnes à protéger, chiffres de presse) vont au `CLAUDE.md` de l'épisode.
+- **Fichiers créés** : `research/perplexity/R-*.md` (écrits par l'éclaireur), `research/R-*.md`. Les points de vigilance (procédure en cours, personnes à protéger, chiffres de presse) vont au `CLAUDE.md` de l'épisode.
 - **Règles** : médias candidats gratuits, sans filigrane, source notée, extraits de 6 s au plus ; **aucun téléchargement** à cette étape.
 - **Détail** : [`recherche.md`](recherche.md).
 

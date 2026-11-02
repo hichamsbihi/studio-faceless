@@ -109,8 +109,9 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 **Liens** : cité par `REGLES_STUDIO.md`, `skills/episode/SKILL.md` (étape 1), `skills/episode/references/socle.md` § 4 ; contrat : [`templates/CONTRAT_MISSION.template.md`](templates.md#templatescontrat_missiontemplatemd).
 
 **À savoir**
+- Rapport d'éclaireur (0.5.0) : quand le contrat lui donne celui de Perplexity, l'agent le traite comme une liste de pistes ; il ouvre chaque source et note les pistes écartées (`research.md`, « Rapport d'éclaireur »).
 - Le rapport n'arrive pas dans un fichier : il est écrit par le Studio Director dans `episodes/<id>/research/` (`R-*.md`, d'après `skills/episode/SKILL.md`).
-- La liste d'ordre de préférence des sources (`research.md:33-42`) indique où chercher d'abord ; la règle par défaut qui suit (`research.md:43`) dit que la licence ne décide plus du choix. Les deux se lisent ensemble : on cherche d'abord dans les sources libres, mais on peut retenir une image non libre en citation encadrée si elle est la meilleure pour la scène.
+- La liste d'ordre de préférence des sources (`research.md:40-49`) indique où chercher d'abord ; la règle par défaut qui suit (`research.md:50`) dit que la licence ne décide plus du choix. Les deux se lisent ensemble : on cherche d'abord dans les sources libres, mais on peut retenir une image non libre en citation encadrée si elle est la meilleure pour la scène.
 - Pexels : ouvrir les pages une à une ; un déclenchement Cloudflare ne se contourne jamais.
 
 ### agents/reviewer.md
@@ -314,4 +315,4 @@ Constats de lecture, du plus gênant au moins gênant. Les écarts réglés par 
 | 3 | **Mot « dix »** : « jamais les dix ensemble », reste d'un ancien parcours (le DA n'a que deux skills `hyperframes-*` préchargés). | `agents/art-director.md:32` |
 | 4 | **Recherche : ordre de préférence et licence** : la liste des sources (Commons, puis Openverse/Flickr, puis Pexels/Mixkit) cohabite avec la règle « la licence ne compte pas » ; à lire ensemble (voir fiche). | `agents/research.md:33-43` |
 | 5 | **`CLAUDE.md` sous Linux ou macOS** : le hook compare `parts[-1] == 'claude.md'` après `os.path.normcase`, qui ne met pas en minuscules hors Windows ; la protection des `CLAUDE.md` par Write/Edit ne s'y déclencherait pas pour `CLAUDE.md`. À vérifier si une chaîne tourne hors Windows. | `hooks/garde_commandes.py:96`, `108` |
-| 6 | **`omitClaudeMd` et version de Claude Code** : le champ demande la 2.1.271 ou plus ; l'application de bureau fait tourner son propre Claude Code (2.1.309 le 02/11/2026), où il agit ; seule la copie du terminal peut être plus ancienne (2.1.169 sur la machine de mise au point) : `research`, `studio-maintainer` et `strategist` y garderaient le `CLAUDE.md`. | `agents/research.md`, `agents/studio-maintainer.md`, `agents/strategist.md` |
+| 6 | **`omitClaudeMd` et version de Claude Code** : le champ demande la 2.1.271 ou plus ; l'application de bureau fait tourner son propre Claude Code (2.1.309 le 02/11/2026), où il devrait agir (déduit de la version) ; seule la copie du terminal peut être plus ancienne (2.1.169 sur la machine de mise au point) : `research`, `studio-maintainer` et `strategist` y garderaient le `CLAUDE.md`. | `agents/research.md`, `agents/studio-maintainer.md`, `agents/strategist.md` |

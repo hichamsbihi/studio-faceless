@@ -347,9 +347,14 @@ grep -m1 '"version"' node_modules/hyperframes/package.json
 ### B6. Régler ElevenLabs (clé d'API)
 - **Qui** : toi. Claude ne lit, n'affiche, ne demande ni n'écrit jamais la clé.
 - **À faire** : pose la clé dans la variable d'environnement `ELEVENLABS_API_KEY` de ta session Windows (ou dans un `.env` ignoré par Git), puis relance Claude Code. Le SDK Python `elevenlabs` ne s'installe que sur ta décision, à la version figée dans le `requirements.txt` de la chaîne. Aucune règle `ask` à ajouter : le connecteur est coupé, et chaque génération te demande ton accord en conversation, coût annoncé avant. Aucun sous-agent ne génère.
-  Deux autres clés se posent de la même façon, par toi, dans l'environnement ; Claude ne les lit ni ne les affiche, et aucune n'est écrite dans un fichier :
+  Trois autres clés se posent de la même façon, par toi, dans l'environnement ; Claude ne les lit ni ne les affiche, et aucune n'est écrite dans un fichier :
   - `YOUTUBE_API_KEY` (API YouTube Data v3, créée par toi) : `outils/recherche/youtube_chaine.py` et l'agent `strategist`, pour relever les vidéos d'une chaîne ; sans elle, l'outil s'arrête ;
-  - `GEMINI_API_KEY` : le skill `regarder` (`regarder.py`) et `relire.py` ; un contenu inédit ne part chez Google qu'avec la clé du palier payant, décision à toi.
+  - `GEMINI_API_KEY` : le skill `regarder` (`regarder.py`) et `relire.py` ; un contenu inédit ne part chez Google qu'avec la clé du palier payant, décision à toi ;
+  - `PERPLEXITY_API_KEY` (compte Perplexity, API payante) : l'éclaireur de l'étape 1 du skill `episode` (0.5.0). Le serveur MCP se déclare une fois par chaîne, en portée `local` (hors Git), depuis le dossier de la chaîne :
+    ```bash
+    claude mcp add --scope local --env PERPLEXITY_TIMEOUT_MS=900000 perplexity -- cmd /c npx -y @perplexity-ai/mcp-server@1.3.0
+    ```
+    Dans Git Bash, ajoute `MSYS_NO_PATHCONV=1` devant la commande, sinon `/c` devient `C:/`. Le premier lancement télécharge le paquet npm (environ 15 Mo), avec ton accord. Après avoir posé la clé, redémarre complètement l'application : une session ouverte avant ne la voit pas. Sans clé ni serveur, l'étape 1 se fait avec `research` seul.
 - **Fichiers créés** : aucun.
 - **Tu valides** : la pose de la clé.
 - **Vérifier** : Claude peut seulement constater que la variable existe (réponse oui ou non), sans la lire.

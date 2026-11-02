@@ -32,6 +32,10 @@ Le message de délégation suit le contrat de mission (neuf champs ; modèle : `
   - Pour chaque affirmation : source, date de consultation, statut (vérifié / plausible / non vérifié) et contradictions trouvées.
   - Distingue fait, hypothèse et interprétation.
   - N'invente jamais de citation, de chiffre, de date ni de témoignage.
+- **Rapport d'éclaireur** (Perplexity, s'il est au contrat ; validé sur AA, 02/11/2026) : une liste de pistes, pas de faits.
+  - Ouvre chaque source citée avant de retenir un fait : un « vérifié » de l'éclaireur ne compte pas tant que tu n'as pas lu la page.
+  - Note ce qui te reste fermé (paywall, 403) et les affirmations de l'éclaireur dont tu n'as pas trouvé la source.
+  - Les médias, tu les établis toi-même (page du fichier, licence, empreinte).
 - **Études** : référence complète, ce qu'elles montrent et ce qu'elles ne montrent pas (population, méthode). Une association n'est pas une causalité.
 - **Médias** : par ordre de préférence :
   1. Wikimedia Commons : dernière révision de la page, revue FlickreviewR, licence, SHA-1 via l'API ;
@@ -58,5 +62,5 @@ Court, en français :
 1. **Faits** : tableau affirmation · source · statut.
 2. **Études** : référence · apport · limites.
 3. **Médias candidats** : tableau lien · auteur · licence · contenu · fonction · risques.
-4. **Limites, risques et questions ouvertes.**
+4. **Limites, risques et questions ouvertes**, dont les pistes de l'éclaireur écartées (fausses ou introuvables).
 5. **Fichiers locaux lus** : liste exacte.

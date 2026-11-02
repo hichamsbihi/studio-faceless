@@ -14,7 +14,7 @@ Ce document décrit une mission de l'agent `research` : le contrat que lui écri
 
 ## Déclencheur et résultat attendu
 - **Déclencheur** :
-  - étape 1 du skill `episode` : un sujet est choisi (étape 0) et le propriétaire a répondu à la porte « Recherche » ; une mission par grande partie (le cas central, les précédents ou le mécanisme, puis les médias) ;
+  - étape 1 du skill `episode` : un sujet est choisi (étape 0) et le propriétaire a répondu à la porte « Recherche » ; une mission par grande partie (le cas central, les précédents ou le mécanisme, puis les médias), précédée de l'éclaireur Perplexity si la session a son serveur (0.5.0) ;
   - étape 5 (socle) : trouver, pour chaque moment de la voix, la meilleure image possible ;
   - plus tard, toute vérification de fait ou de média demandée par le Studio Director.
 - **Résultat attendu** : un **rapport en cinq rubriques** (faits, études, médias candidats, limites et questions ouvertes, fichiers lus), **sans aucun téléchargement**, que le Studio Director enregistre dans `episodes/<id>/research/` (fichiers `R-*.md`). L'agent n'écrit rien lui-même.
@@ -24,6 +24,7 @@ Ce document décrit une mission de l'agent `research` : le contrat que lui écri
 |---|---|
 | **Propriétaire** | Répond à la porte de questions, valide l'angle (étape 2), télécharge à la main les médias retenus, tranche les points signalés (légendes d'auteur, risques d'image). |
 | **Studio Director** | Pose les questions, écrit le contrat, lance l'agent, consigne et relit le rapport, dresse la liste de téléchargement, vérifie les fichiers déposés. |
+| **Éclaireur Perplexity** | Agent général (`general-purpose`) limité par son contrat aux outils Perplexity : un `perplexity_research` par partie, rapport écrit par lui dans `research/perplexity/R-*.md`. Des pistes et des sources primaires, aucun fait vérifié (0.5.0, validé sur AA, 02/11/2026). |
 | **`research`** | Cherche, vérifie, note ; lecture seule (Read, Grep, Glob, WebFetch, WebSearch). Ne décide rien. |
 
 ## Prérequis
@@ -31,15 +32,19 @@ Ce document décrit une mission de l'agent `research` : le contrat que lui écri
 - `direction/LIGNE_EDITORIALE.md` et `direction/ECARTS.md` de la chaîne : les compétitions et instances dont les vraies vidéos sont admises, la liste des chaînes de référence dont aucun média ne se reprend.
 - Règles par défaut : `referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2 bis (choix des médias).
 - Un **contrat de mission** avec au moins `episode_id`, l'objectif et le périmètre de lecture.
+- Pour l'éclaireur : le serveur MCP `perplexity` et la clé `PERPLEXITY_API_KEY` ([`DEMARRAGE.md`](../../DEMARRAGE.md), B6) ; sans eux, `research` seul.
 
 ## Diagramme
 ```mermaid
 flowchart TD
-    A["Porte Recherche : parties à chercher, points de vigilance"] --> B["Contrat de mission, écriture : aucune"]
+    A["Porte Recherche : parties, éclaireur, points de vigilance"] --> X{"Serveur perplexity dans la session ?"}
+    X -- "oui" --> S["Éclaireur : un perplexity_research par partie, research/perplexity/R-*.md"]
+    S --> B["Contrat de mission avec le rapport de l'éclaireur, écriture : aucune"]
+    X -- "non" --> B
     B --> C{"episode_id, objectif, périmètre de lecture ?"}
     C -- "manque" --> D["L'agent renvoie la liste des champs"]
     D --> B
-    C -- "complet" --> E["Faits : sources primaires, statut, date de consultation"]
+    C -- "complet" --> E["Faits : chaque source ouverte, statut, date de consultation"]
     E --> F["Études : référence, apport, limites"]
     F --> G["Médias candidats : source, licence, risques, aucun téléchargement"]
     G --> H["Rapport en cinq rubriques"]
@@ -53,13 +58,19 @@ flowchart TD
 
 **1. Porte de questions « Recherche »**
 - *Qui* : Studio Director avec le propriétaire (skill `studio-faceless:grilling`). *Lit* : `skills/episode/references/grilles.md` § 1.
-- *Questions* : quelles parties méritent une mission chacune (défaut : cas central, précédents ou mécanisme, médias) ? quels points de vigilance (procédure en cours, personnes à protéger, chiffres de presse non officiels) ?
+- *Questions* : quelles parties méritent une mission chacune (défaut : cas central, précédents ou mécanisme, médias) ? combien d'appels pour l'éclaireur (défaut : un `perplexity_research` par partie, aucun `perplexity_ask`) ? quels points de vigilance (procédure en cours, personnes à protéger, chiffres de presse non officiels) ?
 - *Écrit* : les réponses au `BRIEF.md`, datées ; les points de vigilance dans le `CLAUDE.md` de l'épisode.
 - *Porte* : plus aucune question ouverte.
 
+**1 bis. Éclaireur Perplexity** (0.5.0, validé sur AA, 02/11/2026, essai de son E011)
+- *Qui* : Studio Director, puis un agent général par partie. *Lit* : `skills/episode/references/etapes.md` § 1.
+- Même demande que pour `research` ; le contrat limite l'agent aux outils Perplexity et à l'écriture de son rapport (`research/perplexity/R-*.md`). Les parties partent ensemble ; jamais d'appels `perplexity_ask` en parallèle (erreurs 429).
+- Le rapport donne des pistes et des sources primaires : l'outil n'ouvre ni les pages ni les licences, ses « vérifié » reposent sur des citations non relues.
+- Sans serveur `perplexity` dans la session : étape sautée, la porte le dit.
+
 **2. Écrire le contrat de mission**
 - *Qui* : Studio Director. *Modèle* : `templates/CONTRAT_MISSION.template.md` ([fiche](../reference/templates.md#templatescontrat_missiontemplatemd)).
-- Contenu pour `research` : `episode_id` ; objectif (une partie, une question) ; `brief` ; **lecture** : les fichiers listés (brief, notes, `CLAUDE.md` de l'épisode) ; **écriture : toujours « aucun »** ; sources communes (`direction/LIGNE_EDITORIALE.md`, `direction/ECARTS.md`, `REFERENTIEL_QUALITE_REALISATION.md` § 2 bis) ; livrables (les cinq rubriques) ; décisions validées ; restrictions (aucun téléchargement, aucun autre épisode, aucune diffusion de l'adresse e-mail du propriétaire, exigences propres à l'épisode).
+- Contenu pour `research` : `episode_id` ; objectif (une partie, une question) ; `brief` ; **lecture** : les fichiers listés (brief, notes, `CLAUDE.md` de l'épisode, rapport de l'éclaireur de la partie) ; **écriture : toujours « aucun »** ; sources communes (`direction/LIGNE_EDITORIALE.md`, `direction/ECARTS.md`, `REFERENTIEL_QUALITE_REALISATION.md` § 2 bis) ; livrables (les cinq rubriques) ; décisions validées ; restrictions (aucun téléchargement, aucun autre épisode, aucune diffusion de l'adresse e-mail du propriétaire, exigences propres à l'épisode).
 - Une mission par grande partie. Une correction ou un complément = **un nouvel agent** (`REGLES_STUDIO.md`).
 
 **3. Lancer l'agent**
@@ -117,6 +128,8 @@ Les licences sont **notées telles quelles** (CC BY, CC BY-SA, NC, domaine publi
 ## Erreurs fréquentes et reprises
 | Problème | Cause | Reprise |
 |---|---|---|
+| Un fait de l'éclaireur est faux ou introuvable | Perplexity cite sans rouvrir la page | `research` ouvre chaque source ; la piste écartée est notée au rapport |
+| L'éclaireur reçoit des erreurs 429 | Appels `perplexity_ask` lancés en parallèle | Un `perplexity_research` par partie ; les `ask`, s'il en faut, un par un |
 | L'agent renvoie une liste de champs | Contrat sans `episode_id`, objectif ou périmètre de lecture | Compléter le contrat, relancer |
 | Impossible de consigner le rapport | L'agent n'a aucun outil d'écriture | Le Studio Director écrit `research/R-*.md` |
 | Vérification Cloudflare sur Pexels | Requêtes trop rapides | Ralentir, ouvrir les pages une à une ; ne jamais contourner |

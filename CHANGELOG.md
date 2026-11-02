@@ -2,6 +2,13 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 0.5.0 (02/11/2026)
+Méthode de recherche de l'étape 1, rendue générale à la demande du propriétaire (« tu consignes ces changements de recherches dans le plugin pour qu'il soit général », 02/11/2026), après l'essai de l'E011 d'AA : deux méthodes lancées sur la même demande puis comparées à la source (habituelle : 1 fait faux sur 40 vérifiés ; Perplexity seule : deux fois plus rapide, 2 faux et 2 introuvables sur 42, aucune licence établie). Choix du propriétaire : « Éclaireur puis habituelle ».
+- **Éclaireur Perplexity** (skill `episode` : `SKILL.md`, `etapes.md` § 1, `grilles.md` § 1) : si la session a le serveur MCP `perplexity`, un agent général par partie lance un `perplexity_research` (réglage `high`) et écrit `research/perplexity/R-*.md` ; des pistes et des sources primaires, aucun fait vérifié. Parties lancées ensemble, jamais d'appels `perplexity_ask` en parallèle (429). Nombre d'appels, payants, décidé à la porte ; sans serveur, `research` seul.
+- **Agent `research`** : reçoit le rapport de l'éclaireur au contrat, ouvre chaque source avant de retenir un fait, note les pistes écartées et fait seul les médias (page du fichier, licence, empreinte).
+- **Installation** (`DEMARRAGE.md`, B6) : clé `PERPLEXITY_API_KEY` dans l'environnement, serveur `@perplexity-ai/mcp-server@1.3.0` déclaré par chaîne en portée `local` (`cmd /c npx`, délai de 15 min), redémarrage complet de l'application.
+- **Documentation** : workflows recherche et épisode, fiches skill episode et agents.
+
 ## 0.4.1 (02/11/2026)
 Contexte du fil principal, demandé par le propriétaire le 02/11/2026 (« on n'utilise plus clear juste compact, opus sera le model de claude directeur ») après une mesure de la session d'AA : 319 appels, contexte médian de 278 k, aucun `/clear` de la journée.
 - **Hook `contexte_alerte.py`** (`hooks/`, événement `UserPromptSubmit`) : à chaque message du propriétaire, mesure le contexte du dernier appel du fil principal (entrée + cache lu + cache écrit, comme `outils/suivi_tokens.py`). Dès 200 k, puis à chaque palier de 50 k, il rappelle d'écrire l'état et de proposer un `/compact`. Ne bloque jamais un message ; testé sur un journal de 15,6 Mo (alerte à 264 k, 0,17 s).

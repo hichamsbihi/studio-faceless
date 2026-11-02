@@ -11,7 +11,8 @@ Les règles par défaut citées ici (`REFERENTIEL`, `DIRECTION_AUDIO`, `METHODE_
 - **Sortie** : `episodes/<id>/` créé depuis `${CLAUDE_PLUGIN_ROOT}/templates/` (`CLAUDE.episode`, `BRIEF.episode`, `STATE`) ; la ligne de l'épisode ajoutée à `episodes/INDEX.md` (créé depuis `INDEX.template.md` s'il n'existe pas) ; le sujet inscrit au registre.
 
 ## 1. Recherche
-- `studio-faceless:research`, une mission par grande partie (faits, précédents, médias), avec un contrat de mission. Les rapports vont dans `research/`.
+- **Éclaireur Perplexity** (validé sur AA, 02/11/2026, essai de son E011) : si la session a le serveur MCP `perplexity` (`DEMARRAGE.md`, B6), un agent général (`general-purpose`) par partie, limité par son contrat aux outils Perplexity et à l'écriture de son rapport, lance un `perplexity_research` (réglage `high`). Les parties partent ensemble, sans appels `perplexity_ask` en parallèle (erreurs 429). Rapports : `research/perplexity/R-*.md`, des pistes et des sources primaires, aucun fait vérifié (l'outil n'ouvre ni les pages ni les licences). Les appels sont payants : leur nombre se décide à la porte. Sans serveur, on passe à `research` seul, et la porte le dit.
+- **Vérification** : `studio-faceless:research`, une mission par grande partie (faits, précédents, médias), avec un contrat de mission qui lui donne le rapport de l'éclaireur. Il ouvre chaque source avant de retenir un fait et fait seul les médias (page du fichier, licence, empreinte). Les rapports vont dans `research/`.
 - Médias candidats : la règle de `REFERENTIEL` § 2 bis s'applique (gratuits, sans filigrane, source notée, extraits de 6 s au plus ; vraies vidéos d'événements et fichiers tirés de YouTube permis, validé sur AA, 28/10/2026 ; compétitions et instances admises : `direction/ECARTS.md`). **Aucun téléchargement** à cette étape.
 - Les points de vigilance de l'épisode (procédure en cours, personnes à protéger, chiffres de presse) vont dans son `CLAUDE.md`.
 
