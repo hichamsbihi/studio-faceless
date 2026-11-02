@@ -40,7 +40,7 @@ Les sous-agents ne se délèguent rien entre eux. Fiches des agents : [`../refer
 
 ## Vue d'ensemble
 
-Une **porte de questions** précède chaque étape : le Studio Director pose les questions avec le skill `studio-faceless:grilling` (questions numérotées, réponse recommandée que « oui » accepte, tour par tour jusqu'à ce que plus rien ne soit ouvert). Les réponses vont au `BRIEF.md`, datées. Chaque étape finit par la décision au `BRIEF.md`, le `STATE.md` de l'épisode réécrit en entier (2,5 Ko au plus), la ligne de l'épisode mise à jour dans `episodes/INDEX.md`, puis un `/clear` (depuis la 0.2.3 ; un `/compact` remet dans le contexte skills et fichiers lus).
+Une **porte de questions** précède chaque étape : le Studio Director pose les questions avec le skill `studio-faceless:grilling` (questions numérotées, réponse recommandée que « oui » accepte, tour par tour jusqu'à ce que plus rien ne soit ouvert). Les réponses vont au `BRIEF.md`, datées. Chaque étape finit par la décision au `BRIEF.md`, le `STATE.md` de l'épisode réécrit en entier (2,5 Ko au plus), la ligne de l'épisode mise à jour dans `episodes/INDEX.md`, puis un `/compact` proposé au propriétaire avec sa consigne (0.4.1, validé sur AA, 02/11/2026 : plus de `/clear` ; coût connu : un `/compact` remet dans le contexte skills et fichiers lus).
 
 ```mermaid
 flowchart TD
@@ -285,7 +285,7 @@ flowchart TD
 - **Format guide** (essai) : titre « Every [x] explained », jugé sur ses chiffres avant toute série.
 - **Sujet inspiré d'un succès extérieur** : `choix-sujet.md` § 4 (`PROPOSÉ`) ; on reprend le principe, jamais la vidéo.
 - **Archivage avant la mise en ligne** : possible sur demande du propriétaire.
-- **Reprise après une coupure ou un `/clear`** : lire seulement `episodes/INDEX.md`, puis le `STATE.md` de l'épisode (réécrit à chaque fin d'étape) ; le `CLAUDE.md` de l'épisode, le `BRIEF.md` et `HISTORIQUE_ETAT.md` se lisent à la demande. `/compact` reste permis au milieu d'une longue porte (150 à 200 k de contexte), après avoir écrit l'état ; le modèle du fil principal ne change que juste après un `/clear`.
+- **Reprise après une coupure** : lire seulement `episodes/INDEX.md`, puis le `STATE.md` de l'épisode (réécrit à chaque fin d'étape) ; le `CLAUDE.md` de l'épisode, le `BRIEF.md` et `HISTORIQUE_ETAT.md` se lisent à la demande. Au-delà de 200 k de contexte, le hook `contexte_alerte.py` rappelle d'écrire l'état puis de proposer un `/compact` ; Claude principal tourne sur Opus et le modèle ne change jamais en cours de session.
 
 ## Erreurs fréquentes et reprises
 D'après `pieges.md` (les identifiants E001 à E009 sont ceux d'AA).

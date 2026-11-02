@@ -134,13 +134,13 @@ templates/
 ### templates/STATE.template.md et templates/INDEX.template.md
 **Rôle** (0.2.3, 30/10/2026) : modèles du manifeste de reprise d'un épisode (`episodes/<id>/STATE.md`) et de l'index des épisodes (`episodes/INDEX.md`). Génériques : ils ne contiennent aucun contenu d'un épisode réel ; ils ont été établis d'après les fichiers de reprise d'une chaîne qui les utilisait déjà.
 
-**Quand ils servent** : `STATE.md` est créé à l'étape 0 du skill `episode` (avec le `CLAUDE.md` et le `BRIEF.md`) puis **réécrit en entier à chaque fin d'étape** ; `INDEX.md` reçoit une ligne par épisode, mise à jour au même moment. Après un `/clear`, la reprise lit seulement `INDEX.md`, puis le `STATE.md` indiqué (`skills/episode/SKILL.md`, « État, reprise et contexte » ; `references/tokens-contexte.md`).
+**Quand ils servent** : `STATE.md` est créé à l'étape 0 du skill `episode` (avec le `CLAUDE.md` et le `BRIEF.md`) puis **réécrit en entier à chaque fin d'étape** ; `INDEX.md` reçoit une ligne par épisode, mise à jour au même moment. Après une coupure, la reprise lit seulement `INDEX.md`, puis le `STATE.md` indiqué (`skills/episode/SKILL.md`, « État, reprise et contexte » ; `references/tokens-contexte.md`).
 
 **Contenu**
 - **`STATE.template.md`** : un commentaire d'usage à retirer à la copie, puis cinq rubriques : étape courante ; décisions `VALIDÉ` (dont la voix et son `voice_id`, le film visé) ; chemins utiles (voix, médias, direction artistique, gabarits, rendus et leur statut) ; budget (total, consommé, reste, date de la dernière mesure `suivi_tokens.py`) ; prochaine action. **2,5 Ko au plus** une fois rempli : un fait par ligne, rien de ce qui est déjà dans le `BRIEF.md` ou le `CLAUDE.md` ; le détail daté va dans `HISTORIQUE_ETAT.md` (journal lu par `grep`).
 - **`INDEX.template.md`** : un commentaire d'usage à retirer, puis un tableau `Id · Sujet · Statut · Reprise` (lien vers le `STATE.md`) et une ligne d'exemple à remplacer.
 
-**Pourquoi** : un `/compact` remet dans le contexte les skills appelés et les fichiers lus (124,6 k au premier appel, contre 81 à 88 k pour une session neuve, mesure du 30/10/2026) ; écrire l'état puis faire `/clear` coûte moins cher.
+**Pourquoi** : à chaque fin de porte, l'état écrit permet de proposer un `/compact` sans perdre les décisions (validé sur AA, 02/11/2026 : plus de `/clear`). Coût connu : un `/compact` remet dans le contexte les skills appelés et les fichiers lus (124,6 k au premier appel, contre 81 à 88 k pour une session neuve, mesure du 30/10/2026).
 
 **Liens** : `skills/episode/SKILL.md`, `references/etapes.md` (en-tête et § 0), `references/tokens-contexte.md` ; `CLAUDE.episode.template.md` (ligne « État courant »).
 

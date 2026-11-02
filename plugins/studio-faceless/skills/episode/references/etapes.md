@@ -1,6 +1,6 @@
 # Les étapes en détail
 
-Chaque étape commence par sa porte de questions (`grilles.md`) et finit par la décision au `BRIEF.md` (statut et date), le `STATE.md` de l'épisode réécrit en entier (2,5 Ko au plus), la ligne de l'épisode mise à jour dans `episodes/INDEX.md`, puis un `/clear` (`tokens-contexte.md`). La reprise lit seulement `INDEX.md` et ce `STATE.md`.
+Chaque étape commence par sa porte de questions (`grilles.md`) et finit par la décision au `BRIEF.md` (statut et date), le `STATE.md` de l'épisode réécrit en entier (2,5 Ko au plus), la ligne de l'épisode mise à jour dans `episodes/INDEX.md`, puis un `/compact` proposé au propriétaire (`tokens-contexte.md`). Après une coupure, la reprise lit seulement `INDEX.md` et ce `STATE.md`.
 
 Les règles par défaut citées ici (`REFERENTIEL`, `DIRECTION_AUDIO`, `METHODE_RECIT`) sont dans `${CLAUDE_PLUGIN_ROOT}/referentiels/`. Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur ces règles.
 

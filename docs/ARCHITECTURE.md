@@ -1,7 +1,7 @@
 # Architecture du plugin
 
 ## Ordre des règles
-Au début de chaque session (et après un `/clear` ou un `/compact`), le hook `SessionStart` injecte `REGLES_STUDIO.md` en remplaçant `${CLAUDE_PLUGIN_ROOT}` par le chemin du plugin installé. L'application de bureau coupe tout `additionalContext` au-delà de 10 000 caractères (constat du 30/10/2026 : seul un aperçu de 2 Ko arrivait au modèle) : `REGLES_STUDIO.md` reste donc sous 9 000 caractères une fois le chemin substitué (`verifier_depot.py` refuse un fichier plus long) et sa suite, `referentiels/REGLES_DETAIL.md`, se lit à la demande. Les règles s'appliquent ensuite dans cet ordre, la dernière l'emportant :
+Au début de chaque session (et après un `/compact`, ainsi qu'après un `/clear`), le hook `SessionStart` injecte `REGLES_STUDIO.md` en remplaçant `${CLAUDE_PLUGIN_ROOT}` par le chemin du plugin installé. L'application de bureau coupe tout `additionalContext` au-delà de 10 000 caractères (constat du 30/10/2026 : seul un aperçu de 2 Ko arrivait au modèle) : `REGLES_STUDIO.md` reste donc sous 9 000 caractères une fois le chemin substitué (`verifier_depot.py` refuse un fichier plus long) et sa suite, `referentiels/REGLES_DETAIL.md`, se lit à la demande. Les règles s'appliquent ensuite dans cet ordre, la dernière l'emportant :
 1. `REGLES_STUDIO.md` et les référentiels du plugin (`referentiels/`) : règles par défaut ;
 2. profil du domaine de la chaîne (`domaines/<domaine>/DOMAINE.md`, quand le `CLAUDE.md` de la chaîne nomme un domaine) : règles communes aux chaînes d'un même sujet ;
 3. `direction/ECARTS.md` de la chaîne : écarts écrits, statut et date ;
@@ -11,7 +11,7 @@ Au début de chaque session (et après un `/clear` ou un `/compact`), le hook `S
 Un plugin ne charge pas de `CLAUDE.md` à sa racine. C'est pourquoi les règles communes passent par ce hook.
 
 ## Garde-fou
-`hooks/hooks.json` branche `hooks/garde_commandes.py` sur `PreToolUse` (Bash, PowerShell, Write, Edit, NotebookEdit). Le hook s'applique à toute la session, sous-agents compris.
+`hooks/hooks.json` déclare trois hooks : `regles_studio.py` sur `SessionStart` (injection des règles), `contexte_alerte.py` sur `UserPromptSubmit` (0.4.1 : à chaque message du propriétaire, mesure du contexte du fil principal et, dès 200 k, rappel d'écrire l'état puis de proposer un `/compact` ; [fiche](reference/outils-et-garde.md#hookscontexte_alertepy)) et `garde_commandes.py` sur `PreToolUse` (Bash, PowerShell, Write, Edit, NotebookEdit). Le garde-fou s'applique à toute la session, sous-agents compris.
 
 Un plugin **ignore** les champs `hooks`, `mcpServers` et `permissionMode` dans l'en-tête de ses agents. Le rôle se déduit donc du champ `agent_type` que Claude Code fournit au hook (table `ROLES` du script) :
 | Agent | Rôle |

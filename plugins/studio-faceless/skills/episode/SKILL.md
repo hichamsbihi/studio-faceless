@@ -34,9 +34,9 @@ Ce skill donne l'ordre, les portes et les listes de contrôle. Il ne recopie pas
 
 ## État, reprise et contexte
 - **À chaque fin d'étape** : réécrire en entier `episodes/<id>/STATE.md`, un manifeste de 2,5 Ko au plus (étape courante, décisions `VALIDÉ`, chemins des médias, voix et `voice_id`, budget restant, prochaine action ; modèle `${CLAUDE_PLUGIN_ROOT}/templates/STATE.template.md`), et mettre à jour `episodes/INDEX.md` (une ligne par épisode ; modèle `INDEX.template.md`). Le détail daté va dans `HISTORIQUE_ETAT.md`.
-- **À chaque fin de porte** : `/clear`, pas `/compact`. Après un `/compact`, Claude Code remet dans le contexte le texte des skills appelés et les fichiers lus récemment : 124,6 k au premier appel, contre 81 à 88 k pour une session neuve, soit environ 40 k de plus à chaque appel (mesure du 30/10/2026). Les règles communes reviennent seules après un `/clear` (hook `SessionStart`).
+- **À chaque fin de porte** (validé sur AA, 02/11/2026 : plus de `/clear`) : l'état écrit, proposer au propriétaire un `/compact` avec la consigne de `references/tokens-contexte.md`. Le hook `contexte_alerte.py` le rappelle au-delà de 200 k de contexte. Les règles communes reviennent seules après le compactage (hook `SessionStart`).
 - **Reprise** : lire seulement `episodes/INDEX.md`, puis le `STATE.md` de l'épisode. Le `CLAUDE.md` de l'épisode, le `BRIEF.md` et `HISTORIQUE_ETAT.md` se lisent à la demande, par plages ou par `grep`.
-- `/compact` reste permis au milieu d'une longue porte, après avoir écrit l'état (consigne : `references/tokens-contexte.md`). Le modèle du fil principal ne change que juste après un `/clear`, jamais en cours de session.
+- Au milieu d'une longue porte, un `/compact` reste permis après avoir écrit l'état. Claude principal tourne sur Opus (validé sur AA, 02/11/2026) ; jamais de changement de modèle en cours de session.
 - **Avant de montrer** un script, une séquence ou le film au propriétaire : un contrôle par `studio-faceless:reviewer` (lecture seule, sur les fichiers ; il ne valide rien et n'a rien vu ni écouté).
 
 ## Les étapes
@@ -80,4 +80,4 @@ Le détail de chaque étape est dans `references/etapes.md`.
 - `references/recit-retention.md` (`PROPOSÉ`) : patron du film, ouverture, relances, densité, succession des séquences.
 - `references/choix-sujet.md` (`PROPOSÉ`) : grille et promesse.
 - `references/pieges.md` : leçons de tous les épisodes, à compléter à chaque épisode.
-- `references/tokens-contexte.md` : fin de porte (`/clear`), état, lectures, délégations.
+- `references/tokens-contexte.md` : fin de porte (`/compact`), état, lectures, délégations.

@@ -2,6 +2,13 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 0.4.1 (02/11/2026)
+Contexte du fil principal, demandé par le propriétaire le 02/11/2026 (« on n'utilise plus clear juste compact, opus sera le model de claude directeur ») après une mesure de la session d'AA : 319 appels, contexte médian de 278 k, aucun `/clear` de la journée.
+- **Hook `contexte_alerte.py`** (`hooks/`, événement `UserPromptSubmit`) : à chaque message du propriétaire, mesure le contexte du dernier appel du fil principal (entrée + cache lu + cache écrit, comme `outils/suivi_tokens.py`). Dès 200 k, puis à chaque palier de 50 k, il rappelle d'écrire l'état et de proposer un `/compact`. Ne bloque jamais un message ; testé sur un journal de 15,6 Mo (alerte à 264 k, 0,17 s).
+- **Plus de `/clear`** (`REGLES_STUDIO.md`, skill `episode` : `SKILL.md`, `etapes.md`, `tokens-contexte.md`) : à chaque fin de porte, l'état écrit, Claude propose un `/compact` avec la consigne de `tokens-contexte.md`. La mesure du 30/10/2026 reste citée comme coût connu.
+- **Claude principal sur Opus** (`REGLES_STUDIO.md`, Studio Director) : jamais de changement de modèle en cours de session. Les agents en `model: inherit` le suivent ; `research`, `reviewer` et `studio-maintainer` restent en sonnet.
+- **Documentation** : `DEMARRAGE.md`, `docs/` (session et garde-fou, outils et garde, skill episode, modèles, architecture, points ouverts, agents) ; `omitClaudeMd` devrait agir dans l'application de bureau (déduit de la version), qui fait tourner son propre Claude Code (2.1.309 le 02/11/2026).
+
 ## 0.4.0 (02/11/2026)
 Nouvel agent de stratégie, demandé par le propriétaire le 02/11/2026 après le positionnement d'AA (« le plugin doit avoir un agent spécialiste [...] pour les autres chaînes [...] tout ce travail ne doit plus polluer le contexte principal »).
 - **Agent `strategist`** (`agents/strategist.md`) : positionnement et stratégie éditoriale d'une chaîne, une phase par appel (`dossier`, `brief`, `conseil`, `titres`, `sujets`, `banque`). Il rend une synthèse de 300 mots au plus ; ses lectures restent dans son contexte. Contrat : deux champs en plus, `phase` et `session` ; démarre sans le `CLAUDE.md` de la chaîne. Leçons d'AA intégrées (coût d'un conseil, pièges des titres, argent jamais dans la promesse quand la ligne l'interdit).

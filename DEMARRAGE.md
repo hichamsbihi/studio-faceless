@@ -81,12 +81,13 @@ Les commandes se tapent dans **Git Bash**, dans le dossier de la chaîne, sauf m
 Avant chaque grande étape, Claude ouvre une porte avec le skill `studio-faceless:grilling`. Il pose des questions numérotées (Q1, Q2…), chacune avec sa réponse recommandée. Répondre « oui » accepte la réponse recommandée. Il les pose par séries, à mesure que les décisions se débloquent. La porte se ferme quand plus aucune question n'est ouverte. Les faits, Claude les cherche ; les décisions sont à toi. Les réponses vont au `BRIEF.md`, datées.
 
 ### Le rythme de travail (à chaque fin de grande étape)
-Source : [`REGLES_STUDIO.md`](plugins/studio-faceless/REGLES_STUDIO.md), « Économie de tokens et de contexte » (depuis la 0.2.3).
+Source : [`REGLES_STUDIO.md`](plugins/studio-faceless/REGLES_STUDIO.md), « Économie de tokens et de contexte » (depuis la 0.2.3 ; sans `/clear` depuis la 0.4.1).
 - Demande à Claude de réécrire `episodes/<id>/STATE.md` (un manifeste de 2,5 Ko au plus : étape courante, décisions validées, chemins, voix, budget restant, prochaine action) et de mettre à jour `episodes/INDEX.md`.
-- Lance ensuite `/clear` (et non `/compact`) : après un `/compact`, Claude Code remet dans le contexte les skills appelés et les fichiers lus, et le premier appel pèse 124,6 k contre 81 à 88 k dans une session neuve. Pour reprendre, Claude lit seulement `INDEX.md`, puis `STATE.md`.
-- `/compact` reste permis au milieu d'une longue porte (contexte au-delà de 150 à 200 k), après avoir écrit l'état. Ne change le modèle de Claude que juste après un `/clear`.
+- Claude te propose alors un `/compact` avec la consigne « garder les décisions VALIDÉES, les chemins et l'état des rendus ; oublier les sorties de commandes et les lectures » (validé sur AA, 02/11/2026 : plus de `/clear`). Coût connu : après un `/compact`, Claude Code remet dans le contexte les skills appelés et les fichiers lus, et le premier appel pèse 124,6 k contre 81 à 88 k dans une session neuve (mesure du 30/10/2026). Après une coupure, Claude lit seulement `INDEX.md`, puis `STATE.md`.
+- Le hook `contexte_alerte.py` mesure le contexte à chaque message ; dès 200 k, il rappelle à Claude d'écrire l'état et de te proposer un `/compact`, puis à chaque palier de 50 k.
+- Claude principal tourne sur Opus (validé sur AA, 02/11/2026). Le modèle ne change jamais en cours de session : il recalculerait tout le contexte.
 
-> Réécris le STATE.md de l'épisode et mets à jour l'INDEX.md, puis je lance /clear. Pour reprendre, tu liras seulement INDEX.md puis STATE.md.
+> Réécris le STATE.md de l'épisode et mets à jour l'INDEX.md, puis je lance /compact avec la consigne « garder les décisions VALIDÉES, les chemins et l'état des rendus ; oublier les sorties de commandes et les lectures ». Après une coupure, tu liras seulement INDEX.md puis STATE.md.
 
 Claude peut mesurer la consommation à chaque fin d'étape :
 ```bash
@@ -163,7 +164,7 @@ Claude Code (2.1.271 ou plus : le champ `omitClaudeMd` de `research`, `studio-ma
 | `gh --version` | une version récente |
 | `nvm list` | Node 22.0.0 actif sous Git Bash |
 | `node --version` | v22 ou plus |
-| `python --version` | 3.14 (3.12 au moins) ; Python doit être dans le `PATH` de Git Bash, car les deux hooks du plugin sont lancés par `python -I` |
+| `python --version` | 3.14 (3.12 au moins) ; Python doit être dans le `PATH` de Git Bash, car les trois hooks du plugin sont lancés par `python -I` |
 | `ffmpeg -version` | 9.0 (version de référence) |
 | `ffmpeg -hide_banner -filters \| grep whisper` | une ligne : le filtre `whisper` sert à contrôler les prises de voix |
 | `claude --version` | 2.1.271 ou plus |
@@ -784,7 +785,7 @@ python -I -B "<plugin>/outils/cartes/cartes.py" SPEC.json --shp episodes/episode
   - contrat de mission complet.
 - **Fichiers créés** : `kit/donnees/` (si carte), `kit/RACCORDS.md`, `kit/CONSIGNES_COMMUNES_v1.md`, les briefs.
 - **Tu valides** : le feu vert de production.
-- **Vérifier** : toutes les cases sont cochées, et l'appel Like + Subscribe de C6 existe si une séquence le porte. Réécris le `STATE.md`, mets à jour l'`INDEX.md`, puis je lance `/clear` (voir « Le rythme de travail »).
+- **Vérifier** : toutes les cases sont cochées, et l'appel Like + Subscribe de C6 existe si une séquence le porte. Réécris le `STATE.md`, mets à jour l'`INDEX.md`, puis je lance `/compact` (voir « Le rythme de travail »).
 - **Détail** : [`episode.md`](docs/workflows/episode.md#5-socle) ; [`sequence.md`](docs/workflows/sequence.md), partie A.
 
 ### C20. Lancer la séquence témoin
@@ -1178,7 +1179,7 @@ git push
 | `publication.py verifier` : « aucun titre trouvé » | bloc sous un titre sans le bon mot-clé | garde « Titres », « Description », « Tags », « Commentaire épinglé », « Réponse … », « Playlist » dans les titres |
 | Claude annonce avoir « écouté » ou « regardé » | interdit | statut `ECOUTE_A_FAIRE` ; seules des mesures sont possibles |
 | Une proposition est présentée comme validée | une absence d'objection a été prise pour un accord | remets `PROPOSÉ` ; seul toi valides |
-| Plus de contexte, coûts qui explosent | lectures entières, agents au cache froid | état écrit (`STATE.md`) puis `/clear` ; `/compact` seulement au milieu d'une longue porte ; lectures par plages, un agent court par correction |
+| Plus de contexte, coûts qui explosent | lectures entières, agents au cache froid | état écrit (`STATE.md`) puis `/compact` avec la consigne (le hook `contexte_alerte.py` le rappelle dès 200 k) ; lectures par plages, un agent court par correction |
 
 ## Et ensuite
 

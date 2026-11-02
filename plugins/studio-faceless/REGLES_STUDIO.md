@@ -26,7 +26,7 @@ Ces règles s'appliquent à toutes les chaînes qui utilisent le plugin. Elles s
 Versions figées, navigateurs et rendus (`--workers 2` au plus), outils, garde-fou, dépôt Git, suivi des tokens : section « Moteur et outils » de `REGLES_DETAIL.md` (voir ci-dessus), à lire avant tout rendu ou toute commande d'outil.
 
 ## Sous-agents (`studio-faceless:<nom>`)
-- **Studio Director** : Claude principal reçoit les demandes du propriétaire et fait lui-même les petites tâches. Il délègue seulement quand c'est utile, coordonne, contrôle la cohérence et soumet au propriétaire. Les sous-agents ne se délèguent rien entre eux.
+- **Studio Director** : Claude principal, sur Opus (validé sur AA, 02/11/2026), reçoit les demandes du propriétaire et fait lui-même les petites tâches. Il délègue seulement quand c'est utile, coordonne, contrôle la cohérence et soumet au propriétaire. Les sous-agents ne se délèguent rien entre eux.
 - **Les sept agents** :
   - `research` : faits, études, médias candidats, en lecture seule ;
   - `reviewer` : contrôle qualité en lecture seule d'un script, d'une séquence ou du film contre une liste, **avant de les montrer au propriétaire** ; ne valide rien ;
@@ -43,7 +43,7 @@ Versions figées, navigateurs et rendus (`--workers 2` au plus), outils, garde-f
 Étapes 0 à 13, du sujet à l'archivage : skill `studio-faceless:episode` ; renvoi dans `REGLES_DETAIL.md`, section « Parcours d'un épisode ».
 
 ## Économie de tokens et de contexte
-- **Sessions** : à chaque fin de porte, réécrire `episodes/<id>/STATE.md` (2,5 Ko au plus), mettre à jour `episodes/INDEX.md`, puis `/clear` ; on reprend en lisant seulement `INDEX.md` puis `STATE.md`. Un `/compact` remet dans le contexte les skills appelés et les fichiers lus : 124,6 k au premier appel, contre 81 à 88 k en session neuve (30/10/2026). Il reste permis au milieu d'une longue porte, après avoir écrit l'état. Le modèle du fil principal ne change que juste après un `/clear`. Les lectures lourdes vont à un sous-agent qui ne renvoie qu'une synthèse.
+- **Sessions** (validé sur AA, 02/11/2026 : plus de `/clear`) : à chaque fin de porte, réécrire `episodes/<id>/STATE.md` (2,5 Ko au plus), mettre à jour `episodes/INDEX.md`, puis proposer un `/compact` avec la consigne du skill `studio-faceless:episode` (`references/tokens-contexte.md`). Au-delà de 200 k de contexte, le hook `contexte_alerte.py` le rappelle. Jamais de changement de modèle en cours de session. Les lectures lourdes vont à un sous-agent qui ne renvoie qu'une synthèse.
 - **Sous-agents** : jamais plus de 4 min sans action (leur cache dure 5 min) ; une tâche longue revient à Claude principal ; aucune demande de permission en attente pendant l'absence du propriétaire ; une correction se fait dans la même version : reprise du producteur si son cache est chaud, sinon un nouvel agent court (validé sur AA, 24/10/2026).
 - **Travail** : modifier plutôt que réécrire ; sorties de commandes courtes ; lectures par plages ; une planche d'images à la fois ; dans les contrats, des extraits utiles plutôt que des fichiers entiers.
 

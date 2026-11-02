@@ -11,7 +11,7 @@ Les fichiers du plugin font foi : en cas d'écart, la fiche se corrige. Les chem
 - [Rendu](#rendu) : `outils/rendu/rendre_si_libre.sh`
 - [Archivage, sauvegarde et dépôt](#archivage-sauvegarde-et-dépôt) : `outils/archiver_episode.py`, `outils/sauvegarde-chaine.ps1`, `outils/verifier_depot.py`
 - [Suivi des tokens](#suivi-des-tokens) : `outils/suivi_tokens.py`
-- [Garde-fou et injection des règles](#garde-fou-et-injection-des-règles) : `hooks/hooks.json`, `hooks/garde_commandes.py`, `hooks/regles_studio.py`
+- [Garde-fou et injection des règles](#garde-fou-et-injection-des-règles) : `hooks/hooks.json`, `hooks/garde_commandes.py`, `hooks/regles_studio.py`, `hooks/contexte_alerte.py`
 - [Règles communes](#règles-communes) : `REGLES_STUDIO.md`
 - [Workflows liés](#workflows-liés)
 
@@ -336,7 +336,7 @@ Les médias, les fichiers en LFS et ceux de plus de 3 Mo ne sont pas lus pour le
 ### outils/suivi_tokens.py
 **Rôle** : mesure la consommation de tokens des sessions de la chaîne en lisant les journaux de Claude Code, sans en afficher le contenu. Ne modifie aucun fichier.
 
-**Quand il sert** : lancé par Claude principal à chaque fin d'étape d'un épisode (`REGLES_STUDIO.md`), pour décider de la suite (état écrit, puis `/clear`, ou `/compact` au milieu d'une longue porte) ou d'un changement de méthode ; les chiffres par étape se notent dans l'état de l'épisode.
+**Quand il sert** : lancé par Claude principal à chaque fin d'étape d'un épisode (`REGLES_STUDIO.md`), pour décider de la suite (état écrit, puis un `/compact` proposé au propriétaire) ou d'un changement de méthode ; les chiffres par étape se notent dans l'état de l'épisode. Le hook `contexte_alerte.py` fait la même mesure du contexte à chaque message du propriétaire.
 
 **Usage**
 ```text
@@ -364,7 +364,7 @@ python -B ${CLAUDE_PLUGIN_ROOT}/outils/suivi_tokens.py --depuis AAAA-MM-JJ
 ## Garde-fou et injection des règles
 
 ### hooks/hooks.json
-**Rôle** : déclare les deux hooks du plugin : l'injection des règles communes au début de chaque session (`SessionStart`) et le garde-fou des commandes avant chaque appel d'outil (`PreToolUse`).
+**Rôle** : déclare les trois hooks du plugin : l'injection des règles communes au début de chaque session (`SessionStart`), l'alerte de contexte à chaque message du propriétaire (`UserPromptSubmit`, 0.4.1) et le garde-fou des commandes avant chaque appel d'outil (`PreToolUse`).
 
 **Quand il sert** : lu par Claude Code au chargement du plugin ; aucun humain ni agent ne le lance.
 
@@ -372,9 +372,10 @@ python -B ${CLAUDE_PLUGIN_ROOT}/outils/suivi_tokens.py --depuis AAAA-MM-JJ
 | Événement | Filtre | Commande | Délai |
 |---|---|---|---|
 | `SessionStart` | aucun (début de session ; la doc du script ajoute : après un `/compact`) | `python -I "${CLAUDE_PLUGIN_ROOT}/hooks/regles_studio.py"` (shell `bash`) | 10 s |
+| `UserPromptSubmit` | aucun (chaque message du propriétaire) | `python -I "${CLAUDE_PLUGIN_ROOT}/hooks/contexte_alerte.py"` (shell `bash`) | 10 s |
 | `PreToolUse` | `Bash\|PowerShell\|Write\|Edit\|NotebookEdit` | `python -I "${CLAUDE_PLUGIN_ROOT}/hooks/garde_commandes.py"` (shell `bash`) | 10 s, message d'état « Garde studio-faceless » |
 
-**Liens** : `regles_studio.py`, `garde_commandes.py` ; [`ARCHITECTURE.md`](../ARCHITECTURE.md).
+**Liens** : `regles_studio.py`, `contexte_alerte.py`, `garde_commandes.py` ; [`ARCHITECTURE.md`](../ARCHITECTURE.md).
 
 **À savoir** : le hook s'applique à toute la session, sous-agents compris. Un plugin **ignore** les champs `hooks`, `mcpServers` et `permissionMode` de l'en-tête de ses agents : tout passe par ce fichier. Python doit être dans le `PATH` de Git Bash. Si le script plante, la plupart des erreurs de hook ne bloquent pas l'appel, et le garde-fou ne protège alors plus (comportement de Claude Code, à vérifier dans sa documentation).
 
@@ -478,6 +479,23 @@ Les chemins sont ramenés à un chemin relatif à la chaîne (`/c/Users/…` de 
 
 **À savoir** : un plugin ne charge pas de `CLAUDE.md` à sa racine, d'où ce hook. Si `REGLES_STUDIO.md` manque, le script plante (fichier introuvable) et aucune règle n'est injectée.
 
+### hooks/contexte_alerte.py
+**Rôle** (0.4.1, validé sur AA, 02/11/2026) : mesure le contexte du fil principal à chaque message du propriétaire et, dès 200 k, rappelle à Claude d'écrire l'état puis de proposer un `/compact` (pas de `/clear`).
+
+**Quand il sert** : lancé par Claude Code à l'événement `UserPromptSubmit`, à chaque message du propriétaire. Aucun humain ne le lance.
+
+**Déroulement** : lit l'entrée JSON (`transcript_path`, `session_id`) ; relit les 4 derniers Mo du transcript ; prend le dernier appel du modèle du fil principal (type `assistant`, hors sous-agents : `isSidechain` faux) et additionne `input_tokens`, `cache_read_input_tokens` et `cache_creation_input_tokens` (même mesure que `outils/suivi_tokens.py`). Sous 200 k, il ne dit rien et efface son mémo. Dès 200 k, il écrit sur la sortie standard `{"hookSpecificOutput": {"hookEventName": "UserPromptSubmit", "additionalContext": "<rappel>"}}` en UTF-8. Le rappel donne le contexte mesuré et demande, à la fin de la tâche en cours, d'écrire l'état (`STATE.md` et `INDEX.md`, ou l'état de la mission) puis de proposer au propriétaire un `/compact` avec la consigne du skill `episode` (`references/tokens-contexte.md`), sans `/clear`. Le rappel ne revient qu'à chaque palier de 50 k (200, 250, 300 k…), grâce au mémo `studio-faceless-contexte-<session_id>.txt` du dossier temporaire.
+
+**Fichiers lus** : le transcript de la session (sa fin). **Écrits** : le mémo dans le dossier temporaire, effacé sous le seuil. **Dépendances** : Python standard.
+
+**Liens** : [`hooks.json`](../../plugins/studio-faceless/hooks/hooks.json) ; [`tokens-contexte.md`](../../plugins/studio-faceless/skills/episode/references/tokens-contexte.md) (consigne du `/compact`) ; [`suivi_tokens.py`](#outilssuivi_tokenspy) (même mesure) ; workflow [`session-et-garde-fou.md`](../workflows/session-et-garde-fou.md).
+
+**À savoir**
+- Il ne bloque jamais un message : toute erreur est avalée, le script se tait et sort avec le code 0.
+- Le seuil (200 k) et le palier (50 k) sont deux constantes en tête du script.
+- Il ne lance pas le `/compact` : il le rappelle à Claude, qui le propose au propriétaire.
+- Testé le 02/11/2026 sur un journal de 15,6 Mo : alerte à 264 k, en 0,17 s.
+
 ---
 
 ## Règles communes
@@ -494,9 +512,9 @@ Les chemins sont ramenés à un chemin relatif à la chaîne (`/c/Users/…` de 
 | Dossier du plugin | Note sur `${CLAUDE_PLUGIN_ROOT}` : écrit entre accolades, remplacé à l'injection ; n'existe pas dans l'environnement de Bash |
 | Quoi lire selon la mission | Tableau mission → fichier : ligne éditoriale et écarts de la chaîne, `METHODE_RECIT`, `REFERENTIEL_QUALITE_REALISATION`, `DIRECTION_AUDIO`, `MOTION_CATALOG`, `marque/`, épisode, skills `episode`, `thumbnail-strategist`, `youtube-seo`, `shorts` |
 | Moteur et outils | Depuis la 0.2.3, **renvoi** de deux lignes vers `referentiels/REGLES_DETAIL.md`, qui porte le texte d'origine : HyperFrames 0.8.149 figée ; Node 22 ou plus ; skills plus récents que le CLI ; navigateurs (`--workers 2` au plus, `preview` sur demande) ; outils du plugin et `controle/` ; garde-fou (pour tous, par rôle) ; rendu par `rendre_si_libre.sh` ; archivage ; dépôt Git (commits locaux, envoi avec accord) ; suivi des tokens |
-| Sous-agents | Studio Director ; les sept agents (`research`, `reviewer`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`, `strategist`) ; contrat de mission (avec la section des règles de la chaîne pour les agents sans `CLAUDE.md`) ; isolation ; un sous-agent ne voit pas la mémoire de Claude |
+| Sous-agents | Studio Director (sur Opus, 0.4.1) ; les sept agents (`research`, `reviewer`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`, `strategist`) ; contrat de mission (avec la section des règles de la chaîne pour les agents sans `CLAUDE.md`) ; isolation ; un sous-agent ne voit pas la mémoire de Claude |
 | Parcours d'un épisode | Depuis la 0.2.3, **renvoi** de deux lignes vers `referentiels/REGLES_DETAIL.md`, qui renvoie lui-même au skill `episode` (étapes 0 à 13, du sujet à l'archivage) depuis la 0.4.0 |
-| Économie de tokens et de contexte | Sessions : fin de porte = `STATE.md` réécrit, `INDEX.md` à jour, puis `/clear` (un `/compact` remet dans le contexte skills et fichiers lus : 124,6 k contre 81 à 88 k), `/compact` permis au milieu d'une longue porte, modèle du fil principal changé seulement après un `/clear` ; sous-agents (jamais plus de 4 min sans action, une correction dans la même version : reprise du producteur si son cache est chaud, sinon un nouvel agent court) ; travail (lectures par plages, sorties courtes) |
+| Économie de tokens et de contexte | Sessions (0.4.1, plus de `/clear`) : fin de porte = `STATE.md` réécrit, `INDEX.md` à jour, puis un `/compact` proposé au propriétaire avec sa consigne (coût connu : skills et fichiers lus remis dans le contexte, 124,6 k contre 81 à 88 k), rappel du hook `contexte_alerte.py` dès 200 k, jamais de changement de modèle en cours de session ; sous-agents (jamais plus de 4 min sans action, une correction dans la même version : reprise du producteur si son cache est chaud, sinon un nouvel agent court) ; travail (lectures par plages, sorties courtes) |
 | Règles permanentes | Faire seulement ce qui est demandé ; décision / proposition / hypothèse / question ouverte ; **statuts** ; pas d'écoute déclarée sans écoute ; ne jamais écraser ; aucune publication, achat ou contournement ; médias réels, sous licence libre ou en citation encadrée par défaut (référentiel § 2 bis), licences libres seules par écart de chaîne ; pas de contamination entre épisodes ; concision |
 
 **Statuts** (section « Règles permanentes »)
@@ -516,6 +534,6 @@ Les chemins sont ramenés à un chemin relatif à la chaîne (`/c/Users/…` de 
 ## Workflows liés
 - [`rendu-et-controle.md`](../workflows/rendu-et-controle.md) : `rendre_si_libre.sh`, `controle.py`, la planche, Chrome, les statuts.
 - [`archivage-et-sauvegarde.md`](../workflows/archivage-et-sauvegarde.md) : `archiver_episode.py`, `sauvegarde-chaine.ps1`.
-- [`session-et-garde-fou.md`](../workflows/session-et-garde-fou.md) : `regles_studio.py`, `garde_commandes.py`, permissions, `suivi_tokens.py`, `/compact`.
+- [`session-et-garde-fou.md`](../workflows/session-et-garde-fou.md) : `regles_studio.py`, `contexte_alerte.py`, `garde_commandes.py`, permissions, `suivi_tokens.py`, `/compact`.
 - [`depot-git.md`](../workflows/depot-git.md) : `verifier_depot.py`, crochet `pre-commit`, LFS, commits et envoi.
 - [`cartes` dans le workflow d'épisode](../workflows/episode.md) : étape 5 (socle).

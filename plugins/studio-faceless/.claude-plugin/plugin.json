@@ -1,6 +1,6 @@
 {
   "name": "studio-faceless",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Studio de chaînes YouTube documentaires faceless avec Claude Code et HyperFrames : fabrication d'un épisode du sujet au mix, shorts, miniatures, dossier de publication, direction sonore, agents de production, garde-fou et outils de contrôle.",
   "author": {
     "name": "Hicham"
