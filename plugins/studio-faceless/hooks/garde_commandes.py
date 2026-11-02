@@ -18,7 +18,9 @@ Par rôle, déduit du type d'agent (`agent_type` de l'entrée du hook, voir ROLE
   plugin installé, pour lancer ses outils, sans « .. »), et aucune écriture
   vers un dossier existant de marque/, des entrées d'épisode ou un MP4 existant ; mêmes limites pour Write et Edit ;
 - mainteneur : n'écrit qu'avec Write et Edit (aucune écriture en Bash), jamais dans .claude/, un projet de
-  production, un dossier existant de marque/, des entrées d'épisode ou un MP4.
+  production, un dossier existant de marque/, des entrées d'épisode ou un MP4 ;
+- stratege (strategist) : écrit seulement dans docs/ et direction/BANQUE_SUJETS.md ; en Bash, seules python (outils
+  du plugin installé), ls, wc, grep, head, tail, mkdir et cd, sans script en ligne ni écriture hors de docs/.
 """
 import json
 import os
@@ -205,6 +207,27 @@ def decide_bash(command, role, root):
             if write_targets(seg) or head(toks) in WRITE_CMDS:
                 return 'deny', "mainteneur : aucune écriture par Bash ; utiliser Write ou Edit (refusé : " + seg[:120] + ")"
 
+    if role == 'stratege':
+        if INLINE_CODE.search(command):
+            return 'deny', "stratège : aucun script en ligne ; seulement les outils du plugin"
+        for seg in segments(command):
+            toks = tokens(seg)
+            h = head(toks)
+            if h not in ('python', 'python3', 'py', 'ls', 'wc', 'grep', 'head', 'tail', 'mkdir', 'cd'):
+                return 'deny', "stratège : seules python (outils du plugin), ls, wc, grep, head, tail, mkdir et cd sont permises (refusé : " + seg[:120] + ")"
+            if h in ('python', 'python3', 'py'):
+                if 'PLUGIN' not in sans_plugin(seg):
+                    return 'deny', "stratège : python seulement pour les outils du plugin installé"
+                # Un outil écrit par son argument de sortie, que write_targets ne voit pas : tout chemin hors du plugin reste dans docs/.
+                for a in tokens(sans_plugin(seg))[1:]:
+                    if a.startswith('-') or a.startswith('@') or a == 'PLUGIN' or a.startswith('PLUGIN/') or a.startswith('PLUGIN\\'):
+                        continue
+                    if ('/' in a or '\\' in a or '.' in a) and not ecriture_stratege(project_rel(a, root)):
+                        return 'deny', "stratège : un outil ne lit et n'écrit que dans docs/ de la chaîne (refusé : " + a[:120] + ")"
+            for t in write_targets(seg):
+                if not ecriture_stratege(project_rel(t, root)):
+                    return 'deny', "stratège : écriture seulement dans docs/ de la chaîne (refusé : " + t[:120] + ")"
+
     for rx, why in ASK_TEXT:
         if rx.search(command):
             return 'ask', why
@@ -213,8 +236,15 @@ def decide_bash(command, role, root):
     return None
 
 
+def ecriture_stratege(rel):
+    """Le stratège écrit dans docs/ et dans la banque de sujets, rien d'autre."""
+    return rel is not None and (rel.lower().startswith('docs/') or rel.lower() == 'direction/banque_sujets.md')
+
+
 def decide_write(path, role, root):
     rel = project_rel(path, root)
+    if role == 'stratege':
+        return None if ecriture_stratege(rel) else ('deny', "stratège : écriture seulement dans docs/ et direction/BANQUE_SUJETS.md")
     if role == 'producteur':
         why = protected(rel, root, {'core', 'marque', 'inputs', 'mp4'})
     elif role == 'mainteneur':
@@ -232,14 +262,14 @@ def decide(command, role=None):
 # Type d'agent (sans le préfixe « studio-faceless: ») → rôle du garde-fou ; Claude principal n'a pas de rôle.
 ROLES = {'motion-producer': 'producteur', 'shorts-producer': 'producteur',
          'art-director': 'directeur-artistique', 'studio-maintainer': 'mainteneur',
-         'reviewer': 'relecteur'}
+         'reviewer': 'relecteur', 'strategist': 'stratege'}
 
 
 def role_of(data):
     if '--role' in sys.argv:
         return sys.argv[sys.argv.index('--role') + 1]
     agent = str(data.get('agent_type') or '').rsplit(':', 1)[-1]
-    return ROLES.get(agent[3:] if agent.startswith('aa-') else agent)
+    return ROLES.get(agent)
 
 
 def in_plugin(path):

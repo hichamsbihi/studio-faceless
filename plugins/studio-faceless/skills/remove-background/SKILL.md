@@ -1,9 +1,11 @@
 ---
 name: remove-background
-description: Détourage pour les séquences HyperFrames des chaînes du plugin studio-faceless — séparer un sujet réel de son fond pour le poser sur un autre fond, une carte, un dessin ou devant un texte. Deux voies — `hyperframes remove-background` (modèle local u2net_human_seg) pour une personne, un sujet vivant ou un détourage vu en petit, avec la méthode en quatre étapes ; un masque déterministe pour un objet sur fond uni vu de près, dont le bord doit rester net. Use when a producer or Claude needs a cutout, a transparent PNG or a transparent WebM for a sequence. Not for thumbnails (studio-faceless:thumbnail-strategist keeps its polygon cutout).
+description: Cutout of a real subject for HyperFrames sequences (transparent PNG or WebM), to place on another background, a map, a drawing or behind text. Use when a producer or Claude needs a cutout. Local model for people, deterministic mask for close-up objects. Not for thumbnails.
 ---
 
 # remove-background : le détourage dans HyperFrames
+
+**Quand l'employer** : séparer un sujet réel de son fond pour le poser sur un autre fond, une carte, un dessin ou devant un texte, dans une séquence HyperFrames d'une chaîne du plugin ; sortie PNG ou WebM transparent. Deux voies (§ 2) : `hyperframes remove-background` (modèle local `u2net_human_seg`) pour une personne, un sujet vivant ou un détourage vu en petit, avec la méthode en quatre étapes (§ 4 bis) ; un masque déterministe pour un objet sur fond uni vu de près, dont le bord doit rester net (§ 3). **Pas pour les miniatures** : `studio-faceless:thumbnail-strategist` garde son détourage par polygone.
 
 **Statut** : règle générale du plugin depuis la version 0.2.1 (VALIDÉ, Hicham, 30/10/2026 : « rend remove-background général pour tout le plugin »). Skill écrit sur Maps & Means (StudioV2) le 28/10/2026, d'après la référence `media-use/audio/references/remove-background.md` des skills HyperFrames (HeyGen ; HyperFrames sous licence Apache-2.0), puis généralisé ; méthode en quatre étapes pour les personnes validée sur AA le 28/10/2026 (Q117 de l'E010). La commande est celle de HyperFrames 0.8.149 (`node_modules/hyperframes/dist/remove-background-*.js`) ; elle s'appelle avec `npx hyperframes` ou `node node_modules/hyperframes/bin/hyperframes.mjs`.
 

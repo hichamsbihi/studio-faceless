@@ -15,13 +15,16 @@
       "Bash(node node_modules/hyperframes/bin/hyperframes.mjs *)",
       "Bash(* node_modules/hyperframes/bin/hyperframes.mjs *)",
       "Bash(npx hyperframes *)",
-      "Bash(* render.mjs*)",
+      "Bash(* render.sh*)",
       "Bash(python *outils/montage/assembler.py*)",
       "Bash(python *outils/montage/mix_film.py*)",
       "Bash(python *outils/montage/srt.py*)",
       "Bash(py *outils/montage/assembler.py*)",
       "Bash(py *outils/montage/mix_film.py*)",
-      "Bash(py *outils/montage/srt.py*)"
+      "Bash(py *outils/montage/srt.py*)",
+      "Bash(python -I -B *outils/recherche/youtube_chaine.py*)",
+      "Bash(python -I -B *outils/recherche/youtube_resume.py*)",
+      "Bash(python -I -B *vendor/roast-room/scripts/check_quotes.py*)"
     ],
     "deny": [
       "Bash(rm -rf *)",

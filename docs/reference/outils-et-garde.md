@@ -85,12 +85,12 @@ Chaque ligne se préfixe de `python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/controle/
 | `son FILM` | Cherche les **trous** (1 à 15 trames de 10 ms sous −60 dB entre deux passages à plus de −35 dB), l'**écrêtage** (échantillons ≥ 0,999) et les **clics isolés** (salve de 6 ms au plus, 20 dB au-dessus du silence précédent, retombée de 15 dB en 10 ms). Les clics sont cherchés dans `--voix`, sinon `--reference`, sinon le film | Avec `--reference` (piste mixée placée dans la composition) : alignement par corrélation sur 20 s (±0,5 s), gain, fidélité par tranches de 50 ms ; un écart (< 12 dB de rapport) est rangé en « attaque étalée par l'AAC » (pas une faute du rendu) ou en « écart créé au rendu » (sortie 1). Sans `--reference` : nombre de sauts de niveau > 12 dB, à titre d'information | rien |
 | `couleurs FICHIER…` | Cherche dans des fichiers texte (HTML de composition) les couleurs retirées des films, en hexadécimal ou `rgb()`/`rgba()` | Liste des couleurs lue dans `marque/couleurs_interdites.json` de la chaîne (`{"corail": "#F17462", …}`, six chiffres hexadécimaux) ; sans ce fichier, aucune couleur n'est interdite. Sortie 1 s'il y a une occurrence | rien |
 | `doublons DOSSIER…` | Cherche la même photo dans deux séquences : empreinte SHA-1 identique, ou empreinte perceptive dHash (distance de Hamming ≤ `--seuil`, défaut 6 sur 64) | Ignore les fonds (chemins contenant `matieres`, `fonts`, `logo`, `grain`, `fog`, `paper`) et les photos non citées par leur nom dans un `.html` du projet ; ne compare qu'entre dossiers différents. Sortie 1 si une photo se répète | rien |
-| `licences DOSSIER…` | Lit tous les `PROVENANCE.md` et liste les lignes qui citent `BY-SA`, `PD-AR`, `PD-Brazil`, `BY 2.0 BR` ou « domaine public argentin » | Liste fixée dans le code (`LICENCES_EN_ATTENTE`). Une ligne « exclu » ou « non utilisé » est normale. Sortie 1 s'il y a une ligne | rien |
+| `licences DOSSIER…` | Lit tous les `PROVENANCE.md` et liste les lignes qui citent `BY-SA`, `PD-AR`, `PD-Brazil`, `BY 2.0 BR` ou « domaine public argentin » | Depuis la 0.3.0, la liste (expressions régulières, casse ignorée) se lit dans `direction/licences.json` de la chaîne (`{"en_attente": ["BY-SA", …]}`) s'il existe ; sinon la liste par défaut ci-contre (`LICENCES_EN_ATTENTE`, celle d'AA). Fichier illisible : avertissement et liste par défaut. Une ligne « exclu » ou « non utilisé » est normale. Sortie 1 s'il y a une ligne | rien |
 | `voix-reste VOIX RESTE` | Compare la voix seule au reste du mix dans la bande 1–4 kHz, par fenêtres de 0,4 s qui contiennent de la voix | Médiane ≥ 12 dB ; liste les fenêtres sous 12 dB ; la sortie 1 ne dépend que de la médiane | rien |
 | `chrome` | Compte les processus `chrome-headless-shell.exe` (Chrome de HyperFrames) par `tasklist` | Attendu : 0 après un rendu ; sortie 1 s'il en reste. Ne jamais arrêter le Chrome d'un rendu parallèle | rien |
 | `tout FILM --projet DOSSIER` | `niveau` ; `couleurs` sur `*.html` et `compositions/*.html` du projet (s'il y en a) ; `licences` sur le projet ; `chrome` | Ne lance ni `planche`, ni `vibration`, ni `tremblement`, ni `son`, ni `doublons`, ni `voix-reste` : il le rappelle en fin de sortie | rien |
 
-**Fichiers lus** : le film ou la piste donnés ; `marque/couleurs_interdites.json` (pour `couleurs` et `tout`) ; les `PROVENANCE.md` et les `.html` du projet. **Fichiers écrits** : seulement les sorties du tableau.
+**Fichiers lus** : le film ou la piste donnés ; `marque/couleurs_interdites.json` (pour `couleurs` et `tout`) ; `direction/licences.json` s'il existe (pour `licences` et `tout`) ; les `PROVENANCE.md` et les `.html` du projet. **Fichiers écrits** : seulement les sorties du tableau.
 
 **Codes de sortie** : 0 = rien à signaler ; 1 = écart signalé ou erreur d'entrée (film illisible, sortie déjà présente ; message à l'écran) ; 2 = usage (arguments invalides, fichier introuvable). Le README de l'outil le dit ainsi depuis le 28/10/2026.
 
@@ -105,7 +105,7 @@ Chaque ligne se préfixe de `python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/controle/
 - **`planche`** : le filtre `drawtext` utilise la police `C:/Windows/Fonts/arial.ttf`. `pieges.md` (§ Technique, E009) signale qu'un chemin de police Windows a fait échouer `drawtext` : des planches ont dû être faites sans étiquettes. À vérifier avant de s'y fier sur une autre machine.
 - **`chrome`** utilise `tasklist` : Windows seulement.
 - **`couleurs`** : la signature et l'outro gardent les couleurs de marque ; une occurrence dans leurs fichiers est normale.
-- **`licences`** : la liste de licences en attente est celle d'AA (domaine public argentin ou brésilien, CC BY 2.0 BR) ; elle est dans le code, pas dans la chaîne. Une autre chaîne devra la modifier dans le plugin.
+- **`licences`** : la liste par défaut est celle d'AA (domaine public argentin ou brésilien, CC BY 2.0 BR). Une autre chaîne écrit la sienne dans `direction/licences.json` (`{"en_attente": []}` : rien n'est signalé) ; elle n'a plus à modifier le plugin (depuis la 0.3.0).
 - **`doublons`** : un même cliché volontairement rappelé doit être consigné dans le README de la chaîne ou le brief ; l'outil ne sait pas distinguer un rappel voulu d'une répétition.
 - **`son`** : sans `--voix`, la musique masque une partie des clics de la voix.
 - Calibrages datés de 15 et 16/10/2026 (E003 et E004 d'AA).
@@ -279,7 +279,7 @@ powershell -File ${CLAUDE_PLUGIN_ROOT}/outils/sauvegarde-chaine.ps1 -Destination
 | `-Destination` (obligatoire) | Dossier où créer la sauvegarde ; refusé s'il est dans la chaîne |
 | `-Chaine` | Dossier de la chaîne ; défaut : le dossier courant |
 | `-Simulation` | Liste les fichiers, le volume par dossier et la destination prévue ; ne copie rien |
-| `-Elements` | Liste à copier ; défaut : `episodes`, `marque`, `direction`, `templates`, `.claude`, `CLAUDE.md`, `package.json`, `package-lock.json`, `requirements.txt` |
+| `-Elements` | Liste à copier ; défaut : `episodes`, `marque`, `direction`, `docs`, `archives`, `.claude`, `CLAUDE.md`, `package.json`, `package-lock.json`, `requirements.txt` |
 
 **Déroulement** : découpe `-Elements` (les virgules d'un appel par `-File` arrivent en une seule chaîne) ; ignore avec un avertissement un élément absent ; exclut `node_modules` et `__pycache__` ; vérifie la place libre (volume × 1,05) ; crée `<nom du dossier de la chaîne>_AAAA-MM-JJ_HHMM` sous la destination (refuse s'il existe) ; pour chaque fichier, copie, calcule le SHA-256 de la source et de la copie, **s'arrête** au premier écart ; écrit `MANIFEST.sha256.txt` (une ligne `empreinte  chemin/relatif` par fichier, avec une ligne d'en-tête) ; affiche l'avancement tous les 200 fichiers.
 
@@ -290,8 +290,8 @@ powershell -File ${CLAUDE_PLUGIN_ROOT}/outils/sauvegarde-chaine.ps1 -Destination
 **Liens** : [`archiver_episode.py`](../../plugins/studio-faceless/outils/archiver_episode.py) ; workflow [`archivage-et-sauvegarde.md`](../workflows/archivage-et-sauvegarde.md) ; `.gitignore` du squelette (les médias vont dans la sauvegarde externe).
 
 **À savoir**
-- **Hors liste par défaut** : `docs/`, `.githooks/`, `.gitignore`, `.gitattributes`, `README.md`, `INSTALLATION.md`, `outils/` de la chaîne. Ce sont des fichiers texte, gardés par Git ; ajouter ces noms à `-Elements` pour les copier aussi. Les zips d'archive sont dans `episodes/` : ils sont dans la sauvegarde par défaut, `_A_SUPPRIMER/` ne l'est pas.
-- Un élément absent de la chaîne (par exemple `templates`, qui est dans le plugin pour une chaîne neuve) donne un avertissement, pas une erreur.
+- **`docs/` est dans la liste par défaut** : depuis le 30/10/2026, `docs/` des chaînes est hors Git (starter/.gitignore) ; la sauvegarde en est la seule copie. **Hors liste par défaut** : `.githooks/`, `.gitignore`, `.gitattributes`, `README.md`, `INSTALLATION.md`, `outils/` de la chaîne. Ce sont des fichiers texte, gardés par Git ; ajouter ces noms à `-Elements` pour les copier aussi. Les zips d'archive sont dans `episodes/` : ils sont dans la sauvegarde par défaut, `_A_SUPPRIMER/` ne l'est pas.
+- Un élément absent de la chaîne (par exemple `archives`, qu'une chaîne neuve n'a pas encore) donne un avertissement, pas une erreur.
 - Une destination synchronisée (OneDrive…) envoie les fichiers en ligne : à décider par le propriétaire.
 - Le volume de ~3,9 Go donné dans l'en-tête est celui d'AA au 28/10/2026.
 - Si un écart d'empreinte arrête la copie, le dossier daté reste partiel : ne pas le prendre pour une sauvegarde valide (absence de `MANIFEST.sha256.txt`).
@@ -323,7 +323,7 @@ Les médias, les fichiers en LFS et ceux de plus de 3 Mo ne sont pas lus pour le
 
 **À savoir**
 - Un refus ne se contourne pas par `--no-verify` : corriger la cause (déplacer le média vers la sauvegarde, passer le binaire en LFS, retirer le secret ou le chemin).
-- Les règles LFS du squelette ne couvrent que `marque/**` et `templates/**` pour quelques extensions ; un binaire de plus de 10 Mo ailleurs ou d'une autre extension sera refusé.
+- Les règles LFS du squelette ne couvrent que `marque/**` pour quelques extensions (les règles `templates/**` ont été retirées du squelette, absent des chaînes) ; un binaire de plus de 10 Mo ailleurs ou d'une autre extension sera refusé.
 - Les fichiers Markdown ne passent pas le contrôle des chemins de machine (seulement celui des secrets).
 - Un secret dans un fichier de plus de 3 Mo n'est pas détecté.
 - Un segment d'URL qui commence lui-même par `sk-` suivi de 20 caractères reste signalé (faux positif possible).
@@ -395,10 +395,12 @@ python -B ${CLAUDE_PLUGIN_ROOT}/outils/suivi_tokens.py --depuis AAAA-MM-JJ
 | `motion-producer` | `producteur` |
 | `shorts-producer` | `producteur` |
 | `art-director` | `directeur-artistique` |
+| `reviewer` | `relecteur` (0.2.3) : en Bash, seules `ffprobe`, `ffmpeg` de mesure (`-f null`), `wc`, `ls`, `grep`, `head` et `tail`, sans redirection |
 | `studio-maintainer` | `mainteneur` |
+| `strategist` | `stratege` (0.4.0) : Write et Edit dans `docs/` et `direction/BANQUE_SUJETS.md` seulement ; en Bash, `python` sur les outils du plugin, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd`, sans script en ligne ni écriture hors de `docs/` |
 | Claude principal, `research`, tout autre type | aucun rôle : seules les règles pour tous s'appliquent |
 
-Le préfixe de plugin (`studio-faceless:`) est retiré avant la recherche ; un ancien préfixe `aa-` (agents de StudioV1) est aussi retiré (`aa-motion-producer` donne `motion-producer`).
+Le préfixe de plugin (`studio-faceless:`) est retiré avant la recherche.
 
 **Ordre d'évaluation d'une commande Bash ou PowerShell** : (1) motifs refusés pour tous ; (2) suppression récursive ; (3) règles du rôle, s'il y en a un ; (4) motif soumis à confirmation (`preview`) ; (5) rendu sans `--workers 1` ou `2`. Le premier qui répond l'emporte.
 
@@ -492,8 +494,8 @@ Les chemins sont ramenés à un chemin relatif à la chaîne (`/c/Users/…` de 
 | Dossier du plugin | Note sur `${CLAUDE_PLUGIN_ROOT}` : écrit entre accolades, remplacé à l'injection ; n'existe pas dans l'environnement de Bash |
 | Quoi lire selon la mission | Tableau mission → fichier : ligne éditoriale et écarts de la chaîne, `METHODE_RECIT`, `REFERENTIEL_QUALITE_REALISATION`, `DIRECTION_AUDIO`, `MOTION_CATALOG`, `marque/`, épisode, skills `episode`, `thumbnail-strategist`, `youtube-seo`, `shorts` |
 | Moteur et outils | Depuis la 0.2.3, **renvoi** de deux lignes vers `referentiels/REGLES_DETAIL.md`, qui porte le texte d'origine : HyperFrames 0.8.149 figée ; Node 22 ou plus ; skills plus récents que le CLI ; navigateurs (`--workers 2` au plus, `preview` sur demande) ; outils du plugin et `controle/` ; garde-fou (pour tous, par rôle) ; rendu par `rendre_si_libre.sh` ; archivage ; dépôt Git (commits locaux, envoi avec accord) ; suivi des tokens |
-| Sous-agents | Studio Director ; les six agents (`research`, `reviewer`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`) ; contrat de mission (avec la section des règles de la chaîne pour les agents sans `CLAUDE.md`) ; isolation ; un sous-agent ne voit pas la mémoire de Claude |
-| Parcours d'un épisode | Depuis la 0.2.3, **renvoi** de deux lignes vers `referentiels/REGLES_DETAIL.md` : les onze étapes, du sujet à l'archivage |
+| Sous-agents | Studio Director ; les sept agents (`research`, `reviewer`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`, `strategist`) ; contrat de mission (avec la section des règles de la chaîne pour les agents sans `CLAUDE.md`) ; isolation ; un sous-agent ne voit pas la mémoire de Claude |
+| Parcours d'un épisode | Depuis la 0.2.3, **renvoi** de deux lignes vers `referentiels/REGLES_DETAIL.md`, qui renvoie lui-même au skill `episode` (étapes 0 à 13, du sujet à l'archivage) depuis la 0.4.0 |
 | Économie de tokens et de contexte | Sessions : fin de porte = `STATE.md` réécrit, `INDEX.md` à jour, puis `/clear` (un `/compact` remet dans le contexte skills et fichiers lus : 124,6 k contre 81 à 88 k), `/compact` permis au milieu d'une longue porte, modèle du fil principal changé seulement après un `/clear` ; sous-agents (jamais plus de 4 min sans action, une correction dans la même version : reprise du producteur si son cache est chaud, sinon un nouvel agent court) ; travail (lectures par plages, sorties courtes) |
 | Règles permanentes | Faire seulement ce qui est demandé ; décision / proposition / hypothèse / question ouverte ; **statuts** ; pas d'écoute déclarée sans écoute ; ne jamais écraser ; aucune publication, achat ou contournement ; médias réels, sous licence libre ou en citation encadrée par défaut (référentiel § 2 bis), licences libres seules par écart de chaîne ; pas de contamination entre épisodes ; concision |
 

@@ -118,7 +118,7 @@ flowchart TD
 - **Qui agit** : le Studio Director rédige ; le propriétaire valide.
 - **Fichiers créés** : une fiche par séquence `SEQUENCES_*_NARRATION.md` (narration en anglais, source de chaque phrase, plan de plans, son) ; le script à donner au propriétaire, **sans balise ElevenLabs par défaut** (jamais de pause ni de vitesse). Le nom `SCRIPT_v1.md` apparaît dans l'exemple de `srt.py` ; ses blocs ```` ```text ```` sous `## seqN` servent aux sous-titres. Fiche d'ouverture en tête (phrase, image et temps estimé à 125 mots par minute pour chaque repère de 0 à 2:00).
 - **Contrôles avant la voix** (`recit-retention.md` § 5) : au plus trois chiffres d'affilée, chiffre clé en paire ou comparé, inconnu expliqué en moins de 5 s, au plus trois noms propres nouveaux par minute. Les phrases d'actualité sont marquées [MAJ].
-- **Passe facultative** : le skill `humanizer` est à l'essai (`PROPOSÉ`, 28/10/2026) pour une passe sur la narration anglaise après le script v1 ; il n'est pas encore intégré au skill `episode` (voir `skills/humanizer/PROVENANCE.md`).
+- **Passe facultative** : le skill `humanizer` est la surcouche de relecture des scripts (le propriétaire l'a confirmé le 02/11/2026) : une passe sur la narration anglaise après le script v1, sur appel du propriétaire. Il n'est pas encore intégré au skill `episode` (voir `skills/humanizer/PROVENANCE.md`).
 - **Validation** : `VALIDÉ` par le propriétaire avant toute voix.
 
 ### 4. Voix

@@ -25,7 +25,7 @@ Ce document décrit ce qui se passe quand on ouvre une session dans une chaîne 
 | **Propriétaire** | Accepte la confiance du dossier, répond aux demandes de confirmation (`ask`), décide des permissions de la chaîne et des mises à jour |
 | **Claude Code** | Exécute les hooks, applique les décisions (refus, confirmation) et les permissions |
 | **Studio Director** (Claude principal) | Sans rôle de garde-fou : seules les règles communes s'appliquent à lui ; il lance le suivi des tokens |
-| **Agents** | `motion-producer` et `shorts-producer` (rôle producteur), `art-director` (directeur-artistique), `studio-maintainer` (mainteneur) ; `research` et `reviewer` sans rôle |
+| **Agents** | `motion-producer` et `shorts-producer` (rôle producteur), `art-director` (directeur-artistique), `studio-maintainer` (mainteneur), `reviewer` (relecteur, depuis la 0.2.3), `strategist` (stratege, 0.4.0) ; `research` sans rôle |
 
 ## Prérequis
 - Plugin installé pour le projet (`claude plugin install studio-faceless@studio-faceless --scope project`) et déclaré dans le `.claude/settings.json` de la chaîne (`extraKnownMarketplaces`, `enabledPlugins`).
@@ -52,9 +52,10 @@ Un plugin ne charge pas de `CLAUDE.md` à sa racine : c'est la raison d'être de
 ### Ordre des règles
 Quand deux règles se contredisent, **la dernière de la liste l'emporte** :
 1. `REGLES_STUDIO.md` et les référentiels du plugin (`referentiels/`) : règles par défaut ;
-2. `direction/ECARTS.md` de la chaîne : écarts écrits, avec statut et date ;
-3. `CLAUDE.md` de la chaîne : identité et règles propres ;
-4. `CLAUDE.md` de l'épisode.
+2. profil du domaine de la chaîne (`domaines/<domaine>/DOMAINE.md`, si le `CLAUDE.md` de la chaîne nomme un domaine) ;
+3. `direction/ECARTS.md` de la chaîne : écarts écrits, avec statut et date ;
+4. `CLAUDE.md` de la chaîne : identité et règles propres ;
+5. `CLAUDE.md` de l'épisode.
 
 Les statuts (`FIXÉ`, `VALIDÉ`, `PROPOSÉ`…) sont définis dans `REGLES_STUDIO.md` ; seul le propriétaire valide.
 
@@ -91,6 +92,8 @@ Le tableau complet (douze motifs, la suppression récursive, les zones protégé
 | `motion-producer`, `shorts-producer` | producteur | Écrire dans son projet de production ; Bash pour le moteur | En Bash : toute mention de `direction/`, `templates/`, `.claude/` ou d'un `CLAUDE.md` (à lire avec Read ou Grep), sauf un chemin du plugin installé sans « .. » (le producteur peut ainsi lancer les outils du plugin) ; toute écriture vers un dossier existant de `marque/`, les entrées d'un épisode (`inputs/`) ou un MP4 existant. Avec Write et Edit : écriture dans `direction/`, `templates/`, `.claude/`, un `CLAUDE.md`, un dossier existant de `marque/`, `inputs/` ou sur un MP4 existant |
 | `art-director` | directeur-artistique | Seulement `ffmpeg`, `ffprobe` et `mkdir`, pour écrire des images extraites dans le dossier de travail du contrat | Toute autre commande ; `ffmpeg -y` ; toute sortie dans `direction/`, `templates/`, `.claude/`, un `CLAUDE.md`, un dossier existant de `marque/`, `inputs/`, un projet de production ou un MP4 existant |
 | `studio-maintainer` | mainteneur | Écrire avec `Write` et `Edit` (cohérence, catalogue), lire avec Bash | Toute écriture par Bash (redirection, `cp`, `mv`, `tee`, `touch`, `mkdir`, `sed -i`, `ffmpeg`, script en ligne qui écrit…) ; avec Write et Edit : `.claude/`, un dossier existant de `marque/`, `inputs/`, un projet de production, un MP4 existant |
+| `reviewer` | relecteur (0.2.3) | Lire ; en Bash, mesurer | En Bash, tout sauf `ffprobe`, `ffmpeg` de mesure (`-f null`), `wc`, `ls`, `grep`, `head` et `tail` ; toute redirection ; il n'a ni Write ni Edit |
+| `strategist` | stratege (0.4.0) | Écrire avec Write et Edit dans `docs/` et `direction/BANQUE_SUJETS.md` ; en Bash, `python` sur les outils du plugin installé, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` | Toute écriture ailleurs ; toute autre commande Bash ; un script en ligne ; un outil dont un chemin d'entrée ou de sortie est hors de `docs/` |
 
 Conséquences pour un contrat de mission :
 - Un producteur reçoit les extraits utiles de `direction/` et des `CLAUDE.md` dans son brief ; il n'a pas à les lire par Bash.
@@ -104,7 +107,7 @@ Un plugin ne peut pas fournir de permissions : elles sont dans le `.claude/setti
 
 | Liste | Contenu dans le squelette |
 |---|---|
-| `allow` | Les appels HyperFrames par `node node_modules/hyperframes/bin/hyperframes.mjs *`, `* node_modules/hyperframes/bin/hyperframes.mjs *`, `npx hyperframes *` ; `* render.mjs*` ; `assembler.py`, `mix_film.py` et `srt.py` de `outils/montage/` (`python *outils/montage/<outil>.py*`, `py …`) |
+| `allow` | Les appels HyperFrames par `node node_modules/hyperframes/bin/hyperframes.mjs *`, `* node_modules/hyperframes/bin/hyperframes.mjs *`, `npx hyperframes *` ; `* render.sh*` ; `assembler.py`, `mix_film.py` et `srt.py` de `outils/montage/` (`python *outils/montage/<outil>.py*`, `py …`) ; depuis la 0.4.0, `youtube_chaine.py`, `youtube_resume.py` (`python -I -B *outils/recherche/<outil>.py*`) et `check_quotes.py` de `vendor/roast-room/scripts/` |
 | `deny` | `rm -rf *`, `rm -fr *`, `rm -r *` ; `npm install *`, `npm i *`, `npm uninstall *`, `npm update *` ; `npx hyperframes@*`, `npx hyperframes publish*`, `cloud*`, `cloudrun*`, `lambda*`, `auth*`, `upgrade*` |
 | `ask` | Aucune dans le squelette. Depuis la 0.2.3, ElevenLabs passe par l'API (SDK Python `elevenlabs`, clé dans la variable `ELEVENLABS_API_KEY`, jamais lue ni affichée) ; le connecteur claude.ai est coupé par défaut (30/10/2026) : Claude demande l'accord du propriétaire en conversation avant chaque génération, coût annoncé, et aucun sous-agent ne génère (`DIRECTION_AUDIO.md` § 4) |
 
@@ -146,7 +149,7 @@ flowchart TD
     B --> C[SessionStart : regles_studio.py]
     C --> D[REGLES_STUDIO.md injecté, CLAUDE_PLUGIN_ROOT remplacé]
     D --> E[CLAUDE.md de la chaîne]
-    E --> F[Lecture à la demande : ECARTS, référentiels, marque, CLAUDE.md de l'épisode]
+    E --> F[Lecture à la demande : profil du domaine, ECARTS, référentiels, marque, CLAUDE.md de l'épisode]
     F --> G[Règle la plus basse de la liste l'emporte]
 ```
 
@@ -157,14 +160,14 @@ flowchart TD
     B -->|oui| C{Chemin dans le plugin installé ?}
     C -->|oui| X[deny]
     C -->|non| D{Rôle ?}
-    D -->|producteur ou mainteneur| E{Zone protégée ?}
+    D -->|producteur, mainteneur ou stratege| E{Zone protégée ou hors docs/ pour le stratege ?}
     E -->|oui| X
     E -->|non| P[Rien : permissions de la chaîne]
     D -->|aucun| P
     B -->|non : Bash ou PowerShell| F{Motif refusé pour tous ou suppression récursive ?}
     F -->|oui| X
     F -->|non| G{Rôle ?}
-    G -->|directeur-artistique, producteur, mainteneur| H{Règles du rôle violées ?}
+    G -->|directeur-artistique, producteur, mainteneur, relecteur, stratege| H{Règles du rôle violées ?}
     H -->|oui| X
     H -->|non| I
     G -->|aucun| I{hyperframes preview ?}

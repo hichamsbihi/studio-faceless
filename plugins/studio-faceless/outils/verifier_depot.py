@@ -18,7 +18,7 @@ import os, re, subprocess, sys
 
 LIMITE = 10 * 1024 * 1024
 LIMITE_REGLES = 9000            # caractères de REGLES_STUDIO.md tel que le hook SessionStart l'injecte
-RACINE_TYPE = 'C:/Users/<nom>/.claude/plugins/cache/studio-faceless/studio-faceless/0.2.3'   # longueur type du chemin du plugin installé
+RACINE_TYPE = 'C:/Users/<nom>/.claude/plugins/cache/studio-faceless/studio-faceless/0.4.0'   # longueur type du chemin du plugin installé ; l'étiquette de version (cinq caractères, comme 0.2.3 avant) ne compte que par sa longueur
 MEDIAS = {'.mp4', '.mov', '.webm', '.mkv', '.wav', '.mp3', '.m4a', '.aac', '.flac', '.png', '.jpg', '.jpeg', '.webp', '.gif',
           '.tif', '.tiff', '.pdf', '.ttf', '.otf', '.woff', '.woff2', '.zip'}
 CODE = {'.py', '.mjs', '.js', '.cjs', '.json', '.sh', '.ps1', '.html', '.css'}

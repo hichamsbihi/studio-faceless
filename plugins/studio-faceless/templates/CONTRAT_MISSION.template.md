@@ -14,7 +14,7 @@ décisions validées : <décision, date et référence, ou « aucune »>
 restrictions : <interdits propres à la mission>
 ```
 
-**Règles de la chaîne utiles à la mission** (0.2.3) : une section de **10 lignes au plus**, recopiée par l'orchestrateur depuis le `CLAUDE.md` de la chaîne, à la suite des neuf champs. **Obligatoire pour `studio-faceless:research` et `studio-faceless:studio-maintainer`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents, qui le lisent.
+**Règles de la chaîne utiles à la mission** (0.2.3) : une section de **10 lignes au plus**, recopiée par l'orchestrateur depuis le `CLAUDE.md` de la chaîne, à la suite des neuf champs. **Obligatoire pour `studio-faceless:research`, `studio-faceless:studio-maintainer` et `studio-faceless:strategist`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents, qui le lisent.
 
 ```text
 Règles de la chaîne utiles à la mission (10 lignes au plus, recopiées du CLAUDE.md de la chaîne)
@@ -22,6 +22,7 @@ protection des personnes : <flou, bip, noms, adresses, plaques, mineurs, victime
 sources admises : <ordre et exclusions utiles à la mission>
 langues : <langue des documents, langue de ce que voit ou entend le spectateur>
 autres : <exclusions, statuts, mentions obligatoires utiles à la mission, ou « aucune »>
+pour strategist : <propriétaire, domaine, chaînes sœurs, chaînes de référence>
 ```
 
 **Selon l'agent** :
@@ -34,6 +35,7 @@ autres : <exclusions, statuts, mentions obligatoires utiles à la mission, ou «
   - Une correction après visionnage se fait dans la même version (validé sur AA, 24/10/2026) : reprise du producteur si son cache est chaud, sinon un agent court, avec un brief de quelques lignes (ce qui change, fichiers et version de départ) ; une nouvelle version seulement pour un défaut majeur.
 - `studio-faceless:shorts-producer` (validé sur AA, 19/10/2026) : il faut le **kit shorts** (`episodes/<id>/kit/shorts/`), un **brief de short** (modèle : skill `studio-faceless:shorts`, `references/brief-short.md`) et un dossier d'écriture exact (`episodes/<id>/production/short-0N-vM/`). Mêmes règles que le producteur de séquences : il s'arrête à `render.sh`, et chaque correction est confiée à un nouvel agent.
 - `studio-faceless:studio-maintainer` : `episode_id` vaut « studio » ; sans écriture autorisée, il constate seulement ; section « Règles de la chaîne utiles à la mission » obligatoire.
+- `studio-faceless:strategist` (0.4.0) : `episode_id` vaut « studio » ; deux champs en plus, `phase` (`dossier`, `brief`, `conseil`, `titres`, `sujets` ou `banque`) et `session` (`docs/strategie/<AAAA-MM-JJ>-<sujet>/`) ; écriture dans `docs/`, et dans `direction/BANQUE_SUJETS.md` seulement si « décisions validées » cite l'accord daté du propriétaire ; section « Règles de la chaîne utiles à la mission » obligatoire (propriétaire, langues, domaine, chaînes sœurs, chaînes de référence).
 
 ## Brief de séquence court (producteur)
 Une page au plus, **3 Ko au plus** (validé sur AA, 18/10/2026). Le producteur ne lit rien d'autre que ce brief, le kit et le `CLAUDE.md` de l'épisode : les règles de `direction/` y sont recopiées en extraits de quelques lignes, jamais renvoyées à un fichier entier.

@@ -21,7 +21,7 @@ Le message de délégation suit le contrat de mission (neuf champs ; modèle : `
 - **Cohérence** : vérifier que les directives (`CLAUDE.md` de chaque dossier, `direction/` dont `direction/ECARTS.md`, `marque/`, `${CLAUDE_PLUGIN_ROOT}/templates/`, `${CLAUDE_PLUGIN_ROOT}/agents/`, `.claude/agents/`) et leurs chemins restent cohérents, et les signaler ; repérer doublons et contradictions. Les écarts de la chaîne (`direction/ECARTS.md`) l'emportent sur les règles par défaut du plugin (`${CLAUDE_PLUGIN_ROOT}/referentiels/`).
 - **Fichiers** : repérer les fichiers temporaires inutiles et les proposer à la suppression, avec la liste. Tu ne supprimes que ce que le contrat autorise nommément.
 - **Dépendances** : HyperFrames (la version de `package.json` fait foi), FFmpeg, Node, Python. Signaler une mise à jour sans l'appliquer.
-- **Reproductibilité** : vérifier que chaque `render.mjs`, `generate.py` ou script d'assemblage pointe vers des sources existantes, et que les empreintes annoncées correspondent.
+- **Reproductibilité** : vérifier que chaque `render.sh` (gabarit v3 ; `render.mjs` dans les anciens projets), `generate.py` ou script d'assemblage pointe vers des sources existantes, et que les empreintes annoncées correspondent.
 - **Catalogue** (`${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md`) :
   - ajouter ou mettre à jour une fiche sur demande, avec des chemins vérifiés ; dans une chaîne, une nouvelle technique se propose dans `direction/ECARTS.md` (section MOTION_CATALOG) et n'entre au catalogue que dans le dépôt du plugin (le plugin installé ne se modifie pas) ;
   - statut « expérimental » ou « à améliorer » ;

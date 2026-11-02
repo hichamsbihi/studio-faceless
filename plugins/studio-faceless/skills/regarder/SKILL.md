@@ -39,7 +39,7 @@ Autres grilles : `grille-sport-v2-retention.md` (étude AA de rétention du 23/1
 
 ## Étude d'une chaîne de référence (`PROPOSÉ`)
 Écrit sur AA le 28/10/2026 à la demande de son propriétaire. Modèle : l'étude AA d'une chaîne de référence (Tifo Sports, 26/10/2026).
-1. **Les chiffres de toutes les vidéos publiques** par l'API YouTube Data (une vingtaine d'unités), rangés dans `docs/veille/donnees/<chaine>-AAAA-MM-JJ.json`. Ratio : vues ÷ médiane des 30 vidéos longues voisines (15 avant, 15 après).
+1. **Les chiffres de toutes les vidéos publiques** par l'API YouTube Data (une vingtaine d'unités), rangés dans `docs/veille/donnees/<chaine>-AAAA-MM-JJ.json`. Ratio : vues ÷ médiane des 30 vidéos longues voisines (15 avant, 15 après). Relevé : `python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/recherche/youtube_chaine.py @handle docs/veille/donnees/<chaine>-AAAA-MM-JJ.json` (clé `YOUTUBE_API_KEY` posée par le propriétaire) ; résumé sans lire le JSON : `${CLAUDE_PLUGIN_ROOT}/outils/recherche/youtube_resume.py` (fiche : `outils/recherche/README.md`).
 2. **Un échantillon** de vidéos fortes, moyennes et faibles (exemple AA, Tifo : 5, 2 et 2), pour voir ce qui sépare les succès.
 3. **Les analyses Gemini**, après une estimation du coût sous le plafond fixé par le propriétaire (exemple AA, Tifo : 15 analyses, environ 0,60 $) :
    - les vidéos entières avec `grille-sport-v2-retention.md` (comparable aux études précédentes), dans `docs/veille/analyses-v2/<chaine>/` ;

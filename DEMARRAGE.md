@@ -2,7 +2,7 @@
 
 Guide pas à pas, en français, pour installer le studio `studio-faceless`, créer une chaîne YouTube faceless et fabriquer sa première vidéo, de l'installation jusqu'à l'archivage.
 
-**État du guide** : écrit le 29/10/2026 pour le plugin en version 0.1.0, revu pour la 0.1.2 (`plugins/studio-faceless/.claude-plugin/plugin.json`). Il enchaîne les workflows de [`docs/workflows/`](docs/workflows/) sans les remplacer. En cas d'écart, le fichier du plugin fait foi ([`docs/README.md`](docs/README.md)). Tout point incertain est écrit « à vérifier ».
+**État du guide** : écrit le 29/10/2026, revu le 02/11/2026 pour le plugin en version 0.4.0 (`plugins/studio-faceless/.claude-plugin/plugin.json`). Il enchaîne les workflows de [`docs/workflows/`](docs/workflows/) sans les remplacer. En cas d'écart, le fichier du plugin fait foi ([`docs/README.md`](docs/README.md)). Tout point incertain est écrit « à vérifier ».
 
 ## À qui sert ce guide
 - **À toi, le propriétaire** de la chaîne (celui qui décide, valide et publie). Tu pars d'une machine Windows qui n'a pas encore le studio. Tu parles à Claude en français ; il fait le travail, tu décides.
@@ -63,7 +63,7 @@ Les commandes se tapent dans **Git Bash**, dans le dossier de la chaîne, sauf m
 |---|---|
 | `<clone>` | le dossier où tu as cloné le dépôt du plugin, par exemple `~/Desktop/studio-faceless` |
 | `<chaîne>` | le dossier de ta chaîne, par exemple `~/Desktop/MaChaine` |
-| `<plugin>` | le plugin installé : `$HOME/.claude/plugins/cache/studio-faceless/studio-faceless/0.1.2` (le dernier élément est le champ `version` de `plugin.json`) |
+| `<plugin>` | le plugin installé : `$HOME/.claude/plugins/cache/studio-faceless/studio-faceless/0.4.0` (le dernier élément est le champ `version` de `plugin.json`) |
 | `<id>` | l'identifiant de l'épisode, par exemple `episode-001` |
 | `<séquence>-vN` | un dossier de séquence versionné, par exemple `seq1-v1` |
 
@@ -145,7 +145,7 @@ FFmpeg :
 ```powershell
 winget install Gyan.FFmpeg
 ```
-Claude Code (2.1.169 ou plus) : l'application de bureau, ou la commande `claude` en terminal. Les fichiers du plugin ne donnent pas de commande d'installation pour Claude Code.
+Claude Code (2.1.271 ou plus : le champ `omitClaudeMd` de `research`, `studio-maintainer` et `strategist` le demande) : l'application de bureau, ou la commande `claude` en terminal. Les fichiers du plugin ne donnent pas de commande d'installation pour Claude Code.
 - **Fichiers créés** : aucun dans un projet.
 - **Tu valides** : rien.
 - **Vérifier** : étape A2.
@@ -166,7 +166,7 @@ Claude Code (2.1.169 ou plus) : l'application de bureau, ou la commande `claude`
 | `python --version` | 3.14 (3.12 au moins) ; Python doit être dans le `PATH` de Git Bash, car les deux hooks du plugin sont lancés par `python -I` |
 | `ffmpeg -version` | 9.0 (version de référence) |
 | `ffmpeg -hide_banner -filters \| grep whisper` | une ligne : le filtre `whisper` sert à contrôler les prises de voix |
-| `claude --version` | 2.1.169 ou plus |
+| `claude --version` | 2.1.271 ou plus |
 
 - **Fichiers créés** : aucun.
 - **Tu valides** : rien.
@@ -219,6 +219,7 @@ for s in hyperframes hyperframes-animation hyperframes-audio hyperframes-cli hyp
 - **Qui** : toi.
 - **À faire** :
   - **ElevenLabs** : crée ta clé d'API sur elevenlabs.io (Settings, API Keys). ElevenLabs passe par l'API, pas par le connecteur claude.ai, qui reste coupé (30/10/2026). Tu poseras la clé toi-même à l'étape B6 ;
+  - **YouTube Data et Gemini** : si tu veux relever les vidéos d'une chaîne (agent `strategist`) ou faire « regarder » une vidéo (skill `regarder`), crée une clé d'API pour chaque service ; tu les poseras aussi à l'étape B6 ;
   - si tu veux, dans ton compte claude.ai, **vidIQ** en lecture seule. Claude ne s'en sert que sur ta demande.
 - **Fichiers créés** : aucun.
 - **Tu valides** : rien.
@@ -315,7 +316,7 @@ claude plugin install studio-faceless@studio-faceless --scope project
 ```bash
 ls ~/.claude/plugins/cache/studio-faceless/studio-faceless/
 ```
-  Le dossier de la version (`0.1.2`) doit apparaître.
+  Le dossier de la version (`0.4.0`) doit apparaître.
 - **Détail** : [`nouvelle-chaine.md`](docs/workflows/nouvelle-chaine.md), étape 5 ; [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), « Chemins ».
 
 > **Pas encore éprouvé (à vérifier).**
@@ -345,6 +346,9 @@ grep -m1 '"version"' node_modules/hyperframes/package.json
 ### B6. Régler ElevenLabs (clé d'API)
 - **Qui** : toi. Claude ne lit, n'affiche, ne demande ni n'écrit jamais la clé.
 - **À faire** : pose la clé dans la variable d'environnement `ELEVENLABS_API_KEY` de ta session Windows (ou dans un `.env` ignoré par Git), puis relance Claude Code. Le SDK Python `elevenlabs` ne s'installe que sur ta décision, à la version figée dans le `requirements.txt` de la chaîne. Aucune règle `ask` à ajouter : le connecteur est coupé, et chaque génération te demande ton accord en conversation, coût annoncé avant. Aucun sous-agent ne génère.
+  Deux autres clés se posent de la même façon, par toi, dans l'environnement ; Claude ne les lit ni ne les affiche, et aucune n'est écrite dans un fichier :
+  - `YOUTUBE_API_KEY` (API YouTube Data v3, créée par toi) : `outils/recherche/youtube_chaine.py` et l'agent `strategist`, pour relever les vidéos d'une chaîne ; sans elle, l'outil s'arrête ;
+  - `GEMINI_API_KEY` : le skill `regarder` (`regarder.py`) et `relire.py` ; un contenu inédit ne part chez Google qu'avec la clé du palier payant, décision à toi.
 - **Fichiers créés** : aucun.
 - **Tu valides** : la pose de la clé.
 - **Vérifier** : Claude peut seulement constater que la variable existe (réponse oui ou non), sans la lire.
@@ -359,7 +363,7 @@ grep -m1 '"version"' node_modules/hyperframes/package.json
   Au premier contrôle ou rendu, HyperFrames télécharge `chrome-headless-shell` (environ 270 Mo) dans `~/.cache/hyperframes/`. Réponds à la demande d'accord.
 - **Fichiers créés** : un dossier temporaire de test, et le Chrome dans `~/.cache/hyperframes/`. Rien dans la chaîne.
 - **Tu valides** : tu **lis le bilan avant de continuer**. C'est la porte.
-- **Vérifier** : le bilan liste les skills (`studio-faceless:episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`, `grilling`, `grill-me`, `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`) et les six agents (`research`, `reviewer`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`). Il montre les règles communes reçues, un `check` sans erreur, un rendu de 3 s, et `controle.py chrome` à 0. Si les règles communes ne sont pas visibles, redemande à Claude de les lister, puis vois « Si quelque chose bloque ».
+- **Vérifier** : le bilan liste les 14 skills (`studio-faceless:episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`, `grilling`, `humanizer`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`, `remove-background`, `blender-pro`) et les sept agents (`research`, `reviewer`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`, `strategist`). Il montre les règles communes reçues, un `check` sans erreur, un rendu de 3 s, et `controle.py chrome` à 0. Si les règles communes ne sont pas visibles, redemande à Claude de les lister, puis vois « Si quelque chose bloque ».
 - **Détail** : [`installation-et-mise-a-jour.md`](docs/workflows/installation-et-mise-a-jour.md), partie C.
 
 > **Pas encore éprouvé.** Ce contrôle est le premier test réel de l'arrivée des règles communes (`SessionStart`), du préchargement des skills par les agents et du rôle reçu par le garde-fou. Si un résultat surprend, note-le : il corrige la documentation du plugin.
@@ -745,7 +749,7 @@ cp -r "<plugin>/templates/sequence-gabarit-v3" episodes/episode-001/kit/gabarit
   - **coûts constatés sur AA** (20/10/2026, [`DIRECTION_AUDIO.md`](plugins/studio-faceless/referentiels/DIRECTION_AUDIO.md) § 4) : effets environ 3,3 crédits par seconde ; musique environ 27,5 crédits par seconde et par variante ;
   - **l'estimation affichée dépasse largement la facturation** (35 crédits facturés pour 115,5 estimés) : lis-la, mais n'en fais pas ton budget ;
   - **solution éprouvée sur AA** quand la musique est jugée trop chère : des nappes en boucle générées par le modèle d'effets (`loop: true`, 30 s, 2 variantes) ;
-  - Suno, Udio et équivalents sont exclus sans ta décision ; une musique synthétisée en code (skill `soundtrack`) n'est possible que sur ta demande, en stem séparé ;
+  - Suno, Udio et équivalents sont exclus sans ta décision ;
   - regroupe les générations : un lancement par lot de 20 au plus, `generations_count: 1` (ou 2 si tu dois choisir entre variantes) ; les liens de téléchargement expirent au bout de 2 h ;
   - les sons générés sont des **illustrations**, jamais le son réel d'un lieu ou d'un événement ;
   - le vrai son d'un extrait vidéo se **transcrit avant** de le prévoir : s'il porte un commentaire, une ambiance de la bibliothèque le remplace.

@@ -2,8 +2,9 @@
 Sauvegarde de la chaîne : mode d'emploi
 
 Ce que fait le script :
-- copie les dossiers et fichiers de la chaîne (par défaut : episodes, marque, direction, templates, .claude, CLAUDE.md,
-  package.json, package-lock.json, requirements.txt ; jamais node_modules) dans un nouveau dossier daté
+- copie les dossiers et fichiers de la chaîne (par défaut : episodes, marque, direction, docs, archives, .claude, CLAUDE.md,
+  package.json, package-lock.json, requirements.txt ; jamais node_modules ; docs/ est hors Git, la sauvegarde en est la
+  seule copie ; un élément absent est signalé et ignoré) dans un nouveau dossier daté
   « <nom du dossier de la chaîne>_AAAA-MM-JJ_HHMM » sous la destination choisie ;
 - vérifie chaque copie par empreinte SHA-256 et écrit MANIFEST.sha256.txt dans ce dossier ;
 - ne supprime ni ne remplace rien, à la source comme à la destination ; refuse une destination située dans la chaîne.
@@ -21,7 +22,7 @@ param(
     [Parameter(Mandatory = $true)][string]$Destination,
     [string]$Chaine = (Get-Location).Path,   # dossier de la chaîne (par défaut : le dossier courant)
     [switch]$Simulation,
-    [string[]]$Elements = @('episodes', 'marque', 'direction', 'templates', '.claude', 'CLAUDE.md', 'package.json', 'package-lock.json', 'requirements.txt')
+    [string[]]$Elements = @('episodes', 'marque', 'direction', 'docs', 'archives', '.claude', 'CLAUDE.md', 'package.json', 'package-lock.json', 'requirements.txt')
 )
 $ErrorActionPreference = 'Stop'
 # -Elements a,b passé par -File arrive en une seule chaîne : on la découpe.

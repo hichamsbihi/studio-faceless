@@ -20,7 +20,7 @@
 *.woff binary
 *.woff2 binary
 
-# Git LFS : binaires indispensables de la marque et des gabarits (signature, outro, appels, logo, polices, matières, sons)
+# Git LFS : binaires indispensables de la marque (signature, outro, appels, logo, polices, matières, sons)
 marque/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
 marque/**/*.mov filter=lfs diff=lfs merge=lfs -text
 marque/**/*.wav filter=lfs diff=lfs merge=lfs -text
@@ -28,9 +28,3 @@ marque/**/*.mp3 filter=lfs diff=lfs merge=lfs -text
 marque/**/*.png filter=lfs diff=lfs merge=lfs -text
 marque/**/*.jpg filter=lfs diff=lfs merge=lfs -text
 marque/**/*.ttf filter=lfs diff=lfs merge=lfs -text
-templates/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
-templates/**/*.wav filter=lfs diff=lfs merge=lfs -text
-templates/**/*.mp3 filter=lfs diff=lfs merge=lfs -text
-templates/**/*.png filter=lfs diff=lfs merge=lfs -text
-templates/**/*.jpg filter=lfs diff=lfs merge=lfs -text
-templates/**/*.ttf filter=lfs diff=lfs merge=lfs -text

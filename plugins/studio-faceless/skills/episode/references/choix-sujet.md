@@ -34,7 +34,7 @@ Six critères notés de 1 à 5. Trois comptent double : demande, nom connu, méd
 
 ## 4. Repérer un sujet qui surperforme et en reprendre le principe (`PROPOSÉ`)
 Écrit sur AA le 28/10/2026 à la demande du propriétaire (Q74), d'après la recherche du 26/10 pour l'E009. Exemple complet AA : la veille du 26/10/2026 (étude AA).
-1. **Vivier** : la veille (`docs/veille/`), les candidats non retenus des propositions de sujets précédentes, les bilans des épisodes publiés.
+1. **Vivier** : d'abord la banque de sujets de la chaîne (`direction/BANQUE_SUJETS.md`, s'il existe ; tenue par l'agent `strategist`) : ses sujets sont déjà vérifiés, avec faits et liens, et on ne refait pas leur recherche, on recoupe seulement ce qui est marqué « résumé » ou « secondaire » (validé sur AA, 02/11/2026). Puis la veille (`docs/veille/`), les candidats non retenus des propositions de sujets précédentes, les bilans des épisodes publiés.
 2. **vidIQ, seulement sur demande du propriétaire** (environ 60 crédits pour une recherche complète) :
    - les chaînes de la niche : `similar_channels` à partir des chaînes de référence de la chaîne (`direction/LIGNE_EDITORIALE.md`) et par description de la niche, plus les chaînes de `docs/veille/donnees/`. Jamais à partir de la nôtre : vidIQ peut la classer dans une autre niche (exemple AA : entraînement et science du sport) ;
    - les vidéos qui surperforment (`outliers`) : sur la liste des chaînes, puis par thème (format long, 6 mois, 500 k abonnés au plus, 50 000 vues au moins). Les recherches par thème ramènent du bruit ;

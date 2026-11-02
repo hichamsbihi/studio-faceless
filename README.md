@@ -18,18 +18,19 @@ Le plugin ne dépend d'aucune chaîne : les mentions d'AA ou de StudioV1 n'y ser
 ## Contenu du plugin (`plugins/studio-faceless/`)
 | Élément | Contenu |
 |---|---|
-| `skills/` | `episode` (fabrication d'un épisode, du sujet au mix), `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder` (analyse d'une vidéo par Gemini), `grilling` et `grill-me` (portes de questions), `humanizer`, `javascript-animation`, `soundtrack`, `find-skills` (recherche de skills), `elevenlabs-sound-effects`, `elevenlabs-music` (effets sonores et musique générés), `frontend-design` (conception visuelle et critique des planches et compositions), `remove-background` (détourage avec l'outil de HyperFrames), `blender-pro` (3D avec Blender installé dans la chaîne) |
-| `agents/` | `research`, `reviewer` (contrôle qualité en lecture seule), `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer` |
+| `skills/` | `episode` (fabrication d'un épisode, du sujet au mix), `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder` (analyse d'une vidéo par Gemini), `grilling` (portes de questions), `humanizer` (surcouche de relecture des scripts, appelée par le propriétaire), `find-skills` (recherche de skills), `elevenlabs-sound-effects`, `elevenlabs-music` (effets sonores et musique générés), `frontend-design` (conception visuelle et critique des planches et compositions), `remove-background` (détourage avec l'outil de HyperFrames), `blender-pro` (3D avec Blender installé dans la chaîne) |
+| `agents/` | sept agents : `research`, `reviewer` (contrôle qualité en lecture seule), `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`, `strategist` (positionnement, titres et banque de sujets d'une chaîne, une phase par appel) |
 | `hooks/` | garde-fou des commandes (par rôle) et injection des règles communes au début de chaque session |
 | `REGLES_STUDIO.md` | règles communes injectées à chaque session (moins de 9 000 caractères) : quoi lire, sous-agents, économie de tokens et de contexte, statuts et règles permanentes |
 | `referentiels/` | règles par défaut : `METHODE_RECIT`, `REFERENTIEL_QUALITE_REALISATION`, `DIRECTION_AUDIO`, `MOTION_CATALOG`, et `REGLES_DETAIL` (suite des règles communes : moteur et outils, parcours d'un épisode) |
 | `outils/` | contrôles (`controle/`), montage et mix du film (`montage/`), cartes, shorts, rendu, archivage, contrôle du dépôt, suivi des tokens |
 | `templates/` | gabarit de séquence v3, modèles de `CLAUDE.md`, de `BRIEF.md` et de `STATE.md` d'épisode, modèle d'`INDEX.md` des épisodes, contrat de mission |
-| `domaines/` | profils de domaine (`sport`) : règles communes aux chaînes d'un même sujet, entre les règles par défaut et la chaîne |
+| `domaines/` | profils de domaine (`sport`, `geo-economie`) : règles communes aux chaînes d'un même sujet, entre les règles par défaut et la chaîne |
 | `starter/` | squelette d'une nouvelle chaîne |
 | `vendor/claude-skills/` | skills HyperFrames de la version 0.8.149, figés |
+| `vendor/roast-room/` | copie figée du protocole de conseil roast-room (commit `e40f406`, licence MIT), lue par `strategist` seulement ; ni skill ni agent |
 
-Une fois installés, les skills et les agents portent le préfixe du plugin : `studio-faceless:episode`, `studio-faceless:motion-producer`. Depuis la 0.2.3, six skills (`humanizer`, `find-skills`, `javascript-animation`, `soundtrack`, `elevenlabs-music`, `elevenlabs-sound-effects`) ne sont plus proposés à Claude au démarrage : le propriétaire les appelle avec `/nom`.
+Une fois installés, les skills et les agents portent le préfixe du plugin : `studio-faceless:episode`, `studio-faceless:motion-producer`. Quatre skills (`humanizer`, `find-skills`, `elevenlabs-music` et `elevenlabs-sound-effects`) portent `disable-model-invocation: true` : ils ne sont pas proposés à Claude au démarrage, le propriétaire les appelle avec `/nom`.
 
 ## Démarrer
 - **Commencer ici, pas à pas** : [`DEMARRAGE.md`](DEMARRAGE.md), de la machine vide à la première vidéo d'une nouvelle chaîne (installation, création de la chaîne, identité, fabrication, publication, archivage).
@@ -56,7 +57,8 @@ Commits courts, en français, préfixés par la zone : `plugin : …`, `skills :
 ## Licence
 Dépôt privé, propriété de Hicham, tous droits réservés. Les contenus tiers gardent leur licence :
 - HyperFrames et ses skills : Apache-2.0 ;
-- `humanizer`, `javascript-animation`, `soundtrack`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music` : MIT (leur `LICENSE` et leur provenance sont dans leur dossier) ;
+- `vendor/roast-room/` : MIT, © 2026 AI Automation Society (son `LICENSE` et sa provenance sont dans le dossier) ;
+- `humanizer`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music` : MIT (leur `LICENSE` et leur provenance sont dans leur dossier) ;
 - `blender-pro` : références MIT (scenario-labs/skills, RobLe3/cc-blender-skill ; leurs `LICENSE` sont dans `skills/blender-pro/licences/`) ;
 - `frontend-design` : Apache 2.0, © Anthropic (son `LICENSE.txt` et sa provenance sont dans son dossier) ;
 - `skills/regarder/references/claude-video/` : MIT, © Bradley Bonanno (son `LICENSE` est dans le dossier) ;

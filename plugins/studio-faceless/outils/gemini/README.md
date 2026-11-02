@@ -1,6 +1,6 @@
 # Outils Gemini
 
-Appels réseau vers l'API Gemini de Google : seuls outils du plugin dans ce cas. Clé `GEMINI_API_KEY` (environnement, sinon variables utilisateur Windows), jamais affichée ni écrite. Un contenu inédit ne part chez Google qu'avec la clé du palier payant : décision du propriétaire, hors plugin. Ne jamais écraser un fichier existant.
+Appels réseau vers l'API Gemini de Google (l'autre outil du plugin qui appelle le réseau est `outils/recherche/youtube_chaine.py`, API YouTube Data). Clé `GEMINI_API_KEY` (environnement, sinon variables utilisateur Windows), jamais affichée ni écrite. Un contenu inédit ne part chez Google qu'avec la clé du palier payant : décision du propriétaire, hors plugin. Ne jamais écraser un fichier existant.
 
 | Outil | Rôle | Commande (depuis la racine de la chaîne) | Validé sur MM |
 |---|---|---|---|

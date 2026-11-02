@@ -34,7 +34,7 @@ Le skill n'est pas dans le champ `skills:` du `motion-producer` (qui précharge 
 
 **Ordre de ce qui fait foi** (de `SKILL.md`) : les règles communes du studio (`REGLES_STUDIO.md`, injectées au début de chaque session) puis le `CLAUDE.md` de la chaîne ; les référentiels du plugin ; `direction/LIGNE_EDITORIALE.md` de la chaîne et `direction/ECARTS.md`, qui l'emporte sur les règles par défaut ; `marque/README.md` et `marque/son/README.md` ; le `CLAUDE.md` et le `BRIEF.md` de l'épisode.
 
-**Les 14 étapes** (numérotées 0 à 13 dans le skill ; `REGLES_DETAIL.md` (section « Parcours d'un épisode », ex-`REGLES_STUDIO.md`) en compte 11 avec une autre numérotation) : 0 Sujet, 1 Recherche, 2 Angle et découpage, 3 Script, 4 Voix, 5 Socle, 6 Séquence témoin, 7 Production, 8 Rendus, 9 Collage en voix seule, 10 Mix du film, 11 Retours, 12 Publication, 13 Après la sortie.
+**Les 14 étapes** (numérotées 0 à 13 dans le skill, qui fait foi ; `REGLES_DETAIL.md`, section « Parcours d'un épisode », y renvoie depuis la 0.4.0) : 0 Sujet, 1 Recherche, 2 Angle et découpage, 3 Script, 4 Voix, 5 Socle, 6 Séquence témoin, 7 Production, 8 Rendus, 9 Collage en voix seule, 10 Mix du film, 11 Retours, 12 Publication, 13 Après la sortie.
 
 **Les 8 règles qui évitent les reprises** (`SKILL.md`) : une porte de questions avant chaque étape ; l'image d'abord ; le socle fini avant le premier producteur ; une séquence témoin ; des corrections dans la même version ; un rendu à la fois ; des séquences en voix seule (un seul mix du film) ; Claude n'écoute pas et ne déclare aucun visionnage.
 
@@ -219,7 +219,7 @@ Le skill n'est pas dans le champ `skills:` du `motion-producer` (qui précharge 
 
 ## Tableau des portes de questions
 
-Une porte se pose avec le skill `studio-faceless:grilling` (alias utilisateur : `studio-faceless:grill-me`). Les réponses vont au `BRIEF.md`, datées. Colonne « Intitulé dans `SKILL.md` » : le libellé de la colonne « Porte de questions » du tableau des étapes. Les colonnes suivantes viennent de `grilles.md`.
+Une porte se pose avec le skill `studio-faceless:grilling`. Les réponses vont au `BRIEF.md`, datées. Colonne « Intitulé dans `SKILL.md` » : le libellé de la colonne « Porte de questions » du tableau des étapes. Les colonnes suivantes viennent de `grilles.md`.
 
 | Porte (étape) | Intitulé dans `SKILL.md` | Questions de `grilles.md` | Ce que la porte décide | Réponse par défaut |
 |---|---|---|---|---|

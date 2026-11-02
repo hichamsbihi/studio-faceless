@@ -1,14 +1,15 @@
-# Skills HyperFrames figés (`vendor/claude-skills/`)
+# Copies figées de tiers (`vendor/claude-skills/` et `vendor/roast-room/`)
 
-Cette page décrit la copie figée des dix skills HyperFrames 0.8.149 rangée dans `plugins/studio-faceless/vendor/claude-skills/` : ce que chaque skill fait, combien de fichiers il compte, quels agents du plugin le chargent. C'est une **copie de tiers inchangée** : il n'y a pas de fiche par fichier interne.
+Cette page décrit les deux copies de tiers rangées dans `plugins/studio-faceless/vendor/` : les dix skills HyperFrames 0.8.149 (`vendor/claude-skills/` : ce que chaque skill fait, combien de fichiers il compte, quels agents du plugin le chargent) et le protocole roast-room de l'agent `strategist` (`vendor/roast-room/`, 0.4.0, MIT). Ce sont des **copies de tiers inchangées** : il n'y a pas de fiche par fichier interne.
 
 ## Table des matières
-- [Principe et statut de la copie](#principe-et-statut-de-la-copie)
+- [Principe et statut de la copie](#principe-et-statut-de-la-copie) (HyperFrames)
 - [Vue d'ensemble](#vue-densemble)
 - [Fiche du dossier : README.md](#vendorclaude-skillsreadmemd)
 - [Fiches des dix skills](#fiches-des-dix-skills)
   - [hyperframes](#vendorclaude-skillshyperframes) · [hyperframes-animation](#vendorclaude-skillshyperframes-animation) · [hyperframes-audio](#vendorclaude-skillshyperframes-audio) · [hyperframes-cli](#vendorclaude-skillshyperframes-cli) · [hyperframes-core](#vendorclaude-skillshyperframes-core)
   - [hyperframes-creative](#vendorclaude-skillshyperframes-creative) · [hyperframes-keyframes](#vendorclaude-skillshyperframes-keyframes) · [hyperframes-registry](#vendorclaude-skillshyperframes-registry) · [hyperframes-studio](#vendorclaude-skillshyperframes-studio) · [media-use](#vendorclaude-skillsmedia-use)
+- [vendor/roast-room (0.4.0)](#vendorroast-room-040) : copie du protocole de conseil lu par `strategist`
 - [Qui charge quoi](#qui-charge-quoi)
 - [Où ces skills s'installent et comment les faire évoluer](#où-ces-skills-sinstallent-et-comment-les-faire-évoluer)
 - [Points à vérifier et tensions avec les règles du studio](#points-à-vérifier-et-tensions-avec-les-règles-du-studio)
@@ -117,13 +118,19 @@ Chaque fiche donne le dossier, le nombre de fichiers, le rôle d'après le `SKIL
   - `direction-sonore` précise : « `media-use` n'est pas une source de sons pour la chaîne » : ses effets fournis (whoosh, riser, glitch…) n'ont ni la provenance ni le registre voulus ; les sons viennent de `marque/son/` ;
   - ses images de catalogue ne respectent pas la règle des médias du studio (réels, sous licence libre, provenance consignée).
 
+## vendor/roast-room (0.4.0)
+- **D'où** : https://github.com/nateherkai/roast-room, commit `e40f406`, copié le 02/11/2026 sans modification. **Licence** : MIT (`vendor/roast-room/LICENSE`, © 2026 AI Automation Society).
+- **Contenu** (118 fichiers : 117 copiés et le `README.md` ajouté ; environ 1,5 Mo) : le protocole du Chair (`SKILL.md`), `roster.json`, `references/`, les cerveaux des 12 sièges (`brains/`), leurs consignes (`seats/council-<clé>.md`, venues de `.claude/agents/`), `scripts/check_quotes.py`. Correspondance des chemins : `vendor/roast-room/README.md`.
+- **Non copié** : la salle visuelle (`app/`), le skill `newroaster` (il télécharge des vidéos pour bâtir un siège), la session d'exemple.
+- **Ce n'est ni un skill ni un agent du plugin** : rien ne se charge au démarrage. Seul `strategist` le lit, en phase `conseil` ; les sièges n'existent pas comme agents (un sous-agent ne peut pas en lancer d'autres).
+
 ## Qui charge quoi
 | Agent | Préchargés (champ `skills:`) | À la demande (outil Skill) |
 |---|---|---|
 | `motion-producer` | `hyperframes-core`, `hyperframes-keyframes`, `hyperframes-animation` (WAAPI et CSS seulement) | `studio-faceless:direction-sonore`, `hyperframes-cli`, `hyperframes-audio` (brief ancien), `media-use` |
 | `shorts-producer` | `studio-faceless:shorts`, `hyperframes-core`, `hyperframes-keyframes` | `hyperframes-cli`, `hyperframes-animation`, `hyperframes-audio`, `media-use`, `studio-faceless:direction-sonore` |
 | `art-director` | `hyperframes-creative`, `hyperframes-animation`, `studio-faceless:thumbnail-strategist` | `studio-faceless:direction-sonore` ; « jamais les dix ensemble » |
-| `research`, `reviewer`, `studio-maintainer` | aucun | — |
+| `research`, `reviewer`, `studio-maintainer`, `strategist` | aucun | — (`strategist` lit `vendor/roast-room/` avec Read, pas comme skill) |
 
 Précisions : ce tableau reprend le champ `skills:` de l'en-tête de chaque définition dans `agents/` et les phrases « Skills » de leur corps. Un plugin ignore les champs `hooks`, `mcpServers` et `permissionMode` des en-têtes d'agent ([`../ARCHITECTURE.md`](../ARCHITECTURE.md)) ; que `skills:` soit honoré tel quel pour des skills d'utilisateur sans préfixe est **à vérifier** à la première session. Pas d'entretien d'intention ni de routage « création » du skill `hyperframes` pour les producteurs. Détail des agents : [`agents.md`](agents.md).
 

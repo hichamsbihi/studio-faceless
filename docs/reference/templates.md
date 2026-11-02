@@ -47,7 +47,7 @@ templates/
 ### templates/CONTRAT_MISSION.template.md
 **Rôle** : modèle du message de délégation à un sous-agent, avec les neuf champs du contrat et le brief de séquence court destiné au `motion-producer`.
 
-**Quand il sert** : le Studio Director en recopie le bloc `text` dans **chaque** délégation (research, reviewer, art-director, motion-producer, shorts-producer, studio-maintainer). C'est aussi la forme qu'attendent les agents : sans les champs essentiels, ils ne commencent pas et renvoient la liste des champs manquants.
+**Quand il sert** : le Studio Director en recopie le bloc `text` dans **chaque** délégation (research, reviewer, art-director, motion-producer, shorts-producer, studio-maintainer, strategist). C'est aussi la forme qu'attendent les agents : sans les champs essentiels, ils ne commencent pas et renvoient la liste des champs manquants.
 
 **Contenu**
 - **Bloc des neuf champs** (un champ sans objet vaut « aucun ») :
@@ -64,14 +64,15 @@ templates/
   | `décisions validées` | décision, date et référence, ou « aucune » |
   | `restrictions` | interdits propres à la mission |
 
-- **Section « Règles de la chaîne utiles à la mission »** (0.2.3) : 10 lignes au plus (protection des personnes, sources admises, langues, autres), recopiées du `CLAUDE.md` de la chaîne par l'orchestrateur, à la suite des neuf champs. **Obligatoire pour `research` et `studio-maintainer`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents.
+- **Section « Règles de la chaîne utiles à la mission »** (0.2.3) : 10 lignes au plus (protection des personnes, sources admises, langues, autres, et pour `strategist` : propriétaire, domaine, chaînes sœurs, chaînes de référence), recopiées du `CLAUDE.md` de la chaîne par l'orchestrateur, à la suite des neuf champs. **Obligatoire pour `research`, `studio-maintainer` et `strategist`** (0.4.0), qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents.
 - **« Selon l'agent »** :
   - `research` : écriture toujours « aucun » ; section des règles de la chaîne obligatoire ;
   - `reviewer` : écriture toujours « aucun » ; le contrat nomme l'objet à contrôler (script, séquence ou film), ses fichiers et la durée visée ;
   - `art-director` : écriture limitée au dossier des images extraites ;
   - `motion-producer` : il faut en plus le chemin du kit (`episodes/<id>/kit/`), un brief de séquence court et un dossier d'écriture exact `episodes/<id>/production/<séquence>-vN/` ; le producteur s'arrête à `render.sh` ; les restrictions rappellent l'interdiction de l'effet diaporama avec sa définition (`REFERENTIEL_QUALITE_REALISATION.md` § 2) ; une correction après visionnage se fait dans la même version (validé sur AA, 24/10/2026) : reprise du producteur si son cache est chaud, sinon un agent court avec un brief de quelques lignes ; nouvelle version seulement pour un défaut majeur ;
   - `shorts-producer` : kit shorts (`episodes/<id>/kit/shorts/`), brief de short, dossier `episodes/<id>/production/short-0N-vM/` ; mêmes règles que le producteur de séquences ;
-  - `studio-maintainer` : `episode_id` = « studio » ; sans écriture autorisée, il constate seulement ; section des règles de la chaîne obligatoire.
+  - `studio-maintainer` : `episode_id` = « studio » ; sans écriture autorisée, il constate seulement ; section des règles de la chaîne obligatoire ;
+  - `strategist` (0.4.0) : `episode_id` = « studio » ; deux champs en plus, `phase` (`dossier`, `brief`, `conseil`, `titres`, `sujets` ou `banque`) et `session` (`docs/strategie/<AAAA-MM-JJ>-<sujet>/`) ; écriture dans `docs/` de la chaîne, et dans `direction/BANQUE_SUJETS.md` seulement si « décisions validées » cite l'accord daté du propriétaire ; section des règles de la chaîne obligatoire (ligne `pour strategist`).
 - **Brief de séquence court** (une page, **3 Ko au plus**, validé sur AA le 18/10/2026). Le producteur ne lit que ce brief, le kit et le `CLAUDE.md` de l'épisode : les règles de `direction/` y sont recopiées en extraits de quelques lignes, jamais renvoyées à un fichier entier. Dix champs :
 
   | Champ | Contenu |

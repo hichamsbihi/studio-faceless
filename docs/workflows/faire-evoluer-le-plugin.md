@@ -163,7 +163,7 @@ flowchart TD
 - `hooks/garde_commandes.py` (messages « 0.8.149 figée » et règles contre l'autre version) ;
 - `agents/motion-producer.md` et `agents/shorts-producer.md` (« Version : celle de `package.json` ») ;
 - `templates/sequence-gabarit-v3/render.sh` (contrôle exact de la version) ;
-- `skills/episode/references/production.md`, `skills/direction-sonore/` (`SKILL.md`, `references/transitions-et-silences.md`), `skills/javascript-animation/SKILL.md`, `referentiels/DIRECTION_AUDIO.md` (constats faits sur la 0.8.149, à refaire) ;
+- `skills/episode/references/production.md`, `skills/direction-sonore/` (`SKILL.md`, `references/transitions-et-silences.md`), `referentiels/DIRECTION_AUDIO.md` (constats faits sur la 0.8.149, à refaire) ;
 - chaque chaîne : son `package.json` et son `package-lock.json`, puis `npm ci`.
 
 ## Contraintes d'un plugin à garder en tête

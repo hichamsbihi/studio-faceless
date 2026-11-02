@@ -27,19 +27,20 @@ Versions figées, navigateurs et rendus (`--workers 2` au plus), outils, garde-f
 
 ## Sous-agents (`studio-faceless:<nom>`)
 - **Studio Director** : Claude principal reçoit les demandes du propriétaire et fait lui-même les petites tâches. Il délègue seulement quand c'est utile, coordonne, contrôle la cohérence et soumet au propriétaire. Les sous-agents ne se délèguent rien entre eux.
-- **Les six agents** :
+- **Les sept agents** :
   - `research` : faits, études, médias candidats, en lecture seule ;
   - `reviewer` : contrôle qualité en lecture seule d'un script, d'une séquence ou du film contre une liste, **avant de les montrer au propriétaire** ; ne valide rien ;
   - `art-director` : critique indépendante des rendus, **à la demande du propriétaire** ; storyboard seulement sur demande ; choisit lui-même les techniques d'animation et de transition d'un film ;
   - `motion-producer` : mise en scène HyperFrames d'une séquence, jusqu'à `render.sh` ;
   - `shorts-producer` : montage d'un short vertical tiré d'un film, jusqu'à `render.sh` ;
-  - `studio-maintainer` : cohérence, catalogue ; aucune production.
-- **Contrat de mission** : toute délégation donne `episode_id` (ou « studio »), objectif, brief, fichiers autorisés en lecture, fichiers autorisés en écriture, sources communes, livrables, décisions validées et restrictions. Modèle : `${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`. `research` et `studio-maintainer` démarrent sans le `CLAUDE.md` de la chaîne : leur contrat y recopie, en 10 lignes au plus, les règles de la chaîne utiles à la mission.
+  - `studio-maintainer` : cohérence, catalogue ; aucune production ;
+  - `strategist` : positionnement, conseil roast-room, titres, vérification des sujets et banque de sujets, une phase par appel ; tout ce travail passe par lui, hors du contexte principal.
+- **Contrat de mission** : toute délégation donne `episode_id` (ou « studio »), objectif, brief, fichiers autorisés en lecture, fichiers autorisés en écriture, sources communes, livrables, décisions validées et restrictions. Modèle : `${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`. `research`, `studio-maintainer` et `strategist` démarrent sans le `CLAUDE.md` de la chaîne : leur contrat y recopie, en 10 lignes au plus, les règles de la chaîne utiles à la mission.
 - **Isolation** : un sous-agent ne lit pas les autres épisodes, sauf mention au contrat. Rien de propre à un épisode ne devient une règle de la chaîne sans accord du propriétaire, versé dans `direction/`.
 - Un sous-agent ne voit pas la mémoire de Claude : ce qu'il doit savoir est dans `direction/`, dans les référentiels, dans sa définition ou dans son contrat.
 
 ## Parcours d'un épisode
-Les onze étapes, du sujet à l'archivage : section « Parcours d'un épisode » de `REGLES_DETAIL.md` ; détail dans le skill `studio-faceless:episode`.
+Étapes 0 à 13, du sujet à l'archivage : skill `studio-faceless:episode` ; renvoi dans `REGLES_DETAIL.md`, section « Parcours d'un épisode ».
 
 ## Économie de tokens et de contexte
 - **Sessions** : à chaque fin de porte, réécrire `episodes/<id>/STATE.md` (2,5 Ko au plus), mettre à jour `episodes/INDEX.md`, puis `/clear` ; on reprend en lisant seulement `INDEX.md` puis `STATE.md`. Un `/compact` remet dans le contexte les skills appelés et les fichiers lus : 124,6 k au premier appel, contre 81 à 88 k en session neuve (30/10/2026). Il reste permis au milieu d'une longue porte, après avoir écrit l'état. Le modèle du fil principal ne change que juste après un `/clear`. Les lectures lourdes vont à un sous-agent qui ne renvoie qu'une synthèse.

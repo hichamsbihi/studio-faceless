@@ -1,6 +1,6 @@
 # Ce qui n'entre jamais dans le dépôt de la chaîne (règles du plugin studio-faceless, validées sur AA le 21/10/2026).
 # Le dépôt garde le texte (code, configuration, gabarits, directives, fiches) et, en Git LFS, les binaires indispensables
-# de marque/ et templates/. Les médias des épisodes, les rendus et les archives vont dans la sauvegarde externe.
+# de marque/. Les médias des épisodes, les rendus et les archives vont dans la sauvegarde externe.
 
 # Dépendances et caches (recréés par npm ci et par Python)
 node_modules/
@@ -9,6 +9,10 @@ __pycache__/
 
 # Réglages personnels de Claude Code
 .claude/settings.local.json
+
+# docs/ de la chaîne (rapports, veille, stratégie) : hors Git, gardé sur le disque et dans la sauvegarde
+# (décision du 30/10/2026 ; outils/sauvegarde-chaine.ps1 le copie par défaut)
+docs/
 
 # Corbeille de l'archivage, archives et fichiers partiels
 _A_SUPPRIMER/

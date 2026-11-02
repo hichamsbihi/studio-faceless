@@ -1,6 +1,6 @@
 # Référence : les agents du plugin (`agents/`)
 
-Ce document décrit les six agents du plugin `studio-faceless` : leur en-tête, ce qu'ils lisent, ce qu'ils écrivent, ce que le garde-fou leur interdit, ce qu'ils livrent et qui les appelle. Les fichiers de `agents/` font foi ; en cas d'écart, la documentation se corrige.
+Ce document décrit les sept agents du plugin `studio-faceless` : leur en-tête, ce qu'ils lisent, ce qu'ils écrivent, ce que le garde-fou leur interdit, ce qu'ils livrent et qui les appelle. Les fichiers de `agents/` font foi ; en cas d'écart, la documentation se corrige.
 
 ## Table des matières
 - [Vue d'ensemble](#vue-densemble)
@@ -13,12 +13,13 @@ Ce document décrit les six agents du plugin `studio-faceless` : leur en-tête, 
   - [agents/motion-producer.md](#agentsmotion-producermd)
   - [agents/shorts-producer.md](#agentsshorts-producermd)
   - [agents/studio-maintainer.md](#agentsstudio-maintainermd)
+  - [agents/strategist.md](#agentsstrategistmd)
 - [Écarts et points à vérifier relevés dans ces fichiers](#écarts-et-points-à-vérifier-relevés-dans-ces-fichiers)
 
 ## Vue d'ensemble
 - **Un agent est un sous-agent de Claude principal** (le Studio Director). Il est lancé par le Studio Director avec un **contrat de mission** (neuf champs, modèle : [`templates/CONTRAT_MISSION.template.md`](templates.md#templatescontrat_missiontemplatemd)). Les agents ne se délèguent rien entre eux (`REGLES_STUDIO.md`, « Sous-agents »).
-- **Noms** : une fois le plugin installé, chaque agent prend le préfixe du plugin : `studio-faceless:research`, `studio-faceless:reviewer`, `studio-faceless:art-director`, `studio-faceless:motion-producer`, `studio-faceless:shorts-producer`, `studio-faceless:studio-maintainer`. Le champ `name:` de l'en-tête garde le nom court ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Noms »).
-- **En-tête** : chaque fichier commence par un en-tête YAML : `name`, `description` (ce que Claude lit pour décider de déléguer), `tools`, `model`, `color`, `skills` (skills préchargés dans le contexte de l'agent, quand il y en a) et, pour `research` et `studio-maintainer` depuis la 0.2.3, `omitClaudeMd: true` : l'agent démarre sans le `CLAUDE.md` de la chaîne (champ qui demande Claude Code 2.1.271 ou plus ; en 2.1.169, version relevée sur la machine de mise au point, il n'a pas d'effet, à vérifier). Les règles de la chaîne dont ils ont besoin sont alors dans leur contrat, section « Règles de la chaîne utiles à la mission » ([`templates.md`](templates.md#templatescontrat_missiontemplatemd)). `reviewer` garde le `CLAUDE.md` : il contrôle les règles de la chaîne.
+- **Noms** : une fois le plugin installé, chaque agent prend le préfixe du plugin : `studio-faceless:research`, `studio-faceless:reviewer`, `studio-faceless:art-director`, `studio-faceless:motion-producer`, `studio-faceless:shorts-producer`, `studio-faceless:studio-maintainer`, `studio-faceless:strategist` (0.4.0). Le champ `name:` de l'en-tête garde le nom court ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Noms »).
+- **En-tête** : chaque fichier commence par un en-tête YAML : `name`, `description` (ce que Claude lit pour décider de déléguer), `tools`, `model`, `color`, `skills` (skills préchargés dans le contexte de l'agent, quand il y en a) et, pour `research`, `studio-maintainer` (depuis la 0.2.3) et `strategist` (0.4.0), `omitClaudeMd: true` : l'agent démarre sans le `CLAUDE.md` de la chaîne (champ qui demande Claude Code 2.1.271 ou plus ; en 2.1.169, version relevée sur la machine de mise au point, il n'a pas d'effet, à vérifier). Les règles de la chaîne dont ils ont besoin sont alors dans leur contrat, section « Règles de la chaîne utiles à la mission » ([`templates.md`](templates.md#templatescontrat_missiontemplatemd)). `reviewer` garde le `CLAUDE.md` : il contrôle les règles de la chaîne.
 - **Un plugin ignore les champs `hooks`, `mcpServers` et `permissionMode`** de l'en-tête de ses agents ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Garde-fou »). Les limites par rôle viennent donc du hook du plugin (`hooks/garde_commandes.py`), qui reconnaît le rôle au champ `agent_type` : voir le tableau `ROLES` plus bas.
 - **Skills préchargés** : `hyperframes-*` sont des skills d'utilisateur (copiés dans `~/.claude/skills/`, voir [`vendor.md`](vendor.md)), sans préfixe ; `studio-faceless:…` sont les skills du plugin. Un agent ne voit ni la mémoire de Claude ni les autres épisodes : ce qu'il doit savoir est dans le contrat, `direction/`, les référentiels ou sa propre définition.
 - **Qui décide** : le propriétaire de la chaîne (nommé dans son `CLAUDE.md`) est le seul à valider. Aucun agent ne valide, ne publie, n'achète ni ne déclare une écoute ou un visionnage.
@@ -27,25 +28,25 @@ Ce document décrit les six agents du plugin `studio-faceless` : leur en-tête, 
 Workflows où ils interviennent : [`../workflows/recherche.md`](../workflows/recherche.md), [`../workflows/critique-da.md`](../workflows/critique-da.md), [`../workflows/sequence.md`](../workflows/sequence.md) ; le parcours complet est dans [`../workflows/episode.md`](../workflows/episode.md) ; les shorts dans [`../workflows/shorts.md`](../workflows/shorts.md).
 
 ## Tableau comparatif
-| | `research` | `reviewer` | `art-director` | `motion-producer` | `shorts-producer` | `studio-maintainer` |
-|---|---|---|---|---|---|---|
-| **Fichier** | `agents/research.md` | `agents/reviewer.md` | `agents/art-director.md` | `agents/motion-producer.md` | `agents/shorts-producer.md` | `agents/studio-maintainer.md` |
-| **Mission en une ligne** | Vérifier faits, études, médias candidats | Contrôle qualité en lecture seule d'un script, d'une séquence ou du film contre une liste | Intention visuelle, storyboard, critique indépendante d'un rendu | Mise en scène HyperFrames d'une séquence, jusqu'à `render.sh` | Montage vertical d'un short, jusqu'à `render.sh` | Cohérence, catalogue, reproductibilité |
-| **Modèle** | `sonnet` | `sonnet` | `inherit` | `inherit` | `inherit` | `sonnet` |
-| **Couleur** | blue | yellow | purple | orange | pink | green |
-| **Outils** | Read, Grep, Glob, WebFetch, WebSearch | Read, Grep, Glob, Bash | Read, Grep, Glob, Bash, WebFetch, WebSearch, Skill | Read, Write, Edit, Grep, Glob, Bash, Skill, ToolSearch, Monitor, TaskStop | idem `motion-producer` | Read, Grep, Glob, Bash, Edit, Write, WebFetch |
-| **Skills préchargés** | aucun | aucun | `hyperframes-creative`, `hyperframes-animation`, `studio-faceless:thumbnail-strategist` | `hyperframes-core`, `hyperframes-keyframes`, `hyperframes-animation` (WAAPI et CSS seulement) | `studio-faceless:shorts`, `hyperframes-core`, `hyperframes-keyframes` | aucun |
-| **`CLAUDE.md` de la chaîne** | omis (`omitClaudeMd`), règles dans le contrat | lu | lu | lu | lu | omis (`omitClaudeMd`), règles dans le contrat |
-| **Rôle du garde-fou** (`ROLES`) | aucun (pas d'outil d'écriture ni de Bash) | `relecteur` (Bash en lecture et mesure seulement) | `directeur-artistique` | `producteur` | `producteur` | `mainteneur` |
-| **Droits d'écriture** | aucun | aucun (consigne : Bash pour lire et mesurer seulement) | aucun outil d'écriture ; Bash limité à `ffmpeg`, `ffprobe`, `mkdir` pour des images extraites dans le dossier du contrat | son dossier `episodes/<id>/production/<séquence>-vN/` | son dossier `episodes/<id>/production/short-0N-vM/` | Write et Edit seulement, dans ce que le contrat autorise ; jamais par Bash |
-| **Refusé par le garde-fou** | — | règles communes seulement | toute commande hors `ffmpeg`/`ffprobe`/`mkdir`, `-y`, sortie en zone protégée | citer `direction/`, `templates/`, `.claude/` ou un `CLAUDE.md` en Bash (sauf les chemins du plugin installé, sans « .. ») ; écrire dans `marque/` existant, `inputs/`, un MP4 existant | idem `motion-producer` | écriture Bash ; écriture dans `.claude/`, un projet de production, `marque/` existant, `inputs/`, un MP4 existant |
-| **Livrable** | 5 rubriques : faits, études, médias candidats, limites, fichiers lus | tableau point · verdict · minutage · preuve, 25 lignes au plus | storyboard (tableau) **ou** critique (5 à 10 problèmes), techniques à proposer, fichiers lus | dossier de séquence, `render.sh`, `README.md`, `PROVENANCE.md`, planche, rapport en 5 points | dossier de short, `render.sh` (deux rendus), `README.md`, `PROVENANCE.md`, rapport en 5 points | constats, changements, propositions non appliquées, risques |
-| **Appelé à l'étape** | 1 (recherche) et 5 (médias du socle) | avant de montrer un script (3), une séquence (8) ou le film (10) au propriétaire | à la demande du propriétaire seulement | 6 (séquence témoin) et 7 (production) | shorts, après le film publié ou approuvé | à la demande, mission « studio » |
-| **Peut lancer un rendu ?** | non | non | non | non : il écrit `render.sh` et s'arrête | non : idem | non |
-| **Correction après retour** | un nouvel agent | un nouvel agent | un nouvel agent | dans la même version : reprise si le cache est chaud, sinon agent court | nouvelle version, par un nouvel agent | nouvelle mission |
+| | `research` | `reviewer` | `art-director` | `motion-producer` | `shorts-producer` | `studio-maintainer` | `strategist` |
+|---|---|---|---|---|---|---|---|
+| **Fichier** | `agents/research.md` | `agents/reviewer.md` | `agents/art-director.md` | `agents/motion-producer.md` | `agents/shorts-producer.md` | `agents/studio-maintainer.md` | `agents/strategist.md` |
+| **Mission en une ligne** | Vérifier faits, études, médias candidats | Contrôle qualité en lecture seule d'un script, d'une séquence ou du film contre une liste | Intention visuelle, storyboard, critique indépendante d'un rendu | Mise en scène HyperFrames d'une séquence, jusqu'à `render.sh` | Montage vertical d'un short, jusqu'à `render.sh` | Cohérence, catalogue, reproductibilité | Positionnement et stratégie éditoriale d'une chaîne, une phase par appel (dossier, brief, conseil, titres, sujets, banque) |
+| **Modèle** | `sonnet` | `sonnet` | `inherit` | `inherit` | `inherit` | `sonnet` | `inherit` |
+| **Couleur** | blue | yellow | purple | orange | pink | green | cyan |
+| **Outils** | Read, Grep, Glob, WebFetch, WebSearch | Read, Grep, Glob, Bash | Read, Grep, Glob, Bash, WebFetch, WebSearch, Skill | Read, Write, Edit, Grep, Glob, Bash, Skill, ToolSearch, Monitor, TaskStop | idem `motion-producer` | Read, Grep, Glob, Bash, Edit, Write, WebFetch | Read, Write, Edit, Grep, Glob, Bash, WebFetch, WebSearch |
+| **Skills préchargés** | aucun | aucun | `hyperframes-creative`, `hyperframes-animation`, `studio-faceless:thumbnail-strategist` | `hyperframes-core`, `hyperframes-keyframes`, `hyperframes-animation` (WAAPI et CSS seulement) | `studio-faceless:shorts`, `hyperframes-core`, `hyperframes-keyframes` | aucun | aucun |
+| **`CLAUDE.md` de la chaîne** | omis (`omitClaudeMd`), règles dans le contrat | lu | lu | lu | lu | omis (`omitClaudeMd`), règles dans le contrat | omis (`omitClaudeMd`), règles dans le contrat |
+| **Rôle du garde-fou** (`ROLES`) | aucun (pas d'outil d'écriture ni de Bash) | `relecteur` (Bash en lecture et mesure seulement) | `directeur-artistique` | `producteur` | `producteur` | `mainteneur` | `stratege` |
+| **Droits d'écriture** | aucun | aucun (consigne : Bash pour lire et mesurer seulement) | aucun outil d'écriture ; Bash limité à `ffmpeg`, `ffprobe`, `mkdir` pour des images extraites dans le dossier du contrat | son dossier `episodes/<id>/production/<séquence>-vN/` | son dossier `episodes/<id>/production/short-0N-vM/` | Write et Edit seulement, dans ce que le contrat autorise ; jamais par Bash | Write et Edit seulement dans `docs/` de la chaîne, et dans `direction/BANQUE_SUJETS.md` sur accord du propriétaire cité au contrat |
+| **Refusé par le garde-fou** | — | règles communes seulement | toute commande hors `ffmpeg`/`ffprobe`/`mkdir`, `-y`, sortie en zone protégée | citer `direction/`, `templates/`, `.claude/` ou un `CLAUDE.md` en Bash (sauf les chemins du plugin installé, sans « .. ») ; écrire dans `marque/` existant, `inputs/`, un MP4 existant | idem `motion-producer` | écriture Bash ; écriture dans `.claude/`, un projet de production, `marque/` existant, `inputs/`, un MP4 existant | écriture hors `docs/` et `direction/BANQUE_SUJETS.md` ; Bash hors `python` (outils du plugin), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` ; script en ligne |
+| **Livrable** | 5 rubriques : faits, études, médias candidats, limites, fichiers lus | tableau point · verdict · minutage · preuve, 25 lignes au plus | storyboard (tableau) **ou** critique (5 à 10 problèmes), techniques à proposer, fichiers lus | dossier de séquence, `render.sh`, `README.md`, `PROVENANCE.md`, planche, rapport en 5 points | dossier de short, `render.sh` (deux rendus), `README.md`, `PROVENANCE.md`, rapport en 5 points | constats, changements, propositions non appliquées, risques | synthèse de 300 mots au plus : phase, fichiers, décisions en blocs, coût, limites, fichiers lus |
+| **Appelé à l'étape** | 1 (recherche) et 5 (médias du socle) | avant de montrer un script (3), une séquence (8) ou le film (10) au propriétaire | à la demande du propriétaire seulement | 6 (séquence témoin) et 7 (production) | shorts, après le film publié ou approuvé | à la demande, mission « studio » | hors parcours d'un épisode : positionnement de la chaîne, titres, banque de sujets (le skill `episode` lit la banque, `references/choix-sujet.md` § 4) ; mission « studio » |
+| **Peut lancer un rendu ?** | non | non | non | non : il écrit `render.sh` et s'arrête | non : idem | non | non |
+| **Correction après retour** | un nouvel agent | un nouvel agent | un nouvel agent | dans la même version : reprise si le cache est chaud, sinon agent court | nouvelle version, par un nouvel agent | nouvelle mission | nouveau fichier (`…_v2`) par un nouvel appel |
 
 ## Garde-fou : ce qui est imposé et ce qui repose sur la consigne
-Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents compris. Il déduit le rôle de `agent_type` (préfixe `studio-faceless:` retiré ; un préfixe historique `aa-` est aussi accepté) :
+Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents compris. Il déduit le rôle de `agent_type` (préfixe `studio-faceless:` retiré) :
 
 | Type d'agent | Rôle |
 |---|---|
@@ -54,6 +55,7 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 | `studio-maintainer` | `mainteneur` |
 | `research`, Claude principal | aucun rôle : seules les règles communes s'appliquent |
 | `reviewer` | `relecteur` : en Bash, seules `ffprobe`, `ffmpeg` de mesure (`-f null`), `wc`, `ls`, `grep`, `head` et `tail`, sans redirection |
+| `strategist` | `stratege` : Write et Edit seulement dans `docs/` et `direction/BANQUE_SUJETS.md` ; en Bash, `python` sur les outils du plugin, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` |
 
 **Règles communes à tous** (rôle ou non) : refus de la publication HyperFrames, du cloud, de la connexion, de `upgrade`, de `skills update`, de `npx hyperframes@…`, de l'installation npm, de la suppression récursive ou définitive, du vidage de la corbeille ; refus de **toute écriture par Write/Edit dans le plugin installé** ; demande de confirmation pour `preview` ; refus (`deny`, sans confirmation possible) d'un rendu direct sans `--workers 1` ou `2`.
 
@@ -273,6 +275,33 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 **À savoir**
 - Le catalogue vit dans le plugin installé, que le hook rend non modifiable depuis une chaîne. Depuis une chaîne, une nouvelle technique se note dans la section MOTION_CATALOG de `direction/ECARTS.md` (`MOTION_CATALOG.md:16`) ; la définition de l'agent le dit désormais (`studio-maintainer.md`, section « Catalogue »).
 
+### agents/strategist.md
+**Rôle** (0.4.0, validé sur AA, 02/11/2026) : positionnement et stratégie éditoriale d'une chaîne, hors du contexte du Studio Director. Six phases, une par appel : `dossier` (relevés de l'API YouTube, argent, contraintes), `brief` (question posée au conseil, sièges et poids proposés), `conseil` (protocole roast-room simulé dans un seul contexte, citations vérifiées, verdict noté), `titres`, `sujets` (vérification d'un lot de 9 sujets au plus : verdict, faits sourcés, titre corrigé, drapeau publicité) et `banque` (proposition assemblée, puis `direction/BANQUE_SUJETS.md` après accord du propriétaire).
+
+**Quand il sert** : pour positionner une chaîne (nouvelle ou en relance), écrire une liste de titres, vérifier des sujets candidats ou tenir la banque de sujets. Le Studio Director présente chaque phase au propriétaire par blocs avant la suivante ; plusieurs appels `sujets` peuvent tourner en parallèle sur des lots disjoints.
+
+**En-tête**
+| Champ | Valeur |
+|---|---|
+| `name` | `strategist` |
+| `tools` | Read, Write, Edit, Grep, Glob, Bash, WebFetch, WebSearch |
+| `model` | `inherit` ; `color` : cyan |
+| `skills` | aucun |
+| `omitClaudeMd` | `true` : démarre sans le `CLAUDE.md` de la chaîne |
+| Rôle du garde-fou | `stratege` |
+
+**Limites du garde-fou (rôle `stratege`)** : Write et Edit seulement dans `docs/` et dans `direction/BANQUE_SUJETS.md` ; en Bash, seules `python` (outils du plugin installé, le chemin du plugin doit figurer dans la commande), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir` et `cd` ; aucun script en ligne ; aucune cible d'écriture hors de `docs/`.
+
+**Contenu**
+- Contrat : neuf champs, plus `phase` et `session` (`docs/strategie/<AAAA-MM-JJ>-<sujet>/`) ; section « Règles de la chaîne utiles à la mission » obligatoire. État de la session dans `ETAT.md` (2 Ko au plus), réécrit à chaque fin de phase.
+- Outils : `outils/recherche/youtube_chaine.py` (relevé complet d'une chaîne) et `youtube_resume.py` (résumé d'un relevé, sans le lire en entier) ; `vendor/roast-room/` (protocole, cerveaux, consignes des sièges, `check_quotes.py`).
+- Leçons d'AA intégrées : coût d'un conseil de six sièges en agents séparés (environ 1,73 M de tokens), mots absolus des titres souvent faux, prémisses dépassées, argent jamais dans la promesse quand la ligne l'interdit.
+- **Livrable** : synthèse de 300 mots au plus (phase, fichiers, décisions en blocs, coût, limites, fichiers lus).
+
+**À savoir**
+- Les sièges sont simulés dans le contexte de l'agent, donc sans indépendance réelle ; le verdict le dit. Un agent ne peut pas lancer d'autres agents.
+- Aucun siège du roster n'est un spécialiste de YouTube : le dossier de faits apporte les chiffres de YouTube aux sièges.
+
 ---
 
 ## Écarts et points à vérifier relevés dans ces fichiers
@@ -285,4 +314,4 @@ Constats de lecture, du plus gênant au moins gênant. Les écarts réglés par 
 | 3 | **Mot « dix »** : « jamais les dix ensemble », reste d'un ancien parcours (le DA n'a que deux skills `hyperframes-*` préchargés). | `agents/art-director.md:32` |
 | 4 | **Recherche : ordre de préférence et licence** : la liste des sources (Commons, puis Openverse/Flickr, puis Pexels/Mixkit) cohabite avec la règle « la licence ne compte pas » ; à lire ensemble (voir fiche). | `agents/research.md:33-43` |
 | 5 | **`CLAUDE.md` sous Linux ou macOS** : le hook compare `parts[-1] == 'claude.md'` après `os.path.normcase`, qui ne met pas en minuscules hors Windows ; la protection des `CLAUDE.md` par Write/Edit ne s'y déclencherait pas pour `CLAUDE.md`. À vérifier si une chaîne tourne hors Windows. | `hooks/garde_commandes.py:96`, `108` |
-| 6 | **`omitClaudeMd` et version de Claude Code** : le champ demande la 2.1.271 ou plus ; la machine de mise au point avait la 2.1.169, où il n'a pas d'effet (à vérifier) : `research` et `studio-maintainer` y gardent le `CLAUDE.md`. | `agents/research.md`, `agents/studio-maintainer.md` |
+| 6 | **`omitClaudeMd` et version de Claude Code** : le champ demande la 2.1.271 ou plus ; la machine de mise au point avait la 2.1.169, où il n'a pas d'effet (à vérifier) : `research`, `studio-maintainer` et `strategist` y gardent le `CLAUDE.md`. | `agents/research.md`, `agents/studio-maintainer.md`, `agents/strategist.md` |

@@ -84,7 +84,7 @@ Ce document décrit deux parcours liés : l'**archivage** d'un épisode terminé
 | 3 | Studio Director | Copie complète (ou partielle avec `-Elements marque,direction`) | `powershell -File <plugin>/outils/sauvegarde-chaine.ps1 -Destination E:\Sauvegardes` | Dossier `<chaîne>_AAAA-MM-JJ_HHMM`, copie vérifiée fichier par fichier |
 | 4 | Studio Director | Contrôler la fin de sortie : « Sauvegarde terminée et vérifiée : N fichiers dans … » ; présence de `MANIFEST.sha256.txt` | — | Sauvegarde valide |
 
-- **Contenu par défaut** : `episodes`, `marque`, `direction`, `templates`, `.claude`, `CLAUDE.md`, `package.json`, `package-lock.json`, `requirements.txt` ; jamais `node_modules` ni `__pycache__`. Les zips d'archive sont dans `episodes/`, donc dans la sauvegarde ; `_A_SUPPRIMER/` n'y est pas.
+- **Contenu par défaut** : `episodes`, `marque`, `direction`, `docs`, `archives`, `.claude`, `CLAUDE.md`, `package.json`, `package-lock.json`, `requirements.txt` ; jamais `node_modules` ni `__pycache__`. Les zips d'archive sont dans `episodes/`, donc dans la sauvegarde ; `_A_SUPPRIMER/` n'y est pas. `docs/` des chaînes est hors Git (décision du 30/10/2026) : cette sauvegarde en est la seule copie.
 - **Vérification** : chaque fichier est copié, puis l'empreinte SHA-256 de la source et celle de la copie sont comparées ; au premier écart, le script s'arrête. Le manifeste liste `empreinte  chemin`.
 - **Garanties** : ne supprime ni ne remplace rien, à la source comme à la destination ; refuse une destination dans la chaîne et un dossier daté qui existe déjà ; vérifie la place libre (volume × 1,05).
 - **Restauration** : à la main, en copiant les fichiers voulus depuis le dossier daté ; le manifeste donne leur empreinte.
@@ -125,7 +125,7 @@ flowchart TD
 | Échec pendant les déplacements (fichier verrouillé par un autre programme) | Windows refuse de déplacer un fichier ouvert | Le zip est déjà valide mais l'épisode est à moitié déplacé : l'outil refusera de relancer (zip existant) ; déplacer le reste à la main avec l'accord du propriétaire (à vérifier : cas non documenté dans le plugin) |
 | Sauvegarde : « La destination ne peut pas être dans la chaîne » | Destination sous la chaîne | Choisir un autre disque ou dossier |
 | Sauvegarde : « Copie différente : <fichier> » | Écart d'empreinte | Dossier daté partiel, sans manifeste : ne pas s'y fier ; relancer vers un nouveau dossier (nouvelle minute) |
-| Sauvegarde : « Absent, ignoré : <élément> » | Élément de la liste par défaut absent de la chaîne | Avertissement seulement (par exemple `templates` pour une chaîne neuve) |
+| Sauvegarde : « Absent, ignoré : <élément> » | Élément de la liste par défaut absent de la chaîne | Avertissement seulement (par exemple `archives` ou `docs` pour une chaîne neuve) |
 
 ## Fichiers de référence
 - Outils : [`archiver_episode.py`](../reference/outils-et-garde.md#outilsarchiver_episodepy), [`sauvegarde-chaine.ps1`](../reference/outils-et-garde.md#outilssauvegarde-chaineps1).

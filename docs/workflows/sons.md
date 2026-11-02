@@ -111,7 +111,7 @@ Ce document décrit comment un épisode obtient ses musiques, ses ambiances et s
 - **Qui** : Studio Director, après demande explicite du propriétaire.
 - **Conditions** : aucune génération ni dépense hors du budget explicitement autorisé par la mission ; aucun achat ; le propriétaire **choisit lui-même** les variantes ; aucune musique superposée sans demande.
 - **Musique par l'API** (skill `elevenlabs-music`) : Eleven Music v2.5, 3 à 600 s, instrumental possible ; annoncer le coût estimé et attendre l'accord du propriétaire.
-- **Autres sources musicales** : Suno, Udio et équivalents sont exclus sans décision du propriétaire. Une musique synthétisée en code (skill `soundtrack`) n'est possible que sur sa demande, en stem séparé, déclarée comme son construit.
+- **Autres sources musicales** : Suno, Udio et équivalents sont exclus sans décision du propriétaire.
 
 #### 12. Écrire les briefs
 - **Qui** : Studio Director.
@@ -201,7 +201,7 @@ flowchart TD
 | `media-use` comme source de sons | Écarté : ses effets (whoosh, riser, glitch…) n'ont ni la provenance ni le registre voulus. |
 
 ## Fichiers de référence
-- Fiches : [`../reference/son.md`](../reference/son.md) — [`DIRECTION_AUDIO.md`](../reference/son.md#le-référentiel-direction_audiomd), [le skill `direction-sonore`](../reference/son.md#le-skill-direction-sonore), [les outils de montage](../reference/son.md#les-outils-de-montage). Starter : [`../reference/starter-et-depot.md`](../reference/starter-et-depot.md) (`marque/son/README.md`). Skills annexes (dont `soundtrack`) : [`../reference/skills-annexes.md`](../reference/skills-annexes.md). Agents : [`../reference/agents.md`](../reference/agents.md).
+- Fiches : [`../reference/son.md`](../reference/son.md) — [`DIRECTION_AUDIO.md`](../reference/son.md#le-référentiel-direction_audiomd), [le skill `direction-sonore`](../reference/son.md#le-skill-direction-sonore), [les outils de montage](../reference/son.md#les-outils-de-montage). Starter : [`../reference/starter-et-depot.md`](../reference/starter-et-depot.md) (`marque/son/README.md`). Skills annexes : [`../reference/skills-annexes.md`](../reference/skills-annexes.md). Agents : [`../reference/agents.md`](../reference/agents.md).
 - Règles : [`DIRECTION_AUDIO.md`](../../plugins/studio-faceless/referentiels/DIRECTION_AUDIO.md) § 1 à § 4.
 - Skill : [`direction-sonore`](../../plugins/studio-faceless/skills/direction-sonore/SKILL.md) et ses références.
 - Épisode : [`socle.md`](../../plugins/studio-faceless/skills/episode/references/socle.md) § 6, [`grilles.md`](../../plugins/studio-faceless/skills/episode/references/grilles.md) § 5 et § 10, [`etapes.md`](../../plugins/studio-faceless/skills/episode/references/etapes.md) § 13, [`pieges.md`](../../plugins/studio-faceless/skills/episode/references/pieges.md) (section Son).

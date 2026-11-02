@@ -208,7 +208,7 @@ Statut de toutes les fiches : `expérimental`.
 | Référentiel | Cité par |
 |---|---|
 | `METHODE_RECIT.md` | `REGLES_STUDIO.md` ; skills `episode`, `shorts`, `youtube-seo`, `humanizer` (provenance) ; `outils/shorts/README.md` ; `templates/CLAUDE.episode.template.md` ; `starter/direction/` |
-| `REFERENTIEL_QUALITE_REALISATION.md` | `REGLES_STUDIO.md` ; agents `art-director`, `motion-producer`, `research` ; skills `episode`, `shorts`, `javascript-animation` ; `outils/controle/` ; les trois modèles de `templates/` et le gabarit v3 ; `starter/direction/` |
+| `REFERENTIEL_QUALITE_REALISATION.md` | `REGLES_STUDIO.md` ; agents `art-director`, `motion-producer`, `research` ; skills `episode`, `shorts` ; `outils/controle/` ; les trois modèles de `templates/` et le gabarit v3 ; `starter/direction/` |
 | `MOTION_CATALOG.md` | `REGLES_STUDIO.md` ; agents `art-director`, `motion-producer`, `studio-maintainer` ; skill `episode` ; `templates/CONTRAT_MISSION.template.md` et `CLAUDE.episode.template.md` ; `starter/direction/ECARTS.md` |
 | `DIRECTION_AUDIO.md` | voir [`son.md`](son.md) ; aussi `starter/marque/son/README.md` et `starter/direction/` |
 | `REGLES_DETAIL.md` | `REGLES_STUDIO.md` (tableau « Quoi lire » et renvois des deux sections déplacées) ; skill `episode` (« Ce qui fait foi ») |

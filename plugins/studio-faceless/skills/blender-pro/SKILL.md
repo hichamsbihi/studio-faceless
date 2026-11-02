@@ -1,6 +1,6 @@
 ---
 name: blender-pro
-description: Rules and tools for professional-grade Blender 3D renders in a channel's videos - lighting, value separation, exposure, color, materials (water, metal, concrete), camera, reliable command-line bpy scripts, numeric render checks. Read before any 3D scene. Needs the Blender 4.5 install kept inside the channel; stops if it is missing.
+description: Rules and tools for professional-grade Blender 3D renders in a channel's videos - lighting, value separation, exposure, color, materials, camera, reliable command-line bpy scripts, numeric render checks. Read before any 3D scene. Needs Blender 4.5 kept inside the channel; stops if missing.
 ---
 
 # blender-pro : rendus 3D de niveau professionnel
