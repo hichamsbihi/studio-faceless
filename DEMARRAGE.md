@@ -221,6 +221,7 @@ for s in hyperframes hyperframes-animation hyperframes-audio hyperframes-cli hyp
 - **À faire** :
   - **ElevenLabs** : crée ta clé d'API sur elevenlabs.io (Settings, API Keys). ElevenLabs passe par l'API, pas par le connecteur claude.ai, qui reste coupé (30/10/2026). Tu poseras la clé toi-même à l'étape B6 ;
   - **YouTube Data et Gemini** : si tu veux relever les vidéos d'une chaîne (agent `strategist`) ou faire « regarder » une vidéo (skill `regarder`), crée une clé d'API pour chaque service ; tu les poseras aussi à l'étape B6 ;
+  - **YouTube Analytics** (facultatif) : pour que Claude lise la rétention de ta chaîne (`outils/recherche/youtube_retention.py`). Dans le projet Google Cloud de ta clé YouTube : active « YouTube Analytics API » ; écran de consentement OAuth en Externe, mode Test, ton adresse en utilisateur test ; crée un client OAuth « Application de bureau » et télécharge son JSON **tout de suite** (le secret n'est montré qu'une fois). Renomme-le `client_secret.json` et dépose-le dans `~/.studio-faceless/youtube/`, hors de tout dépôt ;
   - si tu veux, dans ton compte claude.ai, **vidIQ** en lecture seule. Claude ne s'en sert que sur ta demande.
 - **Fichiers créés** : aucun.
 - **Tu valides** : rien.
@@ -349,6 +350,7 @@ grep -m1 '"version"' node_modules/hyperframes/package.json
 - **À faire** : pose la clé dans la variable d'environnement `ELEVENLABS_API_KEY` de ta session Windows (ou dans un `.env` ignoré par Git), puis relance Claude Code. Le SDK Python `elevenlabs` ne s'installe que sur ta décision, à la version figée dans le `requirements.txt` de la chaîne. Aucune règle `ask` à ajouter : le connecteur est coupé, et chaque génération te demande ton accord en conversation, coût annoncé avant. Aucun sous-agent ne génère.
   Trois autres clés se posent de la même façon, par toi, dans l'environnement ; Claude ne les lit ni ne les affiche, et aucune n'est écrite dans un fichier :
   - `YOUTUBE_API_KEY` (API YouTube Data v3, créée par toi) : `outils/recherche/youtube_chaine.py` et l'agent `strategist`, pour relever les vidéos d'une chaîne ; sans elle, l'outil s'arrête ;
+  - accès YouTube Analytics (client OAuth de l'étape A6) : aucune variable. Au premier lancement de `youtube_retention.py`, ton navigateur s'ouvre ; tu te connectes, tu choisis la chaîne et tu accordes toi-même la lecture seule (l'écran « application non validée » est normal : c'est la tienne). En mode Test, Google retire l'accès au bout de 7 jours : l'outil redemande l'accord ;
   - `GEMINI_API_KEY` : le skill `regarder` (`regarder.py`) et `relire.py` ; un contenu inédit ne part chez Google qu'avec la clé du palier payant, décision à toi ;
   - `PERPLEXITY_API_KEY` (compte Perplexity, API payante) : l'éclaireur de l'étape 1 du skill `episode` (0.5.0). Le serveur MCP se déclare une fois par chaîne, en portée `local` (hors Git), depuis le dossier de la chaîne :
     ```bash
