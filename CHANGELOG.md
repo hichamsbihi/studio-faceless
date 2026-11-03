@@ -2,6 +2,13 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 0.6.1 (03/11/2026)
+Détourage des miniatures par `remove-background` (VALIDÉ, Hicham, 03/11/2026 : « tu utilises le modele remove-background de hyperframes et tu le consigne dans le plugin et install pillow »). Méthode appliquée et vérifiée le 03/11/2026 sur la v2 des miniatures de l'E011 d'AA.
+- `skills/thumbnail-strategist/references/fabrication.md` : intro et § 3 « Détourage du sujet » en deux voies. Voie A : recadrage, `hyperframes remove-background --device cpu`, masque resserré de 2 px et flou 0,7 multiplié par un polygone séparateur (Pillow), contrôle sur fond vert vif, page et rendu inchangés. Voie B : le polygone tracé à la main, gardé en secours. Le refus d'image générée par IA ne change pas.
+- `skills/thumbnail-strategist/SKILL.md` (étapes 4 et 5), `skills/remove-background/SKILL.md` (« Pas pour les miniatures » retiré ; la miniature suit le § 4 bis) : alignés.
+- `referentiels/REGLES_DETAIL.md` (Poste de travail) : « Pas de Pillow » remplacé par Pillow installé le 03/11/2026, pour le masque des miniatures.
+- `docs/workflows/miniature.md` (étape 7, précisions, diagramme, commandes) et `docs/reference/publication.md` (fiches `fabrication.md`, `grammaire-e003.md` et `miniature.py`) : la voie A `remove-background` et le polygone en secours (voie B), avec renvoi à `fabrication.md` § 3. `grammaire-e003.md` (historique de la v4), `starter/requirements.txt` et `DEMARRAGE.md` sont laissés tels quels.
+
 ## 0.6.0 (02/11/2026)
 Quatre ajouts demandés par le propriétaire d'AA le 02/11/2026 (« kalalway api elevenlabs et api soundza avec telechargemnt mene par un agent claude sont a ajoute dans le plugin ; applique aussi les propositions de l'agent »), tous validés sur AA à cette date, plus les corrections de l'audit des décisions du même jour. Chaque ajout vient d'une décision de l'E011 d'AA (Q18 et Q25, Q35, Q45, Q56 et Q57).
 - **Téléchargement des médias mené par Claude ou un agent** (remplace « le propriétaire télécharge à la main, aucun téléchargement en lot », 24/10/2026) :

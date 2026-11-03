@@ -1,11 +1,11 @@
 ---
 name: remove-background
-description: Cutout of a real subject for HyperFrames sequences (transparent PNG or WebM), to place on another background, a map, a drawing or behind text. Use when a producer or Claude needs a cutout. Local model for people, deterministic mask for close-up objects. Not for thumbnails.
+description: Cutout of a real subject for HyperFrames sequences (transparent PNG or WebM), to place on another background, a map, a drawing or behind text. Use when a producer or Claude needs a cutout. Local model for people, deterministic mask for close-up objects. Thumbnails too.
 ---
 
 # remove-background : le détourage dans HyperFrames
 
-**Quand l'employer** : séparer un sujet réel de son fond pour le poser sur un autre fond, une carte, un dessin ou devant un texte, dans une séquence HyperFrames d'une chaîne du plugin ; sortie PNG ou WebM transparent. Deux voies (§ 2) : `hyperframes remove-background` (modèle local `u2net_human_seg`) pour une personne, un sujet vivant ou un détourage vu en petit, avec la méthode en quatre étapes (§ 4 bis) ; un masque déterministe pour un objet sur fond uni vu de près, dont le bord doit rester net (§ 3). **Pas pour les miniatures** : `studio-faceless:thumbnail-strategist` garde son détourage par polygone.
+**Quand l'employer** : séparer un sujet réel de son fond pour le poser sur un autre fond, une carte, un dessin ou devant un texte, dans une séquence HyperFrames d'une chaîne du plugin ; sortie PNG ou WebM transparent. Deux voies (§ 2) : `hyperframes remove-background` (modèle local `u2net_human_seg`) pour une personne, un sujet vivant ou un détourage vu en petit, avec la méthode en quatre étapes (§ 4 bis) ; un masque déterministe pour un objet sur fond uni vu de près, dont le bord doit rester net (§ 3). **Miniatures** : une personne se détoure aussi avec cette voie, selon le § 4 bis (VALIDÉ, Hicham, 03/11/2026) ; mise en œuvre dans `studio-faceless:thumbnail-strategist`, `references/fabrication.md` § 3.
 
 **Statut** : règle générale du plugin depuis la version 0.2.1 (VALIDÉ, Hicham, 30/10/2026 : « rend remove-background général pour tout le plugin »). Skill écrit sur Maps & Means (StudioV2) le 28/10/2026, d'après la référence `media-use/audio/references/remove-background.md` des skills HyperFrames (HeyGen ; HyperFrames sous licence Apache-2.0), puis généralisé ; méthode en quatre étapes pour les personnes validée sur AA le 28/10/2026 (Q117 de l'E010). La commande est celle de HyperFrames 0.8.149 (`node_modules/hyperframes/dist/remove-background-*.js`) ; elle s'appelle avec `npx hyperframes` ou `node node_modules/hyperframes/bin/hyperframes.mjs`.
 
@@ -47,6 +47,8 @@ npx hyperframes remove-background --info
 2. Resserrer le masque de 2 px : `ffmpeg -i <nom>_brut.png -filter_complex "[0]format=rgba,split[c][a];[a]alphaextract,erosion,erosion,gblur=sigma=0.7[m];[c][m]alphamerge" <nom>.png`.
 3. Une personne collée à une autre s'écarte par un polygone **multiplié** au masque du modèle ; jamais un détourage tracé seulement à la main en polygone.
 4. Contrôle sur fond vert vif, en pleine taille : cheveux, mains, vêtements de la couleur du fond. Un membre perdu se coupe au cadre (aux hanches, par exemple) ; jamais de morceau flottant.
+
+Miniature (VALIDÉ, Hicham, 03/11/2026 : « tu utilises le modele remove-background de hyperframes ») : la même méthode, avec le masque composé par Pillow ; le polygone seul reste possible en secours. Détail : `${CLAUDE_PLUGIN_ROOT}/skills/thumbnail-strategist/references/fabrication.md` § 3.
 
 Emploi dans le film : quelques personnes clés, en couleurs réelles, posées dans les dessins, cartes et graphiques, à 45 % de la hauteur au moins (`${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2 ter, fiche CUTOUT-FIGURE du `MOTION_CATALOG.md`).
 

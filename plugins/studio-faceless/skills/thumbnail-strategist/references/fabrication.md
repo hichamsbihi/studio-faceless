@@ -1,6 +1,6 @@
-# Fabrication : HTML/CSS 1280×720, détourage par polygone, rendu
+# Fabrication : HTML/CSS 1280×720, détourage, rendu
 
-Aucun outil nouveau : une page HTML/CSS par miniature, rendue par le Chrome sans fenêtre que HyperFrames a déjà téléchargé (`~/.cache/hyperframes/chrome/chrome-headless-shell/`). Pas d'IA, pas de `remove-background` (le CLI installerait un modèle en silence), pas de Photoshop.
+Aucun outil nouveau : une page HTML/CSS par miniature, rendue par le Chrome sans fenêtre que HyperFrames a déjà téléchargé (`~/.cache/hyperframes/chrome/chrome-headless-shell/`). Pas d'image générée par IA (le détourage sépare des pixels réels, il n'en crée pas), pas de Photoshop. Le sujet se détoure avec `remove-background` de HyperFrames (§ 3, voie A) ou, en secours, par un polygone tracé à la main (voie B).
 
 ## 1. Dossier
 - `episodes/<id>/miniatures-vN/` : vérifier qu'il n'existe pas, puis le créer. Une version ne s'écrase jamais ; une correction du propriétaire fait une `vN+1` (exemple AA, E003 : v4 = v3-1 avec la flèche raccourcie).
@@ -15,7 +15,19 @@ Modèle à copier puis adapter : la page de la dernière miniature validée de l
 - Couches dans l'ordre : fond, symbole de fond (losange, bande, chiffre), sujet détouré, logo, texte, flèche, pastille.
 - Flèche : un `path` SVG en courbe, `stroke-linecap: round`, pointe en `marker`, doublé d'un même tracé plus épais, foncé, à 35 % pour l'ombre. **Sa pointe s'arrête avant le sujet** (≈ 30 px dans la v4).
 
-## 3. Détourage à la main par polygone
+## 3. Détourage du sujet
+Décision du propriétaire (VALIDÉ, Hicham, 03/11/2026 : « tu utilises le modele remove-background de hyperframes ») : une miniature peut détourer une personne avec `hyperframes remove-background` (modèle local `u2net_human_seg`) au lieu du seul polygone. Méthode appliquée et vérifiée le 03/11/2026 (exemple AA : miniatures-v2 de l'E011). Le polygone seul reste possible en secours (voie B). Le refus d'image générée par IA ne change pas.
+
+### Voie A : modèle local `remove-background`
+Commande, installation du modèle et limites : skill `studio-faceless:remove-background` (§ 1 pour l'accord du propriétaire au premier téléchargement, § 4 bis pour le masque).
+1. **Recadrer** la photo autour de la personne.
+2. **Détourer** depuis la racine de la chaîne : `node node_modules/hyperframes/bin/hyperframes.mjs remove-background <recadrage.jpg> -o <brut.png> --device cpu` (1,5 s pour 1600×1400, modèle déjà en cache).
+3. **Masque** : resserré de 2 px puis flou de 0,7 (méthode du § 4 bis du skill), multiplié par un **polygone séparateur** (tracé avec la grille de la voie B) qui écarte les autres personnes et les objets que le modèle garde (fauteuil, main d'une voisine). Fait ici avec Pillow : `MinFilter(5)`, `GaussianBlur(0.7)`, polygone flouté de 1 px. Les couleurs viennent telles quelles de la photo d'origine : aucun pixel redessiné.
+4. **Contrôler** sur fond vert vif, en pleine taille : cheveux, mains, bords. Puis la page HTML/CSS et le rendu (§ 4) restent inchangés.
+
+Pillow sert seulement à composer ce masque (installé sur le poste du propriétaire le 03/11/2026 ; ailleurs, rien ne s'installe sans son accord).
+
+### Voie B : polygone tracé à la main (secours)
 Principe de la v4 : la photo est affichée **à sa taille naturelle** (`width` et `height` = dimensions du fichier), donc les coordonnées du polygone sont celles des pixels de la photo ; on place et on réduit ensuite le conteneur (`transform: scale(...)`, `transform-origin: 0 0`).
 
 ```css

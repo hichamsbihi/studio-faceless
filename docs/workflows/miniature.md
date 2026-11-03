@@ -48,7 +48,7 @@ Claude ne publie, ne téléverse et ne modifie rien sur la chaîne YouTube.
 | 4 | Studio Director | [`grammaire-e003.md`](../../plugins/studio-faceless/skills/thumbnail-strategist/references/grammaire-e003.md), `direction/ECARTS.md` | — | — | Grammaire par défaut sauf écart de la chaîne ou de l'épisode, dit dans la fiche |
 | 5 | Studio Director | — | dossier `episodes/<id>/miniatures-vN/` (vérifier qu'il n'existe pas), `media/` (photo en 1920 px, drapeaux SVG, logo pris dans `marque/`, `Montserrat-VariableFont.ttf` et `Montserrat-OFL.txt`), `PROVENANCE.md` | `mkdir` | Une version ne s'écrase jamais |
 | 6 | Studio Director | la dernière miniature validée de la chaîne (modèle) | `miniature-<n>-<mots>.html` : 1280×720, couches dans l'ordre (fond, symbole, sujet, logo, texte, flèche, pastille), commentaire de tête | — | — |
-| 7 | Studio Director | la photo | polygone `clip-path` du sujet, tracé à la main | `miniature.py grille` (voir [Commandes](#commandes)) | Rogner un peu dans le sujet plutôt que laisser du fond |
+| 7 | Studio Director | la photo | sujet détouré : PNG `remove-background` (voie A, 0.6.1) ou, en secours, polygone `clip-path` tracé à la main (voie B) | `hyperframes remove-background`, `miniature.py grille` (voir [Commandes](#commandes)) | Contrôle sur fond vert vif en pleine taille (voie A) ; rogner un peu dans le sujet plutôt que laisser du fond (voie B) |
 | 8 | Studio Director | la source HTML | PNG `<NomChaine>-<EPISODE>-miniature-vN-<n>-<mots>.png` | `miniature.py rendu` | Le script mesure le PNG et refuse d'écraser |
 | 9 | Studio Director | les PNG | planche de contrôle, mesures, **fiche de contrôle** (gabarit de `controles.md` § 3) | `miniature.py mesure`, `planche`, `contraste` ; `controle.py chrome` | Verdict `OK` / `À SURVEILLER` / `ÉCHEC` par contrôle ; Chrome : réponse 0 |
 | 10 | `art-director` (option) | les PNG et les planches | son rapport de critique | — | **Sur demande du propriétaire** seulement |
@@ -60,7 +60,7 @@ Claude ne publie, ne téléverse et ne modifie rien sur la chaîne YouTube.
 Précisions par étape :
 - **Étapes 2 et 3** : les 3 variantes sont les plus **différentes**, pas les trois meilleures à l'œil, car un test entre trois versions voisines n'apprend rien. Exemple AA (E003 v3) : « BRAZIL CELEBRATED THIS » (visage et affirmation), « 1–7 / 5 DAYS LATER… » (chiffre et comparaison), « BRAZIL CHEERED THIS GOAL » (moment de match et flèche).
 - **Étape 4** : la grammaire par défaut tient en trois éléments à lire (visage, texte, flèche), un fond uni aux couleurs de l'histoire, 2 à 4 mots en Montserrat 900, une flèche rouge courte qui s'arrête à environ 30 px du sujet.
-- **Étape 7** : la photo est affichée à sa taille naturelle, donc les coordonnées du polygone sont celles des pixels de la photo ; on place et on réduit ensuite le conteneur (`transform: scale(...)`). Un point tous les 15 à 40 px, dans le sens des aiguilles d'une montre ; le polygone descend jusqu'au bord de la photo si le sujet sort du cadre.
+- **Étape 7** (VALIDÉ, Hicham, 03/11/2026) : une personne se détoure par défaut avec `hyperframes remove-background` (voie A : recadrage, modèle local, masque resserré et multiplié par un polygone séparateur tracé avec `grille`, composé avec Pillow) ; le polygone seul reste le secours (voie B). Commandes, réglages et tracé du polygone : [`fabrication.md`](../../plugins/studio-faceless/skills/thumbnail-strategist/references/fabrication.md) § 3. Le premier téléchargement du modèle demande l'accord du propriétaire (skill `remove-background` § 1).
 - **Étape 9** : les mesures se font sur le **PNG livré**. Elles ne valent pas validation ; la fiche porte « Regard du propriétaire : non fait » tant qu'il n'a pas répondu. Les neuf contrôles : format, aperçus 320×180 et 168×94, coin inférieur droit, contraste, fonds clair et sombre, économie, flèche, promesse, exactitude et droits.
 - **Étape 13** : le délai de YouTube pour un nouveau test (72 h après la sortie) est « à confirmer dans Studio le moment venu » ; un nouveau test se justifie par une nouvelle hypothèse.
 
@@ -71,7 +71,7 @@ flowchart TD
     B --> C["3. Trois variantes très différentes"]
     C --> D["4. Grammaire par défaut + écarts de la chaîne"]
     D --> E["5. Dossier miniatures-vN + médias + PROVENANCE"]
-    E --> F["6-7. Page HTML + détourage par polygone"]
+    E --> F["6-7. Page HTML + détourage (remove-background, polygone en secours)"]
     F --> G["8. Rendu PNG 1280x720"]
     G --> H["9. Contrôles mesurables + planche + fiche"]
     H -->|écart| F
@@ -90,7 +90,9 @@ Elles se lancent depuis la racine de la chaîne. Écrire le chemin complet du pl
 ```bash
 M="<chemin complet du plugin>/skills/thumbnail-strategist/scripts/miniature.py"   # = ${CLAUDE_PLUGIN_ROOT}/skills/…, une fois la variable remplacée
 
-# 7. Grille de coordonnées de la photo entière, puis zoom sur un bord difficile, puis contrôle du polygone
+# 7. Voie A : détourage par le modèle local (commande et masque : fabrication.md § 3), depuis la racine de la chaîne
+node node_modules/hyperframes/bin/hyperframes.mjs remove-background <recadrage.jpg> -o <brut.png> --device cpu
+# 7. Voie A (polygone séparateur) ou voie B (secours) : grille de coordonnées de la photo entière, puis zoom sur un bord difficile, puis contrôle du polygone
 python -B "$M" grille episodes/<id>/miniatures-vN/media/photo.jpg <travail>/grille.png --echelle 0.6
 python -B "$M" grille episodes/<id>/miniatures-vN/media/photo.jpg <travail>/zoom-cou.png --zone 800,300,400,300 --echelle 2 --pas 10
 python -B "$M" grille episodes/<id>/miniatures-vN/media/photo.jpg <travail>/poly.png --polygone episodes/<id>/miniatures-vN/miniature-1-mots.html --echelle 0.6

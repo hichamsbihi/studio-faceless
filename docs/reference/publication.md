@@ -71,16 +71,16 @@ Fichier : [`promesse-et-concepts.md`](../../plugins/studio-faceless/skills/thumb
 ### skills/thumbnail-strategist/references/fabrication.md
 Fichier : [`fabrication.md`](../../plugins/studio-faceless/skills/thumbnail-strategist/references/fabrication.md)
 
-- **Rôle** : expliquer comment fabriquer une miniature en HTML/CSS 1280×720, détourer un sujet à la main par polygone et la rendre avec le Chrome sans fenêtre de HyperFrames.
+- **Rôle** : expliquer comment fabriquer une miniature en HTML/CSS 1280×720, détourer un sujet (modèle local `remove-background`, ou polygone tracé à la main en secours) et la rendre avec le Chrome sans fenêtre de HyperFrames.
 - **Quand il sert** : le Studio Director, à l'étape 5 de la méthode.
 - **Contenu** :
   - *§ 1 Dossier* : `episodes/<id>/miniatures-vN/` (vérifier qu'il n'existe pas ; une correction fait une `vN+1`) ; contenu attendu (sources HTML, `media/`, `PROVENANCE.md`, PNG, planche) ; nom du PNG `<NomChaine>-<EPISODE>-miniature-vN-<n>-<mots>.png`.
   - *§ 2 Page source* : copier la page de la dernière miniature validée de la chaîne, sinon partir des extraits CSS ; police Montserrat (SIL OFL) téléchargée une fois **avec l'accord du propriétaire** et rangée dans `marque/` ; couches dans l'ordre (fond, symbole, sujet détouré, logo, texte, flèche, pastille) ; flèche en `path` SVG qui s'arrête à environ 30 px du sujet.
-  - *§ 3 Détourage par polygone* : photo affichée à sa taille naturelle, `clip-path: polygon(...)` en pixels de la photo, puis `transform: scale(...)` ; méthode en 5 temps (grille, zooms, tracé dans le sens des aiguilles d'une montre, vérification par superposition, captures de travail hors du dossier de l'épisode).
+  - *§ 3 Détourage du sujet* (0.6.1, VALIDÉ, Hicham, 03/11/2026) : **voie A**, `hyperframes remove-background` (modèle local) puis masque resserré, multiplié par un polygone séparateur et composé avec Pillow, contrôle sur fond vert vif ; **voie B**, en secours, polygone `clip-path` en pixels de la photo à sa taille naturelle, méthode en 5 temps (grille, zooms, tracé, vérification par superposition, captures de travail hors du dossier de l'épisode). Détail dans le fichier, non recopié ici.
   - *§ 4 Rendu* : `miniature.py rendu SOURCE.html SORTIE.png` ; refus d'écraser ; un seul Chrome à la fois, puis `controle.py chrome` (doit répondre 0) ; si le PNG dépasse 2 Mo, copie JPEG avec ffmpeg dans un nouveau fichier.
 - **Liens** : `scripts/miniature.py` (sous-commandes `grille` et `rendu`), `controles.md`, `outils/controle/README.md`, `marque/` de la chaîne.
 - **À savoir** :
-  - Aucun outil nouveau : pas d'IA, pas de `remove-background` (le CLI installerait un modèle en silence), pas de Photoshop.
+  - Aucun outil nouveau : pas d'image générée par IA (le détourage sépare des pixels réels), pas de Photoshop. `remove-background` est admis depuis la 0.6.1 ; son premier téléchargement de modèle demande l'accord du propriétaire.
   - Le Chrome vient de `~/.cache/hyperframes/chrome/chrome-headless-shell/` ; il ne se télécharge pas sans l'accord du propriétaire.
 
 ### skills/thumbnail-strategist/references/controles.md
@@ -119,7 +119,7 @@ Fichier : [`grammaire-e003.md`](../../plugins/studio-faceless/skills/thumbnail-s
 - **Rôle** : la grammaire visuelle **par défaut** d'une nouvelle miniature, tirée de la v4 de l'E003 d'AA, avec les leçons des E001 et E003.
 - **Quand il sert** : le Studio Director, à l'étape 4 de la méthode ; l'`art-director` s'y réfère pour critiquer. Statut : choix `VALIDÉ` sur AA pour l'E003 (15/10/2026) ; une chaîne ou un épisode peut s'en écarter en le disant (`direction/ECARTS.md` ou fiche de concepts).
 - **Contenu** :
-  - *Éléments* (tableau) : sujet (visage célèbre, réel, détouré à la main), fond (uni aux couleurs de l'histoire), symboles (drapeaux, chiffre, date), texte (2 à 4 mots, Montserrat 900, un mot en aplat ou en couleur), flèche (rouge `#E10600`, courte, s'arrête à ~30 px du sujet), marque (logo discret). **Trois éléments au plus à lire** : visage, texte, flèche.
+  - *Éléments* (tableau) : sujet (visage célèbre, réel, détouré ; la v4 l'a été à la main, `fabrication.md` § 3 donne aussi la voie `remove-background`), fond (uni aux couleurs de l'histoire), symboles (drapeaux, chiffre, date), texte (2 à 4 mots, Montserrat 900, un mot en aplat ou en couleur), flèche (rouge `#E10600`, courte, s'arrête à ~30 px du sujet), marque (logo discret). **Trois éléments au plus à lire** : visage, texte, flèche.
   - *Palette* : couleurs de l'histoire d'abord ; étiquettes de la palette de la chaîne (`marque/README.md` § Couleurs) ; pas de palette « style Claude » (corail, ivoire, anthracite) ; rien repris d'un concurrent.
   - *Leçons AA* : E001 (supporter généré par IA, de dos, « WHY STAY? », environ 2 % de CTR, causes **non vérifiées**) ; E003 v1 refusées (la rivalité doit se voir ; pas de personnes anonymes) ; E003 v3 (s'inspirer d'une chaîne sans reprendre son style) ; E003 v4 (la flèche ne doit pas entrer dans le sujet).
 - **Liens** : `fabrication.md`, `promesse-et-concepts.md`, `marque/README.md` de la chaîne.
@@ -128,7 +128,7 @@ Fichier : [`grammaire-e003.md`](../../plugins/studio-faceless/skills/thumbnail-s
 ### skills/thumbnail-strategist/scripts/miniature.py
 Fichier : [`miniature.py`](../../plugins/studio-faceless/skills/thumbnail-strategist/scripts/miniature.py)
 
-- **Rôle** : rendre une page HTML en PNG 1280×720, mesurer le PNG livré, fabriquer la planche de contrôle (aperçus réduits, fonds clair et sombre, flux), tracer la grille et le polygone de détourage, calculer le contraste du texte.
+- **Rôle** : rendre une page HTML en PNG 1280×720, mesurer le PNG livré, fabriquer la planche de contrôle (aperçus réduits, fonds clair et sombre, flux), tracer la grille et le polygone de détourage (le polygone séparateur de la voie A ou le polygone de secours de la voie B ; le détourage par le modèle local se lance avec `hyperframes`, pas avec ce script), calculer le contraste du texte.
 - **Quand il sert** : le Studio Director, aux étapes de fabrication (`grille`, `rendu`) et de contrôle (`mesure`, `planche`, `contraste`). L'`art-director` ne peut pas le lancer (garde-fou).
 - **Usage** (depuis la racine de la chaîne ; le chemin du script est complet) :
   ```text
