@@ -25,6 +25,19 @@ Par rôle, déduit du type d'agent (`agent_type` de l'entrée du hook, voir ROLE
 - telechargeur (media-fetcher, 0.6.0) : écrit seulement sous episodes/<id>/kit/media/source-vN/ ; en Bash, seules python
   (outils/medias/telecharger_medias.py du plugin installé, dont les chemins sont sous ce dossier), ls, wc, grep, head, tail,
   mkdir et cd, sans script en ligne : ni curl ni wget, tout passe par l'outil (pause, agent identifié, aucun écrasement).
+- ingenieur-son (sound-manager, 0.7.0) : écrit seulement dans kit/voix/, kit/media/audio/, kit/media/source-vN/soundza/,
+  kit/PROVENANCE.md, montage/ (sauf montage.json) et outputs/controle-son*/ de l'épisode ; en Bash, seules python (ses outils
+  du plugin installé, table OUTILS : generer_voix.py à blanc seulement, ni mix_film.py ni assembler.py), ffmpeg (sans -y,
+  sorties dans sa zone), ffprobe, cp (sans écrasement), ls, wc, grep, head, tail, mkdir, date, sha1sum, sha256sum et cd vers
+  la racine ; aucun script en ligne ni substitution de commande.
+- editeur (publisher, 0.7.0) : écrit seulement dans miniatures-vN/, PUBLICATION_vN.md et PUBLICATION_vN.<langue>.srt de
+  l'épisode ; en Bash, les mêmes commandes, avec ses outils (miniature.py, publication.py, srt.py, controle.py chrome) et node
+  pour `hyperframes.mjs remove-background` seulement.
+  Pour ces deux rôles, chaque option d'un outil est lue dans sa table : une option inconnue ou abrégée est refusée, et un
+  chemin où l'outil écrit doit être dans la zone, qu'il ait une espace, aucune barre oblique ou la forme --option=valeur.
+  Un script écrit par l'agent (mesures du mix sous montage/mesures-vN/, masque de détourage sous miniatures-vN/travail/) n'est
+  jamais lancé par lui : le garde ne lit pas le contenu d'un script ; Claude principal le relit et le lance (décision du
+  03/11/2026 ; outils du plugin prévus en 0.7.1 : `miniature.py masque` et `mesurer_mix.py`).
 """
 import json
 import os
@@ -270,6 +283,11 @@ def decide_bash(command, role, root):
                 if not ecriture_telechargeur(project_rel(t, root)):
                     return 'deny', "téléchargeur : écriture seulement sous episodes/<id>/kit/media/source-vN/ (refusé : " + t[:120] + ")"
 
+    if role in ZONES:
+        why = refus_outils(command, role, root)
+        if why:
+            return 'deny', NOMS_ROLES[role] + " : " + why
+
     for rx, why in ASK_TEXT:
         if rx.search(command):
             return 'ask', why
@@ -305,12 +323,276 @@ def lecture_telechargeur(rel):
     return rel is not None and bool(LISTE_TELECHARGEMENT.match(rel))
 
 
+# --- Rôles de la 0.7.0 : ingenieur-son (sound-manager) et editeur (publisher), décidés sur AA le 03/11/2026 -------------
+# Une zone d'écriture, une liste de commandes et une table des outils du plugin permis. Dans la table, chaque option et chaque
+# argument de position a un genre : 'ecrit' (chemin où l'outil écrit : dans la zone), 'lit' (chemin lu), 'v' (valeur qui
+# n'est pas un chemin), 'v*' (plusieurs valeurs) ou None (option sans valeur). Une option absente de la table est refusée,
+# donc aussi une option abrégée (argparse accepte les préfixes : « --exec » vaut « --executer »).
+EPISODE = r'^episodes/[^/]+/'
+ZONES = {
+    'ingenieur-son': re.compile(EPISODE + r'(kit/voix(/|$)|kit/media/audio(/|$)|kit/media/source-v\d+/soundza(/|$)'
+                                r'|kit/provenance\.md$|montage($|/(?!montage\.json$))|outputs/controle-son[^/]*(/|$))', I),
+    'editeur': re.compile(EPISODE + r'(miniatures-v\d+(/|$)|publication_v\d+\.md$|publication_v\d+\.[a-z]{2}(-[a-z]{2})?\.srt$)', I),
+}
+NOMS_ROLES = {'ingenieur-son': 'ingénieur du son', 'editeur': 'éditeur'}
+TEXTE_ZONES = {
+    'ingenieur-son': "kit/voix/, kit/media/audio/, kit/media/source-vN/soundza/, kit/PROVENANCE.md, montage/ (sauf montage.json) "
+                     "et outputs/controle-son*/ de l'épisode",
+    'editeur': "miniatures-vN/, PUBLICATION_vN.md et PUBLICATION_vN.<langue>.srt de l'épisode",
+}
+_COMMUNES = {'python', 'python3', 'py', 'ffmpeg', 'ffprobe', 'cp', 'ls', 'wc', 'grep', 'head', 'tail', 'mkdir', 'cd', 'date',
+             'sha1sum', 'sha256sum'}
+COMMANDES = {'ingenieur-son': _COMMUNES, 'editeur': _COMMUNES | {'node'}}
+_CONTROLE_SON = {'niveau': {'pos': ['lit']}, 'son': {'pos': ['lit'], 'opts': {'--reference': 'lit', '--voix': 'lit'}},
+                 'voix-reste': {'pos': ['lit', 'lit']}}
+OUTILS = {
+    'ingenieur-son': {
+        # À blanc seulement (découpage et coût) : ni --executer ni --confirme-credits ; l'appel payant est lancé par Claude principal.
+        'outils/voix/generer_voix.py': {'pos': ['lit'], 'opts': {
+            '--voix': 'v', '--sortie': 'v', '--nom': 'v', '--prises': 'v*', '--blocs': 'v', '--modele': 'v', '--stabilite': 'v',
+            '--similarite': 'v', '--format': 'v', '--facteur': 'v', '--max-caracteres': 'v'}},
+        'outils/voix/info_elevenlabs.py': {'opts': {'--modeles': 'v*', '--tous': None, '--voix': 'v'}},
+        'outils/controle/transcrire.py': {'pos': ['lit'], 'opts': {'--modele': 'lit', '--sortie': 'ecrit', '--texte': 'lit', '--isoler': 'v*'}},
+        'outils/controle/ralentir.py': {'pos': ['lit', 'ecrit'], 'opts': {'--tempo': 'v', '--tete': 'v', '--queue': 'v', '--cible': 'v'}},
+        'outils/controle/pauses.py': {'pos': ['lit', 'ecrit', 'lit', 'v']},
+        'outils/controle/raccourcir.py': {'pos': ['lit', 'ecrit'], 'opts': {'--sequences': 'v', '--part': 'v', '--plancher': 'v', '--gardes': 'lit'}},
+        'outils/controle/recaler.py': {'pos': ['lit', 'lit', 'lit', 'ecrit', 'v']},
+        'outils/controle/mesurer_sons.py': {'pos': ['lit'], 'opts': {'--whisper': 'lit', '--crete-max': 'v', '--boucle': None}},
+        'outils/controle/controle.py': {'sous': _CONTROLE_SON},
+        'outils/controle/publication.py': {'sous': {'mot': {'pos': ['lit', 'v']}}},
+        'outils/medias/telecharger_medias.py': {'pos': ['lit'], 'opts': {
+            '--racine': 'ecrit', '--manifeste': 'ecrit', '--agent-utilisateur': 'v', '--pause': 'v', '--essais': 'v', '--executer': None}},
+    },
+    'editeur': {
+        'skills/thumbnail-strategist/scripts/miniature.py': {'sous': {
+            'rendu': {'pos': ['lit', 'ecrit']},
+            'mesure': {'pos': ['lit']},
+            'planche': {'pos': ['ecrit', 'lit'], 'opts': {'--flux': 'lit'}},
+            'grille': {'pos': ['lit', 'ecrit'], 'opts': {'--zone': 'v', '--echelle': 'v', '--pas': 'v', '--polygone': 'lit'}},
+            'contraste': {'pos': ['v', 'v'], 'opts': {'--image': 'lit', '--zone': 'v'}}}},
+        'outils/controle/controle.py': {'sous': {'chrome': {}}},
+        'outils/controle/publication.py': {'sous': {
+            'verifier': {'pos': ['lit'], 'opts': {'--journal': 'lit', '--srt': 'lit', '--exclure': 'v*', '--requete': 'v'}},
+            'chapitres': {'pos': ['lit'], 'opts': {'--titre': 'v', '--repere': 'v', '--ignorer': 'v*'}},
+            'mot': {'pos': ['lit', 'v']}}},
+        'outils/montage/srt.py': {'opts': {'--script': 'lit', '--mots': 'v', '--journal': 'lit', '--sortie': 'ecrit'}},
+    },
+}
+# `node node_modules/hyperframes/bin/hyperframes.mjs remove-background` (citty) : options de HyperFrames 0.8.149.
+REMOVE_BACKGROUND = {'pos': ['lit'], 'opts': {'-o': 'ecrit', '--output': 'ecrit', '-b': 'ecrit', '--background-output': 'ecrit',
+                                              '--device': 'v', '--quality': 'v', '--info': None, '--json': None}}
+NOMBRE = re.compile(r'^[+-]?\d+(\.\d+)?$')
+REDIRECT_TOUT = re.compile(r'>>?\s*("[^"]+"|\'[^\']+\'|[^\s|;&]+)')     # y compris 2> et &>
+SANS_FICHIER = {'-', '/dev/null', 'nul', '$null'}
+MEDIAS_ECRITS = {'.mp4', '.mov', '.webm', '.mkv', '.wav', '.mp3', '.flac', '.m4a', '.aac', '.ogg', '.opus', '.png', '.jpg',
+                 '.jpeg', '.webp'}
+FFMPEG_DRAPEAUX = {'-y', '-n', '-hide_banner', '-nostats', '-stats', '-nostdin', '-vn', '-an', '-sn', '-dn', '-shortest',
+                   '-xerror', '-copyts', '-re', '-autorotate', '-noautorotate', '-accurate_seek', '-noaccurate_seek',
+                   '-ignore_unknown', '-benchmark', '-report', '-dump', '-hex'}
+
+
+def chemin_absolu(p, root):
+    p = os.path.expanduser(p.strip('"\''))
+    if re.match(r'^/[a-z]/', p, I):            # /c/Users/... (Git Bash)
+        p = p[1] + ':' + p[2:]
+    return os.path.abspath(os.path.join(root, p))
+
+
+def outil_du_plugin(t):
+    """Chemin de l'outil relatif au plugin installé (minuscules, « / »), ou None (hors du plugin, ou « .. »)."""
+    plugin = (os.environ.get('CLAUDE_PLUGIN_ROOT') or '').replace('\\', '/').rstrip('/')
+    p = t.strip('"\'').replace('\\', '/')
+    if not plugin or '..' in p:
+        return None
+    p = p[1] + ':' + p[2:] if re.match(r'^/[a-z]/', p, I) else p
+    plugin = plugin[1] + ':' + plugin[2:] if re.match(r'^/[a-z]/', plugin, I) else plugin
+    return p[len(plugin) + 1:].lower() if p.lower().startswith(plugin.lower() + '/') else None
+
+
+def sortie_refusee(t, role, root):
+    """Raison du refus d'une cible d'écriture, ou None si elle est dans la zone du rôle."""
+    if t.lower() in SANS_FICHIER:
+        return None
+    rel = project_rel(t, root)
+    if rel is None or not ZONES[role].match(rel):
+        return "écriture seulement dans " + TEXTE_ZONES[role] + " (refusé : " + t[:120] + ")"
+    if rel.lower().endswith('.mp4'):
+        return "aucun MP4 n'est écrit par ce rôle (refusé : " + t[:120] + ")"
+    if os.path.splitext(rel)[1].lower() in MEDIAS_ECRITS and os.path.exists(chemin_absolu(t, root)):
+        return "un média existant ne s'écrase pas (refusé : " + t[:120] + ")"
+    return None
+
+
+def arguments_refuses(args, spec, role, root):
+    """Raison du refus si les arguments d'un outil sortent de sa table (voir OUTILS), sinon None."""
+    if 'sous' in spec:
+        if not args or args[0] not in spec['sous']:
+            return "sous-commande non permise (refusé : " + (args[0] if args else '') + ")"
+        spec, args = spec['sous'][args[0]], args[1:]
+    pos, opts = spec.get('pos', []), spec.get('opts', {})
+    attente, n = None, 0
+    for a in args:
+        if a.startswith('-') and not NOMBRE.match(a):
+            nom, egal, valeur = a.partition('=')
+            if nom not in opts:
+                return "option inconnue ou abrégée (refusé : " + a[:120] + ")"
+            genre, attente = opts[nom], None
+            if genre is None:
+                if egal:
+                    return "option sans valeur (refusé : " + a[:120] + ")"
+            elif egal:
+                if genre == 'ecrit' and sortie_refusee(valeur, role, root):
+                    return sortie_refusee(valeur, role, root)
+            else:
+                attente = genre
+            continue
+        if attente is not None:
+            genre = attente
+            if not attente.endswith('*'):
+                attente = None
+        elif pos:
+            genre, n = pos[min(n, len(pos) - 1)], n + 1
+        else:
+            return "argument inattendu (refusé : " + a[:120] + ")"
+        if genre == 'ecrit' and sortie_refusee(a, role, root):
+            return sortie_refusee(a, role, root)
+    return None
+
+
+def sorties_ffmpeg(toks):
+    """Fichiers écrits par ffmpeg : tout argument qui n'est ni une option, ni sa valeur, ni une entrée (-i), le dernier argument,
+    et le `file=` d'un filtre (ametadata…)."""
+    sorties, valeur = [], False
+    for t in toks[1:]:
+        if valeur:
+            valeur = False
+        elif t.startswith('-') and t != '-':
+            valeur = t.lower() not in FFMPEG_DRAPEAUX
+        else:
+            sorties.append(t)
+    if len(toks) > 1 and not toks[-1].startswith('-'):
+        sorties.append(toks[-1])
+    for t in toks[1:]:
+        sorties += re.findall(r'(?:^|[:,;\[=])file=([^:,;\]]+)', t)
+    return sorties
+
+
+def segments_cites(command):
+    """Segments d'une commande coupés sur &&, ||, ;, |, & et les fins de ligne hors guillemets (un filtre ffmpeg en contient)."""
+    segs, cur, q, i = [], '', None, 0
+    while i < len(command):
+        c = command[i]
+        if q:
+            cur += c
+            q = None if c == q else q
+        elif c in '"\'':
+            q, cur = c, cur + c
+        elif command.startswith(('&&', '||'), i):
+            segs.append(cur)
+            cur, i = '', i + 2
+            continue
+        elif c in ';|\n' or (c == '&' and command[i - 1:i] != '>' and command[i + 1:i + 2] != '>'):
+            segs.append(cur)
+            cur = ''
+        else:
+            cur += c
+        i += 1
+    segs.append(cur)
+    return [s.strip() for s in segs if s.strip()]
+
+
+def sans_redirections(toks):
+    """Les arguments sans les redirections (2>&1, > fichier, < entrée), contrôlées à part."""
+    out, sauter = [], False
+    for t in toks:
+        if sauter:
+            sauter = False
+        elif re.fullmatch(r'\d*>>?|&>>?|<', t):
+            sauter = True
+        elif not re.match(r'^(\d*>>?|&>>?|<)\S', t):
+            out.append(t)
+    return out
+
+
+def refus_outils(command, role, root):
+    """Limites des rôles ingenieur-son et editeur en Bash ; raison du refus, ou None."""
+    if INLINE_CODE.search(command) or re.search(r'\$\(|`|<\(|>\(', command):
+        return "aucun script en ligne ni substitution de commande ; seulement les outils du plugin"
+    for seg in segments_cites(command):
+        toks = sans_redirections(tokens(seg))
+        h = head(toks)
+        if h not in COMMANDES[role]:
+            return "commande non permise (refusé : " + seg[:120] + ")"
+        for t in REDIRECT_TOUT.findall(seg):
+            why = sortie_refusee(t.strip('"\''), role, root)
+            if why:
+                return why
+        args = [t for t in toks[1:] if not t.startswith('-')]
+        if h == 'cd':
+            if args and project_rel(args[0], root) != '.':
+                return "cd seulement vers la racine de la chaîne : les chemins se donnent depuis elle (refusé : " + seg[:120] + ")"
+        elif h == 'mkdir':
+            for t in args:
+                why = sortie_refusee(t, role, root)
+                if why:
+                    return why
+        elif h == 'cp':
+            if any(t not in ('-n', '-p', '--no-clobber') for t in toks[1:] if t.startswith('-')) or len(args) < 2:
+                return "cp seulement avec -n ou -p, une ou plusieurs sources et une destination (refusé : " + seg[:120] + ")"
+            why = sortie_refusee(args[-1], role, root)
+            if why:
+                return why
+            dest = chemin_absolu(args[-1], root)
+            finaux = [os.path.join(dest, os.path.basename(s.rstrip('/\\'))) for s in args[:-1]] if os.path.isdir(dest) else [dest]
+            if any(os.path.exists(f) for f in finaux):
+                return "cp : aucun écrasement (refusé : " + seg[:120] + ")"
+        elif h == 'ffprobe':
+            if any(t in ('-o', '-output') for t in toks):
+                return "ffprobe sans fichier de sortie"
+        elif h == 'ffmpeg':
+            if '-y' in toks:
+                return "ffmpeg sans -y : aucun écrasement, une sortie neuve"
+            for t in sorties_ffmpeg(toks):
+                why = sortie_refusee(t, role, root)
+                if why:
+                    return why
+        elif h == 'node':
+            if len(toks) < 3 or (project_rel(toks[1], root) or '').lower() != 'node_modules/hyperframes/bin/hyperframes.mjs' \
+                    or toks[2] != 'remove-background':
+                return "node seulement pour « node node_modules/hyperframes/bin/hyperframes.mjs remove-background » (refusé : " + seg[:120] + ")"
+            why = arguments_refuses(toks[3:], REMOVE_BACKGROUND, role, root)
+            if why:
+                return why
+        elif h in ('python', 'python3', 'py'):
+            apres = toks[1:]
+            script = next((t for t in apres if not t.startswith('-')), '')
+            reste = apres[apres.index(script) + 1:] if script else []
+            outil = outil_du_plugin(script) if script else None
+            if outil is not None:
+                if outil not in OUTILS[role]:
+                    return "outil du plugin non permis à ce rôle (refusé : " + outil + ")"
+                why = arguments_refuses(reste, OUTILS[role][outil], role, root)
+                if why:
+                    return why
+            elif script and ZONES[role].match(project_rel(script, root) or ''):
+                # Le garde ne lit pas le contenu d'un script : celui de l'agent est relu et lancé par Claude principal (03/11/2026).
+                return ("un script de l'agent est relu et lancé par Claude principal : l'écrire avec Write dans sa zone, "
+                        "s'arrêter et donner la commande exacte dans le rapport (refusé : " + seg[:120] + ")")
+            else:
+                return ("python seulement pour ses outils du plugin installé (chemin complet) ; un script de l'agent est relu "
+                        "et lancé par Claude principal (refusé : " + seg[:120] + ")")
+    return None
+
+
 def decide_write(path, role, root):
     rel = project_rel(path, root)
     if role == 'stratege':
         return None if ecriture_stratege(rel) else ('deny', "stratège : écriture seulement dans docs/ et direction/BANQUE_SUJETS.md")
     if role == 'telechargeur':
         return None if ecriture_telechargeur(rel) else ('deny', "téléchargeur : écriture seulement sous episodes/<id>/kit/media/source-vN/")
+    if role in ZONES:
+        why = sortie_refusee(path, role, root)
+        return ('deny', NOMS_ROLES[role] + " : " + why) if why else None
     if role == 'producteur':
         why = protected(rel, root, {'core', 'marque', 'inputs', 'mp4'})
     elif role == 'mainteneur':
@@ -328,7 +610,8 @@ def decide(command, role=None):
 # Type d'agent (sans le préfixe « studio-faceless: ») → rôle du garde-fou ; Claude principal n'a pas de rôle.
 ROLES = {'motion-producer': 'producteur', 'shorts-producer': 'producteur',
          'art-director': 'directeur-artistique', 'studio-maintainer': 'mainteneur',
-         'reviewer': 'relecteur', 'strategist': 'stratege', 'media-fetcher': 'telechargeur'}
+         'reviewer': 'relecteur', 'strategist': 'stratege', 'media-fetcher': 'telechargeur',
+         'sound-manager': 'ingenieur-son', 'publisher': 'editeur'}
 
 
 def role_of(data):

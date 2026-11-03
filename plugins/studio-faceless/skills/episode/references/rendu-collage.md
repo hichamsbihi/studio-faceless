@@ -23,6 +23,7 @@
 - **Contrôles** : nombre d'images attendu, journal du master (début de chaque séquence), décodage complet.
 
 ## 4. Mix du film
+- **Qui** (0.7.0, validé sur AA, 03/11/2026) : `studio-faceless:sound-manager` écrit le plan de cues et le plan son, puis la commande exacte du mix (et celle de son script de mesure), et s'arrête. Claude principal lance le mix en tâche de fond, puis relit et lance le script de mesure ; `sound-manager`, relancé, lit les mesures. Méthode par défaut de la musique : skill `studio-faceless:direction-sonore`, `references/musique-par-cues.md` (`DIRECTION_AUDIO.md` § 2 et § 3) ; un autre niveau de la chaîne est un écart dans son `direction/ECARTS.md`.
 - **Outil** : `python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/montage/mix_film.py <film>-voix.mp4 plan-son.json [--son-seul]` (schéma du plan : `${CLAUDE_PLUGIN_ROOT}/outils/montage/README.md`). Testé sur AA (E007) : −16,1 LUFS, −1,9 dBTP, image identique, 6,5 min, environ 2 à 3 Go de mémoire. Entrées : le master voix, son journal et `episodes/<id>/montage/plan-son.json`. La sortie est le master final, dont l'image est copiée telle quelle.
 - **Le plan son** (porte de questions d'abord, `grilles.md` § 10) :
   - **musique** : les départs en temps de séquence (convertis par le journal) ou en temps du film, le décalage dans la source, les boucles sur des mesures entières (relevé musical), les fondus. Une musique peut traverser une jonction. Elle se tait exprès avant une révélation ;
@@ -32,7 +33,7 @@
 
   | Type | Niveau |
   |---|---|
-  | musique | 13 (plage 12 à 15) |
+  | musique | 8 (plage 7 à 9 ; validé sur AA, 03/11/2026, master v3 de l'E011) |
   | ambiance en boucle (foule, pluie) | 16 |
   | impact ou battement | 14 |
   | souffle, whoosh | 18 |

@@ -11,11 +11,12 @@ Méthode pour concevoir, fabriquer, contrôler et tester les miniatures d'un ép
 Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les règles par défaut du plugin.
 1. **Les décisions du propriétaire** (`BRIEF.md` et `PROVENANCE.md` de l'épisode) et les règles du `CLAUDE.md` de la chaîne et de `direction/`.
 2. **L'aide officielle de YouTube** (formats, Test & Compare, CTR) : elle l'emporte sur toute « recette » de miniature.
-3. **Ce skill** : la méthode, la grammaire par défaut (validée sur AA, E003), les contrôles et les gabarits.
+3. **Ce skill** : la méthode, la grammaire par défaut (trois calques, VALIDÉ, Hicham, 03/11/2026 ; celle de l'E003 en secours), les contrôles et les gabarits.
 
 ## Quand l'utiliser
 - Trouver les concepts et les variantes d'une miniature, une fois le titre et le montage connus.
-- Fabriquer une miniature (HTML/CSS, rendu par le Chrome de HyperFrames) ou la critiquer (`studio-faceless:art-director`, sur demande du propriétaire). Le directeur artistique critique sur les PNG et les planches ; son garde-fou ne lui permet pas de lancer le script, donc les mesures sont faites par Claude principal.
+- Fabriquer une miniature (HTML/CSS, rendu par le Chrome de HyperFrames) ou la critiquer (`studio-faceless:art-director`, sur demande du propriétaire). Le directeur artistique critique sur les PNG et les planches ; son garde-fou ne lui permet pas de lancer le script, donc les mesures sont faites par `publisher` ou Claude principal.
+- **Agent** (0.7.0, validé sur AA, 03/11/2026) : `studio-faceless:publisher` fait les miniatures d'un épisode avec ce skill (mission principale), puis le dossier de publication (`studio-faceless:youtube-seo`). Le titre lui est donné : il vient de `studio-faceless:strategist`, validé par le propriétaire.
 - Préparer le test A/B, puis lire et consigner son résultat.
 - Ne pas l'utiliser pour générer une image : aucune image générée par IA, ni fond, ni visage, ni retouche de visage.
 
@@ -28,8 +29,8 @@ Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les
 ## Méthode, dans l'ordre
 1. **Promesse** : une seule promesse, portée à la fois par le titre et la miniature et tenue dès l'accroche de la vidéo. La miniature complète le titre sans le répéter. Voir `references/promesse-et-concepts.md`.
 2. **Au moins 5 concepts véridiques**, chacun fondé sur une contradiction vérifiée et sourcée ; aucune émotion ni pensée inventée prêtée à une personne réelle. Voir `references/promesse-et-concepts.md`.
-3. **3 variantes très différentes** retenues parmi les concepts (sujet, image, mécanisme du texte).
-4. **Grammaire** : par défaut celle de la miniature v4, validée sur AA (E003) : visage célèbre détouré (modèle local `remove-background`, ou à la main par polygone CSS `clip-path` en secours), fond uni aux couleurs de l'histoire, 2 à 4 mots en Montserrat 900, courte flèche rouge, drapeaux. Voir `references/grammaire-e003.md`, avec les leçons de l'E001 et les retours du propriétaire sur l'E003 (AA).
+3. **3 variantes très différentes** retenues parmi les concepts (sujet, image, mécanisme du texte) ; au moins 2 pour un Test & Compare (validé sur AA, 03/11/2026).
+4. **Grammaire** : par défaut, depuis le 03/11/2026 (VALIDÉ, Hicham, après le choix de la v2-3 de l'E011 d'AA), la **méthode en trois calques** : vraie photo de fond déjà vibrante, floutée et voilée ; vrai visage célèbre détouré par `remove-background` ; question de 3 mots en HTML qui nomme la star, mot clé en couleur complémentaire, bandeau de contexte d'une ligne. Voir `references/trois-calques-e011.md`. La grammaire de la v4 de l'E003 (fond uni, flèche, drapeaux ; `references/grammaire-e003.md`) reste en secours et garde ses leçons, mais son fond uni a été jugé « pas captivant ».
 5. **Fabrication** : HTML/CSS 1280×720, détourage par `remove-background` (VALIDÉ, Hicham, 03/11/2026) ou, en secours, par polygone à partir d'une grille de coordonnées, rendu sans fenêtre. Voir `references/fabrication.md` et `scripts/miniature.py`.
 6. **Contrôles mesurables** (poids et taille, aperçus 168×94 et 320×180, coin inférieur droit, contraste du texte, fonds clair et sombre), puis planche « flux » (analyse interne). Voir `references/controles.md`. Les mesures ne remplacent pas le regard du propriétaire.
 7. **Test & Compare** et **journal de l'épisode**. Voir `references/test-et-journal.md`.
@@ -37,6 +38,7 @@ Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les
 ## Refus permanents
 - Image générée par IA, visage reconstruit ou « amélioré », montage qui fait croire à une scène qui n'a pas eu lieu.
 - Émotion, pensée, citation ou geste prêtés à une personne réelle sans source (exemple AA : « MESSI HATES BRAZIL ») ; la miniature ne montre que ce que la photo montre.
+- « $0 » ou tout chiffre près d'une personne dont le cachet n'est pas public ; scène inventée (exemple AA, E011 : un bras qui cache un sac d'argent) ; plus d'un point d'attention (validé sur AA, 03/11/2026).
 - Promesse que la vidéo ne tient pas, ou qu'elle ne tient que tard.
 - Texte qui recopie le titre ; plus de 4 mots ; texte dans le coin inférieur droit.
 - Personne anonyme en sujet ; photo sans licence ou sans provenance.

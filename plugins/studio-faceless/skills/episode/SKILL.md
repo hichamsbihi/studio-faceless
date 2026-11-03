@@ -46,19 +46,21 @@ Ce skill donne l'ordre, les portes et les listes de contrôle. Il ne recopie pas
 | 1 | Recherche | parties à chercher, éclaireur, médias candidats | `research/perplexity/R-*.md` (éclaireur Perplexity), puis `research/R-*.md` (`studio-faceless:research`) | faits relus à la source ; médias candidats sans téléchargement |
 | 2 | Angle et découpage | question, couches, renversement, séquences | `ANGLE_DECOUPAGE_vN.md` | `VALIDÉ` par le propriétaire |
 | 3 | Script | fiche d'ouverture, densité, relances | `SEQUENCES_*_NARRATION.md`, script ElevenLabs sans balise | `VALIDÉ` ; contrôles avant la voix (`recit-retention.md`) |
-| 4 | Voix | voix, prononciations | prises vérifiées, ralenties, repères recalés (`kit/voix/`) | voix figée : plus aucune régénération sans le propriétaire |
+| 4 | Voix | voix, prononciations, coût | `studio-faceless:sound-manager` : appel chiffré, puis prises vérifiées, ralenties, repères recalés (`kit/voix/`) | coût confirmé par le propriétaire avant l'appel ; voix figée : plus aucune régénération sans lui |
 | 5 | Socle | direction artistique, médias, sons, raccords | kit complet (`references/socle.md`) | liste de contrôle « avant un producteur » cochée |
 | 5 bis | Maquette et test de décrochage (facultatif) | la faire ou non | une voix sur images sommaires, un rendu | la première minute de décrochage est corrigée avant les producteurs |
 | 6 | Séquence témoin | quelle séquence, ce qu'elle doit prouver | une séquence rendue | le propriétaire valide la recette sur elle |
 | 7 | Production | lots, raccords, quotas | séquences jusqu'à `render.sh` (`references/production.md`) | chaque planche regardée ; corrections faites sur place |
 | 8 | Rendus | ordre | MP4 contrôlés (`references/rendu-collage.md` § 1–2) | `MESURES_TECHNIQUES_OK` pour chaque séquence |
 | 9 | Collage en voix seule | marque, appel, jonctions | master voix et journal (§ 3) | images attendues ; jonctions mesurées |
-| 10 | Mix du film | musique, effets, niveaux, silences | plan son, master final (§ 4) | −16 ±1 LUFS, crête vraie ≤ −1,5 dBTP ; `ECOUTE_A_FAIRE` |
-| 11 | Retours | ce que le propriétaire a vu et entendu | corrections sur place, puis remix ou rendu ciblé | `APPROUVE_PAR_<PROPRIETAIRE>` (date) |
-| 12 | Publication | titre, miniature | skills `studio-faceless:thumbnail-strategist` et `studio-faceless:youtube-seo` | le propriétaire publie |
+| 10 | Mix du film | musique, effets, niveaux, silences | `sound-manager` : plan de cues, sons, plan son ; mix lancé par Claude principal ; mesures (§ 4) | −16 ±1 LUFS, crête vraie ≤ −1,5 dBTP ; `ECOUTE_A_FAIRE` |
+| 11 | Retours | ce que le propriétaire a vu et entendu | corrections sur place ; pour le son, nouveau plan par `sound-manager`, puis remix | `APPROUVE_PAR_<PROPRIETAIRE>` (date) |
+| 12 | Publication | titre (de `strategist`), miniature | `studio-faceless:publisher` : miniatures, puis dossier (skills `thumbnail-strategist`, `youtube-seo`) | le propriétaire choisit et publie |
 | 13 | Après la sortie | relevés, leçons | bilans J+2, J+7, J+28 ; `pieges.md` complété ; archivage (`references/etapes.md` § 13) | — |
 
 Le détail de chaque étape est dans `references/etapes.md`.
+
+**Agents des étapes 4 et 10 à 12** (0.7.0, validé sur AA, 03/11/2026) : `studio-faceless:sound-manager` fait tout le son (voix, sons, plan son, mesures), et `studio-faceless:publisher` les miniatures puis le dossier de publication. Claude principal coordonne. Il lance les tâches longues (rendus, mix), les appels payants confirmés et, après relecture, les scripts que ces agents écrivent (mesures, masque ; décision du 03/11/2026), puis soumet au propriétaire. Aucun agent n'écoute ni ne publie.
 
 ## Avant de lancer un producteur (liste de contrôle)
 - [ ] Voix figée ; repères mot à mot recalés ; durée de chaque bande montage.
@@ -79,5 +81,5 @@ Le détail de chaque étape est dans `references/etapes.md`.
 - `references/rendu-collage.md` : rendus, contrôles, collage en voix seule, mix du film, master, sous-titres.
 - `references/recit-retention.md` (`PROPOSÉ`) : patron du film, ouverture, relances, densité, succession des séquences.
 - `references/choix-sujet.md` (`PROPOSÉ`) : grille et promesse.
-- `references/pieges.md` : leçons de tous les épisodes, à compléter à chaque épisode.
+- `references/pieges.md` : leçons de tous les épisodes, à compléter à chaque épisode (son et miniature de l'E011 compris).
 - `references/tokens-contexte.md` : fin de porte (`/compact`), état, lectures, délégations.

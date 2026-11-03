@@ -1,6 +1,6 @@
 # Pièges connus (à compléter à la fin de chaque épisode)
 
-Format : le piège, puis ce qu'on fait. Source entre parenthèses : les identifiants E001 à E010 sont les épisodes d'AA où le piège est apparu ; chaque chaîne ajoute les siens. Les règles citées sont les règles par défaut du plugin (`${CLAUDE_PLUGIN_ROOT}/referentiels/`) ; les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent.
+Format : le piège, puis ce qu'on fait. Source entre parenthèses : les identifiants E001 à E011 sont les épisodes d'AA où le piège est apparu ; chaque chaîne ajoute les siens. Les règles citées sont les règles par défaut du plugin (`${CLAUDE_PLUGIN_ROOT}/referentiels/`) ; les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent.
 
 ## Récit
 - **Ouverture sur un décor, du contexte ou une personne inconnue, et question après 0:35** : on perd 53 à 60 % des spectateurs à 0:30 (mesure AA). Faire le contraire : personne nommée de face, question avant 0:45 (E001, E003, E004 ; Méthode, étude AA).
@@ -92,3 +92,35 @@ Format : le piège, puis ce qu'on fait. Source entre parenthèses : les identifi
 - **Son de bibliothèque jamais mesuré** : un son de bibliothèque en ligne peut être codé en 8 bits (μ-law), dépasser 0 dBTP ou porter une voix. Le mesurer avant tout emploi (`outils/controle/mesurer_sons.py`, Whisper compris) ; un écart écarte le son, une absence d'écart ne vaut pas écoute (validé sur AA, 02/11/2026 ; `DIRECTION_AUDIO.md` § 4 bis).
 - **Musique inaudible au début et après la signature** : les morceaux commencent par une introduction calme qui disparaît sous la voix (le propriétaire : « pas de musique du début »). Relever l'enveloppe de chaque source, par pas de 0,5 à 1 s, et caler son départ (`decalage`) après l'introduction calme ; la musique entre dès 0 s (E010 master v1).
 - **`niveau_lu` de `plan-son.json`** : il s'applique avant la baisse sous la voix. Une musique à −13 a mesuré 16 LU sous la voix, et non 13. Mesurer l'écart réel sur l'essai `--son-seul` (musique estimée = mix moins voix) avant de livrer (E010).
+- **Musique de suspense trop longtemps en fond, révélations non marquées** : masters v1 et v2 refusés (le propriétaire veut que « l'impact sonore suive l'impact visuel »). Il faut des cues de 15 à 40 s qui changent aux tournants, un suspense de 30 s au plus et des marques aux révélations. On travaille d'abord sur une seule séquence témoin en deux variantes, validée par le propriétaire, puis sur le film entier. Recette : skill `studio-faceless:direction-sonore`, `references/musique-par-cues.md` (validé sur AA, 03/11/2026, master v3 approuvé à l'écoute) (E011).
+- **Défauts que seule la mesure a trouvés au premier tour** :
+  - un motif de question masqué, à 0–2 dB sous la voix ;
+  - un cue plus fort que la règle des 7 LU ;
+  - des marques trop faibles.
+
+  Mesurer l'écart voix − musique par cue et la hausse de chaque marque sur le résidu (mix ÷ gain final − voix) avant de montrer le film (`musique-par-cues.md` § 4). Les réductions du limiteur sur les attaques de la voix existaient déjà : ce n'est pas un défaut de la musique (validé sur AA, 03/11/2026) (E011).
+- **Faits de `mix_film.py` mal lus** :
+  - le gain d'une musique se calcule sur l'intensité intégrée de son propre extrait, fondus compris ;
+  - un fondu de sortie finit à `fin` ;
+  - les rampes de creux sont hors de leur fenêtre ;
+  - le gain d'un effet se calcule sur son maximum momentané de 400 ms ;
+  - aucune sortie n'est écrasée.
+
+  Détail : `musique-par-cues.md` § 5 (validé sur AA, 03/11/2026) (E011).
+- **Journal du collage lu en secondes** : le `.journal.json` donne `debut_image`, un nombre d'images (30 i/s) (validé sur AA, 03/11/2026) (E011).
+- **Chemin `/c/…` donné à Python sous Windows** : Python ne le comprend pas ; écrire `C:/…` (validé sur AA, 03/11/2026) (E011).
+- **Musique des shows ou de l'événement** : Content ID la reconnaît ; ne jamais l'employer. Soundza ne garantit ni les droits ni l'absence de réclamation Content ID, et certaines de ses musiques sont faites par IA (à signaler). Les téléchargements se limitent à la liste validée (`DIRECTION_AUDIO.md` § 4 bis ; validé sur AA, 03/11/2026) (E011).
+
+## Miniatures et publication
+- **Images faites par un outil d'image IA** (essais du propriétaire) :
+  - visage redessiné, ou qui a l'air collé ;
+  - fautes, et du texte sur une tête ;
+  - trois points d'attention ;
+  - un objet sous la durée, en bas à droite ;
+  - des couleurs ternes.
+
+  Les miniatures HTML sur fond uni avaient déjà été jugées « pas captivantes ». Méthode retenue : trois calques (vraie photo de fond, vrai visage détouré, question en HTML), skill `studio-faceless:thumbnail-strategist`, `references/trois-calques-e011.md` (validé sur AA, 03/11/2026, choix de la v2-3) (E011).
+- **Chiffre ou scène qui trompent** : un « $0 » près d'une personne dont le cachet n'est pas public, un bras qui cache un sac d'argent. Refusés ; seulement ce qui est vrai et dit dans le film (validé sur AA, 03/11/2026) (E011).
+- **Bandeau de deux lignes** : il ne se lit pas sur mobile ; une ligne (validé sur AA, 03/11/2026) (E011).
+- **Portraits de Pinterest ou d'agence** : ils ne sont pas libres. Prendre Commons (CC BY ou domaine public), avec une ligne de crédit dans la description (validé sur AA, 03/11/2026) (E011).
+- **Fan anonyme fait par IA, avec un texte vague** : environ 2 % de CTR (E001 ; `grammaire-e003.md`).

@@ -2,6 +2,45 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 0.7.0 (03/11/2026)
+Deux agents et les leçons de l'E011 d'AA, à la demande du propriétaire (03/11/2026 : « tu crées le skill pour un agent de sound manager […] tout le travail sonore sera dédié à cet agent ; un agent de publication avec la mission principale est la thumbnail […] et consigne-le dans le skill général avec les leçons apprises »). Leçons `VALIDÉ` sur AA le 03/11/2026 : le master v3 de l'E011, approuvé à l'écoute, et la miniature v2-3, choisie par le propriétaire.
+- **Agent `sound-manager`** (`agents/sound-manager.md`, `opus`, skill `direction-sonore` préchargé, outils du serveur `soundza` sauf `generate_sound`) : tout le son d'un épisode.
+  - Voix : prépare et chiffre l'appel puis s'arrête ; Claude principal le lance après l'accord du propriétaire. Ensuite : contrôle du texte, ralentissement ×0,97, repères après coupe sur les silences.
+  - Sons de la liste validée (`marque/son/`, Soundza).
+  - Plan de cues, plan son, mesures.
+  - Aucun mix long : il écrit la commande, Claude principal lance `mix_film.py`, puis l'agent, relancé, mesure. Il n'écoute pas.
+  - Il ne lance pas son script de mesure (`montage/mesures-vN/`) : il l'écrit, s'arrête et donne la commande ; Claude principal le relit et le lance, puis le relance (VALIDÉ, Hicham, 03/11/2026).
+- **Agent `publisher`** (`agents/publisher.md`, `opus`, skills `thumbnail-strategist` et `youtube-seo` préchargés) : la miniature d'abord, puis le dossier de publication.
+  - Miniature : concepts, trois calques, détourage voie A, `miniature.py`, contrôles et planche, au moins 2 variantes.
+  - Détourage : recadrage, `remove-background`, écriture du script de masque, puis arrêt ; Claude principal relit et lance le masque, regarde le contrôle sur fond vert et relance l'agent pour le rendu (VALIDÉ, Hicham, 03/11/2026).
+  - Dossier : avec le titre venu de `strategist` et validé ; aucun titre créé, aucune publication. Le SRT (`PUBLICATION_vN.<langue>.srt`, par `srt.py`) si le contrat le demande (VALIDÉ, Hicham, 03/11/2026).
+- **Garde-fou** (`hooks/garde_commandes.py`) : rôles `ingenieur-son` et `editeur`.
+  - Chacun a sa zone d'écriture, sa liste de commandes et une table de ses outils (`OUTILS`, `REMOVE_BACKGROUND`) : une option inconnue ou abrégée est refusée, et tout chemin d'écriture est contrôlé (espace, sans barre oblique, `--option=valeur`, sortie au milieu d'une commande ffmpeg, `file=` d'un filtre, `2>`).
+  - Les segments se coupent hors des guillemets ; scripts en ligne, substitutions de commande et `cd` hors de la racine sont refusés.
+  - Pour `ingenieur-son`, refusés aussi : `generer_voix.py --executer`, `mix_film.py` et `assembler.py`.
+  - Aucun des deux ne lance ses propres scripts (VALIDÉ, Hicham, 03/11/2026) : le garde ne lit pas le contenu d'un script, qui pourrait écrire n'importe où. `python` sur un script de la zone est refusé sous toutes ses formes (`python3`, `py`, guillemets, chemin absolu, `./`), avec le message « un script de l'agent est relu et lancé par Claude principal ».
+  - Essais : `outils/test_garde_commandes.py` (classe `Roles07`, dont `test_script_de_la_zone_refuse`).
+- **Skill `episode`** :
+  - `SKILL.md` (étapes 4, 10 à 12 et paragraphe des agents) et `etapes.md` (§ 4, 10, 11, 12) : `sound-manager` et `publisher` ; Claude principal coordonne, lance les tâches longues et payantes, soumet au propriétaire ;
+  - `pieges.md` : leçons de l'E011 (Son, et nouvelle section « Miniatures et publication ») ;
+  - `socle.md` § 6 (Soundza aussi par `sound-manager`) et `rendu-collage.md` § 4 (qui fait quoi au mix).
+- **Skill `direction-sonore`** : `references/musique-par-cues.md`, méthode par défaut, renvoyée depuis `SKILL.md`. Elle contient :
+  - la recette (cues de 15 à 40 s, marques, une tonalité, sauts par mesures entières, 7 à 9 LU sous la voix) ;
+  - la séquence témoin en deux variantes ;
+  - le contrôle sans écoute (résidu, écart par cue, hausse des marques) ;
+  - les faits de `mix_film.py`.
+
+  Elle devient la règle par défaut de toutes les chaînes (VALIDÉ, Hicham, 03/11/2026) ; une chaîne qui veut autre chose l'écrit en écart.
+- **`referentiels/DIRECTION_AUDIO.md`** aligné sur la recette (validé sur AA, 03/11/2026, master v3 de l'E011) : musique de 7 à 9 LU sous la voix (§ 2), départ à 8 (§ 3) ; les marques de la recette remplacent l'impact grave à chaque bloc ou chapitre (§ 2) ; Soundza téléchargé par `sound-manager` ou Claude principal, liste validée seulement, toujours sans `generate_sound` pour un sous-agent (§ 4 bis). Alignés aussi : `REFERENTIEL_QUALITE_REALISATION.md` (changement de bloc), `rendu-collage.md` § 4 (tableau des niveaux), `outils/montage/README.md` (exemple `niveau_lu` −8). `mix_film.py` n'a pas changé (aucun niveau de musique par défaut).
+- **Skill `thumbnail-strategist`** :
+  - `references/trois-calques-e011.md`, grammaire par défaut (VALIDÉ, Hicham, 03/11/2026) ;
+  - `SKILL.md` (variantes, grammaire, agent, refus « $0 » et scène inventée) ;
+  - `grammaire-e003.md` (en secours), `fabrication.md` (trois calques ; dossier `travail/` de `publisher` ; masque lancé par Claude principal), `controles.md` (un seul point d'attention, bandeau d'une ligne).
+- **Skill `youtube-seo`** : renvoi à `publisher` (titres reçus, jamais créés).
+- `REGLES_STUDIO.md` : dix agents ; phrase sur les agents sans `CLAUDE.md` rendue générale ; deux phrases raccourcies pour rester sous 9 000 caractères (8 978). `REGLES_DETAIL.md` : qui prépare et qui lance l'appel payant ; les sons aussi par `sound-manager`.
+- Documentation : `README.md`, `DEMARRAGE.md` (dix agents), `docs/README.md`, `docs/ARCHITECTURE.md`, `docs/reference/agents.md` (deux fiches), `docs/reference/outils-et-garde.md` (table `ROLES`, scripts des agents), `docs/workflows/installation-et-mise-a-jour.md` ; niveaux et marques dans `docs/reference/son.md`, `docs/reference/skill-episode.md`, `docs/workflows/sons.md`, `episode.md` et `collage-et-mix.md`.
+- **Suite prévue en 0.7.1** : outils du plugin `miniature.py masque` et `mesurer_mix.py`, pour rendre ces deux étapes aux agents (`docs/POINTS_OUVERTS.md`).
+
 ## 0.6.1 (03/11/2026)
 Détourage des miniatures par `remove-background` (VALIDÉ, Hicham, 03/11/2026 : « tu utilises le modele remove-background de hyperframes et tu le consigne dans le plugin et install pillow »). Méthode appliquée et vérifiée le 03/11/2026 sur la v2 des miniatures de l'E011 d'AA.
 - `skills/thumbnail-strategist/references/fabrication.md` : intro et § 3 « Détourage du sujet » en deux voies. Voie A : recadrage, `hyperframes remove-background --device cpu`, masque resserré de 2 px et flou 0,7 multiplié par un polygone séparateur (Pillow), contrôle sur fond vert vif, page et rendu inchangés. Voie B : le polygone tracé à la main, gardé en secours. Le refus d'image générée par IA ne change pas.

@@ -12,7 +12,7 @@ Modèle à copier puis adapter : la page de la dernière miniature validée de l
 - `html, body` : 1280×720, `overflow: hidden`, fond de secours foncé ; tout en `position: absolute` dans un conteneur 1280×720.
 - Police : `@font-face` local sur `media/Montserrat-VariableFont.ttf`, graisse 900 pour les mots, 800 pour les pastilles.
 - Commentaire en tête : version, mots, épisode, date, photo et licence, ce qui change depuis la version précédente.
-- Couches dans l'ordre : fond, symbole de fond (losange, bande, chiffre), sujet détouré, logo, texte, flèche, pastille.
+- Couches dans l'ordre : fond, symbole de fond (losange, bande, chiffre), sujet détouré, logo, texte, flèche, pastille. Méthode en trois calques, par défaut depuis le 03/11/2026 (`trois-calques-e011.md`) : photo de fond floutée de 3 px, saturée, voile sombre côté texte ; sujet détouré ; texte et bandeau d'une ligne.
 - Flèche : un `path` SVG en courbe, `stroke-linecap: round`, pointe en `marker`, doublé d'un même tracé plus épais, foncé, à 35 % pour l'ombre. **Sa pointe s'arrête avant le sujet** (≈ 30 px dans la v4).
 
 ## 3. Détourage du sujet
@@ -22,8 +22,8 @@ Décision du propriétaire (VALIDÉ, Hicham, 03/11/2026 : « tu utilises le mode
 Commande, installation du modèle et limites : skill `studio-faceless:remove-background` (§ 1 pour l'accord du propriétaire au premier téléchargement, § 4 bis pour le masque).
 1. **Recadrer** la photo autour de la personne.
 2. **Détourer** depuis la racine de la chaîne : `node node_modules/hyperframes/bin/hyperframes.mjs remove-background <recadrage.jpg> -o <brut.png> --device cpu` (1,5 s pour 1600×1400, modèle déjà en cache).
-3. **Masque** : resserré de 2 px puis flou de 0,7 (méthode du § 4 bis du skill), multiplié par un **polygone séparateur** (tracé avec la grille de la voie B) qui écarte les autres personnes et les objets que le modèle garde (fauteuil, main d'une voisine). Fait ici avec Pillow : `MinFilter(5)`, `GaussianBlur(0.7)`, polygone flouté de 1 px. Les couleurs viennent telles quelles de la photo d'origine : aucun pixel redessiné.
-4. **Contrôler** sur fond vert vif, en pleine taille : cheveux, mains, bords. Puis la page HTML/CSS et le rendu (§ 4) restent inchangés.
+3. **Masque** : resserré de 2 px puis flou de 0,7 (méthode du § 4 bis du skill), multiplié par un **polygone séparateur** (tracé avec la grille de la voie B) qui écarte les autres personnes et les objets que le modèle garde (fauteuil, main d'une voisine). Fait ici avec Pillow : `MinFilter(5)`, `GaussianBlur(0.7)`, polygone flouté de 1 px. Les couleurs viennent telles quelles de la photo d'origine : aucun pixel redessiné. Avec `studio-faceless:publisher`, le script s'écrit sous `miniatures-vN/travail/` et l'agent ne le lance pas : il s'arrête et donne la commande exacte ; Claude principal relit le script et le lance (décision du 03/11/2026 ; `miniature.py masque` prévu en 0.7.1).
+4. **Contrôler** sur fond vert vif, en pleine taille : cheveux, mains, bords (avec `publisher`, Claude principal regarde ce contrôle, puis relance l'agent pour le rendu). Puis la page HTML/CSS et le rendu (§ 4) restent inchangés.
 
 Pillow sert seulement à composer ce masque (installé sur le poste du propriétaire le 03/11/2026 ; ailleurs, rien ne s'installe sans son accord).
 
@@ -43,7 +43,7 @@ Méthode :
 2. **Zooms** sur les bords difficiles (cheveux, mains, épaules) : `--zone x,y,largeur,hauteur --echelle 2 --pas 10`.
 3. **Tracer** le polygone dans le CSS, dans le sens des aiguilles d'une montre, un point tous les 15 à 40 px selon la courbure (82 points pour Messi dans la v4). Le bas du sujet sort du cadre : le polygone descend jusqu'au bord de la photo.
 4. **Vérifier** en superposant le polygone : `grille ... --polygone miniature.html` lit le premier `clip-path: polygon(...)` de la page (ou une liste `x y, x y` dans un fichier). Hors du polygone, la photo est assombrie ; les sommets sont numérotés tous les 5 pour corriger un point précis. Rogner un peu dans le sujet plutôt que de laisser du fond.
-5. Les grilles et captures de travail vont dans le dossier temporaire de la session, pas dans le dossier de l'épisode.
+5. Les grilles et captures de travail vont dans le dossier temporaire de la session, pas dans le dossier de l'épisode. Pour `studio-faceless:publisher`, dont le garde-fou limite l'écriture à son dossier, elles vont dans `miniatures-vN/travail/`, avec le script Pillow du masque (voie A), gardé pour refaire la miniature ; l'archivage met ces captures à la corbeille.
 
 ## 4. Rendu
 ```bash

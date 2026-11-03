@@ -372,7 +372,7 @@ grep -m1 '"version"' node_modules/hyperframes/package.json
   Au premier contrôle ou rendu, HyperFrames télécharge `chrome-headless-shell` (environ 270 Mo) dans `~/.cache/hyperframes/`. Réponds à la demande d'accord.
 - **Fichiers créés** : un dossier temporaire de test, et le Chrome dans `~/.cache/hyperframes/`. Rien dans la chaîne.
 - **Tu valides** : tu **lis le bilan avant de continuer**. C'est la porte.
-- **Vérifier** : le bilan liste les 14 skills (`studio-faceless:episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`, `grilling`, `humanizer`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`, `remove-background`, `blender-pro`) et les sept agents (`research`, `reviewer`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`, `strategist`). Il montre les règles communes reçues, un `check` sans erreur, un rendu de 3 s, et `controle.py chrome` à 0. Si les règles communes ne sont pas visibles, redemande à Claude de les lister, puis vois « Si quelque chose bloque ».
+- **Vérifier** : le bilan liste les 14 skills (`studio-faceless:episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`, `grilling`, `humanizer`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`, `remove-background`, `blender-pro`) et les dix agents (`research`, `reviewer`, `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`, `strategist`, `media-fetcher`, `sound-manager`, `publisher`). Il montre les règles communes reçues, un `check` sans erreur, un rendu de 3 s, et `controle.py chrome` à 0. Si les règles communes ne sont pas visibles, redemande à Claude de les lister, puis vois « Si quelque chose bloque ».
 - **Détail** : [`installation-et-mise-a-jour.md`](docs/workflows/installation-et-mise-a-jour.md), partie C.
 
 > **Pas encore éprouvé.** Ce contrôle est le premier test réel de l'arrivée des règles communes (`SessionStart`), du préchargement des skills par les agents et du rôle reçu par le garde-fou. Si un résultat surprend, note-le : il corrige la documentation du plugin.
@@ -912,7 +912,7 @@ python -I -B "<plugin>/outils/montage/assembler.py" --episode episode-001 --voix
 
 | Type | Niveau |
 |---|---|
-| musique | 13 (plage 12 à 15) |
+| musique | 8 (plage 7 à 9, recette des cues, 03/11/2026) |
 | ambiance en boucle | 16 |
 | impact, battement | 14 |
 | souffle, whoosh | 18 |

@@ -195,7 +195,7 @@ flowchart TD
 | `pistes/stem-voix.wav` | gain 1, double mono (référence du mix) | `voix.py` du gabarit v3 |
 | `media/audio/piste-voix.wav` | −18 LUFS, crête d'échantillon ≤ −3 dBFS (écoute de travail) | `voix.py` |
 | Film « voix » | aucun gain ; limiteur seulement au-delà de −2,0 dBTP ; sonie relevée, non contrôlée | `assembler.py` |
-| Musique | 13 LU sous la voix (plage 12 à 15), `niveau_lu` : −13 | `rendu-collage.md` § 4 |
+| Musique | 8 LU sous la voix (plage 7 à 9, mesurée ; 03/11/2026), `niveau_lu` : −8 au départ | `rendu-collage.md` § 4 ; `musique-par-cues.md` |
 | Baisse de la musique sous la voix active | 3 à 5 dB (4,0 par défaut) | `DIRECTION_AUDIO.md` § 3 |
 | Creux avant révélation | environ 8 dB, rampes de 0,8 s (la musique ne se coupe pas) | `DIRECTION_AUDIO.md` § 2 |
 | Ambiance en boucle (foule, pluie) | 16 LU sous la voix : −16 | `rendu-collage.md` § 4 |
@@ -246,9 +246,9 @@ Ils suivent le README de `outils/montage/` et `rendu-collage.md` § 4 ; les chem
  "silences": [{"debut": {"seq": "seq2", "t": 50.0}, "fin": {"seq": "seq2", "t": 52.5}, "raison": "la phrase seule"}],
  "musique": [
   {"fichier": "musique/<ouverture>.mp3", "depart": {"seq": "seq2", "t": 0.0}, "fin": {"seq": "seq2", "t": 60.0},
-   "boucle": [4.0, 28.0], "fondu_entree": 2.0, "fondu_sortie": 2.0, "niveau_lu": -13},
+   "boucle": [4.0, 28.0], "fondu_entree": 2.0, "fondu_sortie": 2.0, "niveau_lu": -8},
   {"fichier": "musique/<fin>.mp3", "depart": {"seq": "seq3", "t": 40.0}, "fin": {"seq": "outro", "t": 0.5},
-   "decalage": 12.0, "fondu_entree": 2.0, "fondu_sortie": 0.8, "niveau_lu": -13}
+   "decalage": 12.0, "fondu_entree": 2.0, "fondu_sortie": 0.8, "niveau_lu": -8}
  ],
  "effets": [
   {"fichier": "effets/<impact>.mp3", "depart": {"seq": "seq2", "t": 19.57}, "type": "impact", "extrait": [0.08, 1.0]}

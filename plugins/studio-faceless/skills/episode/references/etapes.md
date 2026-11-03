@@ -29,8 +29,12 @@ Les règles par défaut citées ici (`REFERENTIEL`, `DIRECTION_AUDIO`, `METHODE_
 - **Revérification des chiffres la veille de la voix** : chaque chiffre est contrôlé de nouveau sur son lien direct, avec sa date de valeur (`REFERENTIEL` § 2) .
 
 ## 4. Voix
-- **Claude génère les prises par l'API ElevenLabs** (validé sur AA, 02/11/2026, Q35 de son E011) : `${CLAUDE_PLUGIN_ROOT}/outils/voix/generer_voix.py`, d'abord à blanc (découpage et coût annoncé), puis `--executer --confirme-credits N` **après l'accord du propriétaire sur le coût** (`DIRECTION_AUDIO.md` § 4). Le propriétaire peut aussi fournir lui-même les prises.
-- Claude vérifie les prises (`${CLAUDE_PLUGIN_ROOT}/outils/controle/transcrire.py`) contre le texte validé, les ralentit (`ralentir.py`) et recale les repères mot à mot sur les vrais départs de la voix.
+- **Agent** (0.7.0, validé sur AA, 03/11/2026) : `studio-faceless:sound-manager` fait cette étape ; Claude principal lance l'appel payant et soumet au propriétaire.
+- **Les prises se génèrent par l'API ElevenLabs** (validé sur AA, 02/11/2026, Q35 de son E011) avec `${CLAUDE_PLUGIN_ROOT}/outils/voix/generer_voix.py` :
+  - `sound-manager` le lance d'abord à blanc (découpage et coût annoncé), puis s'arrête ;
+  - **après l'accord du propriétaire sur le coût**, Claude principal lance `--executer --confirme-credits N` (`DIRECTION_AUDIO.md` § 4) ;
+  - le propriétaire peut aussi fournir lui-même les prises.
+- `sound-manager`, relancé, vérifie les prises (`${CLAUDE_PLUGIN_ROOT}/outils/controle/transcrire.py`) contre le texte validé, puis les ralentit (`ralentir.py`). Enfin, il recale les repères mot à mot sur les vrais départs de la voix, après avoir coupé la bande sur ses silences.
 - Les pauses de révélation sont prévues dès le script et mesurées sur les bandes avant de figer la voix (`pieges.md`, Son).
 - Bandes montage (silences S1…, pauses de respiration) dans `kit/voix/`.
 - **La voix se fige ici.** Toute nouvelle prise après cette étape oblige à recaler toutes les séquences.
@@ -66,12 +70,22 @@ Voir `rendu-collage.md` § 4. La porte de questions fixe d'abord :
 
 Le mix fait, et avant de montrer le film au propriétaire : contrôle par `studio-faceless:reviewer`.
 
+**Répartition** (0.7.0, validé sur AA, 03/11/2026) :
+1. `studio-faceless:sound-manager` fait le repérage, le plan de cues, le choix et le téléchargement des sons de la liste validée, puis le plan son. Méthode par défaut : skill `studio-faceless:direction-sonore`, `references/musique-par-cues.md`, d'abord sur une séquence témoin en deux variantes. Il écrit la commande du mix et s'arrête.
+2. Claude principal lance `mix_film.py` en tâche de fond (environ 6 min), puis relit et lance le script de mesure de `sound-manager` (l'agent ne lance pas ses scripts ; décision du 03/11/2026).
+3. `sound-manager`, relancé, lit les mesures : écart voix − musique par cue, hausse des marques.
+
 ## 11. Retours du propriétaire
-- Une correction d'image se fait sur place dans la séquence, puis on la rend et on recolle. Une correction de son se fait par un remix, sans rendu.
+- Une correction d'image se fait sur place dans la séquence, puis on la rend et on recolle.
+- Une correction de son se fait par un remix, sans rendu : nouveau plan par `sound-manager`, remix lancé par Claude principal, nouvelles mesures.
 - Seul le propriétaire donne `APPROUVE_PAR_<PROPRIETAIRE>`.
 
 ## 12. Publication
-- La miniature se fait avec `studio-faceless:thumbnail-strategist`, le dossier YouTube avec `studio-faceless:youtube-seo`, et le SRT avec `${CLAUDE_PLUGIN_ROOT}/outils/montage/srt.py`.
+- **Agent** (0.7.0, validé sur AA, 03/11/2026) : `studio-faceless:publisher`.
+  - D'abord la miniature (`studio-faceless:thumbnail-strategist`, méthode en trois calques, au moins 2 variantes pour Test & Compare) ; l'agent s'arrête après l'écriture du script de masque, que Claude principal relit et lance, avec le contrôle sur fond vert, avant de le relancer pour le rendu ;
+  - puis le dossier YouTube (`studio-faceless:youtube-seo`), avec le titre venu de `studio-faceless:strategist` et validé par le propriétaire.
+  - Le SRT se fait avec `${CLAUDE_PLUGIN_ROOT}/outils/montage/srt.py`, par `publisher` si son contrat le demande, sinon par Claude principal.
+- Claude principal reporte l'hypothèse du test au `JOURNAL_MINIATURES.md` et soumet au propriétaire.
 - Avant la sortie, une passe d'actualité sur les phrases [MAJ].
 - **Titre** (validé sur MM, 21/10/2026, audit de son pilote ; proposé au plugin 0.3.0, PROPOSÉ) : la concurrence se contrôle avant de le fixer, par une recherche YouTube des titres proches ; un titre trop proche d'une vidéo existante se change. Un titre changé tard donne une nouvelle version du dossier de publication (`PUBLICATION_vN+1`).
 - **Miniature fournie par le propriétaire** (même validation) : Claude en note la source et la licence ; avec une seule miniature, il n'y a pas de Test & Compare.

@@ -59,7 +59,7 @@ Un départ s'écrit en temps du film (`412.5`) ou en temps local d'une séquence
  "silences": [{"debut": {"seq": "seq3", "t": 6.0}, "fin": {"seq": "seq3", "t": 9.0}, "raison": "la phrase seule"}],
  "musique": [
   {"fichier": "musique/<fichier-musique>.mp3", "depart": {"seq": "seq2", "t": 70.0}, "fin": {"seq": "seq3", "t": 20.0},
-   "decalage": 0.0, "boucle": [4.0, 28.0], "fondu_boucle": 0.05, "fondu_entree": 2.0, "fondu_sortie": 2.0, "niveau_lu": -12.0}
+   "decalage": 0.0, "boucle": [4.0, 28.0], "fondu_boucle": 0.05, "fondu_entree": 2.0, "fondu_sortie": 2.0, "niveau_lu": -8.0}
  ],
  "effets": [
   {"fichier": "effets/<fichier-effet>.mp3", "depart": {"seq": "seq1", "t": 19.57}, "type": "declic",
@@ -69,7 +69,7 @@ Un départ s'écrit en temps du film (`412.5`) ou en temps local d'une séquence
  "sortie": {"dossier": "episodes/episode-001/outputs", "nom": "<Chaine>-E001-master-v2.mp4"}
 }
 ```
-- Musique : `duree` ou `fin` ; `decalage` = départ dans la source ; `boucle` = [début, fin] dans la source (en secondes, de préférence sur des mesures entières du relevé musical), retour avec un fondu linéaire de `fondu_boucle` pris avant le point de boucle ; `niveau_lu` = sonie intégrée du départ par rapport à celle de la voix ; `baisse_db` facultatif (défaut : `baisse_sous_voix_db`).
+- Musique : `duree` ou `fin` ; `decalage` = départ dans la source ; `boucle` = [début, fin] dans la source (en secondes, de préférence sur des mesures entières du relevé musical), retour avec un fondu linéaire de `fondu_boucle` pris avant le point de boucle ; `niveau_lu` = sonie intégrée du départ par rapport à celle de la voix (règle par défaut : musique de 7 à 9 LU sous la voix, mesurée, `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 2 ; la valeur s'applique avant la baisse, l'écart réel se mesure : skill `studio-faceless:direction-sonore`, `references/musique-par-cues.md` § 4) ; `baisse_db` facultatif (défaut : `baisse_sous_voix_db`).
 - Effets : `type` obligatoire, pris dans `niveaux_par_type` (un nombre en LU, ou `{"lu", "baisse_db"}`) ; `extrait`, `fondu_entree` (0,008 s) et `fondu_sortie` (0,10 s) facultatifs.
 - Creux (facultatifs, ajoutés le 25/10/2026 pour l'E008 d'AA, à la demande du propriétaire : « arrêt brutal de son et musique ») : `"creux": [{"debut": …, "fin": …, "baisse_db": 8, "rampe": 0.8, "raison": "…"}]`. La musique seule baisse de `baisse_db` dB sur la fenêtre, avec des rampes en cosinus de `rampe` s au dehors ; les effets restent. Sans cette clé, le mix est identique à avant (vérifié sur le plan E008 v1 d'AA : −16,1 LUFS, −2,0 dBTP, LRA 6,0).
 - Silences voulus : musique et effets coupés dans la fenêtre (rampes de 50 ms au dehors) ; un effet qui y commence est retiré. Le journal signale chaque coupe, les musiques qui traversent une jonction et celles qui chevauchent une pièce de marque.

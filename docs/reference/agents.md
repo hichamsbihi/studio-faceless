@@ -1,6 +1,6 @@
 # Référence : les agents du plugin (`agents/`)
 
-Ce document décrit les huit agents du plugin `studio-faceless` : leur en-tête, ce qu'ils lisent, ce qu'ils écrivent, ce que le garde-fou leur interdit, ce qu'ils livrent et qui les appelle. Les fichiers de `agents/` font foi ; en cas d'écart, la documentation se corrige.
+Ce document décrit les dix agents du plugin `studio-faceless` : leur en-tête, ce qu'ils lisent, ce qu'ils écrivent, ce que le garde-fou leur interdit, ce qu'ils livrent et qui les appelle. Les fichiers de `agents/` font foi ; en cas d'écart, la documentation se corrige.
 
 ## Table des matières
 - [Vue d'ensemble](#vue-densemble)
@@ -15,12 +15,14 @@ Ce document décrit les huit agents du plugin `studio-faceless` : leur en-tête,
   - [agents/studio-maintainer.md](#agentsstudio-maintainermd)
   - [agents/strategist.md](#agentsstrategistmd)
   - [agents/media-fetcher.md](#agentsmedia-fetchermd)
+  - [agents/sound-manager.md](#agentssound-managermd)
+  - [agents/publisher.md](#agentspublishermd)
 - [Écarts et points à vérifier relevés dans ces fichiers](#écarts-et-points-à-vérifier-relevés-dans-ces-fichiers)
 
 ## Vue d'ensemble
 - **Un agent est un sous-agent de Claude principal** (le Studio Director). Il est lancé par le Studio Director avec un **contrat de mission** (neuf champs, modèle : [`templates/CONTRAT_MISSION.template.md`](templates.md#templatescontrat_missiontemplatemd)). Les agents ne se délèguent rien entre eux (`REGLES_STUDIO.md`, « Sous-agents »).
-- **Noms** : une fois le plugin installé, chaque agent prend le préfixe du plugin : `studio-faceless:research`, `studio-faceless:reviewer`, `studio-faceless:art-director`, `studio-faceless:motion-producer`, `studio-faceless:shorts-producer`, `studio-faceless:studio-maintainer`, `studio-faceless:strategist` (0.4.0), `studio-faceless:media-fetcher` (0.6.0). Le champ `name:` de l'en-tête garde le nom court ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Noms »).
-- **En-tête** : chaque fichier commence par un en-tête YAML : `name`, `description` (ce que Claude lit pour décider de déléguer), `tools`, `model`, `color`, `skills` (skills préchargés dans le contexte de l'agent, quand il y en a) et, pour `research`, `studio-maintainer` (depuis la 0.2.3), `strategist` (0.4.0) et `media-fetcher` (0.6.0), `omitClaudeMd: true` : l'agent démarre sans le `CLAUDE.md` de la chaîne (champ qui demande Claude Code 2.1.271 ou plus ; l'application de bureau fait tourner son propre Claude Code, 2.1.309 le 02/11/2026, donc il y agit ; seule la copie du terminal, 2.1.169 sur la machine de mise au point, peut être plus ancienne). Claude principal tourne sur Opus (validé sur AA, 02/11/2026) : les agents en `model: inherit` (`art-director`, `motion-producer`, `shorts-producer`, `strategist`) le suivent ; `research`, `reviewer` et `studio-maintainer` restent en `sonnet`. Les règles de la chaîne dont ils ont besoin sont alors dans leur contrat, section « Règles de la chaîne utiles à la mission » ([`templates.md`](templates.md#templatescontrat_missiontemplatemd)). `reviewer` garde le `CLAUDE.md` : il contrôle les règles de la chaîne.
+- **Noms** : une fois le plugin installé, chaque agent prend le préfixe du plugin : `studio-faceless:research`, `studio-faceless:reviewer`, `studio-faceless:art-director`, `studio-faceless:motion-producer`, `studio-faceless:shorts-producer`, `studio-faceless:studio-maintainer`, `studio-faceless:strategist` (0.4.0), `studio-faceless:media-fetcher` (0.6.0), `studio-faceless:sound-manager` et `studio-faceless:publisher` (0.7.0). Le champ `name:` de l'en-tête garde le nom court ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Noms »).
+- **En-tête** : chaque fichier commence par un en-tête YAML : `name`, `description` (ce que Claude lit pour décider de déléguer), `tools`, `model`, `color`, `skills` (skills préchargés dans le contexte de l'agent, quand il y en a) et, pour `research`, `studio-maintainer` (depuis la 0.2.3), `strategist` (0.4.0) et `media-fetcher` (0.6.0), `omitClaudeMd: true` : l'agent démarre sans le `CLAUDE.md` de la chaîne (champ qui demande Claude Code 2.1.271 ou plus ; l'application de bureau fait tourner son propre Claude Code, 2.1.309 le 02/11/2026, donc il y agit ; seule la copie du terminal, 2.1.169 sur la machine de mise au point, peut être plus ancienne). Claude principal tourne sur Opus (validé sur AA, 02/11/2026) : les agents en `model: inherit` (`art-director`, `motion-producer`, `shorts-producer`, `strategist`) le suivent ; `research`, `reviewer` et `studio-maintainer` restent en `sonnet` ; `sound-manager` et `publisher` sont en `opus` (0.7.0). Les règles de la chaîne dont ils ont besoin sont alors dans leur contrat, section « Règles de la chaîne utiles à la mission » ([`templates.md`](templates.md#templatescontrat_missiontemplatemd)). `reviewer` garde le `CLAUDE.md` : il contrôle les règles de la chaîne.
 - **Un plugin ignore les champs `hooks`, `mcpServers` et `permissionMode`** de l'en-tête de ses agents ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Garde-fou »). Les limites par rôle viennent donc du hook du plugin (`hooks/garde_commandes.py`), qui reconnaît le rôle au champ `agent_type` : voir le tableau `ROLES` plus bas.
 - **Skills préchargés** : `hyperframes-*` sont des skills d'utilisateur (copiés dans `~/.claude/skills/`, voir [`vendor.md`](vendor.md)), sans préfixe ; `studio-faceless:…` sont les skills du plugin. Un agent ne voit ni la mémoire de Claude ni les autres épisodes : ce qu'il doit savoir est dans le contrat, `direction/`, les référentiels ou sa propre définition.
 - **Qui décide** : le propriétaire de la chaîne (nommé dans son `CLAUDE.md`) est le seul à valider. Aucun agent ne valide, ne publie, n'achète ni ne déclare une écoute ou un visionnage.
@@ -46,7 +48,7 @@ Workflows où ils interviennent : [`../workflows/recherche.md`](../workflows/rec
 | **Peut lancer un rendu ?** | non | non | non | non : il écrit `render.sh` et s'arrête | non : idem | non | non |
 | **Correction après retour** | un nouvel agent | un nouvel agent | un nouvel agent | dans la même version : reprise si le cache est chaud, sinon agent court | nouvelle version, par un nouvel agent | nouvelle mission | nouveau fichier (`…_v2`) par un nouvel appel |
 
-**`media-fetcher` (0.6.0)** n'a pas de colonne ici : sa fiche, en fin de section « Fiches », donne les mêmes rubriques (outils Read, Write, Bash, Glob, Grep ; `sonnet` ; couleur orange ; `omitClaudeMd` ; rôle `telechargeur` ; écriture sous `episodes/<id>/kit/media/source-vN/` ; appelé à l'étape 5, médias du socle).
+**`media-fetcher` (0.6.0)** n'a pas de colonne ici : sa fiche, en fin de section « Fiches », donne les mêmes rubriques (outils Read, Write, Bash, Glob, Grep ; `sonnet` ; couleur orange ; `omitClaudeMd` ; rôle `telechargeur` ; écriture sous `episodes/<id>/kit/media/source-vN/` ; appelé à l'étape 5, médias du socle). **`sound-manager` et `publisher` (0.7.0)** non plus : voir leurs fiches.
 
 ## Garde-fou : ce qui est imposé et ce qui repose sur la consigne
 Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents compris. Il déduit le rôle de `agent_type` (préfixe `studio-faceless:` retiré) :
@@ -60,6 +62,8 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 | `reviewer` | `relecteur` : en Bash, seules `ffprobe`, `ffmpeg` de mesure (`-f null`), `wc`, `ls`, `grep`, `head` et `tail`, sans redirection |
 | `strategist` | `stratege` : Write et Edit seulement dans `docs/` et `direction/BANQUE_SUJETS.md` ; en Bash, `python` sur les outils du plugin (sauf `youtube_retention.py`, réservé à Claude principal depuis la 0.6.0), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` |
 | `media-fetcher` | `telechargeur` (0.6.0) : Write et Edit seulement sous `episodes/<id>/kit/media/source-vN/` ; en Bash, `python` sur `outils/medias/telecharger_medias.py` du plugin installé seul (liste sous `kit/`, dépôt et manifeste sous `source-vN/`), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` ; ni `curl` ni `wget`, aucun script en ligne |
+| `sound-manager` | `ingenieur-son` (0.7.0) : voir sa fiche |
+| `publisher` | `editeur` (0.7.0) : voir sa fiche |
 
 **Règles communes à tous** (rôle ou non) : refus de la publication HyperFrames, du cloud, de la connexion, de `upgrade`, de `skills update`, de `npx hyperframes@…`, de l'installation npm, de la suppression récursive ou définitive, du vidage de la corbeille ; refus de **toute écriture par Write/Edit dans le plugin installé** ; demande de confirmation pour `preview` ; refus (`deny`, sans confirmation possible) d'un rendu direct sans `--workers 1` ou `2`.
 
@@ -329,12 +333,90 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 **Contenu**
 - Contrat : neuf champs, plus la **liste JSON**, la décision datée du propriétaire qui la valide, le dépôt `kit/media/source-vN/` et le **robot** (`--agent-utilisateur` : nom et adresse de la chaîne, jamais une adresse e-mail) ; section « Règles de la chaîne utiles à la mission » obligatoire.
 - Méthode : vérifier la liste, aperçu sans `--executer`, puis téléchargement par l'outil, puis manifeste.
-- Interdits : aucun contournement (Cloudflare, accès payant, connexion, CAPTCHA, filigrane, autre adresse) ; aucun fichier hors de la liste ; aucun fichier de YouTube ni son de Soundza (clé du propriétaire et outils MCP : Claude principal) ; aucune vérification d'image (dimensions, planche, `PROVENANCE.md` : Studio Director).
+- Interdits : aucun contournement (Cloudflare, accès payant, connexion, CAPTCHA, filigrane, autre adresse) ; aucun fichier hors de la liste ; aucun fichier de YouTube ni son de Soundza (clé du propriétaire et outils MCP : Claude principal ou `sound-manager`) ; aucune vérification d'image (dimensions, planche, `PROVENANCE.md` : Studio Director).
 - **Livrable** : manifeste (réf. · fichier · SHA-1 · taille · statut), liste « à télécharger par le propriétaire » (`manuel/`), écarts, risques.
 
 **À savoir**
 - Un fichier refusé n'est jamais retenté autrement : l'outil l'écrit dans `manuel/A_TELECHARGER_PAR_LE_PROPRIETAIRE_<date>.md`.
-- Un plugin ignore le champ `mcpServers` : l'agent n'a pas les outils du serveur `soundza`.
+- Un plugin ignore le champ `mcpServers` : l'agent n'a pas les outils du serveur `soundza`. Les sons de Soundza sont pris par Claude principal ou, depuis la 0.7.0, par `sound-manager`.
+
+---
+
+### agents/sound-manager.md
+**Rôle** (0.7.0, décision du propriétaire, validé sur AA, 03/11/2026) : **tout le travail sonore d'un épisode**, c'est-à-dire :
+- les prises de voix, préparées et chiffrées ;
+- le contrôle du texte des prises, le ralentissement et les repères mot à mot ;
+- le choix et le téléchargement des sons d'une liste validée (`marque/son/`, Soundza) ;
+- le repérage, le plan de cues, le plan son JSON du film et les mesures.
+
+Il ne lance **ni l'appel payant** (Claude principal, après la confirmation du propriétaire ; `DIRECTION_AUDIO.md` § 4) **ni le mix** (`mix_film.py`, environ 6 min, lancé par Claude principal en tâche de fond) : il écrit la commande et s'arrête, comme `motion-producer` à `render.sh`. Il ne lance pas non plus **son propre script de mesure** (décision du 03/11/2026 : le garde ne lit pas un script) : il l'écrit sous `montage/mesures-vN/` et donne la commande ; Claude principal le relit, le lance, puis le relance pour la suite. Il n'écoute pas.
+
+**Quand il sert** : étapes 4 (voix), 10 (mix) et 11 (retours de son) du skill `episode`.
+
+**En-tête**
+| Champ | Valeur |
+|---|---|
+| `name` | `sound-manager` |
+| `tools` | Read, Write, Edit, Grep, Glob, Bash, Skill, ToolSearch, les cinq outils de lecture et de téléchargement du serveur Soundza (`search_sounds`, `get_sound`, `download_sound`, `search_packs`, `get_pack`), sans `generate_sound` |
+| `disallowedTools` | `mcp__soundza__generate_sound` (génération par IA : jamais sans demande du propriétaire) |
+| `model` | `opus` ; `color` : red |
+| `skills` | `studio-faceless:direction-sonore` (méthode par défaut de la musique : `references/musique-par-cues.md`) |
+| `omitClaudeMd` | absent : lit le `CLAUDE.md` de la chaîne |
+| Rôle du garde-fou | `ingenieur-son` |
+
+**Limites du garde-fou (rôle `ingenieur-son`)**
+- **Écriture** (Write, Edit et Bash), dans l'épisode seulement : `kit/voix/`, `kit/media/audio/`, `kit/media/source-vN/soundza/`, `kit/PROVENANCE.md`, `montage/` (sauf `montage.json`) et `outputs/controle-son*/`. Aucun MP4, aucun média existant écrasé.
+- **Bash** : `python` sur les outils de la table `OUTILS` du hook :
+  - `generer_voix.py` à blanc seulement, `info_elevenlabs.py` ;
+  - `transcrire.py`, `ralentir.py`, `pauses.py`, `raccourcir.py`, `recaler.py`, `mesurer_sons.py` ;
+  - `controle.py niveau | son | voix-reste`, `publication.py mot` ;
+  - `telecharger_medias.py` vers `soundza/`.
+- Un script de l'agent (sous `montage/mesures-vN/`) s'écrit avec Write mais ne se lance pas : `python` sur un script de la zone est refusé (« un script de l'agent est relu et lancé par Claude principal »). Outil `mesurer_mix.py` prévu en 0.7.1.
+- Autres commandes : `ffmpeg` (sans `-y`, chaque sortie dans la zone, `file=` des filtres compris), `ffprobe`, `cp` (`-n`, `-p`, sans écrasement), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `date`, `sha1sum`, `sha256sum`, `cd` vers la racine.
+- Les options des outils sont lues par leur nom entier (une option abrégée ou inconnue est refusée), et chaque chemin d'écriture est contrôlé, avec une espace, sans barre oblique ou en `--option=valeur`.
+- Refusés : `mix_film.py`, `assembler.py`, `--executer` et `--confirme-credits` de `generer_voix.py`, ses propres scripts, les scripts en ligne et les substitutions de commande.
+- Essai : `outils/test_garde_commandes.py`.
+
+**Contenu** : contrat (phase A voix, B sons et plan son, C mesures, D retours ; décisions validées datées) ; lectures limitées à l'épisode et à `marque/son/` ; méthode par phase ; économie de contexte (4 min, 300 k, `montage/ETAT_SON.md`) ; interdits ; livrable en 6 points.
+
+---
+
+### agents/publisher.md
+**Rôle** (0.7.0, décision du propriétaire, validé sur AA, 03/11/2026 : « un agent fort pour la création de miniature ») : **la miniature d'abord**, puis le dossier de publication.
+- Miniature :
+  - concepts véridiques ;
+  - méthode en trois calques (`thumbnail-strategist`, `references/trois-calques-e011.md`) ;
+  - détourage par `remove-background` (voie A de `fabrication.md` § 3) ;
+  - rendu `miniature.py`, contrôles et planche ;
+  - au moins 2 variantes pour Test & Compare.
+- Dossier de publication : skill `youtube-seo`.
+- Il **ne crée aucun titre** : le titre vient de `strategist`, validé par le propriétaire. Il ne publie, ne téléverse et ne modifie rien sur la chaîne.
+
+**Quand il sert** : étape 12 du skill `episode`.
+
+**En-tête**
+| Champ | Valeur |
+|---|---|
+| `name` | `publisher` |
+| `tools` | Read, Write, Edit, Grep, Glob, Bash, Skill |
+| `model` | `opus` ; `color` : blue |
+| `skills` | `studio-faceless:thumbnail-strategist`, `studio-faceless:youtube-seo` |
+| `omitClaudeMd` | absent : lit le `CLAUDE.md` de la chaîne |
+| Rôle du garde-fou | `editeur` |
+
+**Limites du garde-fou (rôle `editeur`)**
+- **Écriture** dans l'épisode seulement : `miniatures-vN/`, `PUBLICATION_vN.md` et `PUBLICATION_vN.<langue>.srt`. Une image existante ne s'écrase pas.
+- **Bash** : `python` sur `miniature.py` (rendu, mesure, planche, grille, contraste), `publication.py` (verifier, chapitres, mot), `srt.py` et `controle.py chrome`. Le script du masque Pillow s'écrit sous `miniatures-vN/travail/` mais ne se lance pas (refusé, décision du 03/11/2026) : l'agent s'arrête et donne la commande ; Claude principal le relit, le lance, regarde le contrôle sur fond vert, puis relance l'agent pour le rendu (`miniature.py masque` prévu en 0.7.1).
+- `node node_modules/hyperframes/bin/hyperframes.mjs remove-background` seulement (options `-o`/`--output`, `-b`/`--background-output`, `--device`, `--quality`, `--info`, `--json`).
+- `ffmpeg`, `ffprobe`, `cp`, `ls`, `mkdir`, `date`, `sha1sum` : mêmes limites que `ingenieur-son`.
+- Essai : `outils/test_garde_commandes.py`.
+
+**Contenu** :
+- contrat avec le titre validé (sans lui, rien) et les photos du kit ;
+- méthode de la miniature en 8 points (arrêt après l'écriture du script de masque), puis le dossier, avec le SRT par `srt.py` si le contrat le demande (VALIDÉ, Hicham, 03/11/2026) ;
+- l'hypothèse du test va dans le `README.md` du dossier, et Claude principal la reporte au `JOURNAL_MINIATURES.md` ;
+- interdits : image IA, « $0 », scène inventée, portraits non libres, titre créé, publication ;
+- livrable en 5 points.
 
 ---
 

@@ -7,6 +7,8 @@ description: "YouTube publication file for an episode of a faceless documentary 
 
 Méthode pour rédiger et contrôler le **dossier de publication** d'un épisode : `episodes/<id>/PUBLICATION_vN.md`, statut `PROPOSÉ`. Le propriétaire valide et met en ligne lui-même ; Claude ne publie jamais. Skill rédigé sur AA le 16/10/2026 d'après l'étude AA des skills YouTube (§ 2 et § 3.2) et le dossier fait à la main pour l'E003 d'AA. Statut du skill : `VALIDÉ` (validé sur AA, 17/10/2026).
 
+**Agent** (0.7.0, validé sur AA, 03/11/2026) : `studio-faceless:publisher` rédige ce dossier, après les miniatures. Il ne crée aucun titre : les titres lui sont donnés, venus de `studio-faceless:strategist` et validés par le propriétaire (l'étape 4 ci-dessous se limite alors à les reprendre).
+
 ## Ordre de préséance
 Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les règles par défaut du plugin.
 1. **Décisions du propriétaire** : `BRIEF.md` de l'épisode, éléments `VALIDÉ` d'un dossier précédent, mots exclus de l'épisode.

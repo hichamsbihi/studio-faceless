@@ -1,6 +1,6 @@
 # Règles communes du studio (plugin studio-faceless)
 
-Ces règles s'appliquent à toutes les chaînes qui utilisent le plugin. Elles sont injectées au début de chaque session. Le `CLAUDE.md` de la chaîne les complète et l'emporte en cas de conflit : il nomme le **propriétaire** (celui qui décide et valide), la langue des documents et celle du spectateur, le public, la voix et le **domaine**. Ordre de priorité : règles par défaut du plugin, puis profil du domaine, puis écarts et `CLAUDE.md` de la chaîne ; le plus précis l'emporte. Partout où le plugin renvoie à `direction/ECARTS.md`, le profil du domaine s'applique avant lui. Ces règles viennent de StudioV1 (chaîne Apparently Athletic), où le propriétaire les a validées entre le 14 et le 28/10/2026.
+Ces règles s'appliquent à toutes les chaînes qui utilisent le plugin. Elles sont injectées au début de chaque session. Le `CLAUDE.md` de la chaîne les complète et l'emporte en cas de conflit : il nomme le **propriétaire** (celui qui décide et valide), la langue des documents et celle du spectateur, le public, la voix et le **domaine**. Ordre de priorité : règles par défaut du plugin, puis profil du domaine, puis écarts et `CLAUDE.md` de la chaîne ; le plus précis l'emporte. Partout où le plugin renvoie à `direction/ECARTS.md`, le profil du domaine s'applique avant lui. Elles ont été validées sur AA (Apparently Athletic) entre le 14 et le 28/10/2026.
 
 **Dossier du plugin** : dans les fichiers du plugin (README, modèles, références), la variable `CLAUDE_PLUGIN_ROOT` entre accolades désigne `${CLAUDE_PLUGIN_ROOT}`. Elle n'existe pas dans l'environnement de Bash : écrire ce chemin en entier dans les commandes.
 
@@ -23,11 +23,11 @@ Ces règles s'appliquent à toutes les chaînes qui utilisent le plugin. Elles s
 | Shorts | skill `studio-faceless:shorts` |
 
 ## Moteur et outils
-Versions figées, navigateurs et rendus (`--workers 2` au plus), outils, garde-fou, dépôt Git, suivi des tokens : section « Moteur et outils » de `REGLES_DETAIL.md` (voir ci-dessus), à lire avant tout rendu ou toute commande d'outil.
+Section « Moteur et outils » de `REGLES_DETAIL.md` (versions figées, `--workers 2` au plus, outils, garde-fou, Git, tokens), à lire avant tout rendu ou toute commande d'outil.
 
 ## Sous-agents (`studio-faceless:<nom>`)
 - **Studio Director** : Claude principal, sur Opus (validé sur AA, 02/11/2026), reçoit les demandes du propriétaire et fait lui-même les petites tâches. Il délègue seulement quand c'est utile, coordonne, contrôle la cohérence et soumet au propriétaire. Les sous-agents ne se délèguent rien entre eux.
-- **Les huit agents** :
+- **Les dix agents** :
   - `research` : faits, études, médias candidats, en lecture seule ;
   - `reviewer` : contrôle qualité en lecture seule d'un script, d'une séquence ou du film contre une liste, **avant de les montrer au propriétaire** ; ne valide rien ;
   - `art-director` : critique indépendante des rendus, **à la demande du propriétaire** ; storyboard seulement sur demande ; choisit lui-même les techniques d'animation et de transition d'un film ;
@@ -35,8 +35,10 @@ Versions figées, navigateurs et rendus (`--workers 2` au plus), outils, garde-f
   - `shorts-producer` : montage d'un short vertical tiré d'un film, jusqu'à `render.sh` ;
   - `studio-maintainer` : cohérence, catalogue ; aucune production ;
   - `strategist` : positionnement, conseil roast-room, titres, vérification des sujets et banque de sujets, une phase par appel ; tout ce travail passe par lui, hors du contexte principal ;
-  - `media-fetcher` : télécharge une liste de médias validée par le propriétaire dans le kit de l'épisode, sans contournement.
-- **Contrat de mission** : toute délégation donne `episode_id` (ou « studio »), objectif, brief, fichiers autorisés en lecture, fichiers autorisés en écriture, sources communes, livrables, décisions validées et restrictions. Modèle : `${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`. `research`, `studio-maintainer`, `strategist` et `media-fetcher` démarrent sans le `CLAUDE.md` de la chaîne : leur contrat y recopie, en 10 lignes au plus, les règles de la chaîne utiles à la mission.
+  - `media-fetcher` : télécharge une liste de médias validée par le propriétaire dans le kit de l'épisode, sans contournement ;
+  - `sound-manager` : tout le son d'un épisode, sans appel payant ni mix long ;
+  - `publisher` : miniatures, puis dossier de publication ; ne crée aucun titre.
+- **Contrat de mission** : toute délégation donne `episode_id` (ou « studio »), objectif, brief, fichiers autorisés en lecture, fichiers autorisés en écriture, sources communes, livrables, décisions validées et restrictions. Modèle : `${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`. Un agent qui démarre sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) reçoit dans son contrat, en 10 lignes au plus, les règles de la chaîne utiles à la mission.
 - **Isolation** : un sous-agent ne lit pas les autres épisodes, sauf mention au contrat. Rien de propre à un épisode ne devient une règle de la chaîne sans accord du propriétaire, versé dans `direction/`.
 - Un sous-agent ne voit pas la mémoire de Claude : ce qu'il doit savoir est dans `direction/`, dans les référentiels, dans sa définition ou dans son contrat.
 

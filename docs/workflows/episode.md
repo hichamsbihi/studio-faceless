@@ -228,7 +228,7 @@ flowchart TD
   python -I -B "${CLAUDE_PLUGIN_ROOT}/outils/montage/mix_film.py" episodes/<id>/outputs/<nom>-voix.mp4 episodes/<id>/montage/plan-son.json
   ```
   Le premier est l'essai (rien n'est écrit), le second écrit le master final ; l'image est copiée telle quelle.
-- **Niveaux de départ** (LU sous la voix) : musique 13 (12 à 15), ambiance en boucle 16, impact ou battement 14, souffle 18, montée 16 coupée avant la phrase, papier, craie, surligneur ou déclic 20 ; baisse sous la voix de 3 à 5 dB. Un seul gain final vers −16 LUFS ; signature et outro gardent leur niveau d'origine ; limiteur à −2,0 dBTP.
+- **Niveaux de départ** (LU sous la voix) : musique 8 (7 à 9, depuis le 03/11/2026), ambiance en boucle 16, impact ou battement 14, souffle 18, montée 16 coupée avant la phrase, papier, craie, surligneur ou déclic 20 ; baisse sous la voix de 3 à 5 dB. Un seul gain final vers −16 LUFS ; signature et outro gardent leur niveau d'origine ; limiteur à −2,0 dBTP.
 - **Fin du film en douceur** : fondu `"seqN>noir"` de 36 images, outro avec `noir_avant` de 4,0 s, fondu `"noir>outro"` de 15 images (`montage.json`) ; morceau de fin calé pour que l'accord final tombe sur le noir (`plan-son.json`).
 - **Contrôles du master** : images identiques au film voix ; −16 ±1 LUFS ; crête vraie ≤ −1,5 dBTP ; décodage complet ; jointures musicales mesurées ; planche toutes les 8 s regardée (`controle.py planche <master> --sortie <dossier> --pas 8`).
 - **Statut** : `MESURES_TECHNIQUES_OK`, puis `ECOUTE_A_FAIRE` jusqu'à ce que le propriétaire écoute. Claude n'écoute pas.

@@ -105,7 +105,7 @@ Ce document décrit comment un épisode obtient ses musiques, ses ambiances et s
 #### 9. Journal de cues (si musique)
 - **Qui** : Studio Director.
 - **Contenu** : un identifiant stable par cue (M01, M02…), titre et version, source, auteur, entrée, sortie, durée, fonction, points de synchro, sortie prévue, droits, fichier exact. Entrées et sorties sur un **changement d'histoire**, pas seulement sur une coupe ; zones sans musique repérées. Compositeur ou éditeur inconnus : « inconnu / à vérifier ».
-- **Règles de ponctuation du film** (`DIRECTION_AUDIO.md` § 2) : un impact grave à chaque changement de bloc (quelques-uns par film), un whoosh seulement quand un élément traverse le cadre, un son de matière sur un volet de matière.
+- **Marques du film** (`DIRECTION_AUDIO.md` § 2, depuis le 03/11/2026 ; recette : `musique-par-cues.md`) : rien aux entrées de séquence ; une marque sur chaque révélation et à chaque changement d'acteur ; sur une révélation majeure, retrait de la musique puis coup du thème ; un whoosh seulement quand un élément traverse le cadre, un son de matière sur un volet de matière.
 
 #### 10. Porte « Mix du film » (questions du plan son)
 - **Qui** : Studio Director pose, propriétaire répond (`grilles.md` § 10).

@@ -23,6 +23,8 @@ Un plugin **ignore** les champs `hooks`, `mcpServers` et `permissionMode` dans l
 | `reviewer` | relecteur |
 | `strategist` | stratege : écrit dans `docs/` et `direction/BANQUE_SUJETS.md` seulement ; en Bash, outils Python du plugin (sauf `youtube_retention.py`), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` |
 | `media-fetcher` | telechargeur (0.6.0) : écrit sous `episodes/<id>/kit/media/source-vN/` seulement ; en Bash, `telecharger_medias.py` du plugin, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` |
+| `sound-manager` | ingenieur-son (0.7.0) : écrit dans `kit/voix/`, `kit/media/audio/`, `kit/media/source-vN/soundza/`, `kit/PROVENANCE.md`, `montage/` (sauf `montage.json`) et `outputs/controle-son*/` ; en Bash, ses outils du plugin (ni appel payant ni mix), `ffmpeg` vers sa zone et quelques commandes de lecture ; ses propres scripts sont refusés (relus et lancés par Claude principal) |
+| `publisher` | editeur (0.7.0) : écrit dans `miniatures-vN/`, `PUBLICATION_vN.md` et son SRT ; en Bash, `miniature.py`, `publication.py`, `srt.py`, `remove-background` de HyperFrames, `ffmpeg` vers sa zone ; son script de masque est refusé (relu et lancé par Claude principal) |
 
 Les chemins protégés sont relatifs au dossier de la chaîne (`CLAUDE_PROJECT_DIR`). Toute écriture par Write ou Edit dans le plugin installé est refusée.
 
