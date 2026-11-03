@@ -1,6 +1,6 @@
 # Règles communes du studio : détail
 
-Suite des règles communes du studio (`REGLES_STUDIO.md`), à lire selon la mission, avec la même autorité. Les deux sections ci-dessous ont été déplacées depuis `REGLES_STUDIO.md` (0.2.3, 30/10/2026), qui est injecté au début de chaque session et que l'application tronque au-delà de 10 000 caractères. Depuis la 0.4.0, la liste des rôles du garde-fou et celle des étapes d'un épisode n'y sont plus recopiées : elles renvoient au fichier qui fait foi. Dans ce fichier comme dans les autres fichiers du plugin, `${CLAUDE_PLUGIN_ROOT}` désigne le dossier du plugin installé, dont le chemin est donné par les règles communes injectées au début de la session ; dans une commande Bash, écrire ce chemin en entier.
+Suite des règles communes du studio (`REGLES_STUDIO.md`), à lire selon la mission, avec la même autorité. Les deux premières sections ci-dessous ont été déplacées depuis `REGLES_STUDIO.md` (0.2.3, 30/10/2026), qui est injecté au début de chaque session et que l'application tronque au-delà de 10 000 caractères. Depuis la 0.4.0, la liste des rôles du garde-fou et celle des étapes d'un épisode n'y sont plus recopiées : elles renvoient au fichier qui fait foi. Dans ce fichier comme dans les autres fichiers du plugin, `${CLAUDE_PLUGIN_ROOT}` désigne le dossier du plugin installé, dont le chemin est donné par les règles communes injectées au début de la session ; dans une commande Bash, écrire ce chemin en entier.
 
 ## Moteur et outils
 - **HyperFrames 0.8.149**, figée dans le `package.json` de la chaîne. Aucune mise à jour (`upgrade`, `skills update`, `npm install` d'une autre version) sans décision du propriétaire.
@@ -30,3 +30,9 @@ La fabrication suit le skill `studio-faceless:episode` (`${CLAUDE_PLUGIN_ROOT}/s
 
 ## Méthode de travail avec le propriétaire
 - **Méthode de travail avec le propriétaire** (validé sur MM, 21/10/2026, bloc 8 de l'audit de son pilote ; proposé au plugin 0.3.0, PROPOSÉ) : une décision se présente par blocs, un à la fois (repris, changé, douteux, puis une recommandation) ; « explique-moi » ne modifie rien ; les téléchargements d'un lot tiennent en une liste unique (nom, source, taille) et un seul accord du propriétaire avant tout téléchargement (par Claude ou par `studio-faceless:media-fetcher`, validé sur AA, 02/11/2026 : `REFERENTIEL_QUALITE_REALISATION.md` § 2 bis ; les sons, aussi par `studio-faceless:sound-manager`, 0.7.0) ; un fichier hors de la liste attend un nouvel accord.
+
+## Délégation aux agents
+Décision du propriétaire, validé sur AA, 03/11/2026 (0.7.1) : la voix d'un short, faite par Claude principal, relevait de `sound-manager`.
+- **Une tâche du périmètre d'un agent lui est confiée, même petite** : le son à `sound-manager` (voix et son des shorts compris), les miniatures et le dossier de publication à `publisher`, le montage d'une séquence ou d'un short à son producteur, les téléchargements de la liste validée à `media-fetcher`, la stratégie à `strategist`.
+- Claude principal ne fait lui-même que les petites tâches hors de tout périmètre, et ce que le garde-fou lui réserve : appels payants, mix long, rendus, masters, scripts d'agent relus puis lancés.
+- **Un refus du garde-fou ne se contourne pas.** Si le garde-fou refuse à un agent une tâche de son périmètre, Claude principal ne la fait pas à sa place sans l'accord du propriétaire. Il la lui signale, avec la correction du plugin à décider : zone, outil, ou texte qui se contredit.

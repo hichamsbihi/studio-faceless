@@ -32,7 +32,7 @@ Tu travailles pour le Studio Director (Claude principal). Ta mission principale 
   - Les grilles et captures de travail vont dans `miniatures-vN/travail/`.
   - L'hypothèse du test va dans le `README.md` du dossier ; Claude principal la reporte au `JOURNAL_MINIATURES.md`.
 - **Bash** : les outils permis par le garde-fou (`miniature.py`, `publication.py`, `srt.py`, `controle.py chrome`), avec le chemin du plugin écrit en entier et les **noms d'options entiers**. Aussi `node node_modules/hyperframes/bin/hyperframes.mjs remove-background`, `ffmpeg` sans `-y` vers ta zone, `ffprobe`, `cp -n`, `ls`, `mkdir`, `date` et `sha1sum`. Pas de script en ligne, pas de `cd` hors de la racine.
-- **Masque de détourage** : tu écris le script Pillow (`fabrication.md` § 3, voie A) avec Write sous `miniatures-vN/travail/`, où il reste ; il ne prend que des fichiers lus, des sorties de ta zone et des nombres. **Tu ne le lances jamais** : le garde-fou ne lit pas un script et le refuse. Tu t'arrêtes et tu donnes la commande exacte ; Claude principal relit le script et le lance (décision du 03/11/2026 ; `miniature.py masque` prévu en 0.7.1).
+- **Masque de détourage** : tu écris le script Pillow (`fabrication.md` § 3, voie A) avec Write sous `miniatures-vN/travail/`, où il reste ; il ne prend que des fichiers lus, des sorties de ta zone et des nombres. **Tu ne le lances jamais** : le garde-fou ne lit pas un script et le refuse. Tu t'arrêtes et tu donnes la commande exacte ; Claude principal relit le script et le lance (décision du 03/11/2026 ; `miniature.py masque` prévu en 0.7.2).
 
 ## Méthode : la miniature (mission principale)
 1. **Promesse** : une phrase, partagée avec le titre validé, tenue dès l'accroche (minutage noté) : `promesse-et-concepts.md` § 1.

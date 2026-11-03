@@ -365,13 +365,13 @@ Il ne lance **ni l'appel payant** (Claude principal, après la confirmation du p
 | Rôle du garde-fou | `ingenieur-son` |
 
 **Limites du garde-fou (rôle `ingenieur-son`)**
-- **Écriture** (Write, Edit et Bash), dans l'épisode seulement : `kit/voix/`, `kit/media/audio/`, `kit/media/source-vN/soundza/`, `kit/PROVENANCE.md`, `montage/` (sauf `montage.json`) et `outputs/controle-son*/`. Aucun MP4, aucun média existant écrasé.
+- **Écriture** (Write, Edit et Bash), dans l'épisode seulement : `kit/voix/`, `kit/shorts/voix/`, `kit/shorts/son/`, `kit/media/audio/`, `kit/media/source-vN/soundza/`, `kit/PROVENANCE.md`, `montage/` (sauf `montage.json`) et `outputs/controle-son*/`. Aucun MP4, aucun média existant écrasé.
 - **Bash** : `python` sur les outils de la table `OUTILS` du hook :
   - `generer_voix.py` à blanc seulement, `info_elevenlabs.py` ;
   - `transcrire.py`, `ralentir.py`, `pauses.py`, `raccourcir.py`, `recaler.py`, `mesurer_sons.py` ;
   - `controle.py niveau | son | voix-reste`, `publication.py mot` ;
   - `telecharger_medias.py` vers `soundza/`.
-- Un script de l'agent (sous `montage/mesures-vN/`) s'écrit avec Write mais ne se lance pas : `python` sur un script de la zone est refusé (« un script de l'agent est relu et lancé par Claude principal »). Outil `mesurer_mix.py` prévu en 0.7.1.
+- Un script de l'agent (sous `montage/mesures-vN/`) s'écrit avec Write mais ne se lance pas : `python` sur un script de la zone est refusé (« un script de l'agent est relu et lancé par Claude principal »). Outil `mesurer_mix.py` prévu en 0.7.2.
 - Autres commandes : `ffmpeg` (sans `-y`, chaque sortie dans la zone, `file=` des filtres compris), `ffprobe`, `cp` (`-n`, `-p`, sans écrasement), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `date`, `sha1sum`, `sha256sum`, `cd` vers la racine.
 - Les options des outils sont lues par leur nom entier (une option abrégée ou inconnue est refusée), et chaque chemin d'écriture est contrôlé, avec une espace, sans barre oblique ou en `--option=valeur`.
 - Refusés : `mix_film.py`, `assembler.py`, `--executer` et `--confirme-credits` de `generer_voix.py`, ses propres scripts, les scripts en ligne et les substitutions de commande.
@@ -406,7 +406,7 @@ Il ne lance **ni l'appel payant** (Claude principal, après la confirmation du p
 
 **Limites du garde-fou (rôle `editeur`)**
 - **Écriture** dans l'épisode seulement : `miniatures-vN/`, `PUBLICATION_vN.md` et `PUBLICATION_vN.<langue>.srt`. Une image existante ne s'écrase pas.
-- **Bash** : `python` sur `miniature.py` (rendu, mesure, planche, grille, contraste), `publication.py` (verifier, chapitres, mot), `srt.py` et `controle.py chrome`. Le script du masque Pillow s'écrit sous `miniatures-vN/travail/` mais ne se lance pas (refusé, décision du 03/11/2026) : l'agent s'arrête et donne la commande ; Claude principal le relit, le lance, regarde le contrôle sur fond vert, puis relance l'agent pour le rendu (`miniature.py masque` prévu en 0.7.1).
+- **Bash** : `python` sur `miniature.py` (rendu, mesure, planche, grille, contraste), `publication.py` (verifier, chapitres, mot), `srt.py` et `controle.py chrome`. Le script du masque Pillow s'écrit sous `miniatures-vN/travail/` mais ne se lance pas (refusé, décision du 03/11/2026) : l'agent s'arrête et donne la commande ; Claude principal le relit, le lance, regarde le contrôle sur fond vert, puis relance l'agent pour le rendu (`miniature.py masque` prévu en 0.7.2).
 - `node node_modules/hyperframes/bin/hyperframes.mjs remove-background` seulement (options `-o`/`--output`, `-b`/`--background-output`, `--device`, `--quality`, `--info`, `--json`).
 - `ffmpeg`, `ffprobe`, `cp`, `ls`, `mkdir`, `date`, `sha1sum` : mêmes limites que `ingenieur-son`.
 - Essai : `outils/test_garde_commandes.py`.

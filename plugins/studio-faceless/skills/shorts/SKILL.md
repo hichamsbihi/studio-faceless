@@ -24,8 +24,10 @@ Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les
 | Étape | Qui |
 |---|---|
 | Choisir 3 à 5 boucles par film ; écrire 2 ou 3 hooks par boucle, le script et le pont | Claude principal, puis choix du propriétaire |
-| Générer la prise | Le propriétaire |
-| Préparer le kit shorts (`episodes/<id>/kit/shorts/`) : prise contrôlée (`transcrire.py`), pauses resserrées, repères mot à mot, médias, filigrane, musique, gabarit vertical, un brief par short | Claude principal |
+| Préparer et chiffrer la prise de voix, à blanc (texte du short mot pour mot, une seule prise, vitesse d'origine) | `studio-faceless:sound-manager` |
+| Lancer l'appel payant de la prise | Claude principal, après la confirmation du propriétaire |
+| Voix et son du short : prise contrôlée (`transcrire.py`), bandes longue et YouTube (`outils/shorts/voix_short.py` : pauses resserrées, D retiré), repères mot à mot (`outils/shorts/recaler.py`) dans `kit/shorts/voix/` ; musique et effets dans `kit/shorts/son/` | `studio-faceless:sound-manager` (validé sur AA, 03/11/2026) |
+| Préparer le reste du kit shorts (`episodes/<id>/kit/shorts/`) : médias, filigrane, gabarit vertical, un brief par short | Claude principal |
 | Monter jusqu'à `render.sh`, un short par mission | `studio-faceless:shorts-producer` |
 | Rendu, contrôles, planche | Claude principal |
 | Légendes et crédits par plateforme | Claude principal prépare ; le propriétaire publie |

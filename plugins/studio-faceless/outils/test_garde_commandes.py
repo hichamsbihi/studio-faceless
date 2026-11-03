@@ -169,8 +169,31 @@ class Roles07(Base):
             f'cp -n marque/son/musique/theme.mp3 {ep}/kit/media/audio/musique/',
             f'mkdir -p {ep}/outputs/controle-son-v3 && ls marque/son > {ep}/montage/liste-sons.txt',
             f'ffprobe -v error -show_entries format=duration {ep}/outputs/E011-master-v3.mix.wav', 'date', f'sha1sum {ep}/kit/media/audio/sfx/maillet-re.wav',
+            # Voix des shorts (0.7.1)
+            self.py('outils/shorts/voix_short.py', f'{ep}/kit/shorts/voix/prises/A_prise1_v1.mp3', f'{ep}/kit/shorts/voix/A_long_v1.wav'),
+            self.py('outils/shorts/voix_short.py', f'{ep}/kit/shorts/voix/prises/A_prise1_v1.mp3', f'{ep}/kit/shorts/voix/A_youtube_v1.wav',
+                    '--sans-d', '40.68', '61.92', '--plafond', '0.35'),
+            self.py('outils/shorts/voix_short.py', '--sans-d', '40.68', '61.92', 'p.mp3', f'"{ep}/kit/shorts/voix/A youtube v2.wav"'),
+            self.py('outils/shorts/recaler.py', f'{ep}/kit/shorts/voix/A_long_v1.wav', f'{ep}/kit/shorts/voix/reperes/whisper-long/A-mots.json',
+                    f'{ep}/kit/shorts/voix/reperes/A_long_v1'),
+            self.py('outils/shorts/raccord.py', 'p.mp3', 'r.mp3', f'{ep}/kit/shorts/voix/A_raccord_v1.wav', '12.3', '15.8', '--marge', '0.27'),
+            self.py('outils/controle/transcrire.py', f'{ep}/kit/shorts/voix/A_long_v1.wav', '--modele', 'modeles/ggml-base.en.bin',
+                    '--sortie', f'{ep}/kit/shorts/voix/reperes/whisper-long'),
+            f'ffmpeg -i marque/son/musique/theme.mp3 -af "atrim=0:30" {ep}/kit/shorts/son/theme-30s.wav',
         ]
         refusees = [
+            # Voix des shorts (0.7.1) : hors de kit/shorts/voix/ et kit/shorts/son/, valeurs de --sans-d mal comptées, master
+            self.py('outils/shorts/voix_short.py', 'p.mp3', f'{ep}/kit/shorts/gabarit/a.wav'),
+            self.py('outils/shorts/voix_short.py', '--sans-d', '40', '62', 'p.mp3', 'marque/son/a.wav'),   # sortie après les deux valeurs
+            self.py('outils/shorts/voix_short.py', 'p.mp3', 'marque/son/a.wav', '--sans-d', '40', '62'),
+            self.py('outils/shorts/voix_short.py', 'p.mp3', f'{ep}/kit/shorts/voix/a.wav', '--sans-d=40'),
+            self.py('outils/shorts/voix_short.py', 'p.mp3', f'{ep}/kit/shorts/voix/a.wav', '--sans', '40', '62'),   # option abrégée
+            self.py('outils/shorts/voix_short.py', 'p.mp3', f'{ep}/kit/shorts/voix/a.wav', '--exec'),
+            self.py('outils/shorts/recaler.py', 'b.wav', 'm.json', 'direction/A'),
+            self.py('outils/shorts/recaler.py', 'b.wav', 'm.json', f'{ep}/kit/shorts/A'),
+            self.py('outils/shorts/raccord.py', 'p.mp3', 'r.mp3', 'marque/son/x.wav', '1', '2'),
+            self.py('outils/shorts/master_short.py', f'{ep}/outputs/a.mp4', f'{ep}/kit/shorts/voix/b.mp4'),   # master : Claude principal
+            f'ffmpeg -i a.wav {ep}/kit/shorts/medias/b.wav',
             self.py(*avant, '--executer', '--confirme-credits', '120'),                       # appel payant : Claude principal
             self.py(*avant, '--exec'), self.py(*avant, '--confirme-credits=120'), self.py(*avant, '--conf', '120'), self.py(*avant, '--e'),
             self.py('outils/montage/mix_film.py', f'{ep}/outputs/a-voix.mp4', f'{ep}/montage/plan-son-v3.json', '--son-seul'),   # mix long
@@ -210,12 +233,15 @@ class Roles07(Base):
     def test_ingenieur_son_write(self):
         ep = self.EP
         for rel in (f'{ep}/montage/plan-son-v3.json', f'{ep}/montage/CUES_v3.md', f'{ep}/kit/voix/README.md', f'{ep}/kit/PROVENANCE.md',
-                    f'{ep}/kit/media/source-v2/soundza/LISTE.md', f'{ep}/outputs/controle-son-v3/mesures.md', f'{ep}/montage/mesures-v3/m.py'):
+                    f'{ep}/kit/media/source-v2/soundza/LISTE.md', f'{ep}/outputs/controle-son-v3/mesures.md', f'{ep}/montage/mesures-v3/m.py',
+                    f'{ep}/kit/shorts/voix/README.md', f'{ep}/kit/shorts/voix/reperes/A-mots-recales.json', f'{ep}/kit/shorts/son/CUES_short-01.md'):
             with self.subTest(permis=rel):
                 self.assertIsNone(self.ecrire('ingenieur-son', rel))
         for rel in (f'{ep}/montage/montage.json', 'marque/son/README.md', f'{ep}/inputs/voix/x.txt', f'{ep}/production/seq1-v3/README.md',
                     'direction/ECARTS.md', f'{ep}/outputs/film.mp4', f'{ep}/outputs/notes.md', f'{ep}/BRIEF.md', f'{ep}/CLAUDE.md',
-                    f'{ep}/kit/media/source-v2/photo.jpg', f'{ep}/kit/media/audio/sfx/maillet-re.wav', '../hors/chaine.txt'):
+                    f'{ep}/kit/media/source-v2/photo.jpg', f'{ep}/kit/media/audio/sfx/maillet-re.wav', '../hors/chaine.txt',
+                    f'{ep}/kit/shorts/BRIEF_short-01.md', f'{ep}/kit/shorts/gabarit/index.html', f'{ep}/kit/shortsx/voix/a.txt',
+                    f'{ep}/SHORTS_v1.md'):
             with self.subTest(refuse=rel):
                 self.assertEqual(self.ecrire('ingenieur-son', rel)[0], 'deny')
 

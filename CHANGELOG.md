@@ -2,6 +2,18 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 0.7.1 (03/11/2026)
+Le travail d'un agent lui revient, voix des shorts comprise, à la demande du propriétaire (03/11/2026 : « ce travail est dans le périmètre du sound manager, pourquoi ne pas lui assigner cette tâche, consigne ça dans les règles générales du plugin »). Constat sur l'E011 d'AA : le garde-fou refusait `kit/shorts/` à `sound-manager`, et le skill `shorts` (19/10) confiait encore la voix du short à Claude principal ; Claude principal l'a donc faite lui-même.
+- **Règle générale** : `REGLES_STUDIO.md` (Studio Director) confie à l'agent concerné toute tâche de son périmètre, même petite. Le détail est dans `referentiels/REGLES_DETAIL.md`, nouvelle section « Délégation aux agents », car `REGLES_STUDIO.md` était à 22 caractères de sa limite de 9 000 : Claude principal ne garde que les petites tâches hors de tout périmètre et ce que le garde-fou lui réserve ; un refus du garde-fou ne se contourne pas sans l'accord du propriétaire, il se signale avec la correction du plugin à décider.
+- **`sound-manager`** : tout le son de l'épisode **et de ses shorts**. Nouvelle méthode « A bis. Voix d'un short » : préparation et chiffrage à blanc, contrôle, bandes longue et YouTube (`voix_short.py`), repères (`outils/shorts/recaler.py`), README ; musique et effets du short dans `kit/shorts/son/`. Le master du MP4 (`master_short.py`) reste à Claude principal.
+- **Skill `shorts`** (« Qui fait quoi ») : voix et son du short à `sound-manager` ; l'appel payant à Claude principal, après la confirmation du propriétaire (la ligne « Générer la prise : le propriétaire » datait d'avant l'API) ; le reste du kit (médias, filigrane, gabarit, briefs) à Claude principal.
+- **Garde-fou** (`hooks/garde_commandes.py`), rôle `ingenieur-son` :
+  - zone élargie à `kit/shorts/voix/` et `kit/shorts/son/` ;
+  - outils `outils/shorts/voix_short.py`, `recaler.py` et `raccord.py` ajoutés à sa table ;
+  - nouveau genre d'option à nombre fixe de valeurs (tuple, comme `nargs=2`) pour `--sans-d DEBUT FIN`. Avec `v*`, `--sans-d 40 62 PRISE SORTIE` aurait avalé la sortie sans la contrôler ; `--sans-d=…` est refusé.
+  - Tests (`outils/test_garde_commandes.py`) : commandes permises et refusées des shorts, dont ce cas.
+- Les outils `miniature.py masque` et `mesurer_mix.py`, annoncés pour la 0.7.1, passent à la 0.7.2.
+
 ## 0.7.0 (03/11/2026)
 Deux agents et les leçons de l'E011 d'AA, à la demande du propriétaire (03/11/2026 : « tu crées le skill pour un agent de sound manager […] tout le travail sonore sera dédié à cet agent ; un agent de publication avec la mission principale est la thumbnail […] et consigne-le dans le skill général avec les leçons apprises »). Leçons `VALIDÉ` sur AA le 03/11/2026 : le master v3 de l'E011, approuvé à l'écoute, et la miniature v2-3, choisie par le propriétaire.
 - **Agent `sound-manager`** (`agents/sound-manager.md`, `opus`, skill `direction-sonore` préchargé, outils du serveur `soundza` sauf `generate_sound`) : tout le son d'un épisode.

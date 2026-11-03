@@ -25,9 +25,10 @@ Par rôle, déduit du type d'agent (`agent_type` de l'entrée du hook, voir ROLE
 - telechargeur (media-fetcher, 0.6.0) : écrit seulement sous episodes/<id>/kit/media/source-vN/ ; en Bash, seules python
   (outils/medias/telecharger_medias.py du plugin installé, dont les chemins sont sous ce dossier), ls, wc, grep, head, tail,
   mkdir et cd, sans script en ligne : ni curl ni wget, tout passe par l'outil (pause, agent identifié, aucun écrasement).
-- ingenieur-son (sound-manager, 0.7.0) : écrit seulement dans kit/voix/, kit/media/audio/, kit/media/source-vN/soundza/,
-  kit/PROVENANCE.md, montage/ (sauf montage.json) et outputs/controle-son*/ de l'épisode ; en Bash, seules python (ses outils
-  du plugin installé, table OUTILS : generer_voix.py à blanc seulement, ni mix_film.py ni assembler.py), ffmpeg (sans -y,
+- ingenieur-son (sound-manager, 0.7.0 ; shorts depuis la 0.7.1) : écrit seulement dans kit/voix/, kit/shorts/voix/,
+  kit/shorts/son/, kit/media/audio/, kit/media/source-vN/soundza/, kit/PROVENANCE.md, montage/ (sauf montage.json) et
+  outputs/controle-son*/ de l'épisode ; en Bash, seules python (ses outils du plugin installé, table OUTILS : generer_voix.py
+  à blanc seulement, ni mix_film.py, ni assembler.py, ni master_short.py), ffmpeg (sans -y,
   sorties dans sa zone), ffprobe, cp (sans écrasement), ls, wc, grep, head, tail, mkdir, date, sha1sum, sha256sum et cd vers
   la racine ; aucun script en ligne ni substitution de commande.
 - editeur (publisher, 0.7.0) : écrit seulement dans miniatures-vN/, PUBLICATION_vN.md et PUBLICATION_vN.<langue>.srt de
@@ -37,7 +38,7 @@ Par rôle, déduit du type d'agent (`agent_type` de l'entrée du hook, voir ROLE
   chemin où l'outil écrit doit être dans la zone, qu'il ait une espace, aucune barre oblique ou la forme --option=valeur.
   Un script écrit par l'agent (mesures du mix sous montage/mesures-vN/, masque de détourage sous miniatures-vN/travail/) n'est
   jamais lancé par lui : le garde ne lit pas le contenu d'un script ; Claude principal le relit et le lance (décision du
-  03/11/2026 ; outils du plugin prévus en 0.7.1 : `miniature.py masque` et `mesurer_mix.py`).
+  03/11/2026 ; outils du plugin prévus en 0.7.2 : `miniature.py masque` et `mesurer_mix.py`).
 """
 import json
 import os
@@ -326,18 +327,19 @@ def lecture_telechargeur(rel):
 # --- Rôles de la 0.7.0 : ingenieur-son (sound-manager) et editeur (publisher), décidés sur AA le 03/11/2026 -------------
 # Une zone d'écriture, une liste de commandes et une table des outils du plugin permis. Dans la table, chaque option et chaque
 # argument de position a un genre : 'ecrit' (chemin où l'outil écrit : dans la zone), 'lit' (chemin lu), 'v' (valeur qui
-# n'est pas un chemin), 'v*' (plusieurs valeurs) ou None (option sans valeur). Une option absente de la table est refusée,
+# n'est pas un chemin), 'v*' (plusieurs valeurs), un tuple de genres (nombre fixe de valeurs, comme nargs=2 : la valeur
+# suivante redevient un argument de position) ou None (option sans valeur). Une option absente de la table est refusée,
 # donc aussi une option abrégée (argparse accepte les préfixes : « --exec » vaut « --executer »).
 EPISODE = r'^episodes/[^/]+/'
 ZONES = {
-    'ingenieur-son': re.compile(EPISODE + r'(kit/voix(/|$)|kit/media/audio(/|$)|kit/media/source-v\d+/soundza(/|$)'
+    'ingenieur-son': re.compile(EPISODE + r'(kit/voix(/|$)|kit/shorts/(voix|son)(/|$)|kit/media/audio(/|$)|kit/media/source-v\d+/soundza(/|$)'
                                 r'|kit/provenance\.md$|montage($|/(?!montage\.json$))|outputs/controle-son[^/]*(/|$))', I),
     'editeur': re.compile(EPISODE + r'(miniatures-v\d+(/|$)|publication_v\d+\.md$|publication_v\d+\.[a-z]{2}(-[a-z]{2})?\.srt$)', I),
 }
 NOMS_ROLES = {'ingenieur-son': 'ingénieur du son', 'editeur': 'éditeur'}
 TEXTE_ZONES = {
-    'ingenieur-son': "kit/voix/, kit/media/audio/, kit/media/source-vN/soundza/, kit/PROVENANCE.md, montage/ (sauf montage.json) "
-                     "et outputs/controle-son*/ de l'épisode",
+    'ingenieur-son': "kit/voix/, kit/shorts/voix/, kit/shorts/son/, kit/media/audio/, kit/media/source-vN/soundza/, "
+                     "kit/PROVENANCE.md, montage/ (sauf montage.json) et outputs/controle-son*/ de l'épisode",
     'editeur': "miniatures-vN/, PUBLICATION_vN.md et PUBLICATION_vN.<langue>.srt de l'épisode",
 }
 _COMMUNES = {'python', 'python3', 'py', 'ffmpeg', 'ffprobe', 'cp', 'ls', 'wc', 'grep', 'head', 'tail', 'mkdir', 'cd', 'date',
@@ -360,6 +362,10 @@ OUTILS = {
         'outils/controle/mesurer_sons.py': {'pos': ['lit'], 'opts': {'--whisper': 'lit', '--crete-max': 'v', '--boucle': None}},
         'outils/controle/controle.py': {'sous': _CONTROLE_SON},
         'outils/controle/publication.py': {'sous': {'mot': {'pos': ['lit', 'v']}}},
+        # Voix des shorts (0.7.1, validé sur AA, 03/11/2026) ; le master du MP4 (master_short.py) reste à Claude principal.
+        'outils/shorts/voix_short.py': {'pos': ['lit', 'ecrit'], 'opts': {'--plafond': 'v', '--sans-d': ('v', 'v'), '--cible': 'v'}},
+        'outils/shorts/recaler.py': {'pos': ['lit', 'lit', 'ecrit']},
+        'outils/shorts/raccord.py': {'pos': ['lit', 'lit', 'ecrit', 'v', 'v'], 'opts': {'--marge': 'v'}},
         'outils/medias/telecharger_medias.py': {'pos': ['lit'], 'opts': {
             '--racine': 'ecrit', '--manifeste': 'ecrit', '--agent-utilisateur': 'v', '--pause': 'v', '--essais': 'v', '--executer': None}},
     },
@@ -441,12 +447,17 @@ def arguments_refuses(args, spec, role, root):
                 if egal:
                     return "option sans valeur (refusé : " + a[:120] + ")"
             elif egal:
+                if isinstance(genre, tuple):
+                    return "option à plusieurs valeurs écrite avec « = » (refusé : " + a[:120] + ")"
                 if genre == 'ecrit' and sortie_refusee(valeur, role, root):
                     return sortie_refusee(valeur, role, root)
             else:
-                attente = genre
+                attente = list(genre) if isinstance(genre, tuple) else genre
             continue
-        if attente is not None:
+        if isinstance(attente, list):
+            genre = attente.pop(0)
+            attente = attente or None
+        elif attente is not None:
             genre = attente
             if not attente.endswith('*'):
                 attente = None

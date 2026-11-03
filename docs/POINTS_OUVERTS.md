@@ -36,7 +36,7 @@ Ce qui reste à décider ou à vérifier dans le plugin, relevé pendant l'écri
 ## Ouvert depuis la 0.7.0 (03/11/2026)
 | Point | Fichiers |
 |---|---|
-| **Suite prévue en 0.7.1** : outils du plugin `miniature.py masque` et `mesurer_mix.py`, pour rendre aux agents le masque de détourage (`publisher`) et les mesures du mix (`sound-manager`). D'ici là, l'agent écrit son script et s'arrête ; Claude principal le relit et le lance (VALIDÉ, Hicham, 03/11/2026) | `hooks/garde_commandes.py`, `agents/publisher.md`, `agents/sound-manager.md`, `skills/thumbnail-strategist/references/fabrication.md` § 3, `skills/direction-sonore/references/musique-par-cues.md` § 4 |
+| **Suite prévue en 0.7.2** : outils du plugin `miniature.py masque` et `mesurer_mix.py`, pour rendre aux agents le masque de détourage (`publisher`) et les mesures du mix (`sound-manager`). D'ici là, l'agent écrit son script et s'arrête ; Claude principal le relit et le lance (VALIDÉ, Hicham, 03/11/2026) | `hooks/garde_commandes.py`, `agents/publisher.md`, `agents/sound-manager.md`, `skills/thumbnail-strategist/references/fabrication.md` § 3, `skills/direction-sonore/references/musique-par-cues.md` § 4 |
 | Shorts : musique « plus présente que dans les films » (environ 8 LU), alors que les films sont à 7 à 9 LU depuis le 03/11/2026 ; l'écart des shorts tient désormais au master (−14 LUFS) | `skills/shorts/references/montage-vertical.md` l. 67, `referentiels/DIRECTION_AUDIO.md` § 1 |
 
 ## Non testé (le CLI `claude` de la machine n'est connecté à aucun compte)

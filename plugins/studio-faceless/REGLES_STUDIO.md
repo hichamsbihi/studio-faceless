@@ -26,7 +26,7 @@ Ces règles s'appliquent à toutes les chaînes qui utilisent le plugin. Elles s
 Section « Moteur et outils » de `REGLES_DETAIL.md` (versions figées, `--workers 2` au plus, outils, garde-fou, Git, tokens), à lire avant tout rendu ou toute commande d'outil.
 
 ## Sous-agents (`studio-faceless:<nom>`)
-- **Studio Director** : Claude principal, sur Opus (validé sur AA, 02/11/2026), reçoit les demandes du propriétaire et fait lui-même les petites tâches. Il délègue seulement quand c'est utile, coordonne, contrôle la cohérence et soumet au propriétaire. Les sous-agents ne se délèguent rien entre eux.
+- **Studio Director** : Claude principal, sur Opus (validé sur AA, 02/11/2026), reçoit les demandes du propriétaire, confie à l'agent concerné toute tâche de son périmètre, même petite (`REGLES_DETAIL.md`), coordonne, contrôle la cohérence et soumet au propriétaire. Les sous-agents ne se délèguent rien entre eux.
 - **Les dix agents** :
   - `research` : faits, études, médias candidats, en lecture seule ;
   - `reviewer` : contrôle qualité en lecture seule d'un script, d'une séquence ou du film contre une liste, **avant de les montrer au propriétaire** ; ne valide rien ;
@@ -36,7 +36,7 @@ Section « Moteur et outils » de `REGLES_DETAIL.md` (versions figées, `--worke
   - `studio-maintainer` : cohérence, catalogue ; aucune production ;
   - `strategist` : positionnement, conseil roast-room, titres, vérification des sujets et banque de sujets, une phase par appel ; tout ce travail passe par lui, hors du contexte principal ;
   - `media-fetcher` : télécharge une liste de médias validée par le propriétaire dans le kit de l'épisode, sans contournement ;
-  - `sound-manager` : tout le son d'un épisode, sans appel payant ni mix long ;
+  - `sound-manager` : tout le son, shorts compris, sans appel payant ni mix long ;
   - `publisher` : miniatures, puis dossier de publication ; ne crée aucun titre.
 - **Contrat de mission** : toute délégation donne `episode_id` (ou « studio »), objectif, brief, fichiers autorisés en lecture, fichiers autorisés en écriture, sources communes, livrables, décisions validées et restrictions. Modèle : `${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`. Un agent qui démarre sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) reçoit dans son contrat, en 10 lignes au plus, les règles de la chaîne utiles à la mission.
 - **Isolation** : un sous-agent ne lit pas les autres épisodes, sauf mention au contrat. Rien de propre à un épisode ne devient une règle de la chaîne sans accord du propriétaire, versé dans `direction/`.
