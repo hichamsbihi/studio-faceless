@@ -150,9 +150,9 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 - Sa `description` est en français, comme celles des autres agents.
 
 ### agents/art-director.md
-**Rôle** : direction artistique. Il transforme un script en intention visuelle et en storyboard, ou critique un rendu de façon indépendante. Il ne construit ni ne rend de vidéo. Le propriétaire est le directeur artistique final : l'agent propose, il ne valide pas.
+**Rôle** : direction artistique. Il propose la fiche de style de chaque film et de chaque short (0.7.2, bibliothèque `vendor/lemo-opuscar/`, validé sur AA, 03/11/2026), transforme un script en intention visuelle et en storyboard, ou critique un rendu de façon indépendante. Il ne construit ni ne rend de vidéo. Le propriétaire est le directeur artistique final : l'agent propose, il ne valide pas.
 
-**Quand il sert** : **seulement à la demande du propriétaire** (`REGLES_STUDIO.md` : critique indépendante des rendus ; storyboard seulement sur demande ; `skills/episode/references/socle.md` § 3). Il choisit lui-même les techniques d'animation et de transition d'un film (validé sur AA, 18/10/2026). Parcours : [`../workflows/critique-da.md`](../workflows/critique-da.md).
+**Quand il sert** : pour la fiche de style de chaque film et de chaque short (0.7.2) ; le reste **seulement à la demande du propriétaire** (`REGLES_STUDIO.md` : critique indépendante des rendus ; storyboard seulement sur demande ; `skills/episode/references/socle.md` § 3). Il choisit lui-même les techniques d'animation et de transition d'un film (validé sur AA, 18/10/2026). Parcours : [`../workflows/critique-da.md`](../workflows/critique-da.md).
 
 **En-tête**
 | Champ | Valeur |

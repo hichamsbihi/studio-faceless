@@ -17,6 +17,7 @@ Bandes montage et repères mot à mot recalés dans `kit/voix/`, avec leur READM
   - un monde et une transition par partie ;
   - trois moments à réussir par séquence ;
   - les quotas des effets rares.
+- Fiche de style du film par `studio-faceless:art-director` (bibliothèque `${CLAUDE_PLUGIN_ROOT}/vendor/lemo-opuscar/`, `agents/art-director.md`), validée par le propriétaire avant tout producteur (validé sur AA, 03/11/2026).
 - Planche de test validée par le propriétaire. `studio-faceless:art-director` seulement à sa demande.
 - La recette v3 (`production.md` § 1) s'applique d'office.
 

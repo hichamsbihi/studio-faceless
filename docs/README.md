@@ -49,7 +49,7 @@ Chaque workflow donne son déclencheur, ses acteurs, ses prérequis, ses étapes
 | [`referentiels.md`](reference/referentiels.md) | `referentiels/` : méthode de récit, qualité de réalisation, catalogue d'animations, direction audio, suite des règles communes (`REGLES_DETAIL.md`) |
 | [`starter-et-depot.md`](reference/starter-et-depot.md) | `starter/` (squelette de chaîne) et les fichiers de la racine du dépôt |
 | [`skills-annexes.md`](reference/skills-annexes.md) | `grilling`, `humanizer`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design` |
-| [`vendor.md`](reference/vendor.md) | `vendor/claude-skills/` : les skills HyperFrames 0.8.149 figés, skill par skill ; `vendor/roast-room/` : le protocole de conseil (MIT) lu par `strategist` |
+| [`vendor.md`](reference/vendor.md) | `vendor/claude-skills/` : les skills HyperFrames 0.8.149 figés, skill par skill ; `vendor/roast-room/` : le protocole de conseil (MIT) lu par `strategist` ; `vendor/lemo-opuscar/` : la bibliothèque de styles (MIT, CC BY 4.0) lue par `art-director` |
 
 ## Vocabulaire
 | Terme | Sens |

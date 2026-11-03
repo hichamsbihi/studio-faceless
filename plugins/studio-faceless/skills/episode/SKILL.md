@@ -67,6 +67,7 @@ Le détail de chaque étape est dans `references/etapes.md`.
 - [ ] Médias de la séquence déposés (téléchargés ou remis par le propriétaire), vérifiés (empreinte, image regardée) et inscrits au `PROVENANCE.md` du kit avec leur source.
 - [ ] Aucune photo prise par une autre séquence, sauf les rappels voulus inscrits au `BRIEF.md`.
 - [ ] Image d'entrée et image de sortie écrites au pixel. Chaque séquence d'un même lot a des raccords qui ne dépendent pas d'une autre séquence de ce lot.
+- [ ] Fiche de style validée par le propriétaire ; les démos qu'elle reprend sont citées au brief.
 - [ ] Cartes, logos et dessins de référence prêts dans le kit (`${CLAUDE_PLUGIN_ROOT}/outils/cartes/`).
 - [ ] Sons choisis dans `marque/son/`. Le producteur ne fait **aucun mix** : il propose ses effets dans un tableau.
 - [ ] Brief court qui renvoie aux consignes communes de l'épisode. Passages d'explication marqués (dessin, carte, schéma).

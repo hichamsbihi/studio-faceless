@@ -30,7 +30,7 @@ Section « Moteur et outils » de `REGLES_DETAIL.md` (versions figées, `--worke
 - **Les dix agents** :
   - `research` : faits, études, médias candidats, en lecture seule ;
   - `reviewer` : contrôle qualité en lecture seule d'un script, d'une séquence ou du film contre une liste, **avant de les montrer au propriétaire** ; ne valide rien ;
-  - `art-director` : critique indépendante des rendus, **à la demande du propriétaire** ; storyboard seulement sur demande ; choisit lui-même les techniques d'animation et de transition d'un film ;
+  - `art-director` : fiche de style de chaque film et short ; critique indépendante et storyboard **à la demande du propriétaire** ; choisit les techniques d'animation et de transition ;
   - `motion-producer` : mise en scène HyperFrames d'une séquence, jusqu'à `render.sh` ;
   - `shorts-producer` : montage d'un short vertical tiré d'un film, jusqu'à `render.sh` ;
   - `studio-maintainer` : cohérence, catalogue ; aucune production ;

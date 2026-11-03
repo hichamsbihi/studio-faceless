@@ -2,6 +2,30 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 0.7.2 (03/11/2026)
+Bibliothèque de styles lemo-opuscar, figée, et fiche de style par l'`art-director`, à la demande du propriétaire (03/11/2026 : « pourquoi refaire le travail à zéro alors qu'il est déjà servi […] on essaie de déléguer à un agent les différents styles et à chaque vidéo il fera son analyse et donnera les styles ou mix de styles qui conviendra avec bien sûr notre ligne artistique »). Décisions Q84 à Q88 de l'E011 d'AA, `VALIDÉ` (Hicham, 03/11/2026).
+- **`vendor/lemo-opuscar/`** : copie figée du dépôt https://github.com/lemomo-ai/lemo-opuscar au commit `bebbbe1` (31/10/2026), sans modification.
+  - Contenu : 2 083 fichiers, 43,2 Mo (66 styles avec `STYLE.md`, `style.json`, affiche et code de démo ; `core/` ; `LICENSE`), plus un `PROVENANCE.md`.
+  - Licences : code et textes MIT ; images des démos CC BY 4.0 ; médias de tiers sous leur `CREDITS`.
+  - Non copiés : leur installeur, leur skill, leurs manifestes de plugin, les images fixes des démos, les textures 3D, les banques d'instruments (1,42 Go, hors plugin).
+  - Ni skill ni moteur : HyperFrames reste le seul moteur ; leurs scripts ne se lancent jamais.
+- **`art-director`** : nouvelle phase « fiche de style » pour chaque film et chaque short, validée par le propriétaire avant tout producteur.
+  - Démarche : tri par l'index et les `style.json`, affiches des seuls candidats, 2 ou 3 `STYLE.md` au plus ; puis, par temps fort, la technique, le fichier de démo et les adaptations.
+  - Familles permises par défaut : styles documentaires et graphismes dessinés en code pour expliquer ; ni anime, ni jeux, ni peinture, ni 3D. Une chaîne peut faire autrement dans `direction/ECARTS.md`.
+  - `REGLES_STUDIO.md` (ligne de l'agent, à longueur constante : 8 984 caractères), `docs/reference/agents.md`.
+- **Skills** :
+  - `shorts` : une ligne « fiche de style » dans « Qui fait quoi » ; étape 3 de la méthode ; ligne `style` dans le brief de short ;
+  - `episode` : `socle.md` § 3 et la liste « avant un producteur ».
+- **`shorts-producer` et `motion-producer`** : reprise du code d'une démo citée au brief.
+  - Son `window.render(t)` devient un écouteur de `hf-seek` (horloge de l'adaptateur `three`, sans charger Three.js).
+  - `expérimental` jusqu'à une première preuve par un rendu.
+- **Essai de `rhythm_report.py`** (Q88), sur un extrait de 30 s d'un film de la chaîne, en 16:9 et en 9:16.
+  - Le 9:16 se lit bien : corrélation de 0,96 entre les deux courbes de mouvement.
+  - Mais le script suppose 24 i/s, compte une transition rapide comme plusieurs coupes, garde tout le film en mémoire et écrit dans son propre dossier.
+  - Adaptation à décider (`docs/POINTS_OUVERTS.md`).
+- Documentation : `README.md`, `docs/README.md`, `docs/reference/vendor.md`, `docs/POINTS_OUVERTS.md`.
+- Les outils `miniature.py masque` et `mesurer_mix.py` sont proposés pour la 0.7.3 : aucun des deux ne sert au premier short, et chacun demande une table du garde-fou et des essais.
+
 ## 0.7.1 (03/11/2026)
 Le travail d'un agent lui revient, voix des shorts comprise, à la demande du propriétaire (03/11/2026 : « ce travail est dans le périmètre du sound manager, pourquoi ne pas lui assigner cette tâche, consigne ça dans les règles générales du plugin »). Constat sur l'E011 d'AA : le garde-fou refusait `kit/shorts/` à `sound-manager`, et le skill `shorts` (19/10) confiait encore la voix du short à Claude principal ; Claude principal l'a donc faite lui-même.
 - **Règle générale** : `REGLES_STUDIO.md` (Studio Director) confie à l'agent concerné toute tâche de son périmètre, même petite. Le détail est dans `referentiels/REGLES_DETAIL.md`, nouvelle section « Délégation aux agents », car `REGLES_STUDIO.md` était à 22 caractères de sa limite de 9 000 : Claude principal ne garde que les petites tâches hors de tout périmètre et ce que le garde-fou lui réserve ; un refus du garde-fou ne se contourne pas sans l'accord du propriétaire, il se signale avec la correction du plugin à décider.

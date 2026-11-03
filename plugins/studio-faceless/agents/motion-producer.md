@@ -77,6 +77,11 @@ S'il manque le brief, le kit ou le dossier d'écriture, ne crée rien : renvoie 
   - `hyperframes-audio` : seulement si un brief ancien demande encore un mix dans la séquence ;
   - `media-use` : opérations sur les médias.
 - **Pas d'entretien d'intention ni de routage « création »** du skill `hyperframes` : le contrat et le brief en tiennent lieu.
+- **Démo de la bibliothèque de styles** (si le brief en cite une, d'après la fiche de style validée ; `expérimental`, validé sur AA, 03/11/2026) : lis `${CLAUDE_PLUGIN_ROOT}/vendor/lemo-opuscar/PROVENANCE.md`, puis seulement les fichiers de démo cités.
+  - Son `window.render(t)` devient un écouteur de `hf-seek` (`event.detail.time` ; adaptateur `three` de `hyperframes-animation`, dont on prend l'horloge sans charger Three.js) ; `data-duration` sur la racine, médias préchargés.
+  - Mise en page refaite sur le gabarit de séquence v3 (les démos suivent leur propre gabarit).
+  - Jamais leur moteur ni leurs scripts, ni leurs images, voix ou musiques.
+  - Au rapport : ce qui a marché ou non dans le branchement.
 - **Une seule composition racine par dossier** : les autres vont dans `compositions/` et se rendent avec `-c`.
 - **Automation de volume** : ses valeurs sont absolues (elles remplacent `data-volume`).
 - **Vidéo source à images clés espacées** : elle se fige au rendu ; le kit la fournit déjà réencodée (sinon `-g 15`).

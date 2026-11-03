@@ -72,6 +72,11 @@ S'il manque le brief, le kit ou le dossier d'écriture, ne crée rien : renvoie 
 - **Version** : celle de `package.json` (0.8.149). Pas de mise à jour, pas de nouvelle dépendance.
 - **Skills** : `studio-faceless:shorts`, `hyperframes-core` et `hyperframes-keyframes` sont préchargés. Charge les autres au besoin, par le tool Skill : `hyperframes-cli`, `hyperframes-animation`, `hyperframes-audio`, `media-use` ; `studio-faceless:direction-sonore` si le brief ne suffit pas.
 - **Pas d'entretien d'intention ni de routage « création »** du skill `hyperframes`.
+- **Démo de la bibliothèque de styles** (si la ligne `style` du brief en cite une ; `expérimental`, validé sur AA, 03/11/2026) : lis `${CLAUDE_PLUGIN_ROOT}/vendor/lemo-opuscar/PROVENANCE.md`, puis seulement les fichiers de démo cités.
+  - Son `window.render(t)` devient un écouteur de `hf-seek` (`event.detail.time` ; adaptateur `three` de `hyperframes-animation`, dont on prend l'horloge sans charger Three.js) ; `data-duration` sur la racine, médias préchargés.
+  - Mise en page refaite en 1080 × 1920 (les démos sont en 1920 × 1080).
+  - Jamais leur moteur ni leurs scripts, ni leurs images, voix ou musiques.
+  - Au rapport : ce qui a marché ou non dans le branchement.
 - **Une seule composition racine par dossier** ; les autres vont dans `compositions/` et se rendent avec `-c`.
 - **Automation de volume** : ses valeurs sont absolues (elles remplacent `data-volume`).
 - **Chemins** : aucun chemin absolu vers FFmpeg ou Chrome dans un script.

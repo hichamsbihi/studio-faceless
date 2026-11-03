@@ -9,6 +9,7 @@ voix : <kit/shorts/voix/…wav> (vitesse d'origine, pauses resserrées) ; repèr
 hook : image 0 = <média du kit> ; ligne écrite = « <3 à 6 mots> » ; première phrase dite = « … »
 script minuté : <phrase → bloc (A à E) → début–fin (s)>, une ligne par phrase
 versions : TikTok et Facebook = A à E, <durée> s ; YouTube = sans D, <durée> s (< 60 s) ; coupe de D entre <s> et <s>
+style : <fiche de style validée : style ou mélange ; par temps fort, technique et fichier de démo de vendor/lemo-opuscar/ à reprendre, ou « aucun »>
 plan de plans : <moment (s) → média du kit → recomposition 9:16 et mouvement → raison d'être>
 pont : dernière phrase = « … » ; carton final = « … » (2 à 3 s)
 marque : filigrane <kit/shorts/marque/…svg>, coin, taille, opacité

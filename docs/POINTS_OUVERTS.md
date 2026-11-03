@@ -33,10 +33,16 @@ Ce qui reste à décider ou à vérifier dans le plugin, relevé pendant l'écri
 | **`CLAUDE_CODE_EXECPATH`** : le piège des copies de Claude Code est repris de l'audit du 02/11/2026 ; la lecture de la version à partir de cette variable n'a pas été refaite pour la 0.6.0 | `skills/episode/references/pieges.md` |
 | Shorts : les docs `docs/reference/publication.md` et `docs/workflows/shorts.md` disent encore que le propriétaire génère la prise du short ; les voix de shorts n'ont pas été reprises dans la décision Q35 (film) | `docs/workflows/shorts.md`, `docs/reference/publication.md` |
 
+## Ouvert depuis la 0.7.2 (03/11/2026)
+| Point | Fichiers |
+|---|---|
+| **Branchement `hf-seek`** du code d'une démo de `vendor/lemo-opuscar/` : lu dans le moteur HyperFrames 0.8.149 (l'adaptateur `three` émet `hf-seek` à chaque image, sans exiger Three.js), pas encore éprouvé par un rendu ; première preuve prévue sur un short (`expérimental`) | `agents/shorts-producer.md`, `agents/motion-producer.md`, `vendor/lemo-opuscar/PROVENANCE.md` |
+| **`rhythm_report.py`** (lemo-opuscar) : lit bien le 9:16, mais suppose 24 i/s, compte une transition rapide comme plusieurs coupes, garde tout le film en mémoire et écrit dans son propre dossier ; son seuil de « plat » (1,0) classe presque tout plan lent sur photo comme plat. Adaptation en outil du plugin à décider par le propriétaire | `vendor/lemo-opuscar/PROVENANCE.md` |
+
 ## Ouvert depuis la 0.7.0 (03/11/2026)
 | Point | Fichiers |
 |---|---|
-| **Suite prévue en 0.7.2** : outils du plugin `miniature.py masque` et `mesurer_mix.py`, pour rendre aux agents le masque de détourage (`publisher`) et les mesures du mix (`sound-manager`). D'ici là, l'agent écrit son script et s'arrête ; Claude principal le relit et le lance (VALIDÉ, Hicham, 03/11/2026) | `hooks/garde_commandes.py`, `agents/publisher.md`, `agents/sound-manager.md`, `skills/thumbnail-strategist/references/fabrication.md` § 3, `skills/direction-sonore/references/musique-par-cues.md` § 4 |
+| **Suite proposée en 0.7.3** (à confirmer par le propriétaire) : outils du plugin `miniature.py masque` et `mesurer_mix.py`, pour rendre aux agents le masque de détourage (`publisher`) et les mesures du mix (`sound-manager`). D'ici là, l'agent écrit son script et s'arrête ; Claude principal le relit et le lance (VALIDÉ, Hicham, 03/11/2026) | `hooks/garde_commandes.py`, `agents/publisher.md`, `agents/sound-manager.md`, `skills/thumbnail-strategist/references/fabrication.md` § 3, `skills/direction-sonore/references/musique-par-cues.md` § 4 |
 | Shorts : musique « plus présente que dans les films » (environ 8 LU), alors que les films sont à 7 à 9 LU depuis le 03/11/2026 ; l'écart des shorts tient désormais au master (−14 LUFS) | `skills/shorts/references/montage-vertical.md` l. 67, `referentiels/DIRECTION_AUDIO.md` § 1 |
 
 ## Non testé (le CLI `claude` de la machine n'est connecté à aucun compte)

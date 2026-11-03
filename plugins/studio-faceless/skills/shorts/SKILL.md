@@ -27,6 +27,7 @@ Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les
 | Préparer et chiffrer la prise de voix, à blanc (texte du short mot pour mot, une seule prise, vitesse d'origine) | `studio-faceless:sound-manager` |
 | Lancer l'appel payant de la prise | Claude principal, après la confirmation du propriétaire |
 | Voix et son du short : prise contrôlée (`transcrire.py`), bandes longue et YouTube (`outils/shorts/voix_short.py` : pauses resserrées, D retiré), repères mot à mot (`outils/shorts/recaler.py`) dans `kit/shorts/voix/` ; musique et effets dans `kit/shorts/son/` | `studio-faceless:sound-manager` (validé sur AA, 03/11/2026) |
+| Fiche de style du short, tirée de la bibliothèque `${CLAUDE_PLUGIN_ROOT}/vendor/lemo-opuscar/` (`agents/art-director.md`, phase « fiche de style ») | `studio-faceless:art-director`, puis validation du propriétaire (validé sur AA, 03/11/2026) |
 | Préparer le reste du kit shorts (`episodes/<id>/kit/shorts/`) : médias, filigrane, gabarit vertical, un brief par short | Claude principal |
 | Monter jusqu'à `render.sh`, un short par mission | `studio-faceless:shorts-producer` |
 | Rendu, contrôles, planche | Claude principal |
@@ -35,7 +36,7 @@ Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les
 ## Méthode, dans l'ordre
 1. **Choisir les boucles** dans le film approuvé : des boucles complètes (enjeu, question, retournement), avec une relance précise vers le film. Voir `references/ecriture.md` § 1. En priorité, les boucles sur un objet ou un rituel visible du film, avec un titre « Why… » (validé sur AA, 26/10/2026, `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` § 5) ; le rythme de publication se décide après le pilote.
 2. **Écrire le hook, le script et le pont.** Voir `references/ecriture.md` § 2 à 4.
-3. **Préparer le kit et le brief.** Voir `references/brief-short.md`.
+3. **Fiche de style, puis kit et brief.** La fiche validée par le propriétaire passe dans le brief (ligne `style`). Voir `references/brief-short.md`.
 4. **Monter** en 1080×1920 avec HyperFrames : le hook dès la première image, sous-titres mot à mot sans changement d'échelle, recomposition verticale, logo discret de la chaîne, carton final qui sert de pont vers le film, zones de sécurité des plateformes (YouTube Shorts, TikTok, Facebook Reels). Voir `references/montage-vertical.md` et `references/plateformes.md`.
 5. **Contrôler** : `references/montage-vertical.md` § Contrôles et `references/ecriture.md` § 5.
 6. **Tenir le journal des shorts** de l'épisode (`episodes/<id>/SHORTS_JOURNAL.md`) : hooks retenus, plateformes, et mesures à J+2 et J+7. Les noms des mesures sont dans `references/plateformes.md`.

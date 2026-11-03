@@ -1,6 +1,6 @@
-# Copies figées de tiers (`vendor/claude-skills/` et `vendor/roast-room/`)
+# Copies figées de tiers (`vendor/claude-skills/`, `vendor/roast-room/` et `vendor/lemo-opuscar/`)
 
-Cette page décrit les deux copies de tiers rangées dans `plugins/studio-faceless/vendor/` : les dix skills HyperFrames 0.8.149 (`vendor/claude-skills/` : ce que chaque skill fait, combien de fichiers il compte, quels agents du plugin le chargent) et le protocole roast-room de l'agent `strategist` (`vendor/roast-room/`, 0.4.0, MIT). Ce sont des **copies de tiers inchangées** : il n'y a pas de fiche par fichier interne.
+Cette page décrit les trois copies de tiers rangées dans `plugins/studio-faceless/vendor/` : les dix skills HyperFrames 0.8.149 (`vendor/claude-skills/` : ce que chaque skill fait, combien de fichiers il compte, quels agents du plugin le chargent) et le protocole roast-room de l'agent `strategist` (`vendor/roast-room/`, 0.4.0, MIT), plus la bibliothèque de styles lemo-opuscar (`vendor/lemo-opuscar/`, 0.7.2, MIT et CC BY 4.0). Ce sont des **copies de tiers inchangées** : il n'y a pas de fiche par fichier interne.
 
 ## Table des matières
 - [Principe et statut de la copie](#principe-et-statut-de-la-copie) (HyperFrames)
@@ -10,6 +10,7 @@ Cette page décrit les deux copies de tiers rangées dans `plugins/studio-facele
   - [hyperframes](#vendorclaude-skillshyperframes) · [hyperframes-animation](#vendorclaude-skillshyperframes-animation) · [hyperframes-audio](#vendorclaude-skillshyperframes-audio) · [hyperframes-cli](#vendorclaude-skillshyperframes-cli) · [hyperframes-core](#vendorclaude-skillshyperframes-core)
   - [hyperframes-creative](#vendorclaude-skillshyperframes-creative) · [hyperframes-keyframes](#vendorclaude-skillshyperframes-keyframes) · [hyperframes-registry](#vendorclaude-skillshyperframes-registry) · [hyperframes-studio](#vendorclaude-skillshyperframes-studio) · [media-use](#vendorclaude-skillsmedia-use)
 - [vendor/roast-room (0.4.0)](#vendorroast-room-040) : copie du protocole de conseil lu par `strategist`
+- [vendor/lemo-opuscar (0.7.2)](#vendorlemo-opuscar-072) : bibliothèque de styles lue par `art-director`
 - [Qui charge quoi](#qui-charge-quoi)
 - [Où ces skills s'installent et comment les faire évoluer](#où-ces-skills-sinstallent-et-comment-les-faire-évoluer)
 - [Points à vérifier et tensions avec les règles du studio](#points-à-vérifier-et-tensions-avec-les-règles-du-studio)
@@ -124,12 +125,18 @@ Chaque fiche donne le dossier, le nombre de fichiers, le rôle d'après le `SKIL
 - **Non copié** : la salle visuelle (`app/`), le skill `newroaster` (il télécharge des vidéos pour bâtir un siège), la session d'exemple.
 - **Ce n'est ni un skill ni un agent du plugin** : rien ne se charge au démarrage. Seul `strategist` le lit, en phase `conseil` ; les sièges n'existent pas comme agents (un sous-agent ne peut pas en lancer d'autres).
 
+## vendor/lemo-opuscar (0.7.2)
+- **D'où** : https://github.com/lemomo-ai/lemo-opuscar, commit `bebbbe1` (31/10/2026), copié le 03/11/2026 sans modification (validé sur AA, 03/11/2026). **Licence** : code et textes MIT (© 2026 LemoLab) ; images des démos, affiches comprises, CC BY 4.0 ; médias de tiers des démos sous la licence de leur `CREDITS`.
+- **Contenu** (2 084 fichiers : 2 083 copiés et le `PROVENANCE.md` ajouté ; 43,2 Mo) : 66 styles (`STYLE.md`, `style.json`, `poster.jpg`, `DEMO.md`, code de démo), le gabarit `_template/`, l'index `styles/README.md`, le code commun `core/`, `README.md`, `TECHNIQUE.md`, `DIRECTOR.md`, `LICENSE`.
+- **Non copié** : images fixes des démos, textures 3D, `styleboard/`, `docs/`, installeur et outils de dépôt, skill et manifestes de plugin, `AGENTS.md`, `CLAUDE.md` ; banques d'instruments (1,42 Go), hors du plugin.
+- **Ni skill, ni moteur** : `art-director` le lit pour la fiche de style ; les producteurs reprennent le code d'une démo citée au brief, branché sur `hf-seek` (`expérimental`). Leur moteur et leurs scripts ne se lancent jamais. Détail : `vendor/lemo-opuscar/PROVENANCE.md`.
+
 ## Qui charge quoi
 | Agent | Préchargés (champ `skills:`) | À la demande (outil Skill) |
 |---|---|---|
 | `motion-producer` | `hyperframes-core`, `hyperframes-keyframes`, `hyperframes-animation` (WAAPI et CSS seulement) | `studio-faceless:direction-sonore`, `hyperframes-cli`, `hyperframes-audio` (brief ancien), `media-use` |
 | `shorts-producer` | `studio-faceless:shorts`, `hyperframes-core`, `hyperframes-keyframes` | `hyperframes-cli`, `hyperframes-animation`, `hyperframes-audio`, `media-use`, `studio-faceless:direction-sonore` |
-| `art-director` | `hyperframes-creative`, `hyperframes-animation`, `studio-faceless:thumbnail-strategist` | `studio-faceless:direction-sonore` ; « jamais les dix ensemble » |
+| `art-director` | `hyperframes-creative`, `hyperframes-animation`, `studio-faceless:thumbnail-strategist` | `studio-faceless:direction-sonore` ; « jamais les dix ensemble » ; lit `vendor/lemo-opuscar/` avec Read (fiche de style) |
 | `research`, `reviewer`, `studio-maintainer`, `strategist` | aucun | — (`strategist` lit `vendor/roast-room/` avec Read, pas comme skill) |
 
 Précisions : ce tableau reprend le champ `skills:` de l'en-tête de chaque définition dans `agents/` et les phrases « Skills » de leur corps. Un plugin ignore les champs `hooks`, `mcpServers` et `permissionMode` des en-têtes d'agent ([`../ARCHITECTURE.md`](../ARCHITECTURE.md)) ; que `skills:` soit honoré tel quel pour des skills d'utilisateur sans préfixe est **à vérifier** à la première session. Pas d'entretien d'intention ni de routage « création » du skill `hyperframes` pour les producteurs. Détail des agents : [`agents.md`](agents.md).

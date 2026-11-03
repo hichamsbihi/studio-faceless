@@ -29,6 +29,7 @@ Le plugin ne dépend d'aucune chaîne : les mentions d'AA ou de StudioV1 n'y ser
 | `starter/` | squelette d'une nouvelle chaîne |
 | `vendor/claude-skills/` | skills HyperFrames de la version 0.8.149, figés |
 | `vendor/roast-room/` | copie figée du protocole de conseil roast-room (commit `e40f406`, licence MIT), lue par `strategist` seulement ; ni skill ni agent |
+| `vendor/lemo-opuscar/` | copie figée de la bibliothèque de styles lemo-opuscar (commit `bebbbe1`, code MIT, images CC BY 4.0), lue par `art-director` pour la fiche de style et, sur brief, par les producteurs ; ni skill ni moteur |
 
 Une fois installés, les skills et les agents portent le préfixe du plugin : `studio-faceless:episode`, `studio-faceless:motion-producer`. Quatre skills (`humanizer`, `find-skills`, `elevenlabs-music` et `elevenlabs-sound-effects`) portent `disable-model-invocation: true` : ils ne sont pas proposés à Claude au démarrage, le propriétaire les appelle avec `/nom`.
 
@@ -58,6 +59,7 @@ Commits courts, en français, préfixés par la zone : `plugin : …`, `skills :
 Dépôt privé, propriété de Hicham, tous droits réservés. Les contenus tiers gardent leur licence :
 - HyperFrames et ses skills : Apache-2.0 ;
 - `vendor/roast-room/` : MIT, © 2026 AI Automation Society (son `LICENSE` et sa provenance sont dans le dossier) ;
+- `vendor/lemo-opuscar/` : code et textes MIT, © 2026 LemoLab ; images des démos CC BY 4.0 (crédit LemoLab) ; médias de tiers des démos sous leur propre licence (son `LICENSE` et son `PROVENANCE.md` sont dans le dossier) ;
 - `humanizer`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music` : MIT (leur `LICENSE` et leur provenance sont dans leur dossier) ;
 - `blender-pro` : références MIT (scenario-labs/skills, RobLe3/cc-blender-skill ; leurs `LICENSE` sont dans `skills/blender-pro/licences/`) ;
 - `frontend-design` : Apache 2.0, © Anthropic (son `LICENSE.txt` et sa provenance sont dans son dossier) ;
