@@ -2,6 +2,23 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 1.0.1 (04/11/2026)
+Sécurité, sans changer une règle de fabrication : première des trois versions du point 6 de l'ordre du jour des conseils d'AA (le plugin sans contradictions). Le conseil (11 agents, 1,21 M tokens) recommandait 1.0.1, 1.1.0, puis 1.2.0 ; le propriétaire a validé les 13 réponses recommandées le 04/11/2026 (« Oui a tout »), dont la question 7 : le contenu de cette version, avec un test par motif. Étiquettes Git posées en local le même jour : `v0.7.2`, `v0.8.0`, `v1.0.0`.
+- **`hooks/garde_commandes.py`, pour tous, Claude principal compris** (fonction `verdict_pour_tous`) :
+  - refusés : Modal (`setup`, `token`, `deploy`, `serve`, `secret` et toute autre sous-commande), `aws`, `sam`, `pip install` (et `python -m pip install`, `uv pip install`, `pipx install`) ;
+  - refusés : `printenv`, et `env`, `set`, `export`, `declare`, `typeset` ou `Get-ChildItem env:` lancés seuls, `compgen -e` ;
+  - refusées : toute commande qui nomme une clé ou un jeton (`…_API_KEY`, `…_SECRET`, `…_TOKEN`, `MODAL_TOKEN_…`, `$env:` et `%…%` compris), `[Environment]::GetEnvironmentVariable`, et la lecture de tout l'environnement (`os.environ` ou `process.env` entiers) dans un script en ligne ou un here-document ;
+  - refusé : `claude -p` (aucun lancement de Claude sans le propriétaire) ;
+  - confirmation (`ask`) : `modal run` d'un script du plugin installé seulement ; ailleurs, refusé ;
+  - `env` n'est plus un préfixe neutre : il n'est retiré que s'il précède une commande, qui est alors contrôlée ; seul (même redirigé), il est refusé ;
+  - `bash -c`, `sh -c` et `pwsh -Command` sont relus.
+- **Rôle `lecteur`** : `research` et `conseiller` sont déclarés dans `ROLES`, et un sous-agent (`agent_id` présent) d'un type inconnu ou sans type reçoit ce rôle au lieu des droits du directeur. Write et Edit seulement sous `docs/rapports/` ; en Bash, des commandes de lecture seulement, sans script en ligne. Sans `agent_id`, Claude principal n'a toujours aucun rôle.
+- **`outils/test_garde_commandes.py`** : un test par motif, des faux positifs (`os.environ['CLAUDE_PROJECT_DIR']`, `set -euo pipefail`, `pip --version`…) et le rôle `lecteur` ; 34 tests passent.
+- **`skills/conseil/`** : la contre-hypothèse est toujours lancée en mode complet (la condition « aucun désaccord majeur » tombe : elle a sauté aux conseils des points 2, 4 et 6), pour un agent de plus (2N + 2). Le président est typé `conseiller`, en lecture seule : il rend le compte rendu dans `contenu`, et le directeur l'écrit. Essai à sec dans Node avec de faux agents (5 cas).
+- **`agents/conseiller.md`**, **`referentiels/REGLES_DETAIL.md`** (résumé du garde-fou) et la documentation (`docs/reference/agents.md`, `outils-et-garde.md`, `skills-annexes.md`, `docs/workflows/session-et-garde-fou.md`) suivent.
+- **Non vérifié** : que le hook reçoive `agent_id` et `agent_type` pour un agent lancé par un workflow. C'est le premier test de l'essai à sec de la 1.2.0 ; sans `agent_id`, un sous-agent sans type garde les droits du directeur, comme en 1.0.0.
+- **Migration** (question 8) : StudioV1 et StudioV2 tout de suite ; StudioV3 après son E001. Aucun jeton Modal tant que les trois chaînes ne sont pas en 1.0.1.
+
 ## 1.0.0 (04/11/2026)
 Décisions du point 2 de l'ordre du jour des conseils d'AA, sur le moteur créatif : premier conseil réel, 11 agents, 0,75 M de tokens. Les 10 recommandations du conseil sont validées par le propriétaire (04/11/2026 : « Oui aux 10 »). Le même jour, il revient sur les questions 3 et 4 : « tu prends les skills tu les adaptes à notre environnement ». La version est numérotée 1.0.0 à sa demande.
 - **`skills/lemo-wake/` et `skills/lemo-layers/`** : les skills `wake` et `layers` de lemo-wake (commit `f070df8`, CC BY-NC 4.0), copiés et adaptés.

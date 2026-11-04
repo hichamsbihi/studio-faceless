@@ -26,12 +26,12 @@ Le directeur (Claude principal) soumet au propriétaire, en un bloc, et ne lance
 |---|---|---|
 | 1. Avis | chaque siège, en parallèle, sans voir les autres | position, réponse (600 mots au plus), points clés, confiance, ce qui ferait tomber sa position |
 | 2. Débat (mode complet) | chaque siège, en parallèle | reçoit les avis anonymes (A, B, C…), critique chacun, nomme son désaccord principal et sa gravité, l'avis qui l'a renforcé, ce qui a changé, sa position finale, classe tous les avis |
-| 3. Contre-hypothèse | un agent, seulement si aucun siège ne garde de désaccord majeur | suppose le consensus faux : alternative la plus forte, ce qui ferait basculer, preuve qui trancherait |
-| 4. Président | un agent Opus, seul à écrire | compte rendu dans le fichier demandé, sans écraser un fichier existant ; synthèse rendue au directeur |
+| 3. Contre-hypothèse (mode complet) | un agent, toujours (1.0.1) | suppose fausse la position de la majorité : alternative la plus forte, ce qui ferait basculer, preuve qui trancherait |
+| 4. Président | un agent Opus, en lecture seule (1.0.1) | rédige le compte rendu et le rend, avec un chemin libre vérifié ; le directeur l'écrit, sans écraser un fichier existant |
 
-- **Agents** : N sièges donnent 2N + 1 ou 2N + 2 agents en mode complet, N + 1 en mode rapide. De 2 à 8 sièges ; 4 à 6 conseillés.
+- **Agents** : N sièges donnent 2N + 2 agents en mode complet (1.0.1), N + 1 en mode rapide. De 2 à 8 sièges ; 4 à 6 conseillés.
 - **Coût** : à mesurer au premier conseil ; estimation de 0,5 à 1 M de tokens pour 6 sièges en mode complet.
-- **Lecture seule** : les sièges et la contre-hypothèse sont des agents `studio-faceless:conseiller` (Read, Grep, Glob, WebFetch, WebSearch ; ni écriture ni Bash). Le président est un agent du workflow avec écriture, limité par sa consigne au seul compte rendu.
+- **Lecture seule** : les sièges, la contre-hypothèse et le président sont des agents `studio-faceless:conseiller` (Read, Grep, Glob, WebFetch, WebSearch ; ni écriture ni Bash ; rôle `lecteur` du garde-fou depuis la 1.0.1). Le directeur écrit le compte rendu à partir de `president.contenu`.
 
 ## Lancer
 ```
@@ -66,4 +66,4 @@ Workflow({
 | « Aucun siège n'a répondu » | type `studio-faceless:conseiller` introuvable : `/reload-plugins`, puis relancer |
 | Un siège sans réponse | le conseil continue ; le compte rendu compte les sièges vides |
 | Président sans réponse | le résultat porte `secours` (tableau, avis, débat) : le directeur écrit le compte rendu |
-| Compte rendu déjà présent | le président ajoute `_v2` ; jamais d'écrasement |
+| Compte rendu déjà présent | le président propose `_v2` ; le directeur vérifie avant d'écrire ; jamais d'écrasement |

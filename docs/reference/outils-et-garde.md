@@ -387,7 +387,7 @@ python -B ${CLAUDE_PLUGIN_ROOT}/outils/suivi_tokens.py --depuis AAAA-MM-JJ
 **Quand il sert** : lancé par Claude Code avant chaque `Bash`, `PowerShell`, `Write`, `Edit` et `NotebookEdit`, pour Claude principal comme pour les sous-agents.
 
 **Entrée et sortie**
-- **Entrée** : `tool_name`, `tool_input` (`command`, `file_path` ou `notebook_path`), `agent_type` (absent pour Claude principal), `cwd`.
+- **Entrée** : `tool_name`, `tool_input` (`command`, `file_path` ou `notebook_path`), `agent_type` (absent pour Claude principal), `agent_id` (sous-agent seulement ; depuis la 1.0.1, son absence désigne Claude principal), `cwd`.
 - **Dossier de la chaîne** : `CLAUDE_PROJECT_DIR`, sinon `cwd` de l'entrée, sinon le dossier courant.
 - **Sortie** : `{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny"|"ask", "permissionDecisionReason": "Garde studio-faceless : …"}}`, ou rien. **Code de sortie toujours 0** ; une entrée JSON illisible ne bloque rien.
 - **Option** : `--role <rôle>` force le rôle (essais) ; `hooks.json` ne l'utilise pas.
@@ -404,13 +404,15 @@ python -B ${CLAUDE_PLUGIN_ROOT}/outils/suivi_tokens.py --depuis AAAA-MM-JJ
 | `media-fetcher` | `telechargeur` (0.6.0) : Write et Edit seulement sous `episodes/<id>/kit/media/source-vN/` ; en Bash, `python` sur `outils/medias/telecharger_medias.py` du plugin installé seul (chemin complet ; la liste se lit sous `episodes/<id>/kit/`, `--racine` et `--manifeste` sont sous `source-vN/`), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` ; aucun script en ligne, ni `curl` ni `wget` ; toute cible d'écriture (redirection, `cp`…) hors de `source-vN/` est refusée |
 | `sound-manager` | `ingenieur-son` (0.7.0 ; shorts depuis la 0.7.1) : Write, Edit et Bash n'écrivent que dans `kit/voix/`, `kit/shorts/voix/`, `kit/shorts/son/`, `kit/media/audio/`, `kit/media/source-vN/soundza/`, `kit/PROVENANCE.md`, `montage/` (sauf `montage.json`) et `outputs/controle-son*/` de l'épisode, sans MP4 ni média existant écrasé ; en Bash, `python` sur les outils de la table `OUTILS` (`generer_voix.py` à blanc seulement ; `voix_short.py`, `recaler.py` et `raccord.py` des shorts, `--sans-d` à deux valeurs exactement ; ni `mix_film.py`, ni `assembler.py`, ni `master_short.py`), `ffmpeg` sans `-y` (chaque sortie et chaque `file=` de filtre dans la zone), `ffprobe`, `cp -n`, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `date`, `sha1sum`, `sha256sum`, `cd` vers la racine ; ni script en ligne ni substitution de commande |
 | `publisher` | `editeur` (0.7.0) : écrit seulement dans `miniatures-vN/`, `PUBLICATION_vN.md` et `PUBLICATION_vN.<langue>.srt` de l'épisode ; en Bash, mêmes commandes, avec `miniature.py`, `publication.py`, `srt.py`, `controle.py chrome`, plus `node node_modules/hyperframes/bin/hyperframes.mjs remove-background` |
-| Claude principal, `research`, tout autre type | aucun rôle : seules les règles pour tous s'appliquent |
+| `research`, `conseiller` | `lecteur` (1.0.1) |
+| Claude principal (sans `agent_id`, même lancé avec `--agent`) | aucun rôle : seules les règles pour tous s'appliquent |
+| tout autre sous-agent (`agent_id` présent), d'un type inconnu ou sans type | `lecteur` (1.0.1) : Write et Edit seulement sous `docs/rapports/` ; en Bash, seules des commandes de lecture (`LECTEUR_COMMANDES` : `ls`, `cat`, `grep`, `find` sans action, `sort` sans `-o`, `git` en lecture…), sorties seulement sous `docs/rapports/`, sans script en ligne ni substitution de commande |
 
 Pour `ingenieur-son` et `editeur`, chaque option d'un outil se lit dans sa table (`OUTILS`, `REMOVE_BACKGROUND`) : une option inconnue ou abrégée est refusée (argparse accepte les préfixes, donc `--exec` vaudrait `--executer`), et un chemin où l'outil écrit doit être dans la zone, avec une espace, sans barre oblique ou en `--option=valeur`. Les segments se coupent hors des guillemets (un filtre ffmpeg contient `;` et `|`), et les redirections `2>` sont contrôlées. Un script écrit par l'agent dans sa zone (mesures du mix sous `montage/mesures-vN/`, masque de détourage sous `miniatures-vN/travail/`) est refusé à `python`, sous toutes ses formes (`python3`, `py`, guillemets, chemin absolu, `./`) : le garde ne lit pas le contenu d'un script, donc Claude principal le relit et le lance (décision du 03/11/2026 ; `miniature.py masque` et `mesurer_mix.py` prévus en 0.7.2).
 
 Le préfixe de plugin (`studio-faceless:`) est retiré avant la recherche.
 
-**Ordre d'évaluation d'une commande Bash ou PowerShell** : (1) motifs refusés pour tous ; (2) suppression récursive ; (3) règles du rôle, s'il y en a un ; (4) motif soumis à confirmation (`preview`) ; (5) rendu sans `--workers 1` ou `2`. Le premier qui répond l'emporte.
+**Ordre d'évaluation d'une commande Bash ou PowerShell** : (1) motifs refusés pour tous ; (2) suppression récursive ; (2 bis) motifs de la 1.0.1 (§ 1 bis) ; (3) règles du rôle, s'il y en a un ; (4) motif soumis à confirmation (`preview`) ; (5) rendu sans `--workers 1` ou `2` ; (6) confirmation de `modal run` (1.0.1). Le premier qui répond l'emporte.
 
 **1. Pour tous : refusé (`deny`)** (le motif s'applique au texte entier de la commande)
 | # | Motif | Exemples | Message |
@@ -427,9 +429,23 @@ Le préfixe de plugin (`studio-faceless:`) est retiré avant la recherche.
 | 10 | `Directory::Delete(…, $true)` (.NET) | `[IO.Directory]::Delete($p,$true)` | suppression récursive (.NET) : passer par la corbeille, avec accord |
 | 11 | `DeletePermanently` | appel .NET de suppression définitive | suppression définitive : interdite |
 | 12 | `Clear-RecycleBin` | `Clear-RecycleBin -Force` | vidage de la corbeille : interdit |
-| 13 | Commande `rm`, `rmdir`, `rd`, `del`, `erase`, `ri` ou `remove-item` (en tête de segment, après `sudo`, `xargs`, `command`, `nohup`, `time`, `exec`, `env`, `cmd /c` et les affectations `VAR=`) avec une option récursive : `-…r…`, `--recursive`, `-recurse` ou `/s` | `rm -rf x`, `rm -fr x`, `rm -r x` | suppression récursive : passer par la corbeille, avec accord |
+| 13 | Commande `rm`, `rmdir`, `rd`, `del`, `erase`, `ri` ou `remove-item` (en tête de segment, après `sudo`, `xargs`, `command`, `nohup`, `time`, `exec`, `env` suivi d'une commande (1.0.1), `cmd /c` et les affectations `VAR=`) avec une option récursive : `-…r…`, `--recursive`, `-recurse` ou `/s` | `rm -rf x`, `rm -fr x`, `rm -r x` | suppression récursive : passer par la corbeille, avec accord |
 
 La commande est découpée en segments (`&&`, `||`, `;`, `|`, retour à la ligne).
+
+**1 bis. Pour tous, depuis la 1.0.1 : refusé (`deny`), sauf `modal run`** (sécurité, validé sur AA, 04/11/2026, point 6 du conseil ; fonction `verdict_pour_tous`, tests `PourTous101` et `FauxPositifs101` de `outils/test_garde_commandes.py`)
+| Motif | Exemples refusés | Reste permis |
+|---|---|---|
+| Modal : `setup`, `token`, `deploy`, `serve`, `secret` et toute autre sous-commande ; `modal run` hors du plugin installé | `modal token new`, `python -m modal setup`, `modal run essai.py` | `modal --version` ; `modal run` d'un script du plugin installé : confirmation (`ask`) |
+| AWS | `aws …`, `sam …`, `python -m awscli` | — |
+| `pip install` | `pip install x`, `python -m pip install x`, `uv pip install x`, `pipx install x` | `pip --version`, `pip list` |
+| Affichage de l'environnement | `printenv` ; `env`, `set`, `export`, `declare`, `typeset` lancés seuls ; `compgen -e` ; `Get-ChildItem env:`, `ls env:` | `set -euo pipefail`, `export PATH=…`, `env FOO=1 commande` (la commande est contrôlée), `Get-Item env:PATH` |
+| Nom de clé ou de jeton dans la commande : `…_API_KEY`, `…_SECRET`, `…_TOKEN`, `MODAL_TOKEN_…` (casse ignorée ; `$env:` et `%…%` compris) | `echo $ELEVENLABS_API_KEY`, `cat …/client_secret.json` | un texte qui les nomme s'écrit avec Write ou Edit, et un message de commit par `git commit -F` |
+| `[Environment]::GetEnvironmentVariable(s)` | — | — |
+| Tout l'environnement dans un script en ligne ou un here-document | `os.environ` ou `process.env` entiers (`print(os.environ)`, `dict(os.environ)`, `Object.keys(process.env)`) | `os.environ['CLAUDE_PROJECT_DIR']`, `os.environ.get(…)`, `process.env.X` |
+| `claude -p` ou `--print` | `claude -p x`, `npx @anthropic-ai/claude-code -p x` | `claude --version`, `claude plugin update …` |
+
+Les segments se coupent hors des guillemets, et `bash -c`, `sh -c` ou `pwsh -Command` sont relus (trois niveaux au plus).
 
 **2. Pour tous : refus de l'écriture dans le plugin installé** : un `Write`, `Edit` ou `NotebookEdit` dont le chemin est dans le dossier du plugin (`CLAUDE_PLUGIN_ROOT`) est refusé : « le plugin installé ne se modifie pas depuis une chaîne : modifier son dépôt, puis changer sa version ». Cette règle ne vaut que pour ces trois outils, pas pour Bash.
 

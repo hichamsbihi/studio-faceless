@@ -67,14 +67,14 @@ Les statuts (`FIXÉ`, `VALIDÉ`, `PROPOSÉ`…) sont définis dans `REGLES_STUDI
 | # | Qui | Quoi |
 |---|---|---|
 | 1 | Claude ou un sous-agent | Prépare un appel à `Bash`, `PowerShell`, `Write`, `Edit` ou `NotebookEdit` |
-| 2 | Claude Code | Lance `python -I "${CLAUDE_PLUGIN_ROOT}/hooks/garde_commandes.py"` (message d'état « Garde studio-faceless », délai 10 s) et lui passe l'appel en JSON : `tool_name`, `tool_input`, `agent_type`, `cwd` |
-| 3 | `garde_commandes.py` | Déduit le **rôle** du champ `agent_type` (table `ROLES`) ; Claude principal n'en a pas |
+| 2 | Claude Code | Lance `python -I "${CLAUDE_PLUGIN_ROOT}/hooks/garde_commandes.py"` (message d'état « Garde studio-faceless », délai 10 s) et lui passe l'appel en JSON : `tool_name`, `tool_input`, `agent_type`, `agent_id` (sous-agent seulement), `cwd` |
+| 3 | `garde_commandes.py` | Déduit le **rôle** du champ `agent_type` (table `ROLES`) ; Claude principal n'en a pas ; depuis la 1.0.1, un sous-agent (`agent_id`) d'un type inconnu ou sans type reçoit `lecteur` |
 | 4 | `garde_commandes.py` | Décide. Pour `Write`, `Edit`, `NotebookEdit` : (a) chemin dans le plugin installé, refus pour tous ; (b) sinon règles du rôle sur les zones protégées. Pour une commande : (a) motifs refusés pour tous, (b) suppression récursive, (c) règles du rôle, (d) `preview` : confirmation, (e) rendu sans `--workers 1` ou `2` : refus |
 | 5 | `garde_commandes.py` | Répond `deny` ou `ask` avec la raison (« Garde studio-faceless : … »), ou ne répond rien ; sort toujours avec le code 0 |
 | 6 | Claude Code | `deny` : l'appel n'a pas lieu, la raison revient à Claude, qui reformule. `ask` : le propriétaire confirme ou refuse. Rien : l'appel suit les permissions de la chaîne (allow, deny, ask du `.claude/settings.json`, sinon demande habituelle) |
 
 ### Décisions du garde-fou, en bref
-Le tableau complet (douze motifs, la suppression récursive, les zones protégées, les règles par rôle) est dans la [fiche de `garde_commandes.py`](../reference/outils-et-garde.md#hooksgarde_commandespy).
+Le tableau complet (douze motifs, ceux de la 1.0.1, la suppression récursive, les zones protégées, les règles par rôle) est dans la [fiche de `garde_commandes.py`](../reference/outils-et-garde.md#hooksgarde_commandespy).
 
 | Décision | Cas |
 |---|---|

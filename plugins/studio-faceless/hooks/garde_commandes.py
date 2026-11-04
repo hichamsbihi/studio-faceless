@@ -10,8 +10,16 @@ Pour tous :
   shutil.rmtree, rmSync récursif, rimraf, Directory.Delete récursif) ; vidage de la corbeille ;
   écriture par Write ou Edit dans le plugin installé (il se modifie dans son dépôt, pas depuis une chaîne) ;
   rendu direct sans `--workers 1` ou `2` ;
-- ask : aperçu HyperFrames.
+  1.0.1 (sécurité, validé sur AA, 04/11/2026, point 6 du conseil) : modal (sauf `modal run` d'un script du plugin installé),
+  aws, sam, pip install ; printenv, et env, set, export, declare ou Get-ChildItem env: lancés seuls (env n'est plus un préfixe
+  neutre : il n'est retiré que s'il précède une commande) ; toute commande qui nomme une clé ou un jeton (*_API_KEY, *_SECRET,
+  *_TOKEN, MODAL_TOKEN_*), $env: compris ; [Environment]::GetEnvironmentVariable ; la lecture de tout l'environnement dans un
+  script en ligne ou un here-document (os.environ ou process.env entiers) ; claude -p ;
+- ask : aperçu HyperFrames ; `modal run` d'un script du plugin installé (1.0.1).
 Par rôle, déduit du type d'agent (`agent_type` de l'entrée du hook, voir ROLES), ou option `--role` :
+- lecteur (1.0.1) : research, conseiller, et tout sous-agent (`agent_id` présent) d'un type inconnu ou sans type ; Write et
+  Edit seulement sous docs/rapports/ ; en Bash, seules des commandes de lecture (LECTEUR_COMMANDES), sorties seulement sous
+  docs/rapports/, sans script en ligne ni substitution de commande ;
 - relecteur (reviewer) : seules ffprobe, ffmpeg de mesure (-f null), wc, ls, grep, head et tail ; aucune redirection ;
 - directeur-artistique : seules ffmpeg, ffprobe et mkdir ; pas d'écrasement (-y) ; sortie hors zones protégées ;
 - producteur : en Bash, aucune mention de direction/, templates/, .claude/ ou d'un CLAUDE.md (sauf les chemins du
@@ -71,7 +79,7 @@ ASK_TEXT = [(re.compile(HF + r'\s+preview\b', I),
 RENDER = re.compile(HF + r'\s+render\b', I)
 WORKERS_OK = re.compile(r'(--workers[ =]|-w[ =]?)[12]\b', I)
 
-WRAPPERS = {'sudo', 'xargs', 'command', 'nohup', 'time', 'exec', 'env'}
+WRAPPERS = {'sudo', 'xargs', 'command', 'nohup', 'time', 'exec'}     # env (1.0.1) : voir tokens() et sans_env()
 RECURSIVE_FLAG = re.compile(r'^(-[a-z]*r[a-z]*|--recursive|-recurse|/s)$', I)
 WRITE_CMDS = {'cp', 'mv', 'install', 'tee', 'touch', 'copy-item', 'move-item', 'rename-item', 'set-content', 'add-content',
               'out-file', 'new-item', 'copy', 'move', 'ren', 'rename', 'xcopy', 'robocopy', 'ffmpeg', 'dd', 'ln'}
@@ -90,11 +98,35 @@ def tokens(segment):
     except ValueError:
         toks = segment.split()
     toks = [t.strip('"\'') for t in toks]
-    while toks and (toks[0].lower() in WRAPPERS or re.match(r'^\w+=', toks[0])):
-        toks = toks[1:]
-    if len(toks) > 1 and toks[0].lower() in ('cmd', 'cmd.exe') and toks[1].lower() in ('/c', '/k'):
-        toks = toks[2:]
+    while toks:
+        if toks[0].lower() in WRAPPERS or re.match(r'^\w+=', toks[0]):
+            toks = toks[1:]
+        elif re.sub(r'\.exe$', '', os.path.basename(toks[0]).lower()) == 'env' and sans_env(toks):
+            toks = sans_env(toks)          # env suivi d'une commande : la commande est contrôlée ; env seul reste visible
+        elif len(toks) > 1 and toks[0].lower() in ('cmd', 'cmd.exe') and toks[1].lower() in ('/c', '/k'):
+            toks = toks[2:]
+        else:
+            break
     return toks
+
+
+def sans_env(toks):
+    """1.0.1 : ce que lance `env` (sans ses options ni ses affectations) ; [] si env est lancé seul."""
+    reste, i = toks[1:], 0
+    while i < len(reste):
+        t = reste[i]
+        if t in ('-S', '--split-string') and i + 1 < len(reste):
+            try:
+                return shlex.split(reste[i + 1], posix=False) + reste[i + 2:]
+            except ValueError:
+                return reste[i + 1].split() + reste[i + 2:]
+        if t in ('-u', '--unset', '-C', '--chdir'):
+            i += 2
+        elif t.startswith('-') or re.match(r'^\w+=', t):
+            i += 1
+        else:
+            break
+    return reste[i:] if sans_redirections(reste[i:]) else []      # « env > fichier » : env seul, redirigé
 
 
 def head(toks):
@@ -172,12 +204,137 @@ def sans_plugin(command):
     return command
 
 
+# --- 1.0.1 : clés, cloud, environnement, claude -p ; pour tous, Claude principal compris (validé sur AA, 04/11/2026) ----------
+NOM_DE_CLE = re.compile(r'\b[a-z0-9]\w*_(api_key|secret|token)\b|\bmodal_token_\w+', I)
+ENV_DOTNET = re.compile(r'Environment\]::GetEnvironmentVariables?\b', I)
+HEREDOC = re.compile(r'<<-?\s*[\'"]?\w+')
+ENV_ENTIER = re.compile(r'\bos\.environb?\b(?!\s*\[|\s*\.get\s*\()|\bprocess\.env\b(?!\s*\.\w|\s*\[)', I)
+SHELLS = {'bash', 'sh', 'zsh', 'dash', 'pwsh', 'powershell'}
+PYTHONS = {'python', 'python3', 'py'}
+MODAL_INTERDIT = {'setup', 'token', 'deploy', 'serve', 'secret'}
+LISTE_ENV_PS = {'get-childitem', 'gci', 'ls', 'dir', 'get-item', 'gi'}
+
+
+def premier_mot(toks):
+    """Premier argument qui n'est pas une option (une sous-commande), en minuscules, ou ''."""
+    return next((t.lower() for t in toks if not t.startswith('-')), '')
+
+
+def verdict_pour_tous(command, profondeur=0):
+    """Motifs de la 1.0.1 : ('deny', raison), ('ask', raison) pour `modal run` d'un script du plugin, ou None."""
+    if NOM_DE_CLE.search(command):
+        return 'deny', ("commande qui nomme une clé ou un jeton (…_API_KEY, …_SECRET, …_TOKEN, MODAL_TOKEN_…) : les clés restent "
+                        "dans l'environnement et ne s'écrivent dans aucune commande ; un texte qui les nomme s'écrit avec Write ou Edit")
+    if ENV_DOTNET.search(command):
+        return 'deny', "lecture des variables d'environnement par [Environment]::GetEnvironmentVariable : interdite"
+    if (INLINE_CODE.search(command) or HEREDOC.search(command)) and ENV_ENTIER.search(command):
+        return 'deny', "script qui lit tout l'environnement (os.environ ou process.env entiers) : lire une variable nommée, jamais une clé"
+    demande = None
+    for seg in segments_cites(command):
+        toks = sans_redirections(tokens(seg))
+        h, args = head(toks), toks[1:]
+        if h == 'env':
+            return 'deny', "env lancé seul affiche tout l'environnement, clés comprises : interdit"
+        if h == 'printenv':
+            return 'deny', "printenv affiche l'environnement, clés comprises : interdit"
+        if (h == 'set' and not args) or (h == 'export' and all(a == '-p' for a in args)) \
+                or (h in ('declare', 'typeset') and all(a.startswith('-') for a in args)) \
+                or (h == 'compgen' and any(a in ('-e', '-v') for a in args)):
+            return 'deny', h + " sans nom affiche toutes les variables, clés comprises : interdit"
+        if h in LISTE_ENV_PS and any(a.lower().replace('\\', '/') in ('env:', 'env:/', 'env:*', 'env:/*') for a in args):
+            return 'deny', "liste du lecteur env: de PowerShell (clés comprises) : interdite"
+        module, sous = None, []
+        if h in PYTHONS and '-m' in args and args.index('-m') + 1 < len(args):
+            module, sous = args[args.index('-m') + 1].lower(), args[args.index('-m') + 2:]
+        if h in ('aws', 'sam') or module == 'awscli':
+            return 'deny', "AWS (aws, sam) : aucun compte ni service de cloud sans décision du propriétaire"
+        if (h in ('pip', 'pip3', 'pipx') and premier_mot(args) == 'install') or (module in ('pip', 'pip3') and premier_mot(sous) == 'install') \
+                or (h == 'uv' and [a.lower() for a in args[:2]] == ['pip', 'install']):
+            return 'deny', "pip install : nouvelle dépendance, à décider par le propriétaire"
+        if h == 'modal' or module == 'modal':
+            reste = args if h == 'modal' else sous
+            sc = premier_mot(reste)
+            if sc in MODAL_INTERDIT:
+                return 'deny', "Modal : jeton, déploiement, service et secret interdits ; aucun jeton Modal sans décision du propriétaire"
+            if sc == 'run':
+                apres = reste[[a.lower() for a in reste].index('run') + 1:]
+                script = next((a for a in apres if not a.startswith('-')), '').split('::')[0]
+                if outil_du_plugin(script) is None:
+                    return 'deny', "modal run seulement sur un script du plugin installé (chemin complet, sans « .. »)"
+                demande = demande or ('ask', "modal run : rendu dans le cloud, payant ; à confirmer par le propriétaire")
+            elif sc:
+                return 'deny', "Modal : seul « modal run » d'un script du plugin installé est permis, avec confirmation"
+        if (h == 'claude' or (h == 'npx' and any('claude-code' in a for a in args))) \
+                and any(a in ('-p', '--print') or a.startswith('--print=') for a in args):
+            return 'deny', "claude -p : aucun lancement de Claude sans le propriétaire, dans sa session"
+        if h in SHELLS and profondeur < 3:
+            i = next((k for k, a in enumerate(args) if a.lower() in ('-c', '-command')), None)
+            if i is not None and i + 1 < len(args):
+                v = verdict_pour_tous(' '.join(args[i + 1:]), profondeur + 1)
+                if v and v[0] == 'deny':
+                    return v
+                demande = demande or v
+    return demande
+
+
+# --- 1.0.1 : rôle lecteur (research, conseiller, sous-agent d'un type inconnu ou sans type) ---------------------------------
+LECTEUR_COMMANDES = {'ls', 'cat', 'head', 'tail', 'wc', 'grep', 'rg', 'find', 'file', 'stat', 'du', 'df', 'pwd', 'cd', 'echo',
+                     'printf', 'sort', 'cut', 'tr', 'diff', 'cmp', 'sha1sum', 'sha256sum', 'md5sum', 'ffprobe', 'git', 'date',
+                     'basename', 'dirname', 'realpath', 'which', 'true'}
+GIT_LECTURE = {'status', 'log', 'diff', 'show', 'ls-files', 'rev-parse', 'blame', 'describe', 'shortlog'}
+FIND_ACTIONS = {'-delete', '-exec', '-execdir', '-ok', '-okdir', '-fprint', '-fprint0', '-fprintf', '-fls'}
+
+
+def ecriture_lecteur(rel):
+    """Le lecteur n'écrit que sous docs/rapports/ de la chaîne."""
+    return rel is not None and rel.lower().startswith('docs/rapports/')
+
+
+def refus_lecteur(command, root):
+    """Limites du rôle lecteur en Bash ; raison du refus, ou None."""
+    if INLINE_CODE.search(command) or re.search(r'\$\(|`|<\(|>\(', command):
+        return "aucun script en ligne ni substitution de commande"
+    for seg in segments_cites(command):
+        toks = sans_redirections(tokens(seg))
+        h, bas = head(toks), [t.lower() for t in toks[1:]]
+        if h not in LECTEUR_COMMANDES:
+            return "seules des commandes de lecture sont permises (refusé : " + seg[:120] + ")"
+        for t in REDIRECT_TOUT.findall(seg):
+            t = t.strip('"\'')
+            if t.lower() not in SANS_FICHIER and not ecriture_lecteur(project_rel(t, root)):
+                return "écriture seulement sous docs/rapports/ (refusé : " + t[:120] + ")"
+        if h == 'find' and FIND_ACTIONS & set(bas):
+            return "find sans action (-delete, -exec, -ok, -fprint, -fls)"
+        if h == 'sort' and any(t == '-o' or t.startswith('--output') or re.match(r'^-[a-z]*o', t) for t in bas):
+            return "sort sans fichier de sortie (-o)"
+        if h == 'ffprobe' and any(t in ('-o', '-output') for t in bas):
+            return "ffprobe sans fichier de sortie"
+        if h == 'git':
+            brut = toks[1:]                                     # « -C » (dossier) et « -c » (réglage) ne diffèrent que par la casse
+            if any(t == '-c' or t.lower().startswith(('--output', '--exec-path', '--config-env')) for t in brut):
+                return "git sans -c, --output ni --exec-path"
+            i = 0
+            while i < len(brut) and brut[i].startswith('-'):
+                i += 2 if brut[i] == '-C' else 1
+            if i >= len(brut) or brut[i].lower() not in GIT_LECTURE:
+                return "git en lecture seulement (status, log, diff, show, ls-files, rev-parse, blame, describe, shortlog)"
+    return None
+
+
 def decide_bash(command, role, root):
     for rx, why in DENY_TEXT:
         if rx.search(command):
             return 'deny', why
     if recursive_rm(command):
         return 'deny', "suppression récursive : passer par la corbeille, avec accord"
+    demande = verdict_pour_tous(command)
+    if demande and demande[0] == 'deny':
+        return demande
+
+    if role == 'lecteur':
+        why = refus_lecteur(command, root)
+        if why:
+            return 'deny', "lecteur : " + why
 
     if role == 'relecteur':
         for seg in segments(command):
@@ -294,7 +451,7 @@ def decide_bash(command, role, root):
             return 'ask', why
     if RENDER.search(command) and not WORKERS_OK.search(command):
         return 'deny', "rendu HyperFrames sans « --workers 1 » ou « 2 » : relancer avec --workers 1 (un Chrome par processus)"
-    return None
+    return demande
 
 
 def ecriture_stratege(rel):
@@ -597,6 +754,8 @@ def refus_outils(command, role, root):
 
 def decide_write(path, role, root):
     rel = project_rel(path, root)
+    if role == 'lecteur':
+        return None if ecriture_lecteur(rel) else ('deny', "lecteur : écriture seulement sous docs/rapports/ de la chaîne")
     if role == 'stratege':
         return None if ecriture_stratege(rel) else ('deny', "stratège : écriture seulement dans docs/ et direction/BANQUE_SUJETS.md")
     if role == 'telechargeur':
@@ -622,14 +781,19 @@ def decide(command, role=None):
 ROLES = {'motion-producer': 'producteur', 'shorts-producer': 'producteur',
          'art-director': 'directeur-artistique', 'studio-maintainer': 'mainteneur',
          'reviewer': 'relecteur', 'strategist': 'stratege', 'media-fetcher': 'telechargeur',
-         'sound-manager': 'ingenieur-son', 'publisher': 'editeur'}
+         'sound-manager': 'ingenieur-son', 'publisher': 'editeur',
+         'research': 'lecteur', 'conseiller': 'lecteur'}          # 1.0.1
 
 
 def role_of(data):
     if '--role' in sys.argv:
         return sys.argv[sys.argv.index('--role') + 1]
     agent = str(data.get('agent_type') or '').rsplit(':', 1)[-1]
-    return ROLES.get(agent)
+    if agent in ROLES:
+        return ROLES[agent]
+    # 1.0.1 : un sous-agent (agent_id présent) d'un type inconnu ou sans type reçoit le rôle de lecteur, et non plus les droits
+    # du directeur. Sans agent_id (Claude principal, même lancé avec --agent), aucun rôle.
+    return 'lecteur' if data.get('agent_id') else None
 
 
 def in_plugin(path):

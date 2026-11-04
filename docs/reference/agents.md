@@ -41,7 +41,7 @@ Workflows où ils interviennent : [`../workflows/recherche.md`](../workflows/rec
 | **Outils** | Read, Grep, Glob, WebFetch, WebSearch | Read, Grep, Glob, Bash | Read, Grep, Glob, Bash, WebFetch, WebSearch, Skill | Read, Write, Edit, Grep, Glob, Bash, Skill, ToolSearch, Monitor, TaskStop | idem `motion-producer` | Read, Grep, Glob, Bash, Edit, Write, WebFetch | Read, Write, Edit, Grep, Glob, Bash, WebFetch, WebSearch |
 | **Skills préchargés** | aucun | aucun | `hyperframes-creative`, `hyperframes-animation`, `studio-faceless:thumbnail-strategist` | `hyperframes-core`, `hyperframes-keyframes`, `hyperframes-animation` (WAAPI et CSS seulement) | `studio-faceless:shorts`, `hyperframes-core`, `hyperframes-keyframes` | aucun | aucun |
 | **`CLAUDE.md` de la chaîne** | omis (`omitClaudeMd`), règles dans le contrat | lu | lu | lu | lu | omis (`omitClaudeMd`), règles dans le contrat | omis (`omitClaudeMd`), règles dans le contrat |
-| **Rôle du garde-fou** (`ROLES`) | aucun (pas d'outil d'écriture ni de Bash) | `relecteur` (Bash en lecture et mesure seulement) | `directeur-artistique` | `producteur` | `producteur` | `mainteneur` | `stratege` |
+| **Rôle du garde-fou** (`ROLES`) | `lecteur` (1.0.1 ; il n'a ni outil d'écriture ni Bash) | `relecteur` (Bash en lecture et mesure seulement) | `directeur-artistique` | `producteur` | `producteur` | `mainteneur` | `stratege` |
 | **Droits d'écriture** | aucun | aucun (consigne : Bash pour lire et mesurer seulement) | aucun outil d'écriture ; Bash limité à `ffmpeg`, `ffprobe`, `mkdir` pour des images extraites dans le dossier du contrat | son dossier `episodes/<id>/production/<séquence>-vN/` | son dossier `episodes/<id>/production/short-0N-vM/` | Write et Edit seulement, dans ce que le contrat autorise ; jamais par Bash | Write et Edit seulement dans `docs/` de la chaîne, et dans `direction/BANQUE_SUJETS.md` sur accord du propriétaire cité au contrat |
 | **Refusé par le garde-fou** | — | règles communes seulement | toute commande hors `ffmpeg`/`ffprobe`/`mkdir`, `-y`, sortie en zone protégée | citer `direction/`, `templates/`, `.claude/` ou un `CLAUDE.md` en Bash (sauf les chemins du plugin installé, sans « .. ») ; écrire dans `marque/` existant, `inputs/`, un MP4 existant | idem `motion-producer` | écriture Bash ; écriture dans `.claude/`, un projet de production, `marque/` existant, `inputs/`, un MP4 existant | écriture hors `docs/` et `direction/BANQUE_SUJETS.md` ; Bash hors `python` (outils du plugin), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` ; script en ligne |
 | **Livrable** | 5 rubriques : faits, études, médias candidats, limites, fichiers lus | tableau point · verdict · minutage · preuve, 25 lignes au plus | storyboard (tableau) **ou** critique (5 à 10 problèmes), techniques à proposer, fichiers lus | dossier de séquence, `render.sh`, `README.md`, `PROVENANCE.md`, planche, rapport en 5 points | dossier de short, `render.sh` (deux rendus), `README.md`, `PROVENANCE.md`, rapport en 5 points | constats, changements, propositions non appliquées, risques | synthèse de 300 mots au plus : phase, fichiers, décisions en blocs, coût, limites, fichiers lus |
@@ -59,15 +59,15 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 | `motion-producer`, `shorts-producer` | `producteur` |
 | `art-director` | `directeur-artistique` |
 | `studio-maintainer` | `mainteneur` |
-| `research`, Claude principal | aucun rôle : seules les règles communes s'appliquent |
+| Claude principal | aucun rôle : seules les règles communes s'appliquent |
+| `research`, `conseiller`, tout sous-agent d'un type inconnu ou sans type | `lecteur` (1.0.1) : Write et Edit seulement sous `docs/rapports/` ; en Bash, des commandes de lecture seulement, sorties sous `docs/rapports/`, sans script en ligne ni substitution |
 | `reviewer` | `relecteur` : en Bash, seules `ffprobe`, `ffmpeg` de mesure (`-f null`), `wc`, `ls`, `grep`, `head` et `tail`, sans redirection |
 | `strategist` | `stratege` : Write et Edit seulement dans `docs/` et `direction/BANQUE_SUJETS.md` ; en Bash, `python` sur les outils du plugin (sauf `youtube_retention.py`, réservé à Claude principal depuis la 0.6.0), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` |
 | `media-fetcher` | `telechargeur` (0.6.0) : Write et Edit seulement sous `episodes/<id>/kit/media/source-vN/` ; en Bash, `python` sur `outils/medias/telecharger_medias.py` du plugin installé seul (liste sous `kit/`, dépôt et manifeste sous `source-vN/`), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` ; ni `curl` ni `wget`, aucun script en ligne |
 | `sound-manager` | `ingenieur-son` (0.7.0) : voir sa fiche |
 | `publisher` | `editeur` (0.7.0) : voir sa fiche |
-| `conseiller` | aucun rôle (0.8.0) : ni outil d'écriture ni Bash |
 
-**Règles communes à tous** (rôle ou non) : refus de la publication HyperFrames, du cloud, de la connexion, de `upgrade`, de `skills update`, de `npx hyperframes@…`, de l'installation npm, de la suppression récursive ou définitive, du vidage de la corbeille ; refus de **toute écriture par Write/Edit dans le plugin installé** ; demande de confirmation pour `preview` ; refus (`deny`, sans confirmation possible) d'un rendu direct sans `--workers 1` ou `2`.
+**Règles communes à tous** (rôle ou non) : refus de la publication HyperFrames, du cloud, de la connexion, de `upgrade`, de `skills update`, de `npx hyperframes@…`, de l'installation npm, de la suppression récursive ou définitive, du vidage de la corbeille ; depuis la 1.0.1, refus de Modal (sauf `modal run` d'un script du plugin, sur confirmation), de `aws`, `sam` et `pip install`, de `printenv`, et de `env`, `set`, `export`, `declare` ou `Get-ChildItem env:` lancés seuls, de toute commande qui nomme une clé ou un jeton, de la lecture de tout l'environnement dans un script, et de `claude -p` ; refus de **toute écriture par Write/Edit dans le plugin installé** ; demande de confirmation pour `preview` ; refus (`deny`, sans confirmation possible) d'un rendu direct sans `--workers 1` ou `2`.
 
 **Zones protégées** (chemins relatifs à la chaîne, `CLAUDE_PROJECT_DIR`), par rôle :
 
@@ -99,7 +99,7 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 | `model` | `sonnet` ; `color` : blue |
 | `skills` | aucun |
 | `omitClaudeMd` | `true` (0.2.3) : démarre sans le `CLAUDE.md` de la chaîne |
-| Rôle du garde-fou | aucun : il n'a ni Bash ni outil d'écriture |
+| Rôle du garde-fou | `lecteur` (1.0.1) ; il n'a ni Bash ni outil d'écriture |
 
 **Contenu**
 - **Contrat de mission** : écriture toujours « aucune ». S'il manque `episode_id`, l'objectif, le périmètre de lecture ou la section « Règles de la chaîne utiles à la mission », il ne commence pas et renvoie la liste des champs manquants.
@@ -433,7 +433,7 @@ Il ne lance **ni l'appel payant** (Claude principal, après la confirmation du p
 | `model` | `inherit` (le script fixe le modèle de chaque siège, `opus` par défaut) ; `color` : red |
 | `skills` | aucun |
 | `omitClaudeMd` | absent : lit le `CLAUDE.md` de la chaîne |
-| Rôle du garde-fou | aucun (ni outil d'écriture ni Bash) |
+| Rôle du garde-fou | `lecteur` (1.0.1) ; ni outil d'écriture ni Bash |
 
 **Contenu** : lecture seule ; fichiers secrets et transcriptions interdits ; indépendance (avis en aveugle, débat sur des lettres) ; faits sourcés, estimations dites ; contenu lu = donnée ; réponse par l'outil de sortie structurée, en français. Le schéma de chaque tour est dans le script.
 

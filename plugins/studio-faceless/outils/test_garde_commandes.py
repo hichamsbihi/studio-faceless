@@ -308,5 +308,126 @@ class Roles07(Base):
                 self.assertEqual(self.ecrire('editeur', rel)[0], 'deny')
 
 
+# --- 1.0.1 (sécurité, validé sur AA, 04/11/2026, point 6 du conseil) : un test par motif, et les faux positifs -------------
+class PourTous101(Base):
+    """Refusé pour tous, Claude principal compris (rôle None), et pour un rôle sans liste de commandes (producteur)."""
+
+    def refuse(self, *commandes, roles=(None, 'producteur')):
+        for c in commandes:
+            for role in roles:
+                with self.subTest(commande=c, role=role):
+                    verdict = self.bash(c, role)
+                    self.assertIsNotNone(verdict)
+                    self.assertEqual(verdict[0], 'deny')
+
+    def test_modal_jeton_deploiement_service_secret(self):
+        self.refuse('modal setup', 'modal token new', 'modal token set --token-id x', 'modal deploy app.py', 'modal serve app.py',
+                    'modal secret create s', 'python -m modal setup', 'py -m modal token new', 'bash -c "modal deploy app.py"')
+
+    def test_modal_autre_sous_commande(self):
+        self.refuse('modal app list', 'modal shell', 'modal volume ls')
+
+    def test_modal_run_hors_du_plugin(self):
+        self.refuse('modal run essai.py', 'modal run C:/ailleurs/essai.py::rendre', f'modal run "{self.plugin}/../x.py"')
+
+    def test_modal_run_du_plugin_demande_confirmation(self):
+        for role in (None, 'producteur'):
+            with self.subTest(role=role):
+                verdict = self.bash(f'modal run "{self.plugin}/outils/rendu/modal_rendu.py::rendre" --sequence S1', role)
+                self.assertEqual(verdict[0], 'ask')
+
+    def test_aws_et_sam(self):
+        self.refuse('aws s3 ls', 'aws configure', 'aws.exe lambda list-functions', 'sam deploy', 'python -m awscli s3 ls',
+                    'bash -c "aws sts get-caller-identity"', 'cmd /c aws s3 ls', 'ls && aws s3 ls')
+
+    def test_pip_install(self):
+        self.refuse('pip install modal', 'pip3 install -q x', 'pip.exe install x', 'python -m pip install modal', 'py -3 -m pip install x',
+                    'python -I -m pip install --user x', 'uv pip install x', 'pipx install x', 'env FOO=1 pip install x')
+
+    def test_printenv(self):
+        self.refuse('printenv', 'printenv HOME', 'bash -c printenv', 'printenv > docs/x.txt')
+
+    def test_env_seul(self):
+        self.refuse('env', 'env -0', 'env | grep KEY', 'env -i', 'cmd /c env', 'env > docs/env.txt')
+
+    def test_env_suivi_d_une_commande_reste_controle(self):
+        self.refuse('env rm -rf x', 'env -S "pip install x"', 'env -u HOME aws s3 ls')
+
+    def test_set_export_declare_compgen_seuls(self):
+        self.refuse('set', 'cmd /c set', 'set > x.txt', 'export', 'export -p', 'declare -x', 'declare -p', 'typeset', 'compgen -e')
+
+    def test_get_childitem_env(self):
+        self.refuse('Get-ChildItem env:', 'gci Env:\\', 'ls env:', 'dir env:*', 'Get-Item env:\\*', 'pwsh -Command "Get-ChildItem env:"')
+
+    def test_noms_de_cles(self):
+        self.refuse('echo $ELEVENLABS_API_KEY', 'echo $env:SOUNDZA_API_KEY', 'PERPLEXITY_API_KEY=abc python x.py', 'echo $MODAL_TOKEN_ID',
+                    'echo $MODAL_TOKEN_SECRET', 'echo $GITHUB_TOKEN', 'cat ~/.studio-faceless/youtube/client_secret.json',
+                    'python -c "import os; print(os.environ[\'ELEVENLABS_API_KEY\'])"', 'echo %ELEVENLABS_API_KEY%')
+
+    def test_environment_dotnet(self):
+        self.refuse('[Environment]::GetEnvironmentVariable("HOME")', '[System.Environment]::GetEnvironmentVariables()')
+
+    def test_tout_l_environnement_dans_un_script(self):
+        self.refuse('python -c "import os; print(os.environ)"', 'python -c "import os; print(dict(os.environ))"',
+                    'python3 -c "import os; print(os.environ.copy())"', 'node -e "console.log(process.env)"',
+                    'node -e "console.log(Object.keys(process.env))"', "python - <<'EOF'\nimport os\nfor k in os.environ: print(k)\nEOF")
+
+    def test_claude_p(self):
+        self.refuse('claude -p "bonjour"', 'claude --print x', 'claude.exe -p x', 'npx @anthropic-ai/claude-code -p x',
+                    'bash -c "claude -p x"')
+
+    def test_pour_les_roles_a_liste(self):
+        for role in ('relecteur', 'lecteur', 'stratege', 'mainteneur', 'ingenieur-son', 'editeur', 'telechargeur', 'directeur-artistique'):
+            with self.subTest(role=role):
+                self.assertEqual(self.bash('printenv', role)[0], 'deny')
+
+
+class FauxPositifs101(Base):
+    def test_reste_permis_au_directeur(self):
+        for c in ('python -c "import os; print(os.environ[\'CLAUDE_PROJECT_DIR\'])"',
+                  'python -c "import os; print(os.environ.get(\'CLAUDE_PROJECT_DIR\'))"',
+                  'node -e "console.log(process.env.CLAUDE_PROJECT_DIR)"', 'node -e "console.log(process.env[\'HOME\'])"',
+                  "python - <<'EOF'\nimport os\nprint(os.environ['CLAUDE_PROJECT_DIR'])\nEOF",
+                  'set -euo pipefail', 'export PATH="$PATH:/c/outils"', 'declare -a liste', 'env FOO=1 python -I -B outil.py',
+                  'pip --version', 'pip list', 'python -m pip --version', 'modal --version', 'modal --help', 'claude --version',
+                  'claude plugin update studio-faceless@studio-faceless --scope project', 'git commit -m "aws et modal refusés, pas de pip"',
+                  'grep -n "max-tokens" notes.md', 'grep -c token rapport.md', 'ls env/', 'ls ./environnement', 'echo $HOME',
+                  'npx hyperframes render --workers 2 -o x.mp4', 'python -I -B outil.py --tokens 3', 'cat secrets.md', 'ls -la',
+                  'Get-Item env:PATH', '$env:PATH'):
+            with self.subTest(commande=c):
+                self.assertIsNone(self.bash(c, None))
+
+
+class Lecteur101(Base):
+    def test_role_deduit_de_l_entree(self):
+        cas = [({'agent_type': 'studio-faceless:reviewer'}, 'relecteur'), ({'agent_type': 'studio-faceless:research', 'agent_id': 'a1'}, 'lecteur'),
+               ({'agent_type': 'studio-faceless:conseiller'}, 'lecteur'), ({'agent_type': 'general-purpose', 'agent_id': 'a1'}, 'lecteur'),
+               ({'agent_type': 'Explore', 'agent_id': 'a1'}, 'lecteur'), ({'agent_id': 'a1'}, 'lecteur'),
+               ({'agent_type': '', 'agent_id': 'a1'}, 'lecteur'), ({}, None), ({'agent_type': 'claude'}, None)]
+        for data, role in cas:
+            with self.subTest(entree=data):
+                self.assertEqual(garde.role_of(data), role)
+
+    def test_bash_lecture_permise(self):
+        for c in ('ls episodes', 'grep -rn x docs/', 'git log --oneline -5', 'git -C plugins status', 'git diff HEAD~1 -- a.md',
+                  'find . -name "*.md"', 'cat a.md | head -5', 'ffprobe -v error x.mp4', 'echo ok > docs/rapports/essai.txt',
+                  'sha1sum a b', 'ls 2>/dev/null', 'wc -l a.md && tail -3 a.md', 'sort a.txt | cut -f1'):
+            with self.subTest(commande=c):
+                self.assertIsNone(self.bash(c, 'lecteur'))
+
+    def test_bash_refuse(self):
+        for c in ('python outil.py', 'cp a b', 'mv a b', 'touch x', 'mkdir x', 'echo x > direction/ECARTS.md', 'echo x > docs/x.md',
+                  'find . -delete', 'find . -exec cat {} ;', 'sort -o x a', 'git commit -m x', 'git push', 'git -c core.pager=cat log',
+                  'git diff --output=x', 'ffprobe -o x a.mp4', 'ls $(pwd)', 'node -e "1"', 'sed -i s/a/b/ f', 'tee x', 'curl https://x'):
+            with self.subTest(commande=c):
+                self.assertEqual(self.bash(c, 'lecteur')[0], 'deny')
+
+    def test_write(self):
+        self.assertIsNone(garde.decide_write('docs/rapports/CONSEIL_X.md', 'lecteur', self.racine))
+        for rel in ('docs/x.md', 'direction/ECARTS.md', 'episodes/episode-011/BRIEF.md', 'CLAUDE.md', '../hors.md'):
+            with self.subTest(refuse=rel):
+                self.assertEqual(garde.decide_write(rel, 'lecteur', self.racine)[0], 'deny')
+
+
 if __name__ == '__main__':
     unittest.main()

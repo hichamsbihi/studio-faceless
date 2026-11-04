@@ -132,10 +132,10 @@ Aucun agent du plugin ne précharge un de ces skills (champ `skills:` des agents
 - **Rôle** : faire débattre plusieurs agents Claude indépendants d'une décision du studio (méthode de fabrication, architecture, outil ou service, stratégie), puis rendre au propriétaire un compte rendu `PROPOSÉ`.
 - **Quand il sert** : quand le propriétaire demande un conseil avec `/conseil` (premier besoin, 04/11/2026 : la refonte de la fabrication pour plusieurs chaînes). Pas pour une porte d'épisode ; positionnement et titres : `strategist`.
 - **Contenu** : porte du propriétaire avant le lancement (question au mot près, sièges, fichiers, mode, nombre d'agents et coût, chemin du compte rendu) ; déroulé en quatre tours ; appel de l'outil Workflow et ses `args` ; ce que le directeur rend ; erreurs et reprises.
-- **À savoir** : 2N + 1 ou 2N + 2 agents pour N sièges en mode complet ; coût à mesurer au premier conseil.
+- **À savoir** : 2N + 2 agents pour N sièges en mode complet (contre-hypothèse toujours lancée depuis la 1.0.1) ; coût mesuré sur AA : de 68 à 110 k tokens par agent.
 
 ### skills/conseil/conseil-workflow.js
-- **Rôle** : script de l'outil Workflow. Tour 1, avis en aveugle (sièges en parallèle, agent `conseiller`) ; tour 2, débat sur les avis anonymes (critiques, désaccord principal et gravité, avis qui renforce, ce qui a changé, position finale, classement) ; tour 3, contre-hypothèse si aucun désaccord majeur ; tour 4, président (agent du workflow avec écriture) qui écrit le compte rendu sans écraser de fichier.
+- **Rôle** : script de l'outil Workflow. Tour 1, avis en aveugle (sièges en parallèle, agent `conseiller`) ; tour 2, débat sur les avis anonymes (critiques, désaccord principal et gravité, avis qui renforce, ce qui a changé, position finale, classement) ; tour 3, contre-hypothèse, toujours en mode complet (1.0.1) ; tour 4, président, agent `conseiller` en lecture seule (1.0.1), qui rend le compte rendu dans `contenu` ; le directeur l'écrit, sans écraser de fichier.
 - **À savoir** : ni horloge ni hasard (la date passe par `args`) ; reprise par `resumeFromRunId` ; essai à sec du 04/11/2026 dans Node avec de faux agents (9 cas).
 
 ### skills/conseil/PROVENANCE.md et LICENSE
