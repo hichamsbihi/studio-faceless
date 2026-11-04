@@ -2,6 +2,15 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 0.8.0 (04/11/2026)
+Skill `conseil` et agent `conseiller`, à la demande du propriétaire (04/11/2026 : « me trouver un skill dont l'idée est de créer un council, un conseil avec plusieurs agents pour en débattre », puis le choix « claude-council + débat »).
+- **`skills/conseil/`** : plusieurs agents Claude indépendants débattent d'une décision du studio : avis en aveugle, débat sur les avis anonymes avec classement, contre-hypothèse si aucun désaccord majeur, compte rendu d'un président dans `docs/rapports/` de la chaîne. Script `conseil-workflow.js` pour l'outil Workflow ; porte du propriétaire avant tout lancement ; `disable-model-invocation: true`.
+  - Adapté de amgadelgamal/claude-council (commit `819c1d0`) et de tsenart/council-skill (commit `2040ee1`), tous deux MIT : `LICENSE` et `PROVENANCE.md` du dossier.
+  - Essai à sec dans Node avec de faux agents (9 cas) ; aucun conseil réel encore lancé : tours, sièges par défaut et coût à confirmer au premier conseil.
+- **`agents/conseiller.md`** : siège du conseil, en lecture seule (Read, Grep, Glob, WebFetch, WebSearch), lancé par le script, jamais délégué directement. `REGLES_STUDIO.md` (8 984 caractères sur 9 000) ne le liste pas : sa liste devient « les dix agents délégués ».
+- Documentation : `README.md`, `DEMARRAGE.md`, `docs/README.md`, `docs/reference/agents.md`, `skills-annexes.md`, `outils-et-garde.md`, `starter-et-depot.md`, `docs/workflows/installation-et-mise-a-jour.md`.
+- Les outils `miniature.py masque` et `mesurer_mix.py`, proposés pour la 0.7.3, passent à une version suivante.
+
 ## 0.7.2 (03/11/2026)
 Bibliothèque de styles lemo-opuscar, figée, et fiche de style par l'`art-director`, à la demande du propriétaire (03/11/2026 : « pourquoi refaire le travail à zéro alors qu'il est déjà servi […] on essaie de déléguer à un agent les différents styles et à chaque vidéo il fera son analyse et donnera les styles ou mix de styles qui conviendra avec bien sûr notre ligne artistique »). Décisions Q84 à Q88 de l'E011 d'AA, `VALIDÉ` (Hicham, 03/11/2026).
 - **`vendor/lemo-opuscar/`** : copie figée du dépôt https://github.com/lemomo-ai/lemo-opuscar au commit `bebbbe1` (31/10/2026), sans modification.

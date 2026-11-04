@@ -27,7 +27,7 @@ Section « Moteur et outils » de `REGLES_DETAIL.md` (versions figées, `--worke
 
 ## Sous-agents (`studio-faceless:<nom>`)
 - **Studio Director** : Claude principal, sur Opus (validé sur AA, 02/11/2026), reçoit les demandes du propriétaire, confie à l'agent concerné toute tâche de son périmètre, même petite (`REGLES_DETAIL.md`), coordonne, contrôle la cohérence et soumet au propriétaire. Les sous-agents ne se délèguent rien entre eux.
-- **Les dix agents** :
+- **Les dix agents délégués** :
   - `research` : faits, études, médias candidats, en lecture seule ;
   - `reviewer` : contrôle qualité en lecture seule d'un script, d'une séquence ou du film contre une liste, **avant de les montrer au propriétaire** ; ne valide rien ;
   - `art-director` : fiche de style de chaque film et short ; critique indépendante et storyboard **à la demande du propriétaire** ; choisit les techniques d'animation et de transition ;

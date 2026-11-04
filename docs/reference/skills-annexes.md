@@ -1,12 +1,13 @@
 # Skills annexes du plugin
 
-Cette page décrit les six skills « annexes » de `plugins/studio-faceless/skills/` : `grilling`, `humanizer`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`. Les skills de métier (`episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`) sont décrits dans [`skill-episode.md`](skill-episode.md), [`publication.md`](publication.md) et [`son.md`](son.md).
+Cette page décrit les sept skills « annexes » de `plugins/studio-faceless/skills/` : `grilling`, `humanizer`, `find-skills`, `conseil`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`. Les skills de métier (`episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`) sont décrits dans [`skill-episode.md`](skill-episode.md), [`publication.md`](publication.md) et [`son.md`](son.md).
 
 ## Table des matières
 - [Vue d'ensemble](#vue-densemble)
 - [grilling](#grilling) : [SKILL.md](#skillsgrillingskillmd)
 - [humanizer](#humanizer) : [SKILL.md](#skillshumanizerskillmd), [PROVENANCE.md](#skillshumanizerprovenancemd), [LICENSE](#skillshumanizerlicense)
 - [find-skills](#find-skills) : [SKILL.md](#skillsfind-skillsskillmd), [PROVENANCE.md](#skillsfind-skillsprovenancemd), [LICENSE](#skillsfind-skillslicense)
+- [conseil](#conseil) : [SKILL.md](#skillsconseilskillmd), [conseil-workflow.js](#skillsconseilconseil-workflowjs), [PROVENANCE.md et LICENSE](#skillsconseilprovenancemd-et-license)
 - [elevenlabs-sound-effects et elevenlabs-music](#elevenlabs-sound-effects-et-elevenlabs-music)
 - [frontend-design](#frontend-design) : [SKILL.md](#skillsfrontend-designskillmd), [PROVENANCE.md](#skillsfrontend-designprovenancemd), [LICENSE.txt](#skillsfrontend-designlicensetxt)
 - [Points à vérifier et incohérences](#points-à-vérifier-et-incohérences)
@@ -17,11 +18,12 @@ Cette page décrit les six skills « annexes » de `plugins/studio-faceless/skil
 | `studio-faceless:grilling` | écrit pour le studio | — | en service | Claude principal, à chaque **porte** du skill `episode` et à la création d'une chaîne |
 | `studio-faceless:humanizer` | blader/humanizer v3.1.0 (Siqi Chen), copie du 28/10/2026 | MIT | `PROPOSÉ` (essai sur un script d'AA) | le **propriétaire** seul, avec `/humanizer`, comme surcouche de relecture des scripts (appel automatique bloqué depuis la 0.2.2) |
 | `studio-faceless:find-skills` | vercel-labs/skills, commit `773fb2c`, copie du 29/10/2026 avec une section « Règles du studio » | MIT | `VALIDÉ` (Hicham, 29/10/2026) | le **propriétaire** seul, avec `/find-skills`, quand il cherche un skill (appel automatique bloqué depuis la 0.2.2) |
+| `studio-faceless:conseil` | adapté de amgadelgamal/claude-council (commit `819c1d0`) et de tsenart/council-skill (commit `2040ee1`), 04/11/2026 | MIT | `VALIDÉ` (Hicham, 04/11/2026) ; réglages à confirmer au premier conseil | le **propriétaire**, avec `/conseil` ; Claude principal lance le workflow après l'accord sur la question, les sièges et le coût |
 | `studio-faceless:elevenlabs-sound-effects` | elevenlabs/skills `sound-effects`, commit `503d4e9`, copie du 29/10/2026 avec une section « Règles du studio » | MIT | `VALIDÉ` (Hicham, 29/10/2026) | le **propriétaire** avec `/elevenlabs-sound-effects`, ou Claude qui lit le `SKILL.md` quand il demande une génération, son par son, coût annoncé avant (appel automatique bloqué depuis la 0.2.2) |
 | `studio-faceless:elevenlabs-music` | elevenlabs/skills `music`, même commit et même traitement | MIT | idem | idem |
 | `studio-faceless:frontend-design` | anthropics/skills `frontend-design`, commit `ca45fc4`, copie du 29/10/2026 avec une section « Règles du studio » | Apache 2.0 | `VALIDÉ` (Hicham, 29/10/2026) | Claude principal et les producteurs, pour les planches de direction artistique et les compositions |
 
-**Depuis la 0.2.2**, quatre de ces skills portent `disable-model-invocation: true` (`humanizer`, `find-skills`, `elevenlabs-music`, `elevenlabs-sound-effects`) : leur description n'est plus dans la liste proposée à Claude au démarrage, et Claude ne les appelle plus par l'outil Skill. Le propriétaire les appelle avec `/nom`, ou Claude lit leur `SKILL.md` quand il le demande. Vérifié avant le réglage : aucun fichier du plugin ne les précharge ni ne demande de les invoquer.
+**Depuis la 0.2.2**, quatre de ces skills portent `disable-model-invocation: true` (`humanizer`, `find-skills`, `elevenlabs-music`, `elevenlabs-sound-effects`), et `conseil` depuis la 0.8.0 : leur description n'est plus dans la liste proposée à Claude au démarrage, et Claude ne les appelle plus par l'outil Skill. Le propriétaire les appelle avec `/nom`, ou Claude lit leur `SKILL.md` quand il le demande. Vérifié avant le réglage : aucun fichier du plugin ne les précharge ni ne demande de les invoquer.
 
 Aucun agent du plugin ne précharge un de ces skills (champ `skills:` des agents : voir [`agents.md`](agents.md)). Seul `grilling` est cité ailleurs dans le plugin (`REGLES_STUDIO.md`, `skills/episode/`), et `humanizer`, `find-skills`, `elevenlabs-sound-effects`, `elevenlabs-music` ne sont cités que dans leurs propres dossiers (`find-skills` est aussi nommé dans la provenance de `humanizer`).
 
@@ -122,6 +124,22 @@ Aucun agent du plugin ne précharge un de ces skills (champ `skills:` des agents
 - **Rôle** : texte de la licence Apache 2.0, exigé par la licence pour accompagner la copie.
 - **À savoir** : ne pas le modifier.
 
+## conseil
+
+### skills/conseil/SKILL.md
+- **Rôle** : faire débattre plusieurs agents Claude indépendants d'une décision du studio (méthode de fabrication, architecture, outil ou service, stratégie), puis rendre au propriétaire un compte rendu `PROPOSÉ`.
+- **Quand il sert** : quand le propriétaire demande un conseil avec `/conseil` (premier besoin, 04/11/2026 : la refonte de la fabrication pour plusieurs chaînes). Pas pour une porte d'épisode ; positionnement et titres : `strategist`.
+- **Contenu** : porte du propriétaire avant le lancement (question au mot près, sièges, fichiers, mode, nombre d'agents et coût, chemin du compte rendu) ; déroulé en quatre tours ; appel de l'outil Workflow et ses `args` ; ce que le directeur rend ; erreurs et reprises.
+- **À savoir** : 2N + 1 ou 2N + 2 agents pour N sièges en mode complet ; coût à mesurer au premier conseil.
+
+### skills/conseil/conseil-workflow.js
+- **Rôle** : script de l'outil Workflow. Tour 1, avis en aveugle (sièges en parallèle, agent `conseiller`) ; tour 2, débat sur les avis anonymes (critiques, désaccord principal et gravité, avis qui renforce, ce qui a changé, position finale, classement) ; tour 3, contre-hypothèse si aucun désaccord majeur ; tour 4, président (agent du workflow avec écriture) qui écrit le compte rendu sans écraser de fichier.
+- **À savoir** : ni horloge ni hasard (la date passe par `args`) ; reprise par `resumeFromRunId` ; essai à sec du 04/11/2026 dans Node avec de faux agents (9 cas).
+
+### skills/conseil/PROVENANCE.md et LICENSE
+- **Rôle** : origine (deux dépôts, commits, empreintes des fichiers d'origine et du studio) et changements du studio ; `LICENSE` reproduit les deux textes MIT.
+- **À savoir** : ne pas modifier `LICENSE`.
+
 ## Points à vérifier et incohérences
 - **`skills/humanizer/SKILL.md`** n'est cité par aucun autre fichier du plugin (ni l'étape « script » de `skills/episode/`) : son usage reste un essai d'AA, et depuis la 0.2.3 seul le propriétaire l'appelle (`/humanizer`), comme surcouche de relecture des scripts.
-- `README.md` (racine) range `humanizer`, `find-skills`, `elevenlabs-sound-effects` et `elevenlabs-music` parmi les skills MIT ; leurs `LICENSE` sont bien présents dans leurs dossiers.
+- `README.md` (racine) range `humanizer`, `find-skills`, `conseil`, `elevenlabs-sound-effects` et `elevenlabs-music` parmi les skills MIT ; leurs `LICENSE` sont bien présents dans leurs dossiers.

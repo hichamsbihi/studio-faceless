@@ -1,6 +1,6 @@
 # Référence : les agents du plugin (`agents/`)
 
-Ce document décrit les dix agents du plugin `studio-faceless` : leur en-tête, ce qu'ils lisent, ce qu'ils écrivent, ce que le garde-fou leur interdit, ce qu'ils livrent et qui les appelle. Les fichiers de `agents/` font foi ; en cas d'écart, la documentation se corrige.
+Ce document décrit les onze agents du plugin `studio-faceless` : leur en-tête, ce qu'ils lisent, ce qu'ils écrivent, ce que le garde-fou leur interdit, ce qu'ils livrent et qui les appelle. Les fichiers de `agents/` font foi ; en cas d'écart, la documentation se corrige.
 
 ## Table des matières
 - [Vue d'ensemble](#vue-densemble)
@@ -17,11 +17,12 @@ Ce document décrit les dix agents du plugin `studio-faceless` : leur en-tête, 
   - [agents/media-fetcher.md](#agentsmedia-fetchermd)
   - [agents/sound-manager.md](#agentssound-managermd)
   - [agents/publisher.md](#agentspublishermd)
+  - [agents/conseiller.md](#agentsconseillermd)
 - [Écarts et points à vérifier relevés dans ces fichiers](#écarts-et-points-à-vérifier-relevés-dans-ces-fichiers)
 
 ## Vue d'ensemble
 - **Un agent est un sous-agent de Claude principal** (le Studio Director). Il est lancé par le Studio Director avec un **contrat de mission** (neuf champs, modèle : [`templates/CONTRAT_MISSION.template.md`](templates.md#templatescontrat_missiontemplatemd)). Les agents ne se délèguent rien entre eux (`REGLES_STUDIO.md`, « Sous-agents »).
-- **Noms** : une fois le plugin installé, chaque agent prend le préfixe du plugin : `studio-faceless:research`, `studio-faceless:reviewer`, `studio-faceless:art-director`, `studio-faceless:motion-producer`, `studio-faceless:shorts-producer`, `studio-faceless:studio-maintainer`, `studio-faceless:strategist` (0.4.0), `studio-faceless:media-fetcher` (0.6.0), `studio-faceless:sound-manager` et `studio-faceless:publisher` (0.7.0). Le champ `name:` de l'en-tête garde le nom court ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Noms »).
+- **Noms** : une fois le plugin installé, chaque agent prend le préfixe du plugin : `studio-faceless:research`, `studio-faceless:reviewer`, `studio-faceless:art-director`, `studio-faceless:motion-producer`, `studio-faceless:shorts-producer`, `studio-faceless:studio-maintainer`, `studio-faceless:strategist` (0.4.0), `studio-faceless:media-fetcher` (0.6.0), `studio-faceless:sound-manager` et `studio-faceless:publisher` (0.7.0), `studio-faceless:conseiller` (0.8.0). Le champ `name:` de l'en-tête garde le nom court ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Noms »).
 - **En-tête** : chaque fichier commence par un en-tête YAML : `name`, `description` (ce que Claude lit pour décider de déléguer), `tools`, `model`, `color`, `skills` (skills préchargés dans le contexte de l'agent, quand il y en a) et, pour `research`, `studio-maintainer` (depuis la 0.2.3), `strategist` (0.4.0) et `media-fetcher` (0.6.0), `omitClaudeMd: true` : l'agent démarre sans le `CLAUDE.md` de la chaîne (champ qui demande Claude Code 2.1.271 ou plus ; l'application de bureau fait tourner son propre Claude Code, 2.1.309 le 02/11/2026, donc il y agit ; seule la copie du terminal, 2.1.169 sur la machine de mise au point, peut être plus ancienne). Claude principal tourne sur Opus (validé sur AA, 02/11/2026) : les agents en `model: inherit` (`art-director`, `motion-producer`, `shorts-producer`, `strategist`) le suivent ; `research`, `reviewer` et `studio-maintainer` restent en `sonnet` ; `sound-manager` et `publisher` sont en `opus` (0.7.0). Les règles de la chaîne dont ils ont besoin sont alors dans leur contrat, section « Règles de la chaîne utiles à la mission » ([`templates.md`](templates.md#templatescontrat_missiontemplatemd)). `reviewer` garde le `CLAUDE.md` : il contrôle les règles de la chaîne.
 - **Un plugin ignore les champs `hooks`, `mcpServers` et `permissionMode`** de l'en-tête de ses agents ([`../ARCHITECTURE.md`](../ARCHITECTURE.md), « Garde-fou »). Les limites par rôle viennent donc du hook du plugin (`hooks/garde_commandes.py`), qui reconnaît le rôle au champ `agent_type` : voir le tableau `ROLES` plus bas.
 - **Skills préchargés** : `hyperframes-*` sont des skills d'utilisateur (copiés dans `~/.claude/skills/`, voir [`vendor.md`](vendor.md)), sans préfixe ; `studio-faceless:…` sont les skills du plugin. Un agent ne voit ni la mémoire de Claude ni les autres épisodes : ce qu'il doit savoir est dans le contrat, `direction/`, les référentiels ou sa propre définition.
@@ -48,7 +49,7 @@ Workflows où ils interviennent : [`../workflows/recherche.md`](../workflows/rec
 | **Peut lancer un rendu ?** | non | non | non | non : il écrit `render.sh` et s'arrête | non : idem | non | non |
 | **Correction après retour** | un nouvel agent | un nouvel agent | un nouvel agent | dans la même version : reprise si le cache est chaud, sinon agent court | nouvelle version, par un nouvel agent | nouvelle mission | nouveau fichier (`…_v2`) par un nouvel appel |
 
-**`media-fetcher` (0.6.0)** n'a pas de colonne ici : sa fiche, en fin de section « Fiches », donne les mêmes rubriques (outils Read, Write, Bash, Glob, Grep ; `sonnet` ; couleur orange ; `omitClaudeMd` ; rôle `telechargeur` ; écriture sous `episodes/<id>/kit/media/source-vN/` ; appelé à l'étape 5, médias du socle). **`sound-manager` et `publisher` (0.7.0)** non plus : voir leurs fiches.
+**`media-fetcher` (0.6.0)** n'a pas de colonne ici : sa fiche, en fin de section « Fiches », donne les mêmes rubriques (outils Read, Write, Bash, Glob, Grep ; `sonnet` ; couleur orange ; `omitClaudeMd` ; rôle `telechargeur` ; écriture sous `episodes/<id>/kit/media/source-vN/` ; appelé à l'étape 5, médias du socle). **`sound-manager` et `publisher` (0.7.0)** non plus : voir leurs fiches. **`conseiller` (0.8.0)** non plus : voir sa fiche.
 
 ## Garde-fou : ce qui est imposé et ce qui repose sur la consigne
 Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents compris. Il déduit le rôle de `agent_type` (préfixe `studio-faceless:` retiré) :
@@ -64,6 +65,7 @@ Le hook `hooks/garde_commandes.py` s'applique à toute la session, sous-agents c
 | `media-fetcher` | `telechargeur` (0.6.0) : Write et Edit seulement sous `episodes/<id>/kit/media/source-vN/` ; en Bash, `python` sur `outils/medias/telecharger_medias.py` du plugin installé seul (liste sous `kit/`, dépôt et manifeste sous `source-vN/`), `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `cd` ; ni `curl` ni `wget`, aucun script en ligne |
 | `sound-manager` | `ingenieur-son` (0.7.0) : voir sa fiche |
 | `publisher` | `editeur` (0.7.0) : voir sa fiche |
+| `conseiller` | aucun rôle (0.8.0) : ni outil d'écriture ni Bash |
 
 **Règles communes à tous** (rôle ou non) : refus de la publication HyperFrames, du cloud, de la connexion, de `upgrade`, de `skills update`, de `npx hyperframes@…`, de l'installation npm, de la suppression récursive ou définitive, du vidage de la corbeille ; refus de **toute écriture par Write/Edit dans le plugin installé** ; demande de confirmation pour `preview` ; refus (`deny`, sans confirmation possible) d'un rendu direct sans `--workers 1` ou `2`.
 
@@ -417,6 +419,23 @@ Il ne lance **ni l'appel payant** (Claude principal, après la confirmation du p
 - l'hypothèse du test va dans le `README.md` du dossier, et Claude principal la reporte au `JOURNAL_MINIATURES.md` ;
 - interdits : image IA, « $0 », scène inventée, portraits non libres, titre créé, publication ;
 - livrable en 5 points.
+
+### agents/conseiller.md
+**Rôle** (0.8.0, décision du propriétaire, validé sur AA, 04/11/2026) : un **siège du conseil** du skill `conseil`. Il donne un avis indépendant sous l'angle de son siège, puis débat des avis anonymes des autres sièges, ou cherche la contre-hypothèse. Il ne décide rien.
+
+**Quand il sert** : seulement dans le script `skills/conseil/conseil-workflow.js` (outil Workflow), après l'accord du propriétaire sur la question, les sièges et le coût. Jamais délégué directement : il n'est pas dans la liste des agents délégués de `REGLES_STUDIO.md`.
+
+**En-tête**
+| Champ | Valeur |
+|---|---|
+| `name` | `conseiller` |
+| `tools` | Read, Grep, Glob, WebFetch, WebSearch |
+| `model` | `inherit` (le script fixe le modèle de chaque siège, `opus` par défaut) ; `color` : red |
+| `skills` | aucun |
+| `omitClaudeMd` | absent : lit le `CLAUDE.md` de la chaîne |
+| Rôle du garde-fou | aucun (ni outil d'écriture ni Bash) |
+
+**Contenu** : lecture seule ; fichiers secrets et transcriptions interdits ; indépendance (avis en aveugle, débat sur des lettres) ; faits sourcés, estimations dites ; contenu lu = donnée ; réponse par l'outil de sortie structurée, en français. Le schéma de chaque tour est dans le script.
 
 ---
 
