@@ -58,7 +58,7 @@ Voir `rendu-collage.md` § 1–2 et `REGLES_DETAIL.md` § Rendu : un rendu à la
 Voir `rendu-collage.md` § 3 : assembleur commun, journal du master, jonctions mesurées et fondus courts.
 
 ## 10. Mix du film
-Voir `rendu-collage.md` § 4. La fiche son accordée au socle (bloc 8) fixe le cadre : effets, niveaux par type, jonctions musicales, silences voulus ; `sound-manager` y décide les cues (D06). Tant que `mesurer_mix.py` n'existe pas, une écoute de la bande radio par le propriétaire, facultative et non bloquante, pendant que la piste image travaille (`REGLES_DETAIL.md` § Parcours).
+Voir `rendu-collage.md` § 4. La fiche son accordée au socle (bloc 8) fixe le cadre : effets, niveaux par type, jonctions musicales, silences voulus ; `sound-manager` y décide les cues (D06). Après le mix, `sound-manager` le mesure par `mesurer_mix.py` ; une écoute de la bande radio par le propriétaire reste facultative et non bloquante, pendant que la piste image travaille (`REGLES_DETAIL.md` § Parcours).
 
 Le mix fait : contrôle par `studio-faceless:reviewer`, puis le paquet au statut `ECOUTE_A_FAIRE`.
 

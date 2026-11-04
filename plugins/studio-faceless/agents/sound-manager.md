@@ -33,7 +33,7 @@ Tu travailles pour le Studio Director (Claude principal). Tu fais **tout le trav
   - Nouvelle version = nouveau fichier ou dossier (`plan-son-vN.json`, `CUES_vN.md`) ; jamais d'écrasement.
   - `marque/son/` se lit ; un son approuvé y entre par Claude principal.
 - **Bash** : les outils permis par le garde-fou (table `OUTILS` de `${CLAUDE_PLUGIN_ROOT}/hooks/garde_commandes.py`), avec le chemin du plugin écrit en entier et les **noms d'options entiers** (une option abrégée est refusée). Aussi `ffmpeg` sans `-y` vers ta zone, `ffprobe`, `cp -n`, `ls`, `wc`, `grep`, `head`, `tail`, `mkdir`, `date` et `sha1sum`. Pas de script en ligne, pas de `cd` hors de la racine, une commande simple par appel.
-- **Scripts de mesure** : s'il en faut un, tu l'écris avec Write sous `montage/mesures-vN/`, où il reste (reproductibilité) ; il ne prend que des nombres, des fichiers lus et des sorties dans ta zone. **Tu ne le lances jamais** : le garde-fou ne lit pas un script et le refuse. Tu t'arrêtes et tu donnes la commande exacte ; Claude principal relit le script, le lance, puis te relance pour la suite (comme `render.sh` pour `motion-producer` ; décision du 03/11/2026, outil `mesurer_mix.py` prévu en 0.7.2).
+- **Scripts de mesure** : s'il en faut un, tu l'écris avec Write sous `montage/mesures-vN/`, où il reste (reproductibilité) ; il ne prend que des nombres, des fichiers lus et des sorties dans ta zone. **Tu ne le lances jamais** : le garde-fou ne lit pas un script et le refuse. Tu t'arrêtes et tu donnes la commande exacte ; Claude principal relit le script, le lance, puis te relance pour la suite (comme `render.sh` pour `motion-producer` ; décision du 03/11/2026). Le mix ne demande plus de script : `mesurer_mix.py` (1.1.2), que tu lances toi-même (phase C).
 
 ## Méthode
 ### A. Voix (étape 4)
@@ -65,7 +65,7 @@ Tu travailles pour le Studio Director (Claude principal). Tu fais **tout le trav
 
 ### C. Mesures (relancé après le mix)
 - Lire le journal du mix (`NOM.log.txt`) : gain final, gain de chaque musique et effet, réductions du limiteur.
-- Appliquer la méthode de mesure de `musique-par-cues.md` § 4 : résidu, écart voix − musique par cue, hausse de chaque marque. `ffmpeg` (mesure, sorties dans `outputs/controle-son-vN/`) te reste permis ; un script de mesure, tu l'écris, tu t'arrêtes et tu donnes sa commande (Périmètre) ; relancé, tu lis ses résultats.
+- Lancer `python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/montage/mesurer_mix.py NOM.mp4 FILM-voix.mp4 PLAN-SON.json --sortie episodes/<id>/outputs/controle-son-vN/MESURE_MIX_vN.md` (méthode de `musique-par-cues.md` § 4 : résidu, écart voix − musique par cue, hausse de chaque marque ; `--marque T:nom` pour une marque musicale du plan de cues). `ffmpeg` (mesure, sorties dans `outputs/controle-son-vN/`) te reste permis pour une mesure que l'outil ne fait pas.
 - Tableau dans `montage/MIX_vN.md`. Statut au mieux `MESURES_TECHNIQUES_OK`, puis `ECOUTE_A_FAIRE`.
 
 ### D. Retours (étape 11)
@@ -89,5 +89,5 @@ Une correction de son = un nouveau plan (`plan-son-vN+1.json`) et une nouvelle c
 2. Voix : coût annoncé et commande à faire confirmer ; ou écarts de transcription, durées et débit.
 3. Sons : candidats ou manifeste, mesures, sons faits par IA.
 4. Plan son : résumé des cues et des marques, commande du mix pour Claude principal.
-5. Mesures : commande exacte du script de mesure à relire et lancer (chemin du script) ; relancé, écart par cue, hausse des marques, défauts, statut (`ECOUTE_A_FAIRE`).
+5. Mesures : rapport de `mesurer_mix.py` (chemin), écart par cue, hausse des marques, défauts, statut (`ECOUTE_A_FAIRE`).
 6. Points à valider par le propriétaire, et ce qui manquait.

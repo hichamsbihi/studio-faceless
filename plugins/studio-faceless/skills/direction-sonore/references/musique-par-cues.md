@@ -22,7 +22,7 @@
 Ces marques sont tirées de la matière musicale du film, dans sa tonalité. Ce ne sont pas des « stings » de bande-annonce, que `SKILL.md` refuse.
 
 ## 3. La méthode de travail
-1. **La fiche son, dans `SOCLE.md`** (bloc 8 ; point 4, validé sur AA, 04/11/2026) : palette, anti-palette et deux extraits par rôle, écoutés par le propriétaire ; puis le film entier, sans question. Tant que `mesurer_mix.py` n'existe pas, une écoute de la bande radio, facultative et non bloquante (`REGLES_DETAIL.md` § Parcours). Il n'y a plus de séquence témoin par épisode.
+1. **La fiche son, dans `SOCLE.md`** (bloc 8 ; point 4, validé sur AA, 04/11/2026) : palette, anti-palette et deux extraits par rôle, écoutés par le propriétaire ; puis le film entier, sans question. Après le mix, la mesure de `mesurer_mix.py` (§ 4) ; une écoute de la bande radio reste facultative et non bloquante (`REGLES_DETAIL.md` § Parcours). Il n'y a plus de séquence témoin par épisode.
 2. **Plan de cues** (`montage/CUES_vN.md`) : une ligne par cue, avec :
    - l'identifiant stable (M01…) ;
    - l'entrée et la sortie (en temps de séquence) ;
@@ -48,7 +48,7 @@ Claude n'écoute pas. Ces mesures repèrent des défauts ; elles ne valident rie
 4. **Hausse de chaque marque** : la crête momentanée du résidu (fenêtre de 0,4 s, sortie `M`) à la marque, contre celle de la seconde d'avant ; puis son écart à la voix au même instant.
 5. **Lecture** : le résidu contient aussi les réductions du limiteur sur les attaques de la voix. Elles existaient avant la musique (comparer au journal du limiteur) : ce n'est pas un défaut de la musique.
 
-**Moyens** : FFmpeg suffit pour soustraire et mesurer (`amerge`, puis `pan` avec une soustraction, puis `ebur128=metadata=1` et `ametadata`). Aucun outil du plugin ne fait encore ce tableau : il se tire par un script gardé sous `montage/mesures-vN/`. `sound-manager` l'écrit mais ne le lance pas (le garde-fou le refuse) : il donne la commande exacte, Claude principal relit le script et le lance, puis relance l'agent pour lire les résultats (décision du 03/11/2026 ; outil `mesurer_mix.py` prévu en 0.7.2). La chaîne de filtres n'est pas encore éprouvée dans le plugin : la vérifier au premier emploi sur un cas connu (résidu nul quand le mix est la voix seule).
+**Moyens** : `${CLAUDE_PLUGIN_ROOT}/outils/montage/mesurer_mix.py` (1.1.2) fait ce tableau, à partir du mix, du film voix et du plan son : écart par cue (une fenêtre compte si elle est entièrement en séquence et si la voix y est active une trame de 10 ms sur deux au moins), hausse des marques (effets du plan, et `--marque` pour une marque musicale du plan de cues), contrôle de la chaîne de mesure (résidu sur les passages sans musique ni effet) ; rapport sous `outputs/controle-son-vN/`. `sound-manager` le lance lui-même (rôle `ingenieur-son` du garde-fou). Éprouvé sur les mix v1 et v2 de l'E011 d'AA : il retrouve les médianes et le pire décile mesurés à la main par un script (décision du 03/11/2026) ; ses tests vérifient le résidu nul quand le mix est la voix seule.
 
 **Défauts trouvés au premier tour de l'E011** :
 - un motif de question masqué, à 0–2 dB sous la voix ;

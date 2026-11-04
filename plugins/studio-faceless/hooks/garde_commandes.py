@@ -36,7 +36,8 @@ Par rôle, déduit du type d'agent (`agent_type` de l'entrée du hook, voir ROLE
 - ingenieur-son (sound-manager, 0.7.0 ; shorts depuis la 0.7.1) : écrit seulement dans kit/voix/, kit/shorts/voix/,
   kit/shorts/son/, kit/media/audio/, kit/media/source-vN/soundza/, kit/PROVENANCE.md, montage/ (sauf montage.json) et
   outputs/controle-son*/ de l'épisode ; en Bash, seules python (ses outils du plugin installé, table OUTILS : generer_voix.py
-  à blanc seulement, ni mix_film.py, ni assembler.py, ni master_short.py), ffmpeg (sans -y,
+  à blanc seulement, mesurer_mix.py avec son rapport dans la zone, ni mix_film.py, ni assembler.py, ni master_short.py),
+  ffmpeg (sans -y,
   sorties dans sa zone), ffprobe, cp (sans écrasement), ls, wc, grep, head, tail, mkdir, date, sha1sum, sha256sum et cd vers
   la racine ; aucun script en ligne ni substitution de commande.
 - editeur (publisher, 0.7.0) : écrit seulement dans miniatures-vN/, PUBLICATION_vN.md et PUBLICATION_vN.<langue>.srt de
@@ -46,7 +47,7 @@ Par rôle, déduit du type d'agent (`agent_type` de l'entrée du hook, voir ROLE
   chemin où l'outil écrit doit être dans la zone, qu'il ait une espace, aucune barre oblique ou la forme --option=valeur.
   Un script écrit par l'agent (mesures du mix sous montage/mesures-vN/, masque de détourage sous miniatures-vN/travail/) n'est
   jamais lancé par lui : le garde ne lit pas le contenu d'un script ; Claude principal le relit et le lance (décision du
-  03/11/2026 ; outils du plugin prévus en 0.7.2 : `miniature.py masque` et `mesurer_mix.py`).
+  03/11/2026 ; `mesurer_mix.py` existe depuis la 1.1.2, `miniature.py masque` reste prévu).
 """
 import json
 import os
@@ -517,6 +518,9 @@ OUTILS = {
         'outils/controle/raccourcir.py': {'pos': ['lit', 'ecrit'], 'opts': {'--sequences': 'v', '--part': 'v', '--plancher': 'v', '--gardes': 'lit'}},
         'outils/controle/recaler.py': {'pos': ['lit', 'lit', 'lit', 'ecrit', 'v']},
         'outils/controle/mesurer_sons.py': {'pos': ['lit'], 'opts': {'--whisper': 'lit', '--crete-max': 'v', '--boucle': None}},
+        # Mesure du mix sans écoute (1.1.2) : lit le mix, le film voix et le plan ; n'écrit que son rapport.
+        'outils/montage/mesurer_mix.py': {'pos': ['lit', 'lit', 'lit'], 'opts': {
+            '--journal': 'lit', '--log': 'lit', '--marque': 'v', '--sortie': 'ecrit'}},
         'outils/controle/controle.py': {'sous': _CONTROLE_SON},
         'outils/controle/publication.py': {'sous': {'mot': {'pos': ['lit', 'v']}}},
         # Voix des shorts (0.7.1, validé sur AA, 03/11/2026) ; le master du MP4 (master_short.py) reste à Claude principal.

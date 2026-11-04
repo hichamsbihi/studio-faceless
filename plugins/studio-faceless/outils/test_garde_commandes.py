@@ -180,6 +180,10 @@ class Roles07(Base):
             self.py('outils/controle/transcrire.py', f'{ep}/kit/shorts/voix/A_long_v1.wav', '--modele', 'modeles/ggml-base.en.bin',
                     '--sortie', f'{ep}/kit/shorts/voix/reperes/whisper-long'),
             f'ffmpeg -i marque/son/musique/theme.mp3 -af "atrim=0:30" {ep}/kit/shorts/son/theme-30s.wav',
+            # Mesure du mix (1.1.2)
+            self.py('outils/montage/mesurer_mix.py', f'{ep}/outputs/E011-master-v3.mp4', f'{ep}/outputs/E011-master-v2-voix.mp4',
+                    f'{ep}/montage/plan-son-film-v3.json', '--marque', 'seq3@12.5:montee', '--marque', '201.4',
+                    '--sortie', f'"{ep}/outputs/controle-son-v3/MESURE MIX v1.md"'),
         ]
         refusees = [
             # Voix des shorts (0.7.1) : hors de kit/shorts/voix/ et kit/shorts/son/, valeurs de --sans-d mal comptées, master
@@ -198,6 +202,10 @@ class Roles07(Base):
             self.py(*avant, '--exec'), self.py(*avant, '--confirme-credits=120'), self.py(*avant, '--conf', '120'), self.py(*avant, '--e'),
             self.py('outils/montage/mix_film.py', f'{ep}/outputs/a-voix.mp4', f'{ep}/montage/plan-son-v3.json', '--son-seul'),   # mix long
             self.py('outils/montage/assembler.py', '--episode', 'episode-011', '--voix-seule'),
+            self.py('outils/montage/mesurer_mix.py', 'a.mp4', 'b-voix.mp4', 'p.json', '--sortie', 'marque/son/mesure.md'),
+            self.py('outils/montage/mesurer_mix.py', 'a.mp4', 'b-voix.mp4', 'p.json', '--sortie=direction/mesure.md'),
+            self.py('outils/montage/mesurer_mix.py', 'a.mp4', 'b-voix.mp4', 'p.json', '--sort', f'{ep}/outputs/controle-son-v3/m.md'),
+            self.py('outils/montage/mesurer_mix.py', 'a.mp4', 'b-voix.mp4', 'p.json', '--sortie', f'{ep}/kit/gabarit/m.md'),
             self.py('outils/controle/ralentir.py', 'a.mp3', 'marque/son/x.wav'),
             self.py('outils/controle/ralentir.py', 'a.mp3', '"marque/son x/y.wav"'),            # chemin avec une espace
             self.py('outils/controle/ralentir.py', 'a.mp3', 'marque'),                          # sans barre oblique

@@ -15,6 +15,8 @@ python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/montage/mix_film.py episodes/<id>/outp
 python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/montage/mix_film.py episodes/<id>/outputs/<nom>-voix.mp4 episodes/<id>/montage/plan-son.json             # 3. master mixé
 python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/montage/srt.py --script episodes/<id>/SCRIPT_v1.md --mots "kit/voix/{seq}-montage-mots-recales.json" \
     --journal episodes/<id>/outputs/<nom>-voix.log.txt --sortie episodes/<id>/PUBLICATION_v1.en.srt
+python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/montage/mesurer_mix.py episodes/<id>/outputs/<nom>.mp4 episodes/<id>/outputs/<nom>-voix.mp4 \
+    episodes/<id>/montage/plan-son.json --sortie episodes/<id>/outputs/controle-son-v1/MESURE_MIX_v1.md          # 4. mesure sans écoute
 ```
 - Une correction de son = un nouveau plan (ou une nouvelle sortie) et un nouveau `mix_film.py`, sans nouveau rendu d'image.
 - `assembler.py` sans `--voix-seule` garde le comportement du master E007 v1 d'AA (pistes mixées des séquences) ; vérifié le 24/10/2026 : mêmes segments, mêmes 24 clics, gain +1,40 dB, mêmes réductions du limiteur.
@@ -79,6 +81,7 @@ Un départ s'écrit en temps du film (`412.5`) ou en temps local d'une séquence
 - Musique : gain = voix + `niveau_lu` − sonie intégrée du départ ; baisse sous la voix active par l'enveloppe RMS de la voix (10 ms, seuil −42 dBFS, 80 ms / 400 ms, remontée dans les pauses ≥ 0,25 s), comme le gabarit `mix.py`.
 - Effets : gain = voix + niveau du type − sonie momentanée maximale (400 ms) de l'extrait.
 - Gain final unique vers `mix.film_lufs_cible` (`seuils.json`), mesuré sur les séquences ; signature et outro gardent leur niveau d'origine (comme au master E007 v1 d'AA) ; limiteur de crêtes vraies à `mix.limiteur_dbtp`, repris de l'assembleur.
+- Après le mix, `mesurer_mix.py` (1.1.2) mesure le résidu (mix ÷ gain final − voix) : écart voix − musique par cue (fenêtres de 3 s, voix active), hausse de chaque marque (fenêtres de 0,4 s), contrôle de la chaîne de mesure ; méthode : skill `studio-faceless:direction-sonore`, `references/musique-par-cues.md` § 4. Éprouvé sur les mix v1 et v2 de l'E011 d'AA (mêmes médianes et même pire décile que la mesure faite à la main). Il ne valide rien.
 - Contrôles du MP4 mixé : images en même nombre et flux vidéo identique (MD5) à l'entrée, `mix.film_lufs_cible` ± `mix.film_lufs_tolerance`, crête vraie ≤ `mix.film_crete_vraie_max_dbtp`, décodage complet. Claude n'écoute pas : le master reste `ECOUTE_A_FAIRE`.
 
 ## Limites
