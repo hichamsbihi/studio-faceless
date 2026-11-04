@@ -1,6 +1,6 @@
-# Méthode en trois calques (E011 d'AA) : la grammaire par défaut
+# Méthode en trois calques (E011 d'AA) : la fabrication du visage et un mot
 
-**Statut** : `VALIDÉ` (Hicham, 03/11/2026), après le choix de la miniature v2-3 de l'E011 d'AA. C'est la grammaire par défaut d'une nouvelle miniature, pour toutes les chaînes : elle remplace le fond uni de la grammaire de l'E003 (`grammaire-e003.md`), jugé « pas captivant », qui reste en secours. Les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité). Elle est appliquée par `studio-faceless:publisher`, et la fabrication suit `fabrication.md`.
+**Statut** : `VALIDÉ` (Hicham, 03/11/2026), après le choix de la miniature v2-3 de l'E011 d'AA. Depuis le 04/11/2026, c'est la fabrication du gabarit « le visage et un mot » (`gabarits.md` § 2), l'un des trois gabarits par défaut ; elle avait remplacé le fond uni de la grammaire de l'E003 (`grammaire-e003.md`), jugé « pas captivant », qui reste en secours. Le bandeau de contexte ne s'ajoute que si le concept en a besoin (`gabarits.md` § 3). Les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité). Elle est appliquée par `studio-faceless:publisher`, et la fabrication suit `fabrication.md`.
 
 ## 1. Ce qui a échoué avant
 - **Essais du propriétaire dans un outil d'image IA (E011)** :

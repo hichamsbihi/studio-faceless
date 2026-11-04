@@ -2,6 +2,13 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 1.1.3 (04/11/2026)
+Miniatures : trois gabarits et la planche de la niche (Hicham, 04/11/2026 : « tu mets tout ça dans thumbnail-strategist et tu pousses »), après l'étude du même jour sur AA (miniatures à environ 1,5 % de taux de clic).
+- **`skills/thumbnail-strategist/references/gabarits.md`** (nouveau), grammaire par défaut : le chiffre qui dément (à essayer d'abord), le schéma d'une idée, le visage et un mot ; règles communes (un point focal, 1 à 4 mots, lisible à environ 120 px de large, coins du bas libres, pas de second bloc de texte, de pastille ni de flèche sans nécessité) ; une variante par gabarit pour Test & Compare. Constat : sur 81 miniatures de six chaînes de référence et d'AA, classées par ratio de vues, un grand chiffre en contraste revient en haut, chez AA aussi ; plusieurs visages, collages et textes en blocs reviennent en bas.
+- **Planche de la niche** : `scripts/planche_niche.py` (relevés de `youtube_chaine.py`, plus fort et plus faible ratio par chaîne, la chaîne elle-même en entier) écrit un script que le directeur exécute dans le navigateur intégré ; les miniatures s'affichent depuis YouTube, rien n'est enregistré.
+- **Trois calques** : ils deviennent la fabrication du gabarit « visage et un mot » ; le bandeau de contexte seulement si le concept en a besoin. `SKILL.md` (description, ce qui fait foi, étapes 3 et 4) et `agents/publisher.md` y renvoient.
+- **Non adopté** : le skill `youtube-thumbnail-design` de `qu-skills/skills` (génération par IA avec le CLI payant `belt`, `npx skills add`, compte, chiffres sans source) ; ses règles d'artisanat utiles sont reprises.
+
 ## 1.1.2 (04/11/2026)
 Outil `outils/montage/mesurer_mix.py`, demandé par le propriétaire avant l'E012 (« mesurer_mix.py doit être en place », 04/11/2026 ; Q90 de l'E011 d'AA). Aucune règle ne change.
 - **Mesure du mix sans écoute** (skill `direction-sonore`, `references/musique-par-cues.md` § 4) : résidu = mix ÷ gain final − voix, sur les seules séquences ; écart voix − musique par cue (fenêtres de 3 s pondérées K, voix active une trame de 10 ms sur deux au moins, médiane et pire décile) contre `mix.musique_sous_voix_lu_min` et `mix.musique_sous_voix_lu_max` ; hausse de chaque marque (crête momentanée de 0,4 s contre la seconde d'avant) et écart à la voix, à côté de l'écart prévu par le plan ; contrôle de la chaîne de mesure. Rapport Markdown, sans écrasement. Il ne valide rien : le film reste `ECOUTE_A_FAIRE`.

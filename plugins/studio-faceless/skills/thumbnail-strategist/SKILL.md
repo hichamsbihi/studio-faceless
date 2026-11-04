@@ -1,6 +1,6 @@
 ---
 name: thumbnail-strategist
-description: "Thumbnail method for a faceless documentary channel: one promise shared with the title, five truthful concepts, three variants, HTML/CSS 1280x720 render, measurable checks, A/B test protocol. Use when planning, making, critiquing or checking a thumbnail. Real licensed photos only, never AI images."
+description: "Thumbnail method for a faceless documentary channel: one promise shared with the title, five truthful concepts, three templates (number that contradicts, one-idea diagram, one face and one word), a niche board by view ratio, three variants, HTML/CSS 1280x720 render, measurable checks, A/B test protocol. Use when planning, making, critiquing or checking a thumbnail. Real licensed photos only, never AI images."
 ---
 
 # Miniatures
@@ -11,7 +11,7 @@ Méthode pour concevoir, fabriquer, contrôler et tester les miniatures d'un ép
 Priorité : `REGLES_STUDIO.md` § Priorité (les écarts de la chaîne sont dans `direction/ECARTS.md`) ; décideur de la miniature : D08.
 - **Les décisions du propriétaire** (`BRIEF.md`, `SOCLE.md` et `PROVENANCE.md` de l'épisode) et les règles du `CLAUDE.md` de la chaîne et de `direction/`.
 - **L'aide officielle de YouTube** (formats, Test & Compare, CTR) : un fait, pas un rang ; une « recette » de miniature qui la contredit est fausse.
-- **Ce skill** : la méthode, la grammaire par défaut (trois calques, VALIDÉ, Hicham, 03/11/2026 ; celle de l'E003 en secours), les contrôles et les gabarits.
+- **Ce skill** : la méthode, la grammaire par défaut (trois gabarits, VALIDÉ, Hicham, 04/11/2026 ; les trois calques pour le visage, VALIDÉ, Hicham, 03/11/2026 ; celle de l'E003 en secours), les contrôles et les gabarits.
 
 ## Quand l'utiliser
 - Trouver les concepts et les variantes d'une miniature, une fois le titre et le montage connus.
@@ -29,8 +29,8 @@ Priorité : `REGLES_STUDIO.md` § Priorité (les écarts de la chaîne sont dans
 ## Méthode, dans l'ordre
 1. **Promesse** : une seule promesse, portée à la fois par le titre et la miniature et tenue dès l'accroche de la vidéo. La miniature complète le titre sans le répéter. Voir `references/promesse-et-concepts.md`.
 2. **Au moins 5 concepts véridiques**, chacun fondé sur une contradiction vérifiée et sourcée ; aucune émotion ni pensée inventée prêtée à une personne réelle. Voir `references/promesse-et-concepts.md`.
-3. **3 variantes très différentes** retenues parmi les concepts (sujet, image, mécanisme du texte) ; au moins 2 pour un Test & Compare (validé sur AA, 03/11/2026).
-4. **Grammaire** : par défaut, depuis le 03/11/2026 (VALIDÉ, Hicham, après le choix de la v2-3 de l'E011 d'AA), la **méthode en trois calques** : vraie photo de fond déjà vibrante, floutée et voilée ; vrai visage célèbre détouré par `remove-background` ; question de 3 mots en HTML qui nomme la star, mot clé en couleur complémentaire, bandeau de contexte d'une ligne. Voir `references/trois-calques-e011.md`. La grammaire de la v4 de l'E003 (fond uni, flèche, drapeaux ; `references/grammaire-e003.md`) reste en secours et garde ses leçons, mais son fond uni a été jugé « pas captivant ».
+3. **3 variantes très différentes** retenues parmi les concepts (sujet, image, mécanisme du texte) ; au moins 2 pour un Test & Compare (validé sur AA, 03/11/2026). Par défaut, une par gabarit (`references/gabarits.md` § 2).
+4. **Grammaire** : par défaut, depuis le 04/11/2026 (VALIDÉ, Hicham, après la planche de la niche), **trois gabarits** : le chiffre qui dément, le schéma d'une idée, le visage et un mot, avec leurs règles communes (un point focal, 1 à 4 mots, lisible à environ 120 px de large). Voir `references/gabarits.md`, qui dit aussi quand refaire la planche de la niche (`scripts/planche_niche.py`). Le visage et un mot se fabrique par la **méthode en trois calques** (VALIDÉ, Hicham, 03/11/2026, après le choix de la v2-3 de l'E011 d'AA) : vraie photo de fond déjà vibrante, floutée et voilée ; vrai visage célèbre détouré par `remove-background` ; question courte en HTML qui nomme la star. Voir `references/trois-calques-e011.md`. La grammaire de la v4 de l'E003 (fond uni, flèche, drapeaux ; `references/grammaire-e003.md`) reste en secours et garde ses leçons, mais son fond uni a été jugé « pas captivant ».
 5. **Fabrication** : HTML/CSS 1280×720, détourage par `remove-background` (VALIDÉ, Hicham, 03/11/2026) ou, en secours, par polygone à partir d'une grille de coordonnées, rendu sans fenêtre. Voir `references/fabrication.md` et `scripts/miniature.py`.
 6. **Contrôles mesurables** (poids et taille, aperçus 168×94 et 320×180, coin inférieur droit, contraste du texte, fonds clair et sombre), puis planche « flux » (analyse interne). Voir `references/controles.md`. Les mesures ne remplacent pas le regard du propriétaire.
 7. **Test & Compare** et **journal de l'épisode**. Voir `references/test-et-journal.md`.
