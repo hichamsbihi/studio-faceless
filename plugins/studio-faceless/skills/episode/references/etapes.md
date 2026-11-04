@@ -40,7 +40,7 @@ Les règles par défaut citées ici (`REFERENTIEL`, `DIRECTION_AUDIO`, `METHODE_
 ## 5. Kit
 Voir `kit.md` : direction artistique, médias téléchargés et vérifiés, cartes, logos, sons, raccords, consignes communes, briefs.
 
-## 5 bis. Maquette et test de décrochage (validé sur MM, 23/10/2026, bloc B de son audit stratégique ; proposé au plugin 0.3.0, PROPOSÉ)
+## 5 bis. Maquette et test de décrochage (validé sur MM, 23/10/2026, bloc B de son audit stratégique ; adopté au plugin, VALIDÉ, Hicham, 04/11/2026)
 - **Décision** : au socle (bloc 10) ; le propriétaire peut s'en passer pour un épisode.
 - **Si oui** : la voix posée sur des cartes et des images sommaires, sans finition, un seul rendu ; le propriétaire note la première minute où il a envie de passer. On corrige la structure ou le script avant de lancer les producteurs.
 
@@ -80,13 +80,13 @@ Le mix fait : contrôle par `studio-faceless:reviewer`, puis le paquet au statut
   - Le SRT se fait avec `${CLAUDE_PLUGIN_ROOT}/outils/montage/srt.py`, par `publisher` si son contrat le demande, sinon par le directeur.
 - Le directeur reporte l'hypothèse du test au `JOURNAL_MINIATURES.md` et soumet au propriétaire : miniature, publication et case de déclaration.
 - Avant la sortie, une passe d'actualité sur les phrases [MAJ].
-- **Titre** (validé sur MM, 21/10/2026, audit de son pilote ; proposé au plugin 0.3.0, PROPOSÉ) : la concurrence se contrôle avant de le fixer, par une recherche YouTube des titres proches ; un titre trop proche d'une vidéo existante se change. Un titre changé tard donne une nouvelle version du dossier de publication (`PUBLICATION_vN+1`).
+- **Titre** (validé sur MM, 21/10/2026, audit de son pilote ; adopté au plugin, VALIDÉ, Hicham, 04/11/2026) : la concurrence se contrôle avant de le fixer, par une recherche YouTube des titres proches ; un titre trop proche d'une vidéo existante se change. Un titre changé tard donne une nouvelle version du dossier de publication (`PUBLICATION_vN+1`).
 - **Miniature fournie par le propriétaire** (même validation) : Claude en note la source et la licence ; avec une seule miniature, il n'y a pas de Test & Compare.
 - Claude ne publie jamais.
 
 ## 13. Après la sortie
 - Bilans J+2, J+7 et J+28 (`studio-faceless:youtube-seo`) : rétention à 0:30, 1:00 et 2:00, et taux de clic au-delà d'environ 1 000 impressions. Un épisode écrit en essai (par exemple la méthode « Illusion of Novelty », `recit-retention.md` § 8) a en plus son bilan de J+7 selon le protocole de l'essai.
-- **Relevé de la première minute** (validé sur MM, 23/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) : la rétention dans la première minute est relevée et comparée à celle des épisodes précédents.
+- **Relevé de la première minute** (validé sur MM, 23/10/2026 ; adopté au plugin, VALIDÉ, Hicham, 04/11/2026) : la rétention dans la première minute est relevée et comparée à celle des épisodes précédents.
 - Les leçons s'ajoutent à `pieges.md`, et les tokens par étape sont notés (`${CLAUDE_PLUGIN_ROOT}/outils/suivi_tokens.py`).
 - L'archivage se fait avec l'accord du propriétaire (ci-dessous).
 

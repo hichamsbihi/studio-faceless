@@ -15,7 +15,7 @@ Synthèse de la recherche `studio-faceless:research` faite sur AA le 19/10/2026.
 - **Conditions des programmes de monétisation** (TikTok Creator Rewards, monétisation Facebook) : abonnés, vues, pays de résidence, durée minimale. Non vérifiées le 19/10/2026 ; à vérifier avant d'y compter, car certains programmes ne sont ouverts que dans certains pays.
 - Durées maximales : 3 min pour YouTube (Off.) ; 3 min, voire 10, pour TikTok (Off.) ; Facebook contradictoire, de 3 à 90 s, ou sans limite depuis juin 2025 (Off.).
 - Durée conseillée : Facebook dit 10 à 30 s pour la portée (Off. [M6]) ; YouTube n'en donne aucune et renvoie aux courbes de rétention (Off.).
-- **Niveau sonore** : plus fort que les films (validé sur AA, 19/10/2026) ; master à −14 LUFS, crête vraie ≤ −1 dBTP (`PROPOSÉ`, `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` ; les écarts de la chaîne, dans `direction/ECARTS.md`, l'emportent). Aucune source sur la normalisation des trois plateformes n'a été lue : on mesure sur les premiers envois.
+- **Niveau sonore** : plus fort que les films (validé sur AA, 19/10/2026) ; master à `shorts.master_lufs`, crête vraie au plus `shorts.crete_vraie_max_dbtp` (`${CLAUDE_PLUGIN_ROOT}/referentiels/seuils.json` ; VALIDÉ, Hicham, 04/11/2026, à l'écoute du short A de l'E011 d'AA ; `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md`). Aucune source sur la normalisation des trois plateformes n'a été lue : on mesure sur les premiers envois.
 
 ## Zones masquées par l'interface (1080 × 1920)
 Aucune plateforme ne publie de marges pour la publication non sponsorisée ; les chiffres viennent des gabarits publicitaires (Obs., contradictoires).

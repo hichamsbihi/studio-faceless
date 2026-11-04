@@ -66,7 +66,7 @@
 - **Choix des boucles** (validé sur AA, 26/10/2026, étude AA) : la forme ne change pas, chaque short reste tiré d'un film. En priorité, on choisit les boucles sur un objet ou un rituel visible du film, avec un titre « Why… ». Le rythme de publication se décide après le pilote.
 - **Fabrication** : agent dédié `studio-faceless:shorts-producer`, méthode dans le skill `studio-faceless:shorts`.
 
-## 6. Écriture : narration evergreen (validé sur MM, 26/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ)
+## 6. Écriture : narration evergreen (validé sur MM, 26/10/2026 ; adopté au plugin, VALIDÉ, Hicham, 04/11/2026)
 Demande du propriétaire : « pour que la vidéo soit evergreen, on évite de mettre this month, this week… ». La narration ne dit rien qui dépende du jour où elle est enregistrée ou regardée.
 - **Interdit** : « this month », « this week », « this year », « today », « now », « currently », « recently », « last year », « next year », « … ago », « today's governor »…
 - **À la place** : une date absolue (« in 2026 », « since 2016 », « by 2025 ») ou une forme qui reste vraie (« every year », « every spring », « for decades »). Un acteur se désigne par sa fonction datée (« in 2026, the governor proposed… ») ; les dates précises vont aussi à l'écran.

@@ -58,6 +58,21 @@ class Motifs(unittest.TestCase):
         self.oui('propose', 'Statut : `PROPOSÉ` (Claude)')
         self.non('propose', 'proposé par le producteur')
 
+    def test_propose_livrable(self):
+        def comptes(l):
+            return [x for x in MOTIF['propose'].finditer(l) if not v.statut_livrable(l, x)]
+        for l in ['- **Ou fiche de style** : la fiche ci-dessus, statut `PROPOSÉ`.',
+                  '- **Livrable** : `docs/rapports/X_<AAAA-MM-JJ>.md`, `PROPOSÉ`.',
+                  '- Concepts, variantes : `PROPOSÉ`, puis `VALIDÉ` (le propriétaire, date).',
+                  '**Statuts** : `PROPOSÉ` partout, sauf ce que le propriétaire a `VALIDÉ`.',
+                  '- Tout reste `PROPOSÉ` : une recommandation n\'est pas une décision.']:
+            self.assertFalse(comptes(l), l)
+        for l in ['Statut du skill : `PROPOSÉ` (à valider sur le pilote).',
+                  '- `references/choix-sujet.md` (`PROPOSÉ`) : grille.',
+                  '- **Règle** (validé sur MM ; proposé au plugin 0.3.0, PROPOSÉ).',
+                  'Fiche, statut `PROPOSÉ` ; seuil PROPOSÉ.']:
+            self.assertTrue(comptes(l), l)
+
     def test_renvoi_mort(self):
         self.oui('renvoi-mort', 'voir `DEMARRAGE.md`, B6')
         self.oui('renvoi-mort', 'Voir `socle.md`.')

@@ -66,8 +66,8 @@ Exemple AA : l'E007 suit ce patron :
 - On ne conclut qu'à partir d'environ 100 spectateurs.
 - Appel à s'abonner au milieu du film : plus une question ouverte ; place par défaut vers 2:00 (`METHODE_RECIT.md` § 1, validé sur AA, 26/10/2026), confirmée ou écartée à la porte.
 
-## 8. Essai : « Illusion of Novelty » (essai en cours sur AA, `PROPOSÉ`, 02/11/2026)
-**Statut** : essai décidé par le propriétaire d'AA le 02/11/2026 (Q18 de son E011), en cours depuis cet épisode. Ce n'est **ni une règle du plugin ni, pour l'instant, une règle d'AA** : elle ne le devient qu'au bilan de J+7 (ci-dessous). Une autre chaîne qui veut l'essayer l'écrit dans son `direction/ECARTS.md`, avec ses critères.
+## 8. « Illusion of Novelty » (VALIDÉ, Hicham, 04/11/2026 ; essai lancé sur AA le 02/11/2026)
+**Statut** : méthode par défaut du plugin, validée par le propriétaire d'AA le 04/11/2026, avant son bilan (essai décidé le 02/11/2026, Q18 de son E011). Le bilan de J+7 de l'E011 se fait quand même, selon le protocole ci-dessous ; son résultat va au propriétaire.
 
 **Source** : Kallaway, *The Illusion Of Novelty Doc*, un guide d'écriture d'accroche (le PDF est gardé dans `direction/references/` de la chaîne qui l'essaie, jamais copié dans le plugin). Sa formule : « Novelty is an illusion you construct. » Les sous-agents ne lisent pas le PDF : la grille ci-dessous se copie dans leur contrat.
 
@@ -92,9 +92,9 @@ Exemple AA : l'E007 suit ce patron :
 
 Contrôle d'intégrité en plus, réussi ou échoué, qui compte avant la note : une phrase qui avoue l'ancienneté de l'idée, qui l'atténue ou qui hausse le ton comme une annonce publicitaire échoue et se réécrit.
 
-**Emploi pendant l'essai** (AA, E011) : la méthode co-écrit l'angle (étape 2) et le script (étape 3) ; la note est donnée par `studio-faceless:reviewer` avant la voix, jamais par l'auteur de l'accroche. Gemini ne juge pas une ouverture (§ 5).
+**Emploi** (tel qu'appliqué à l'E011 d'AA) : la méthode co-écrit l'angle (étape 2) et le script (étape 3) ; la note est donnée par `studio-faceless:reviewer` avant la voix, jamais par l'auteur de l'accroche. Gemini ne juge pas une ouverture (§ 5).
 
-**Protocole de bilan à J+7** (généralisé de l'E011 d'AA ; `PROPOSÉ`) :
+**Protocole de bilan à J+7** (généralisé de l'E011 d'AA ; VALIDÉ, Hicham, 04/11/2026 ; il sert à toute méthode d'écriture à l'essai) :
 1. **Mesure** : rétention à 0:30 et performance relative à 0:30 (`outils/recherche/youtube_retention.py` : 0,5 = médiane des vidéos de même durée, ce qui corrige l'effet de la durée), lues sur les films comparables de la chaîne (durée voisine), jamais sur ceux d'une autre chaîne.
 2. **Seuils fixés avant la sortie**, à partir de ces films :
    - *règle de la chaîne* si le film fait mieux que le meilleur des comparables, sur les deux mesures ;

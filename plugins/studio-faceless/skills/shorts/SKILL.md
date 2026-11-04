@@ -5,7 +5,7 @@ description: "Shorts method for a faceless documentary channel: vertical 9:16 sh
 
 # Shorts
 
-Méthode pour choisir, écrire, monter et contrôler les shorts d'un film de la chaîne. Statut du skill : `PROPOSÉ` (rédigé sur AA le 19/10/2026 d'après les décisions de son propriétaire du même jour ; à valider sur le pilote, épisode 001 d'AA).
+Méthode pour choisir, écrire, monter et contrôler les shorts d'un film de la chaîne. Statut du skill : `VALIDÉ` (Hicham, 04/11/2026, après les pilotes et le short A de l'E011 d'AA, Q98 ; rédigé sur AA le 19/10/2026 d'après les décisions de son propriétaire du même jour).
 
 ## Ordre de préséance
 Les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité).

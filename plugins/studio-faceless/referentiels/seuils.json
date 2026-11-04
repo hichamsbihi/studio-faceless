@@ -42,7 +42,7 @@
   "effet_papier_sous_voix_lu": 20
  },
  "shorts": {
-  "_source": "plus fort que les films : validé sur AA, 19/10/2026 ; valeurs du master (master_lufs, crete_vraie_max_dbtp) encore PROPOSÉ (skills/shorts/references/plateformes.md)",
+  "_source": "plus fort que les films : validé sur AA, 19/10/2026 ; master (master_lufs, crete_vraie_max_dbtp, limiteur_dbtp) VALIDÉ, Hicham, 04/11/2026, à l'écoute du short A de l'E011 d'AA (Q98) ; musique_sous_voix_lu encore PROPOSÉ (un seul short mesuré, à 7 LU, Q92 de l'E011 d'AA ; dans la plage des films, donc pas plus présente : à revoir)",
   "master_lufs": -14,
   "crete_vraie_max_dbtp": -1,
   "limiteur_dbtp": -1.5,

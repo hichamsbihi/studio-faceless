@@ -5,7 +5,7 @@ Une seule source par règle : ce contrôle refuse ce qui ferait revenir une cont
   « portes A à E », « orchestrateur », « conseil » hors du skill conseil ;
 - une formule de préséance (« l'emporte », « prime sur »…) hors du § Priorité de `REGLES_STUDIO.md` ;
 - une valeur en LUFS, LU ou dBTP dans la prose : les valeurs vivent dans `referentiels/seuils.json` ;
-- un `PROPOSÉ` dans `referentiels/`, `skills/` ou `agents/` ;
+- un `PROPOSÉ` dans `referentiels/`, `skills/` ou `agents/`, sauf le statut d'un livrable (`LIVRABLE`, 1.1.1) ;
 - un renvoi mort (fichier du plugin cité et absent, `DEMARRAGE.md` ou `docs/` hors du plugin installé, « dix agents ») ;
 - une ligne D à deux décideurs, une ligne D non déclarée par son agent (`REGLES_DETAIL.md` § Qui décide) ;
 - un agent qui a Bash, Write ou Edit sans rôle dans `ROLES` (garde-fou) ; un appel `agent(` d'un workflow sans `agentType` ;
@@ -60,6 +60,11 @@ MOTIFS = [
     ('renvoi-mort', re.compile(r'\bDEMARRAGE\.md\b|\bsocle\.md\b|(?i:\bdix agents\b)'), (),
      "renvoi mort : fichier absent du plugin installé, ou compte faux"),
 ]
+# Statut d'un livrable (1.1.1) : « statut `PROPOSÉ` », « `fichier.md`, `PROPOSÉ` », « `PROPOSÉ`, puis … »,
+# « `PROPOSÉ` partout », « dossier / recommandations / tout reste `PROPOSÉ` » : le livrable attend le propriétaire,
+# ce n'est pas une règle en attente. Un `PROPOSÉ` hors de ces formes reste compté.
+LIVRABLE = re.compile(r"(?i:\bstatut|\bdossier|\brecommandations|\btout reste)\s+`PROPOSÉ`|\.md`,\s+`PROPOSÉ`"
+                      r"|`PROPOSÉ`,?\s+puis\b|`PROPOSÉ`\s+partout")
 SECTION_PRIORITE = re.compile(r'^#+\s*Priorit', re.I)
 # Chemins cités : `${CLAUDE_PLUGIN_ROOT}/…` (tout dossier) ; sans préfixe, seulement les dossiers propres au plugin
 # (`outils/` et `vendor/` existent aussi dans les chaînes) et `references/…`, relatif au skill qui le cite.
@@ -193,6 +198,11 @@ def taille_injectee():
     return len(texte) + plus
 
 
+def statut_livrable(ligne, x):
+    """Vrai si le `PROPOSÉ` trouvé en x est le statut d'un livrable (motif `LIVRABLE`)."""
+    return any(s.start() <= x.start() and x.end() <= s.end() for s in LIVRABLE.finditer(ligne))
+
+
 def occurrences():
     """Liste de (motif, fichier, numéro, texte de la ligne, message)."""
     out = []
@@ -208,7 +218,8 @@ def occurrences():
                 if ident == 'propose' and not r.startswith(('referentiels/', 'skills/', 'agents/')):
                     continue
                 trouve = [x for x in motif.finditer(ligne)
-                          if not (ident == 'socle' and x.group(0) == 'SOCLE' and ligne[x.end():x.end() + 1] == '.')]
+                          if not (ident == 'socle' and x.group(0) == 'SOCLE' and ligne[x.end():x.end() + 1] == '.')
+                          and not (ident == 'propose' and statut_livrable(ligne, x))]
                 if trouve:
                     out.append((ident, r, n, ligne.strip(), msg))
             for m in CHEMIN_CITE.finditer(ligne):
