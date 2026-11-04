@@ -1,0 +1,415 @@
+{
+ "_note": "Base gelée de verifier_coherence.py : elle ne peut que décroître (--geler retire, n'ajoute jamais).",
+ "occurrences": [
+  [
+   "preseance",
+   "skills/shorts/references/plateformes.md",
+   "- **Niveau sonore** : plus fort que les films (validé sur AA, 19/10/2026) ; master à −14 LUFS, crête vraie ≤ −1 dBTP (`PROPOSÉ`, `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` ; les écarts de la chaîne, dans `direction/ECARTS.md`, l'emportent). Aucune source sur la normalisation des trois plateformes n'a été lue : on mesure sur les premiers envois."
+  ],
+  [
+   "propose",
+   "agents/art-director.md",
+   "- **Ou fiche de style** : la fiche ci-dessus, statut `PROPOSÉ`."
+  ],
+  [
+   "propose",
+   "agents/publisher.md",
+   "- SRT par `srt.py` seulement si le contrat le demande. Statut `PROPOSÉ`."
+  ],
+  [
+   "propose",
+   "agents/publisher.md",
+   "2. **Au moins 5 concepts véridiques**, chacun avec sa contradiction sourcée, dans `miniatures-vN/CONCEPTS.md` (statut `PROPOSÉ`)."
+  ],
+  [
+   "propose",
+   "agents/strategist.md",
+   "- **Assemblage** : à partir des fichiers `sujets-*` de la session, écris `docs/rapports/PROPOSITION_TITRES_<AAAA-MM-JJ>_vN.md`, `PROPOSÉ`, avec :"
+  ],
+  [
+   "propose",
+   "agents/strategist.md",
+   "- **Livrable** : `docs/rapports/DOSSIER_POSITIONNEMENT_<AAAA-MM-JJ>.md`, `PROPOSÉ`, en sections :"
+  ],
+  [
+   "propose",
+   "agents/strategist.md",
+   "- **Livrable** : `docs/rapports/PROPOSITION_TITRES_<AAAA-MM-JJ>.md`, `PROPOSÉ`."
+  ],
+  [
+   "propose",
+   "agents/strategist.md",
+   "- copie dans `docs/rapports/ROAST_ROOM_<SUJET>_<AAAA-MM-JJ>.md`, `PROPOSÉ` ;"
+  ],
+  [
+   "propose",
+   "referentiels/DIRECTION_AUDIO.md",
+   "- **Une piste remontée seule passe dans son propre limiteur** (validé sur MM, 28/10/2026, constat du 27/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ). Le mix du film applique un gain final unique vers −16 LUFS, plafonné par la crête vraie : sur le film d'origine, +1,4 dB sur la seule voix d'une séquence a porté sa crête à −0,6 dBTP et fait tomber tout le film à −18,0 LUFS. Après le gain de la piste, `alimiter=level_in=1:level_out=1:limit=0.7079:attack=5:release=50:asc=0:level=0:latency=1` (plafond −3 dBFS, anticipation 5 ms, retour 50 ms, sans réglage automatique du niveau, latence compensée) ne touche que ses crêtes ; puis remesurer le film."
+  ],
+  [
+   "propose",
+   "referentiels/DIRECTION_AUDIO.md",
+   "| Prise approuvée | Ne jamais régénérer, réécrire, accélérer ni couper une prise sans autorisation explicite. **Seule exception, validée sur AA le 15/10/2026** : toute narration est ralentie « juste un peu » selon la méthode du § 2 (« le principe de ralentir juste un peu doit être pris dans toutes les séquences »). **Les shorts n'y sont pas soumis** (validé sur AA, 19/10/2026) : script dédié, prise à vitesse d'origine, pauses resserrées au montage. Une seule prise par short ; la version YouTube est la même prise **sans le bloc D**, coupée à des frontières de phrase (script en blocs, accord du 19/10/2026 sur AA ; skill `studio-faceless:shorts`). **Son des shorts plus fort que celui des films** (validé sur AA, 19/10/2026 : « un son plus élevé qui capte l'attention »). Valeurs `PROPOSÉ`, à confirmer à l'écoute : musique dès 0,0 s, environ 8 LU sous la voix (`MUS_REL` −6, `MUS_DUCK` 2), comme les 7 à 9 LU des films depuis le 03/11/2026 (§ 2) ; master final à −14 LUFS, crête vraie ≤ −1 dBTP, avec un limiteur passé par Claude après le rendu. **Effets dans les shorts** (validé sur AA, 19/10/2026, formule des shorts) : un effet court (moins de 0,4 s : whoosh, impact, clic) sur chaque événement visuel, à 12 à 18 dB sous la voix ; un riser au plus avant la révélation ; environ 0,3 s de silence avant le fait clé ; coupes calées sur le tempo de la musique. La règle « effets rares » reste celle des films. |"
+  ],
+  [
+   "propose",
+   "referentiels/METHODE_RECIT.md",
+   "## 6. Écriture : narration evergreen (validé sur MM, 26/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ)"
+  ],
+  [
+   "propose",
+   "referentiels/REFERENTIEL_QUALITE_REALISATION.md",
+   "- **Aucun cadre ne naît vide** (validé sur MM, 21/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ ; complète la recette v3, `skills/episode/references/production.md` § 1) : un tableau, une colonne ou un cadre apparaît avec son contenu. Le producteur le vérifie sur sa planche, avant `render.sh` : sur le pilote d'origine, le défaut n'avait été vu que sur les MP4 de trois séquences, d'où trois nouvelles versions."
+  ],
+  [
+   "propose",
+   "referentiels/REFERENTIEL_QUALITE_REALISATION.md",
+   "- **Aucune clé avant sa valeur** (validé sur MM, 21/10/2026, audit de son pilote, séquences 5 et 8 ; proposé au plugin 0.3.0, PROPOSÉ) : une légende ou une étiquette n'apparaît pas avant la donnée qu'elle explique."
+  ],
+  [
+   "propose",
+   "referentiels/REFERENTIEL_QUALITE_REALISATION.md",
+   "- **Chiffre sans date de valeur** (validé sur MM, 19/10/2026, Q15 de sa feuille de route ; proposé au plugin 0.3.0, PROPOSÉ) : chaque chiffre cité a sa source et sa **date de valeur** (le jour, le trimestre ou l'année auxquels il se rapporte), distincte de la date de consultation ; il est **revérifié la veille de la génération de la voix**, avec le lien direct vers la valeur pour que la revérification soit rapide. Une incertitude se dit à l'écran (« estimates vary ») plutôt que de trancher sans preuve."
+  ],
+  [
+   "propose",
+   "referentiels/REFERENTIEL_QUALITE_REALISATION.md",
+   "- **Lignes de source** (validé sur MM, 21/10/2026, audit de son pilote ; proposé au plugin 0.3.0, PROPOSÉ) : chaque mention de source écrite à l'écran est relue contre la recherche avant `render.sh`. Sur le pilote d'origine, quatre lignes fausses, vues seulement après le rendu, étaient restées dans le film en ligne."
+  ],
+  [
+   "propose",
+   "referentiels/REFERENTIEL_QUALITE_REALISATION.md",
+   "- **Raccord vers la signature** (validé sur MM, 20/10/2026, règle générale le 21/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) : l'accroche finit par un noircissement animé en dégradé, puis la signature « allume la lumière ». C'est le raccord par défaut de chaque épisode ; la chaîne peut fixer le sien dans `direction/ECARTS.md`."
+  ],
+  [
+   "propose",
+   "referentiels/REGLES_DETAIL.md",
+   "- **Installations et envois cachés** (validé sur MM, 14/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) : `remove-background` installe `onnxruntime-node` et télécharge un modèle de 168 Mo ; `catalog` télécharge et met en cache ; `init` rafraîchit les skills depuis GitHub (seule `HYPERFRAMES_SKIP_SKILLS=1` l'empêche, `--skip-skills` est ignoré) ; `tts`, `transcribe` et `models` téléchargent des modèles. Ces installations passent par Node : un garde sur Bash ne les voit pas, donc aucune sans l'accord du propriétaire, et les projets se créent à la main. `snapshot --describe` envoie les images à Gemini si `GEMINI_API_KEY` existe : toujours `--describe false`. Les scripts de media-use envoient de la télémétrie. Le gel de version tient parce que l'installation est locale : une installation globale ou `npx hyperframes@latest` déclencherait la mise à jour."
+  ],
+  [
+   "propose",
+   "referentiels/REGLES_DETAIL.md",
+   "- **Méthode de travail avec le propriétaire** (validé sur MM, 21/10/2026, bloc 8 de l'audit de son pilote ; proposé au plugin 0.3.0, PROPOSÉ) : une décision se présente par blocs, un à la fois (repris, changé, douteux, puis une recommandation) ; « explique-moi » ne modifie rien ; les téléchargements d'un lot tiennent en une liste unique (nom, source, taille) et un seul accord du propriétaire avant tout téléchargement (par Claude ou par `studio-faceless:media-fetcher`, validé sur AA, 02/11/2026 : `REFERENTIEL_QUALITE_REALISATION.md` § 2 bis ; les sons, aussi par `studio-faceless:sound-manager`, 0.7.0) ; un fichier hors de la liste attend un nouvel accord."
+  ],
+  [
+   "propose",
+   "referentiels/REGLES_DETAIL.md",
+   "- **Poste de travail** (validé sur MM, 28/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ ; constaté sur le poste du propriétaire, commun à ses chaînes) : pas de carte graphique NVIDIA, donc les outils d'IA locaux qui reposent sur CUDA (voix, conversion de voix, gros modèles) ne tournent pas ou très lentement : le signaler avant d'en proposer un. Pillow installé le 03/11/2026 (VALIDÉ, Hicham) pour composer le masque de détourage des miniatures (`skills/thumbnail-strategist/references/fabrication.md` § 3) ; pour le reste, planches par `ffmpeg` (`tile`) et mesure de pixels par sortie `-f rawvideo -pix_fmt rgb24` lue par Python. Rien ne s'installe sans décision du propriétaire. L'heure d'un statut ou d'un journal se lit avec `date` avant d'être écrite : des statuts portaient des heures estimées, fausses."
+  ],
+  [
+   "propose",
+   "skills/conseil/SKILL.md",
+   "- Tout reste `PROPOSÉ` : une recommandation du conseil n'est pas une décision ; rien ne devient règle sans le propriétaire."
+  ],
+  [
+   "propose",
+   "skills/episode/SKILL.md",
+   "- `references/choix-sujet.md` (`PROPOSÉ`) : grille et promesse."
+  ],
+  [
+   "propose",
+   "skills/episode/SKILL.md",
+   "- `references/recit-retention.md` (`PROPOSÉ`) : patron du film, ouverture, relances, densité, succession des séquences."
+  ],
+  [
+   "propose",
+   "skills/episode/references/choix-sujet.md",
+   "# Choisir le sujet (`PROPOSÉ`, Méthode v1, étude AA, bloc 1)"
+  ],
+  [
+   "propose",
+   "skills/episode/references/choix-sujet.md",
+   "## 4. Repérer un sujet qui surperforme et en reprendre le principe (`PROPOSÉ`)"
+  ],
+  [
+   "propose",
+   "skills/episode/references/choix-sujet.md",
+   "- **Essai en cours sur AA** (`PROPOSÉ`, 02/11/2026) : l'angle d'un sujet connu se formule comme une nouveauté posée contre la croyance courante (méthode « Illusion of Novelty », protocole de bilan : `recit-retention.md` § 8)."
+  ],
+  [
+   "propose",
+   "skills/episode/references/choix-sujet.md",
+   "- **garde-fous** (validé sur MM, 28/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) : vidIQ en lecture seule, aucune connexion de chaîne, aucune action sur YouTube ; chaque appel coûte 5 crédits et `vidiq_balance` est gratuit, donc vérifier le solde avant un lot et annoncer le coût du lot ; éviter `vidiq_channel_stats`, dont la sortie (statistiques quotidiennes) est très lourde pour le contexte, `vidiq_channel_videos` suffisant pour les médianes et les percées ;"
+  ],
+  [
+   "propose",
+   "skills/episode/references/etapes.md",
+   "## 5 bis. Maquette et test de décrochage (validé sur MM, 23/10/2026, bloc B de son audit stratégique ; proposé au plugin 0.3.0, PROPOSÉ)"
+  ],
+  [
+   "propose",
+   "skills/episode/references/etapes.md",
+   "- **Relevé de la première minute** (validé sur MM, 23/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) : la rétention dans la première minute est relevée et comparée à celle des épisodes précédents."
+  ],
+  [
+   "propose",
+   "skills/episode/references/etapes.md",
+   "- **Titre** (validé sur MM, 21/10/2026, audit de son pilote ; proposé au plugin 0.3.0, PROPOSÉ) : la concurrence se contrôle avant de le fixer, par une recherche YouTube des titres proches ; un titre trop proche d'une vidéo existante se change. Un titre changé tard donne une nouvelle version du dossier de publication (`PUBLICATION_vN+1`)."
+  ],
+  [
+   "propose",
+   "skills/episode/references/kit.md",
+   "- **Objets qui reviennent** (validé sur MM, 28/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) : tout objet repris d'une séquence à l'autre (un chèque, une fiche) est fixé dans le kit, position et contenu compris, avant les producteurs. Une séquence produite avant sa voisine garde ses paramètres de raccord dans un seul objet `RACCORD`. Sur le film d'origine, un chèque portait un montant alors que celui de la séquence d'avant était vierge."
+  ],
+  [
+   "propose",
+   "skills/episode/references/pieges.md",
+   "- **Fichier TIFF** : le navigateur ne le lit pas ; convertir en PNG ou en JPEG dans le kit. **Faux « occluded »** de `check` pendant des volets de sortie : `data-layout-allow-occlusion` sur l'élément. **`mask` animé et animation de l'attribut `d`** : jamais testés en 0.8.149 ; un essai court précède tout emploi (validé sur MM, 20/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ)."
+  ],
+  [
+   "propose",
+   "skills/episode/references/pieges.md",
+   "- **Image agrandie à l'écran** : au-delà de son pixel natif, une image s'adoucit ; elle ne dépasse pas 1,3 fois son pixel natif quand elle reste à l'écran, et une archive en 640 × 480 va en cadre-témoin plutôt qu'en plein cadre (validé sur MM, 21/10/2026, audit de son pilote : un clip agrandi deux fois était visiblement mou ; proposé au plugin 0.3.0, PROPOSÉ). Limite de 1,3 fois retenue pour tout le plugin, y compris la recette v3 de `production.md` § 1, qui tolérait 1,6 (VALIDÉ, Hicham, 30/10/2026)."
+  ],
+  [
+   "propose",
+   "skills/episode/references/pieges.md",
+   "- **Mode de capture** : avec `filter: blur`, `mix-blend-mode` ou `--workers 2`, HyperFrames capture par screenshot, calé au pixel entier : tout mouvement lent (moins de 1 px par image) d'un texte saccade, translation comprise, et le 4K n'y change rien. La capture sous-pixel (`drawElement`) exige `--workers 1` et ni flou, ni blend, ni 3D. En mode screenshot, seuls restent fluides le texte statique et un mouvement linéaire d'exactement 1 à 2 px par image. `controle.py tremblement` ne voit pas la vibration d'un texte : mesurer les résidus du centroïde du texte sur des images consécutives (validé sur MM, 19/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ)."
+  ],
+  [
+   "propose",
+   "skills/episode/references/pieges.md",
+   "- **Perspective isométrique en CSS** : la paire `rotateX(60deg) rotateZ(45deg)` donne des axes à 26,57°, pas à 30° (il faudrait 54,74°). Pour un dessin isométrique, tracer en SVG la projection vraie `sx = (x − z)·cos 30°`, `sy = (x + z)·sin 30° − y`, polygones triés de l'arrière vers l'avant (validé sur MM, 20/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ)."
+  ],
+  [
+   "propose",
+   "skills/episode/references/pieges.md",
+   "- **Planche de repérage utilisée pour fixer un instant de coupe** : son horodatage est parfois décalé (5 coupes de renfort sur 14 montraient autre chose : une carte, des pieux, une salle de contrôle). Une planche sert à choisir un plan ; l'instant se cherche sur des images extraites du fichier lui-même (`ffmpeg -ss <t> -i <fichier> -frames:v 1`, `-ss` avant `-i`), puis on regarde la planche des extraits traités avant de les confier aux producteurs (validé sur MM, 28/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ)."
+  ],
+  [
+   "propose",
+   "skills/episode/references/pieges.md",
+   "- **Plusieurs HTML racine** dans un projet : `hyperframes check` échoue (`multiple_root_compositions`). Garder `index.html` seul à la racine avec `data-composition-id`, mettre les autres dans `compositions/` avec des chemins `../media/…`, et les rendre par `render -c compositions/x.html` ; les avertissements `nested_media_start_basis_ambiguous` et `duplicate_audio_track` qui suivent sont sans effet (validé sur MM, 13/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ)."
+  ],
+  [
+   "propose",
+   "skills/episode/references/pieges.md",
+   "- **Polices système remplacées** : le compilateur ne garde pas une pile système (`system-ui, \"Segoe UI\", Arial`) ; il injecte des `@font-face` déterministes et la remplace par Inter et JetBrains Mono, prises sur Google Fonts. Une police de secours nommée l'est aussi (Georgia devient EB Garamond). Embarquer la police par `@font-face` sur un fichier local, ne nommer que cette police et une famille générique, la consigner dans `PROVENANCE.md` avec sa licence, la vérifier sur une planche ; au `check`, une ligne « Fetched … from Google Fonts » signale une police non embarquée (validé sur MM, 19/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ)."
+  ],
+  [
+   "propose",
+   "skills/episode/references/pieges.md",
+   "- **Sources que l'agent ne lit pas** (validé sur MM, 28/10/2026, porte P4, Q11 ; proposé au plugin 0.3.0, PROPOSÉ) : PDF (sans poppler, les flux compressés et les scans restent illisibles), tableaux dynamiques, pages en 403 ou derrière une vérification. Le contrat de mission demande, pour ces sources, le lien et la page à lire, marqués « non lu » ; l'agent lit seulement les chemins que le contrat nomme. Claude les lit lui-même au moment du script."
+  ],
+  [
+   "propose",
+   "skills/episode/references/pieges.md",
+   "- **Vidéo source HDR cachée** (HLG ou PQ en BT.2020, fréquente chez Pexels et Pixabay quand elle est filmée au téléphone ; validé sur MM, 24/10/2026, constat d'un épisode ; proposé au plugin 0.3.0, PROPOSÉ) : si elle garde ses balises, `render` passe de lui-même en rendu HDR en couches, où les images visibles par défaut et découpées seulement par `render(t)` restent affichées plein cadre ; le rendu dure dix fois plus (70 min pour 71 s) ou s'arrête (« HDR image decode failed »), et les `snapshot` ne montrent rien. Parade : ramener chaque source en SDR BT.709 (`${CLAUDE_PLUGIN_ROOT}/outils/medias/traiter.py`), contrôler `color_transfer` par `ffprobe` (ni `arib-std-b67` ni `smpte2084`), mettre `--sdr` dans `render.sh`, lire le journal de rendu, et cacher par défaut tout élément que seul `render(t)` montre."
+  ],
+  [
+   "propose",
+   "skills/episode/references/pieges.md",
+   "- **Wikimedia, limites de l'API** (validé sur MM, 12 et 13/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) :"
+  ],
+  [
+   "propose",
+   "skills/episode/references/recit-retention.md",
+   "# Récit et rétention (`PROPOSÉ`, à valider par blocs)"
+  ],
+  [
+   "propose",
+   "skills/episode/references/recit-retention.md",
+   "## 8. Essai : « Illusion of Novelty » (essai en cours sur AA, `PROPOSÉ`, 02/11/2026)"
+  ],
+  [
+   "propose",
+   "skills/episode/references/recit-retention.md",
+   "**Base** : la Méthode v1 (étude AA, hors plugin ; Claude, 23/10/2026, `PROPOSÉ`, cinq blocs), tirée d'une étude de rétention (étude AA, 23/10/2026 : 35 analyses, les vraies courbes de la chaîne AA). S'y ajoutent des repères tirés d'une autre chaîne (24/10/2026), transposés. On lit la Méthode par blocs ; ce fichier n'en donne que l'essentiel et les ajouts."
+  ],
+  [
+   "propose",
+   "skills/episode/references/recit-retention.md",
+   "**Protocole de bilan à J+7** (généralisé de l'E011 d'AA ; `PROPOSÉ`) :"
+  ],
+  [
+   "propose",
+   "skills/episode/references/recit-retention.md",
+   "Les repères de l'ouverture, de la première réponse, de l'ordre des couches, du renversement et de la dernière révélation sont validés sur AA (26/10/2026, `METHODE_RECIT.md`) ; le reste du patron est `PROPOSÉ`."
+  ],
+  [
+   "propose",
+   "skills/regarder/SKILL.md",
+   "## Étude d'une chaîne de référence (`PROPOSÉ`)"
+  ],
+  [
+   "propose",
+   "skills/regarder/SKILL.md",
+   "5. **Le rapport** `docs/rapports/ETUDE_<CHAINE>_AAAA-MM-JJ.md` : chiffres ; ce qui sépare les succès ; accroche et narration ; direction artistique, mouvement et transitions ; ce qui nous sépare d'eux ; recommandations `PROPOSÉ` par blocs (sujet et titre, ouverture, corps du film, voix et son, image et montage, format)."
+  ],
+  [
+   "propose",
+   "skills/shorts/SKILL.md",
+   "- `episodes/<id>/SHORTS_vN.md` : boucles candidates, hooks, scripts et ponts (`PROPOSÉ`, puis choix du propriétaire)."
+  ],
+  [
+   "propose",
+   "skills/shorts/SKILL.md",
+   "Méthode pour choisir, écrire, monter et contrôler les shorts d'un film de la chaîne. Statut du skill : `PROPOSÉ` (rédigé sur AA le 19/10/2026 d'après les décisions de son propriétaire du même jour ; à valider sur le pilote, épisode 001 d'AA)."
+  ],
+  [
+   "propose",
+   "skills/shorts/references/montage-vertical.md",
+   "- Musique dès 0,0 s, **plus présente que dans les films** (validé sur AA, 19/10/2026) : dans `mix.py`, `MUS_REL` −6 et `MUS_DUCK` 2, soit environ 8 LU sous la voix (`PROPOSÉ`). Effets seulement sur un repère du brief."
+  ],
+  [
+   "propose",
+   "skills/shorts/references/plateformes.md",
+   "- **Niveau sonore** : plus fort que les films (validé sur AA, 19/10/2026) ; master à −14 LUFS, crête vraie ≤ −1 dBTP (`PROPOSÉ`, `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` ; les écarts de la chaîne, dans `direction/ECARTS.md`, l'emportent). Aucune source sur la normalisation des trois plateformes n'a été lue : on mesure sur les premiers envois."
+  ],
+  [
+   "propose",
+   "skills/thumbnail-strategist/SKILL.md",
+   "- Fiche de concepts (5 au moins) et choix des 3 variantes, statut `PROPOSÉ`."
+  ],
+  [
+   "propose",
+   "skills/thumbnail-strategist/references/promesse-et-concepts.md",
+   "Claude présente les 3 variantes avec leurs fiches, statut `PROPOSÉ`. Le propriétaire choisit celle qui sort et celles qui entrent au test. Une variante écartée n'est pas supprimée : elle reste dans son dossier."
+  ],
+  [
+   "propose",
+   "skills/thumbnail-strategist/references/test-et-journal.md",
+   "- Concepts, variantes, hypothèses, leçons : `PROPOSÉ`, puis `VALIDÉ` (le propriétaire, date, référence)."
+  ],
+  [
+   "propose",
+   "skills/youtube-seo/SKILL.md",
+   "7. **Soumission au propriétaire** : dossier `PROPOSÉ` + fiche de conformité. Il choisit le titre, valide, publie."
+  ],
+  [
+   "propose",
+   "skills/youtube-seo/SKILL.md",
+   "Méthode pour rédiger et contrôler le **dossier de publication** d'un épisode : `episodes/<id>/PUBLICATION_vN.md`, statut `PROPOSÉ`. Le propriétaire valide et met en ligne lui-même ; Claude ne publie jamais. Skill rédigé sur AA le 16/10/2026 d'après l'étude AA des skills YouTube (§ 2 et § 3.2) et le dossier fait à la main pour l'E003 d'AA. Statut du skill : `VALIDÉ` (validé sur AA, 17/10/2026)."
+  ],
+  [
+   "propose",
+   "skills/youtube-seo/references/gabarit-et-controle.md",
+   "**Statuts** : `PROPOSÉ` partout, sauf ce que le propriétaire a `VALIDÉ` (date)."
+  ],
+  [
+   "renvoi-mort",
+   "skills/blender-pro/references/roble3/cameras.md",
+   "## When to load `references/overview.md`"
+  ],
+  [
+   "renvoi-mort",
+   "skills/blender-pro/references/roble3/materials.md",
+   "## When to load `references/overview.md`"
+  ],
+  [
+   "renvoi-mort",
+   "skills/blender-pro/references/scenario-expert/expert.md",
+   "- [`references/bpy-reliability.md`](references/bpy-reliability.md): checklist and tested procedures"
+  ],
+  [
+   "renvoi-mort",
+   "skills/blender-pro/references/scenario-expert/expert.md",
+   "- `references/blender-5.2-deltas.md`: full, cited list of what changed from 2.8x to 5.2 per domain"
+  ],
+  [
+   "renvoi-mort",
+   "skills/blender-pro/references/scenario-expert/expert.md",
+   "[`references/blender-5.2-deltas.md`](references/blender-5.2-deltas.md) before trusting any"
+  ],
+  [
+   "renvoi-mort",
+   "skills/blender-pro/references/scenario-expert/expert.md",
+   "`references/critique.md`."
+  ],
+  [
+   "renvoi-mort",
+   "skills/blender-pro/references/scenario-lighting-rendering/lighting-rendering.md",
+   "- [`references/expert-notes.md`](references/expert-notes.md): principles per expert with timestamps,"
+  ],
+  [
+   "renvoi-mort",
+   "skills/blender-pro/references/scenario-lighting-rendering/lighting-rendering.md",
+   "- [`references/procedures.md`](references/procedures.md): tested code for every stage (P1 units to"
+  ],
+  [
+   "renvoi-mort",
+   "skills/blender-pro/references/scenario-lighting-rendering/lighting-rendering.md",
+   "- [`references/sources.md`](references/sources.md): the 15 videos, credentials, best timestamps, and"
+  ],
+  [
+   "renvoi-mort",
+   "skills/blender-pro/references/scenario-lighting-rendering/lighting-rendering.md",
+   "- `references/critique.md`: the rubric to judge a render or sequence, in expert reading order, with"
+  ],
+  [
+   "renvoi-mort",
+   "skills/blender-pro/references/scenario-lighting-rendering/lighting-rendering.md",
+   "sequences, the contact sheet. Judge them with [`references/critique.md`](references/critique.md):"
+  ],
+  [
+   "unite",
+   "outils/controle/README.md",
+   "Généralisé de `mesurer_sons.py` de l'E011 d'AA (sons Soundza). Par fichier : codec, fréquence d'échantillonnage, canaux, profondeur, durée, niveau intégré (LUFS), crête vraie (dBTP), part de l'énergie entre 1 et 4 kHz, raccord de boucle (énergie des 100 premières et dernières ms), puis une liste « À VOIR » : codage 8 bits (μ-law), fréquence sous 32 kHz, crête vraie au-dessus de `--crete-max` (0 dBTP par défaut ; un son à +0,7 dBTP a été écarté sur AA), écart de boucle au-delà de 1,5 dB avec `--boucle`, **parole possible** avec `--whisper`."
+  ],
+  [
+   "unite",
+   "outils/montage/README.md",
+   "- Creux (facultatifs, ajoutés le 25/10/2026 pour l'E008 d'AA, à la demande du propriétaire : « arrêt brutal de son et musique ») : `\"creux\": [{\"debut\": …, \"fin\": …, \"baisse_db\": 8, \"rampe\": 0.8, \"raison\": \"…\"}]`. La musique seule baisse de `baisse_db` dB sur la fenêtre, avec des rampes en cosinus de `rampe` s au dehors ; les effets restent. Sans cette clé, le mix est identique à avant (vérifié sur le plan E008 v1 d'AA : −16,1 LUFS, −2,0 dBTP, LRA 6,0)."
+  ],
+  [
+   "unite",
+   "outils/montage/README.md",
+   "- Essais sur l'E007 d'AA (24/10/2026, dans le scratchpad) : film « voix » de 15 655 images, flux vidéo identique (MD5) à celui du master v1 approuvé ; mix de démonstration à −16,1 LUFS, −1,9 dBTP, image copiée à l'identique ; SRT régénéré identique à `PUBLICATION_v1.en.srt`. Durées : collage 22 min (encodage), mix 6,5 min."
+  ],
+  [
+   "unite",
+   "outils/montage/README.md",
+   "- Musique : `duree` ou `fin` ; `decalage` = départ dans la source ; `boucle` = [début, fin] dans la source (en secondes, de préférence sur des mesures entières du relevé musical), retour avec un fondu linéaire de `fondu_boucle` pris avant le point de boucle ; `niveau_lu` = sonie intégrée du départ par rapport à celle de la voix (règle par défaut : musique de 7 à 9 LU sous la voix, mesurée, `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 2 ; la valeur s'applique avant la baisse, l'écart réel se mesure : skill `studio-faceless:direction-sonore`, `references/musique-par-cues.md` § 4) ; `baisse_db` facultatif (défaut : `baisse_sous_voix_db`)."
+  ],
+  [
+   "unite",
+   "outils/shorts/README.md",
+   "| `voix_short.py` | Bande voix d'un short : tête et queue resserrées, pauses plafonnées, bloc D retiré pour la version YouTube (DEBUT et FIN dans des silences), −19 LUFS, crête −2 dBTP, contrôle des recopies | `voix_short.py PRISE SORTIE.wav [--sans-d DEBUT FIN] [--plafond 0.35]` |"
+  ],
+  [
+   "unite",
+   "referentiels/DIRECTION_AUDIO.md",
+   "- **Une piste remontée seule passe dans son propre limiteur** (validé sur MM, 28/10/2026, constat du 27/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ). Le mix du film applique un gain final unique vers −16 LUFS, plafonné par la crête vraie : sur le film d'origine, +1,4 dB sur la seule voix d'une séquence a porté sa crête à −0,6 dBTP et fait tomber tout le film à −18,0 LUFS. Après le gain de la piste, `alimiter=level_in=1:level_out=1:limit=0.7079:attack=5:release=50:asc=0:level=0:latency=1` (plafond −3 dBFS, anticipation 5 ms, retour 50 ms, sans réglage automatique du niveau, latence compensée) ne touche que ses crêtes ; puis remesurer le film."
+  ],
+  [
+   "unite",
+   "referentiels/DIRECTION_AUDIO.md",
+   "- Le moteur abaisse tout le mix pour rester sous −1 dBTP : régler les gains à la source pour qu'il n'ait pas à le faire."
+  ],
+  [
+   "unite",
+   "referentiels/DIRECTION_AUDIO.md",
+   "| Prise approuvée | Ne jamais régénérer, réécrire, accélérer ni couper une prise sans autorisation explicite. **Seule exception, validée sur AA le 15/10/2026** : toute narration est ralentie « juste un peu » selon la méthode du § 2 (« le principe de ralentir juste un peu doit être pris dans toutes les séquences »). **Les shorts n'y sont pas soumis** (validé sur AA, 19/10/2026) : script dédié, prise à vitesse d'origine, pauses resserrées au montage. Une seule prise par short ; la version YouTube est la même prise **sans le bloc D**, coupée à des frontières de phrase (script en blocs, accord du 19/10/2026 sur AA ; skill `studio-faceless:shorts`). **Son des shorts plus fort que celui des films** (validé sur AA, 19/10/2026 : « un son plus élevé qui capte l'attention »). Valeurs `PROPOSÉ`, à confirmer à l'écoute : musique dès 0,0 s, environ 8 LU sous la voix (`MUS_REL` −6, `MUS_DUCK` 2), comme les 7 à 9 LU des films depuis le 03/11/2026 (§ 2) ; master final à −14 LUFS, crête vraie ≤ −1 dBTP, avec un limiteur passé par Claude après le rendu. **Effets dans les shorts** (validé sur AA, 19/10/2026, formule des shorts) : un effet court (moins de 0,4 s : whoosh, impact, clic) sur chaque événement visuel, à 12 à 18 dB sous la voix ; un riser au plus avant la révélation ; environ 0,3 s de silence avant le fait clé ; coupes calées sur le tempo de la musique. La règle « effets rares » reste celle des films. |"
+  ],
+  [
+   "unite",
+   "skills/episode/references/pieges.md",
+   "- **Son de bibliothèque jamais mesuré** : un son de bibliothèque en ligne peut être codé en 8 bits (μ-law), dépasser 0 dBTP ou porter une voix. Le mesurer avant tout emploi (`outils/controle/mesurer_sons.py`, Whisper compris) ; un écart écarte le son, une absence d'écart ne vaut pas écoute (validé sur AA, 02/11/2026 ; `DIRECTION_AUDIO.md` § 4 bis)."
+  ],
+  [
+   "unite",
+   "skills/episode/references/pieges.md",
+   "- **Séquences mixées séparément**, de −16,8 à −17,8 LUFS, et crête de seq7 à −1,3 dBTP : d'où le mix du film à la fin, avec un seul gain et un seul limiteur (E007)."
+  ],
+  [
+   "unite",
+   "skills/episode/references/pieges.md",
+   "- **`niveau_lu` de `plan-son.json`** : il s'applique avant la baisse sous la voix. Une musique à −13 a mesuré 16 LU sous la voix, et non 13. Mesurer l'écart réel sur l'essai `--son-seul` (musique estimée = mix moins voix) avant de livrer (E010)."
+  ],
+  [
+   "unite",
+   "skills/episode/references/rendu-collage.md",
+   "- **Outil** : `python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/montage/mix_film.py <film>-voix.mp4 plan-son.json [--son-seul]` (schéma du plan : `${CLAUDE_PLUGIN_ROOT}/outils/montage/README.md`). Testé sur AA (E007) : −16,1 LUFS, −1,9 dBTP, image identique, 6,5 min, environ 2 à 3 Go de mémoire. Entrées : le master voix, son journal et `episodes/<id>/montage/plan-son.json`. La sortie est le master final, dont l'image est copiée telle quelle."
+  ],
+  [
+   "unite",
+   "skills/shorts/references/montage-vertical.md",
+   "- Musique dès 0,0 s, **plus présente que dans les films** (validé sur AA, 19/10/2026) : dans `mix.py`, `MUS_REL` −6 et `MUS_DUCK` 2, soit environ 8 LU sous la voix (`PROPOSÉ`). Effets seulement sur un repère du brief."
+  ],
+  [
+   "unite",
+   "skills/shorts/references/plateformes.md",
+   "- **Niveau sonore** : plus fort que les films (validé sur AA, 19/10/2026) ; master à −14 LUFS, crête vraie ≤ −1 dBTP (`PROPOSÉ`, `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` ; les écarts de la chaîne, dans `direction/ECARTS.md`, l'emportent). Aucune source sur la normalisation des trois plateformes n'a été lue : on mesure sur les premiers envois."
+  ]
+ ]
+}

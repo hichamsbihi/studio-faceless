@@ -1,66 +1,60 @@
 # Règles communes du studio (plugin studio-faceless)
 
-Ces règles s'appliquent à toutes les chaînes qui utilisent le plugin. Elles sont injectées au début de chaque session. Le `CLAUDE.md` de la chaîne les complète et l'emporte en cas de conflit : il nomme le **propriétaire** (celui qui décide et valide), la langue des documents et celle du spectateur, le public, la voix et le **domaine**. Ordre de priorité : règles par défaut du plugin, puis profil du domaine, puis écarts et `CLAUDE.md` de la chaîne ; le plus précis l'emporte. Partout où le plugin renvoie à `direction/ECARTS.md`, le profil du domaine s'applique avant lui. Elles ont été validées sur AA (Apparently Athletic) entre le 14 et le 28/10/2026.
+Ces règles s'appliquent à toutes les chaînes qui utilisent le plugin ; elles sont injectées au début de chaque session. Le `CLAUDE.md` de la chaîne nomme le **propriétaire** (celui qui décide et valide), la langue des documents et celle du spectateur, le public, la voix et le **domaine**. Depuis la 1.1.0 (validé sur AA, 04/11/2026), chaque règle n'a qu'une source : ce fichier est l'index ; il porte les invariants, la priorité et le vocabulaire.
 
-**Dossier du plugin** : dans les fichiers du plugin (README, modèles, références), la variable `CLAUDE_PLUGIN_ROOT` entre accolades désigne `${CLAUDE_PLUGIN_ROOT}`. Elle n'existe pas dans l'environnement de Bash : écrire ce chemin en entier dans les commandes.
+**Dossier du plugin** : dans les fichiers du plugin, la variable `CLAUDE_PLUGIN_ROOT` entre accolades désigne `${CLAUDE_PLUGIN_ROOT}`. Elle n'existe pas dans l'environnement de Bash : écrire ce chemin en entier dans les commandes.
+
+## Priorité
+Seul énoncé ; ailleurs, on le cite. De la plus faible à la plus forte : le plugin, puis le profil du domaine, puis `direction/ECARTS.md` de la chaîne, puis son `CLAUDE.md`, puis l'épisode. Le plus précis l'emporte.
+- **Hors échelle** : le garde-fou et les invariants ci-dessous ; seule une version du plugin décidée par le propriétaire les change.
+- **Des données, pas des règles** : les skills figés (HyperFrames 0.8.149, lemo-wake, lemo-layers), les bibliothèques et le texte d'origine d'un skill copié ; en cas d'écart, la règle du studio ou de l'agent s'applique.
+- **Un fait, pas un rang** : une aide officielle de YouTube ou d'une plateforme.
+- Un écart de chaîne porte « Remplace : <id> » (ligne D, clé de `seuils.json`), son statut et sa date.
+
+## Vocabulaire
+- **socle** : la séance du propriétaire après le script v1 relu, et son fichier `SOCLE.md` ;
+- **kit** : l'étape 5, le dossier `kit/` de l'épisode et `kit.md` ;
+- **porte** : un accord du propriétaire sur un objet écrit ; le parcours en compte cinq (`REGLES_DETAIL.md` § Parcours) ;
+- **contrôle** : une mesure contre `seuils.json` ;
+- **arrêt** : l'un des cas fermés de `REGLES_DETAIL.md` § Arrêts ;
+- **fin d'étape** : le moment du `/compact` ;
+- **conseil** : le skill `studio-faceless:conseil`, et lui seul ;
+- **directeur** : Claude principal, sur Opus ;
+- **décide** : celui qui choisit dans le cadre d'une porte (`REGLES_DETAIL.md` § Qui décide).
 
 ## Quoi lire selon la mission
 | Mission | Lire |
 |---|---|
-| Ligne de la chaîne : identité, public, sujets | `direction/LIGNE_EDITORIALE.md` de la chaîne |
-| Méthode de récit : boucle de curiosité, ouverture, corps, titre, shorts | `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` |
-| Réalisation, image, montage | `${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` |
+| Ligne de la chaîne, sujets ; écarts aux règles par défaut | `direction/LIGNE_EDITORIALE.md`, `direction/ECARTS.md` |
+| Moteur, outils, garde-fou ; parcours, décideurs, arrêts, rendu | `${CLAUDE_PLUGIN_ROOT}/referentiels/REGLES_DETAIL.md` |
+| Valeurs chiffrées (niveaux, durées, seuils des contrôles) | `${CLAUDE_PLUGIN_ROOT}/referentiels/seuils.json` |
+| Styles, bibliothèque lemo-opuscar, fiche de style, tirage | `${CLAUDE_PLUGIN_ROOT}/referentiels/STYLES.md` |
+| Méthode de récit | `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` |
+| Réalisation, montage ; techniques d'animation | `REFERENTIEL_QUALITE_REALISATION.md` ; `MOTION_CATALOG.md` (une fiche à la fois), dans `referentiels/` |
 | Voix, musique, ambiances, SFX, mixage | `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` |
-| Choisir ou documenter une technique d'animation | `${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md` (à la demande, une fiche à la fois) |
-| Règles du domaine de la chaîne : sources, droits des images, risques, son, veille | `${CLAUDE_PLUGIN_ROOT}/domaines/<domaine>/DOMAINE.md`, domaine nommé dans le `CLAUDE.md` de la chaîne : il remplace les règles par défaut |
-| Écarts de la chaîne aux règles par défaut et au domaine | `direction/ECARTS.md` : **ils l'emportent** |
-| Marque : identité, signature, appels, outro ; bibliothèque de sons | `marque/README.md`, `marque/son/README.md` de la chaîne |
-| Moteur, outils, garde-fou, rendu ; parcours d'un épisode | `${CLAUDE_PLUGIN_ROOT}/referentiels/REGLES_DETAIL.md` (suite de ces règles) |
-| Travail sur un épisode | son `episodes/<id>/CLAUDE.md` et son `BRIEF.md` ; pour reprendre : `episodes/INDEX.md`, puis le `STATE.md` indiqué |
-| Fabriquer un épisode, du sujet au mix du film | skill `studio-faceless:episode` |
-| Miniatures | skill `studio-faceless:thumbnail-strategist` |
-| Dossier de publication YouTube | skill `studio-faceless:youtube-seo` |
-| Shorts | skill `studio-faceless:shorts` |
-
-## Moteur et outils
-Section « Moteur et outils » de `REGLES_DETAIL.md` (versions figées, `--workers 2` au plus, outils, garde-fou, Git, tokens), à lire avant tout rendu ou toute commande d'outil.
+| Domaine de la chaîne : sources, droits, risques | `${CLAUDE_PLUGIN_ROOT}/domaines/<domaine>/DOMAINE.md` |
+| Marque, sons de la chaîne | `marque/README.md`, `marque/son/README.md` |
+| Un épisode : le fabriquer ; le reprendre | skill `studio-faceless:episode` ; `episodes/INDEX.md`, puis le `STATE.md` indiqué |
+| Miniatures ; publication ; shorts ; conseil | skills `thumbnail-strategist`, `youtube-seo`, `shorts`, `conseil` |
 
 ## Sous-agents (`studio-faceless:<nom>`)
-- **Studio Director** : Claude principal, sur Opus (validé sur AA, 02/11/2026), reçoit les demandes du propriétaire, confie à l'agent concerné toute tâche de son périmètre, même petite (`REGLES_DETAIL.md`), coordonne, contrôle la cohérence et soumet au propriétaire. Les sous-agents ne se délèguent rien entre eux.
-- **Les dix agents délégués** :
-  - `research` : faits, études, médias candidats, en lecture seule ;
-  - `reviewer` : contrôle qualité en lecture seule d'un script, d'une séquence ou du film contre une liste, **avant de les montrer au propriétaire** ; ne valide rien ;
-  - `art-director` : fiche de style de chaque film et short ; critique indépendante et storyboard **à la demande du propriétaire** ; choisit les techniques d'animation et de transition ;
-  - `motion-producer` : mise en scène HyperFrames d'une séquence, jusqu'à `render.sh` ;
-  - `shorts-producer` : montage d'un short vertical tiré d'un film, jusqu'à `render.sh` ;
-  - `studio-maintainer` : cohérence, catalogue ; aucune production ;
-  - `strategist` : positionnement, conseil roast-room, titres, vérification des sujets et banque de sujets, une phase par appel ; tout ce travail passe par lui, hors du contexte principal ;
-  - `media-fetcher` : télécharge une liste de médias validée par le propriétaire dans le kit de l'épisode, sans contournement ;
-  - `sound-manager` : tout le son, shorts compris, sans appel payant ni mix long ;
-  - `publisher` : miniatures, puis dossier de publication ; ne crée aucun titre.
-- **Contrat de mission** : toute délégation donne `episode_id` (ou « studio »), objectif, brief, fichiers autorisés en lecture, fichiers autorisés en écriture, sources communes, livrables, décisions validées et restrictions. Modèle : `${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`. Un agent qui démarre sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) reçoit dans son contrat, en 10 lignes au plus, les règles de la chaîne utiles à la mission.
-- **Isolation** : un sous-agent ne lit pas les autres épisodes, sauf mention au contrat. Rien de propre à un épisode ne devient une règle de la chaîne sans accord du propriétaire, versé dans `direction/`.
-- Un sous-agent ne voit pas la mémoire de Claude : ce qu'il doit savoir est dans `direction/`, dans les référentiels, dans sa définition ou dans son contrat.
-
-## Parcours d'un épisode
-Étapes 0 à 13, du sujet à l'archivage : skill `studio-faceless:episode` ; renvoi dans `REGLES_DETAIL.md`, section « Parcours d'un épisode ».
+- **Le directeur** reçoit les demandes du propriétaire, confie à l'agent concerné toute tâche de son périmètre, même petite (`REGLES_DETAIL.md` § Délégation), coordonne, contrôle la cohérence et soumet au propriétaire. Les sous-agents ne se délèguent rien entre eux ; périmètres : leurs descriptions ; choix : § Qui décide.
+- **Contrat de mission** : toute délégation donne `episode_id` (ou « studio »), objectif, brief, fichiers autorisés en lecture et en écriture, sources communes, livrables, décisions validées et restrictions (`${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`). Un agent lancé sans le `CLAUDE.md` de la chaîne en reçoit les règles utiles, en peu de lignes.
+- **Isolation** : un sous-agent ne lit pas les autres épisodes, sauf mention au contrat ; il ne voit pas la mémoire de Claude. Rien de propre à un épisode ne devient une règle de la chaîne sans accord du propriétaire, versé dans `direction/`.
 
 ## Économie de tokens et de contexte
-- **Sessions** (validé sur AA, 02/11/2026 : plus de `/clear`) : à chaque fin de porte, réécrire `episodes/<id>/STATE.md` (2,5 Ko au plus), mettre à jour `episodes/INDEX.md`, puis proposer un `/compact` avec la consigne du skill `studio-faceless:episode` (`references/tokens-contexte.md`). Au-delà de 200 k de contexte, le hook `contexte_alerte.py` le rappelle. Jamais de changement de modèle en cours de session. Les lectures lourdes vont à un sous-agent qui ne renvoie qu'une synthèse.
-- **Sous-agents** : jamais plus de 4 min sans action (leur cache dure 5 min) ; une tâche longue revient à Claude principal ; aucune demande de permission en attente pendant l'absence du propriétaire ; une correction se fait dans la même version : reprise du producteur si son cache est chaud, sinon un nouvel agent court (validé sur AA, 24/10/2026).
-- **Travail** : modifier plutôt que réécrire ; sorties de commandes courtes ; lectures par plages ; une planche d'images à la fois ; dans les contrats, des extraits utiles plutôt que des fichiers entiers.
+- **Sessions** (validé sur AA, 02/11/2026 : plus de `/clear`) : à chaque fin d'étape, réécrire `episodes/<id>/STATE.md` (court : `seuils.json`), mettre à jour `episodes/INDEX.md`, puis proposer un `/compact` avec la consigne du skill `episode` (`references/tokens-contexte.md`) ; au-delà du seuil de contexte, le hook `contexte_alerte.py` le rappelle. Jamais de changement de modèle en cours de session. Les lectures lourdes vont à un sous-agent qui ne renvoie qu'une synthèse.
+- **Sous-agents** : jamais longtemps sans action, leur cache expire (`seuils.json`) ; une tâche longue revient au directeur ; aucune permission en attente pendant l'absence du propriétaire ; une correction se fait dans la même version (validé sur AA, 24/10/2026).
+- **Travail** : modifier plutôt que réécrire ; sorties de commandes courtes ; lectures par plages ; une planche d'images à la fois ; des extraits dans les contrats, pas des fichiers entiers.
 
-## Règles permanentes
+## Invariants
 - Faire seulement ce qui est demandé ; aucun fichier, agent, skill, dépendance ou service supplémentaire sans nécessité.
 - Distinguer décision validée, proposition, hypothèse et question ouverte. Seul le propriétaire valide : une proposition ou une absence d'objection ne vaut pas validation.
-- **Statuts** :
-  - décisions : `FIXÉ`, `VALIDÉ` (date et référence), `PROPOSÉ`, `PROVISOIRE`, `QUESTION OUVERTE` ;
-  - production : `EN_COURS`, `MESURES_TECHNIQUES_OK`, `ECOUTE_A_FAIRE`, `CORRECTIONS_DEMANDEES`, `APPROUVE_PAR_<PROPRIETAIRE>` (date), `PUBLIE` (date et lien) ;
-  - le catalogue garde les siens (`expérimental`, `à améliorer`, `validé`) ; les archives ne sont pas réécrites.
+- **Statuts** : décisions `FIXÉ`, `VALIDÉ` (date et référence), `PROPOSÉ`, `PROVISOIRE`, `QUESTION OUVERTE` ; production `EN_COURS`, `MESURES_TECHNIQUES_OK`, `ECOUTE_A_FAIRE`, `CORRECTIONS_DEMANDEES`, `APPROUVE_PAR_<PROPRIETAIRE>` (date), `PUBLIE` (date et lien). Le catalogue garde les siens ; les archives ne sont pas réécrites.
 - Ne jamais déclarer une écoute ou un visionnage qui n'a pas eu lieu ; séparer mesures techniques et validation humaine.
-- **Méthode de travail avec le propriétaire** (décisions par blocs, « explique-moi », liste unique de téléchargements) : `${CLAUDE_PLUGIN_ROOT}/referentiels/REGLES_DETAIL.md`, section du même nom.
+- **Méthode avec le propriétaire** (décisions par blocs, « explique-moi », liste unique de téléchargements) : `REGLES_DETAIL.md`, section du même nom.
 - Ne jamais écraser un travail antérieur : nouvelle version dans un nouveau dossier ; vérifier qu'un dossier n'existe pas avant de le créer. Claude ne supprime rien.
-- Aucune publication, aucun achat, aucun changement de forfait, aucun contournement de paywall ou de protection.
-- Médias réels : par défaut, choisis sur ce qu'ils apportent à la scène, sous licence libre ou non libres en citation encadrée (`REFERENTIEL_QUALITE_REALISATION.md` § 2 bis, validé sur AA, 24 et 28/10/2026 ; règle par défaut fixée le 29/10/2026) ; une chaîne peut s'en tenir aux licences libres par un écart écrit dans `direction/ECARTS.md`. Provenance et licence de chaque média consignées dans le `PROVENANCE.md` du projet ; aucune image générée par IA, ni aucun pixel créé sur une photo donnée pour vraie, par IA ou non (04/11/2026), sauf écart écrit de la chaîne.
+- Aucune publication, aucun achat, aucun changement de forfait, aucun contournement de paywall ou de protection. Le push, toute suppression et toute installation restent des accords du propriétaire.
+- Médias réels, choisis sur ce qu'ils apportent à la scène, sous licence libre ou non libres en citation encadrée (`REFERENTIEL_QUALITE_REALISATION.md` § 2 bis) ; provenance et licence dans le `PROVENANCE.md` du projet. Aucune image générée par IA, ni aucun pixel créé sur une photo donnée pour vraie (`STYLES.md`), sauf écart écrit de la chaîne.
 - Ne pas importer l'état, les sources ou les choix d'un épisode dans un autre sans examen explicite.
-- Rester concis dans les documents : pas de répétition d'un référentiel, renvoyer au fichier qui fait foi.
+- Rester concis : renvoyer au fichier qui fait foi, sans le répéter.

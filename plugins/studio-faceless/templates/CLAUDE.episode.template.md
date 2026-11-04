@@ -3,7 +3,7 @@
 Modèle inactif tant qu'il n'est pas utilisé pour un épisode autorisé. À copier ultérieurement dans `episodes/[identifiant]/CLAUDE.md`, puis à compléter sans inventer de validation.
 
 ## Cadre applicable
-- Respecter le `CLAUDE.md` de la chaîne et consulter les référentiels en vigueur selon la mission : `direction/LIGNE_EDITORIALE.md` (ligne éditoriale de la chaîne) et `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` pour recherche et storytelling, `${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` pour réalisation et qualité visuelle, `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` pour narration vocale et mixage. Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur ces règles par défaut. Les chemins de la chaîne partent de sa racine.
+- Respecter le `CLAUDE.md` de la chaîne et consulter les référentiels en vigueur selon la mission : `direction/LIGNE_EDITORIALE.md` (ligne éditoriale de la chaîne) et `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` pour recherche et storytelling, `${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` pour réalisation et qualité visuelle, `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` pour narration vocale et mixage. Les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité). Les chemins de la chaîne partent de sa racine.
 - Renvoyer à ces documents sans recopier leurs règles ; respecter leurs statuts de décision, proposition ou hypothèse.
 - Langues de la chaîne (son `CLAUDE.md`).
 - Limiter ces instructions à cet épisode. Ne pas importer les conclusions, sources, décisions ou états d'autres épisodes comme des acquis.
@@ -20,7 +20,7 @@ Modèle inactif tant qu'il n'est pas utilisé pour un épisode autorisé. À cop
   - `inputs/` : briefs et prises d'origine fournis par le propriétaire, en lecture seule ;
   - `research/` : notes et sources ;
   - `assets/` : médias retenus, avec leur `PROVENANCE.md` ;
-  - `kit/` : socle préparé une seule fois pour toutes les séquences (médias convertis, voix, gabarit, briefs) ;
+  - `kit/` : le kit, préparé une seule fois pour toutes les séquences (médias convertis, voix, gabarit, briefs) ;
   - `production/<séquence>-vN/` : un projet HyperFrames par version, jamais écrasé ;
   - `montage/` : `montage.json` et `plan-son.json` du collage et du mix du film ;
   - `outputs/` : masters livrés ;

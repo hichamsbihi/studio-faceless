@@ -1,5 +1,7 @@
 # Référence : publication (miniatures, dossier YouTube, shorts, analyse de vidéos)
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Cette fiche décrit, fichier par fichier, tout ce que le plugin contient pour la publication d'un épisode : les skills `thumbnail-strategist` (miniatures), `youtube-seo` (dossier de publication), `shorts` (shorts verticaux) et `regarder` (analyse d'une vidéo YouTube publique par Gemini), plus leurs outils : `scripts/miniature.py`, `outils/controle/publication.py`, les six scripts de `outils/shorts/` et `outils/gemini/regarder.py`. Les fichiers du plugin font foi : en cas d'écart, la fiche se corrige.
 
 ## Table des matières

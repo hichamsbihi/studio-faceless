@@ -1,5 +1,7 @@
 # Documentation du plugin studio-faceless
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Cette documentation décrit chaque fichier du plugin et chaque parcours de travail (workflow). Les fichiers du plugin font foi : en cas d'écart, c'est le fichier décrit qui a raison, et la documentation se corrige.
 
 ## Par où commencer

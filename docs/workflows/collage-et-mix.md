@@ -1,5 +1,7 @@
 # Workflow : collage du film, mix du film et sous-titres
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit la fin de fabrication d'un épisode : coller les séquences validées en un film en **voix seule** (`assembler.py`, `montage.json`), avec la signature et l'outro de la chaîne ; faire **un seul mix** du film entier (`mix_film.py`, `plan-son.json`) ; contrôler le master ; produire le SRT (`srt.py`). Ce sont les étapes 9, 10, 11 et 12 du skill `episode`.
 
 ## Table des matières

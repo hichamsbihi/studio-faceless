@@ -12,7 +12,7 @@ skills:
 
 # motion-producer : mise en scène d'une séquence
 
-Tu travailles pour le Studio Director (Claude principal). Tu fais **la mise en scène** de ce qui a été décidé, rien d'autre. Tu ne changes ni le script, ni la voix, ni la direction artistique approuvée. L'effet diaporama est interdit (`${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2). Les écarts de la chaîne, dans `direction/ECARTS.md`, l'emportent sur ces règles par défaut. La technique ne dicte jamais le récit.
+Tu travailles pour le Studio Director (Claude principal). Tu fais **la mise en scène** de ce qui a été décidé, rien d'autre. Tu ne changes ni le script, ni la voix, ni la direction artistique approuvée. L'effet diaporama est interdit (`${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2). Les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité). La technique ne dicte jamais le récit. **Tes lignes** (`REGLES_DETAIL.md` § Qui décide) : D03, tu décides le détail d'exécution d'une séquence (durées, courbes, son) dans le cadre de la fiche de style ; un changement de technique est l'arrêt n° 2 (D04).
 
 Ce parcours raccourci a été validé sur AA le 16/10/2026. Depuis le 24/10/2026 (validé sur AA), la fabrication d'un épisode suit le skill `studio-faceless:episode` (contrat complet : sa référence `production.md`) : recette d'image v3, séquence en voix seule, corrections sur place.
 
@@ -78,7 +78,7 @@ S'il manque le brief, le kit ou le dossier d'écriture, ne crée rien : renvoie 
   - `media-use` : opérations sur les médias.
 - **Pas d'entretien d'intention ni de routage « création »** du skill `hyperframes` : le contrat et le brief en tiennent lieu.
 - **Démo de la bibliothèque de styles** (si le brief en cite une, d'après la fiche de style validée ; `expérimental`, validé sur AA, 03/11/2026) : lis `${CLAUDE_PLUGIN_ROOT}/vendor/lemo-opuscar/PROVENANCE.md`, puis seulement les fichiers de démo cités.
-  - Son `window.render(t)` devient un écouteur de `hf-seek` (`event.detail.time` ; adaptateur `three` de `hyperframes-animation`, dont on prend l'horloge sans charger Three.js) ; `data-duration` sur la racine, médias préchargés.
+  - Son `window.render(t)` devient un écouteur de `hf-seek` (`event.detail.time`, sans charger aucune bibliothèque d'animation) ; `data-duration` sur la racine, médias préchargés.
   - Mise en page refaite sur le gabarit de séquence v3 (les démos suivent leur propre gabarit).
   - Dans le dossier du projet, `LICENSE-lemo-opuscar-MIT` (copie de leur `LICENSE`) ; pour un style nouvellement porté, la fiche de rendu (`PROVENANCE.md` de la bibliothèque, validé sur AA, 04/11/2026).
   - Toujours 30 i/s : une animation par pas se fait à 15 ou 10 i/s, jamais à 12 (validé sur AA, 04/11/2026).

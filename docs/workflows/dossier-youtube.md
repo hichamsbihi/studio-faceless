@@ -1,5 +1,7 @@
 # Workflow : le dossier de publication YouTube
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce parcours couvre le dossier `PUBLICATION_vN.md` d'un épisode : trois titres, description, chapitres, crédits CC BY (par défaut, sauf écart de la chaîne), déclarations des voix et sons générés, tags et hashtags, commentaire épinglé et réponse, playlist, sous-titres SRT, réglages à la mise en ligne, contrôle par `publication.py`, soumission au propriétaire, puis les bilans J+2, J+7 et J+28. **Claude ne publie jamais** : le propriétaire choisit le titre, valide et met en ligne. La méthode fait foi dans le skill [`youtube-seo`](../../plugins/studio-faceless/skills/youtube-seo/SKILL.md).
 
 ## Table des matières

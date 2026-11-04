@@ -1,6 +1,6 @@
 # Montage vertical d'un short (1080 × 1920)
 
-Pour `studio-faceless:shorts-producer`, et pour Claude principal au contrôle. Chiffres propres aux plateformes (marges masquées, durée, niveau sonore) : `plateformes.md`. Les règles de `${CLAUDE_PLUGIN_ROOT}/referentiels/` sont des règles par défaut : les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent.
+Pour `studio-faceless:shorts-producer`, et pour Claude principal au contrôle. Chiffres propres aux plateformes (marges masquées, durée, niveau sonore) : `plateformes.md`. Les règles de `${CLAUDE_PLUGIN_ROOT}/referentiels/` sont des règles par défaut : les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité).
 
 ## Format
 MP4 1080 × 1920, 30 i/s constants, H.264, AAC 48 kHz, sauf indication contraire du brief. Détail de l'encodage : `plateformes.md` § Master unique.
@@ -65,7 +65,7 @@ Un média horizontal recadré au centre perd souvent l'essentiel. Moyens, à cho
 - Voix au premier plan ; bande fournie par le kit, prête (seul le gain change).
 - Effets : un effet court sur chaque événement visuel, à 12 à 18 dB sous la voix ; coupes calées sur le tempo (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md`, shorts).
 - Musique dès 0,0 s, **plus présente que dans les films** (validé sur AA, 19/10/2026) : dans `mix.py`, `MUS_REL` −6 et `MUS_DUCK` 2, soit environ 8 LU sous la voix (`PROPOSÉ`). Effets seulement sur un repère du brief.
-- `mix.py` garde sa cible de −16 LUFS. Claude principal fait ensuite le master à −14 LUFS, crête vraie ≤ −1 dBTP, avec un limiteur (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md`).
+- Le son du short se mixe à `shorts.mix_sequence_lufs` ; le directeur fait ensuite le master avec `${CLAUDE_PLUGIN_ROOT}/outils/shorts/master_short.py` : `shorts.master_lufs`, crête vraie ≤ `shorts.crete_vraie_max_dbtp`, limiteur à `shorts.limiteur_dbtp` (`seuils.json`).
 
 ## Contrôles
 Par l'agent, avant `render.sh` :

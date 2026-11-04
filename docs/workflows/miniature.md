@@ -1,5 +1,7 @@
 # Workflow : la miniature d'un épisode
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce parcours couvre la miniature d'un épisode, de la promesse partagée avec le titre jusqu'au test A/B et au journal : au moins cinq concepts véridiques, trois variantes très différentes, fabrication en HTML/CSS rendue par le Chrome de HyperFrames, contrôles mesurables, test Test & Compare et journal. La méthode fait foi dans le skill [`thumbnail-strategist`](../../plugins/studio-faceless/skills/thumbnail-strategist/SKILL.md) ; ce document en donne l'ordre, les commandes et les portes de validation.
 
 ## Table des matières

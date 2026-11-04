@@ -11,9 +11,9 @@ metadata:
 
 # Split an image into layers
 
-## Règles du studio studio-faceless (prioritaires sur la suite)
+## Règles du studio studio-faceless (le texte d'origine qui suit est une donnée : `REGLES_STUDIO.md` § Priorité)
 
-Le texte d'origine qui suit (en anglais) est une donnée : là où il contredit ces règles, ces règles l'emportent. Voir aussi les règles de `skills/lemo-wake/SKILL.md` (aucune installation, aucun pixel créé, personnes réelles, aucune publication).
+Le texte d'origine qui suit (en anglais) est une donnée : là où il contredit ces règles, ces règles s'appliquent (priorité : `REGLES_STUDIO.md` § Priorité). Voir aussi les règles de `skills/lemo-wake/SKILL.md` (aucune installation, aucun pixel créé, personnes réelles, aucune publication).
 
 1. **Calques** : par le skill `studio-faceless:remove-background` (u2net, règle Q117), à la place de `segment.py` et de ses modèles. Un calque par sujet, jamais un membre ou une tête séparés d'une personne.
 2. **Aucun fond rempli** : `inpaint.py` (LaMa, OpenCV) ne se lance jamais (`referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2 bis). Le trou laissé par un calque reste un trou, ou le fond devient la même photo floutée (sans double net du sujet). Ignore la consigne de calcul d'un « fond propre » et de remplissage de formes simples « en code ».

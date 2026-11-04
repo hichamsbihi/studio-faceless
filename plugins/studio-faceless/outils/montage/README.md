@@ -78,12 +78,12 @@ Un départ s'écrit en temps du film (`412.5`) ou en temps local d'une séquence
 - La voix est la référence : sonie intégrée (BS.1770) des seules séquences. Le journal donne aussi la sonie de la voix par séquence et l'écart entre séquences (mesuré, non corrigé).
 - Musique : gain = voix + `niveau_lu` − sonie intégrée du départ ; baisse sous la voix active par l'enveloppe RMS de la voix (10 ms, seuil −42 dBFS, 80 ms / 400 ms, remontée dans les pauses ≥ 0,25 s), comme le gabarit `mix.py`.
 - Effets : gain = voix + niveau du type − sonie momentanée maximale (400 ms) de l'extrait.
-- Gain final unique vers −16 LUFS mesuré sur les séquences ; signature et outro gardent leur niveau d'origine (comme au master E007 v1 d'AA) ; limiteur de crêtes vraies à −2,0 dBTP repris de l'assembleur.
-- Contrôles du MP4 mixé : images en même nombre et flux vidéo identique (MD5) à l'entrée, −16 ±1 LUFS, crête vraie ≤ −1,5 dBTP, décodage complet. Claude n'écoute pas : le master reste `ECOUTE_A_FAIRE`.
+- Gain final unique vers `mix.film_lufs_cible` (`seuils.json`), mesuré sur les séquences ; signature et outro gardent leur niveau d'origine (comme au master E007 v1 d'AA) ; limiteur de crêtes vraies à `mix.limiteur_dbtp`, repris de l'assembleur.
+- Contrôles du MP4 mixé : images en même nombre et flux vidéo identique (MD5) à l'entrée, `mix.film_lufs_cible` ± `mix.film_lufs_tolerance`, crête vraie ≤ `mix.film_crete_vraie_max_dbtp`, décodage complet. Claude n'écoute pas : le master reste `ECOUTE_A_FAIRE`.
 
 ## Limites
 - Format fixe : 1920 × 1080, 30 i/s, 48 kHz stéréo. L'image est encodée une seule fois, par l'assembleur (libx264 slow, CRF 16).
-- `--voix-seule` n'applique aucun gain : le film « voix » sort au niveau des pistes (environ −17 LUFS à l'E007 d'AA). Limiteur seulement au-delà de −2,0 dBTP.
+- `--voix-seule` n'applique aucun gain : le film « voix » sort au niveau des pistes (un peu sous la cible du film, mesuré à l'E007 d'AA). Limiteur seulement au-delà de `mix.limiteur_dbtp`.
 - Les séquences sorties du gabarit portent encore le gain de leur `mix.py` : les voix diffèrent un peu d'une séquence à l'autre (mesuré au journal du mix, non corrigé).
 - Effets très courts (< 0,4 s) : la sonie momentanée est moyennée sur 400 ms, donc ils ressortent un peu plus fort que leur type ne le dit.
 - Pas de balance, d'égalisation ni de creux 1–4 kHz dans `mix_film.py` (le creux reste « seulement si nécessaire », § 3).

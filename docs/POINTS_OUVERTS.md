@@ -1,11 +1,12 @@
 # Points ouverts
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce qui reste à décider ou à vérifier dans le plugin, relevé pendant l'écriture de la documentation (28/10/2026), mis à jour le 02/11/2026 (points réglés retirés, numéros de ligne recalés). Un point réglé sort de cette liste et entre dans le [`CHANGELOG`](../CHANGELOG.md).
 
 ## Décisions et tâches
 | # | Point | Fichiers | Recommandation |
 |---|---|---|---|
-| D4 | **Portes sans banque de questions** : `episode` prévoit une porte aux étapes 8, 9, 11 et 13, mais `grilles.md` n'a pas de questions pour elles | `skills/episode/SKILL.md`, `references/grilles.md` | Décidé (Hicham, 29/10/2026) : à faire au prochain épisode |
 | D5 | **Shorts** : le skill (`PROPOSÉ`) suppose un gabarit vertical et un modèle de `SHORTS_JOURNAL.md`, absents du plugin | `skills/shorts/`, `agents/shorts-producer.md` | Décidé (Hicham, 29/10/2026) : à faire au pilote des shorts |
 
 ## Vérifications (Claude)

@@ -30,7 +30,10 @@ FF_DEFAUT = next(iter(sorted(glob.glob(os.path.join(os.environ.get('LOCALAPPDATA
 FF = os.environ.get('HYPERFRAMES_FFMPEG_PATH') or shutil.which('ffmpeg') or os.path.join(FF_DEFAUT, 'ffmpeg.exe')
 FP = os.environ.get('HYPERFRAMES_FFPROBE_PATH') or shutil.which('ffprobe') or os.path.join(FF_DEFAUT, 'ffprobe.exe')
 SR, FPS, W, H = 48000, 30, 1920, 1080
-TARGET_I, MAX_TP, PLAFOND_WAV = -16.0, -1.5, -2.0
+sys.path.insert(0, os.path.dirname(HERE))   # outils/ : seuils.py (-I retire le dossier du script de sys.path)
+import seuils   # noqa: E402  ; valeurs de referentiels/seuils.json (1.1.0), jamais recopiées ici
+TARGET_I, TOLERANCE_I = seuils.valeur('mix.film_lufs_cible'), seuils.valeur('mix.film_lufs_tolerance')
+MAX_TP, PLAFOND_WAV = seuils.valeur('mix.film_crete_vraie_max_dbtp'), seuils.valeur('mix.limiteur_dbtp')
 BT709 = 'setparams=colorspace=bt709:color_primaries=bt709:color_trc=bt709:range=tv'
 
 
@@ -411,7 +414,7 @@ def main():
     log.append(f'MP4 : {n_out} images ({n_out / FPS:.2f} s ; attendu {total} images) ; {I3:.1f} LUFS intégré, '
                f'crête vraie {tp3:.1f} dBTP, LRA {lra3:.1f} LU ; décodage complet sans erreur')
     ecarts = [x for x, bad in (('nombre d\'images', n_out != total),
-                               ('intensité hors −16 ±1 LUFS', not (a.sans_limiteur or a.voix_seule) and abs(I3 - TARGET_I) > 1),
+                               (f'intensité hors {TARGET_I:g} ±{TOLERANCE_I:g} LUFS', not (a.sans_limiteur or a.voix_seule) and abs(I3 - TARGET_I) > TOLERANCE_I),
                                ('crête vraie > −1,5 dBTP', tp3 > MAX_TP)) if bad]
     log.append('Contrôles du MP4 : ' + ('OK' if not ecarts else 'ÉCART : ' + ', '.join(ecarts))
                + (' (voix seule : intensité relevée, non contrôlée)' if a.voix_seule else ''))

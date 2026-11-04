@@ -1,7 +1,7 @@
 # Méthode de récit : boucle de curiosité, ouverture, corps du film, sujet et titre, shorts
 
 > Règles par défaut du plugin studio-faceless.
-> Les écarts de la chaîne (`direction/ECARTS.md`) l'emportent.
+> Priorité : `REGLES_STUDIO.md` § Priorité.
 
 **Statut.** Chaque section indique le sien. Les validations datées viennent d'AA, la première chaîne, avec l'accord de son propriétaire. L'identité, le public, la promesse, les territoires, les principes, la personnalité narrative et les sujets sont propres à chaque chaîne : `direction/LIGNE_EDITORIALE.md`.
 

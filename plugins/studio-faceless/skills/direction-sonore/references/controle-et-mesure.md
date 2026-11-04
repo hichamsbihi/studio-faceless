@@ -46,7 +46,7 @@ L'écart (a − b) se compare au seuil de `DIRECTION_AUDIO.md`. Les filtres d'or
 ```bash
 ffmpeg -hide_banner -nostats -i livre.mp4 -map 0:a:0 -af loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | grep -E '"input_(i|tp|lra)"'
 ```
-Les valeurs `I` et `TP` de cette commande reprennent les cibles de `DIRECTION_AUDIO.md` § 3 ; si elles changent là-bas, les changer ici. Normaliser un master n'est permis qu'en connaissance de cause : corriger d'abord la source, le montage et l'équilibre. Le moteur HyperFrames abaisse déjà tout le mix pour rester sous −1 dBTP.
+Les valeurs `I` et `TP` de cette commande sont `mix.film_lufs_cible` et `mix.film_crete_vraie_max_dbtp` de `seuils.json` : les y relire avant de lancer la commande. Normaliser un master n'est permis qu'en connaissance de cause : corriger d'abord la source, le montage et l'équilibre. Le moteur HyperFrames abaisse déjà tout le mix sous son propre plafond (constat : `DIRECTION_AUDIO.md` § 3).
 
 ## 2. Passes d'écoute (jugement humain)
 Les mesures disent si le fichier est techniquement conforme ; elles ne disent pas si le son sert le récit. Quatre passes, dans cet ordre :

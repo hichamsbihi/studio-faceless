@@ -16,7 +16,7 @@
 ## Trois titres
 - Une seule promesse, celle de la miniature, tenue avant 30 s. Pas de fait que le film ne montre pas.
 - **Trois variantes vraiment différentes**, un titre par ligne dans le bloc :
-  - A, la forme par défaut (validé sur AA, 26/10/2026, `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` § 4 Sujet et titre ; les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent) : « Why… » sur un fait observable (un lieu, une règle, un record, un objet), jamais sur un sentiment ; environ 7 mots, aucun montant. Les « Why » de sentiment de l'E001, de l'E003 et de l'E004 d'AA ont eu peu de vues `[Observé]`, sur une chaîne naissante : la part du titre n'est pas isolée ;
+  - A, la forme par défaut (validé sur AA, 26/10/2026, `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` § 4 Sujet et titre ; les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité)) : « Why… » sur un fait observable (un lieu, une règle, un record, un objet), jamais sur un sentiment ; environ 7 mots, aucun montant. Les « Why » de sentiment de l'E001, de l'E003 et de l'E004 d'AA ont eu peu de vues `[Observé]`, sur une chaîne naissante : la part du titre n'est pas isolée ;
   - B, proche de la requête principale ;
   - C, le cas concret (lieu, date, personne publique au cœur du film).
 - `[Officiel]` 100 caractères au plus. `[Observé]` L'essentiel dans les 60 à 70 premiers, souvent coupés au-delà. `[Folklore écarté]` Position obligatoire du mot-clé.

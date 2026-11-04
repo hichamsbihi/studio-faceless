@@ -1,5 +1,7 @@
 # Workflow : du film aux shorts verticaux
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce parcours mène d'un film de la chaîne à ses shorts verticaux (1080×1920) : choix des boucles, script dédié, voix, kit, brief, montage par l'agent `shorts-producer`, rendu, contrôles, master sonore, légendes par plateforme, publication par le propriétaire et journal. La méthode fait foi dans le skill [`shorts`](../../plugins/studio-faceless/skills/shorts/SKILL.md), statut `PROPOSÉ` (rédigé sur AA le 19/10/2026, à valider sur le pilote) : ce document en donne l'ordre, les commandes et les portes.
 
 ## Table des matières

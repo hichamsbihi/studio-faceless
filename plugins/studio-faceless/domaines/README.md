@@ -2,10 +2,7 @@
 
 Un domaine regroupe ce que toutes les chaînes d'un même sujet partagent : sources primaires, droits des images, risques juridiques et pièges de faits, son, veille. Il se place entre les règles par défaut du plugin et la chaîne (plugin 0.2.0, VALIDÉ, Hicham, 30/10/2026, recommandation 4 du passage de StudioV1).
 
-```
-referentiels/ du plugin (défaut)  <  domaines/<domaine>/DOMAINE.md  <  direction/ECARTS.md et CLAUDE.md de la chaîne
-```
-Le plus précis l'emporte : une règle du domaine remplace la règle par défaut ; un écart de la chaîne remplace la règle du domaine.
+Sa place dans la priorité : `REGLES_STUDIO.md` § Priorité (seul énoncé, 1.1.0) : une règle du domaine remplace la règle par défaut ; un écart de la chaîne remplace la règle du domaine.
 
 ## Brancher une chaîne sur un domaine
 Le `CLAUDE.md` de la chaîne porte, dans son Identité, la ligne `- **Domaine** : <domaine>` (nom du dossier, par exemple `sport`). Au début de chaque session, le hook des règles communes lit cette ligne et donne le chemin du profil. Une chaîne sans ligne « Domaine » suit seulement les règles par défaut et ses écarts.

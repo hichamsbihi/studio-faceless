@@ -1,5 +1,7 @@
 # Référence : le son (direction sonore, voix off, collage et mix)
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Cette fiche décrit, fichier par fichier, tout ce que le plugin contient pour le son : le skill `direction-sonore`, le référentiel `DIRECTION_AUDIO.md`, les outils de montage (`assembler.py`, `mix_film.py`, `srt.py`) et les deux outils de la voix off (`transcrire.py`, `ralentir.py`). Les fichiers du plugin font foi : en cas d'écart, la fiche se corrige.
 
 ## Table des matières

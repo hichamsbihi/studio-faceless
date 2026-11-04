@@ -1,6 +1,6 @@
 # Grammaire de secours : la miniature v4 de l'E003 (validée sur AA)
 
-**Statut** : choix `VALIDÉ` sur AA pour l'E003 (15/10/2026). C'était la **grammaire par défaut** jusqu'au 03/11/2026 : la méthode en trois calques de l'E011 (`trois-calques-e011.md`) la remplace par défaut, parce que le fond uni a été jugé « pas captivant » ; elle reste en secours (VALIDÉ, Hicham, 03/11/2026). Ses leçons ci-dessous restent valables. Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur elle ; un épisode peut aussi s'en écarter si son histoire le demande, en le disant dans la fiche de concepts.
+**Statut** : choix `VALIDÉ` sur AA pour l'E003 (15/10/2026). C'était la **grammaire par défaut** jusqu'au 03/11/2026 : la méthode en trois calques de l'E011 (`trois-calques-e011.md`) la remplace par défaut, parce que le fond uni a été jugé « pas captivant » ; elle reste en secours (VALIDÉ, Hicham, 03/11/2026). Ses leçons ci-dessous restent valables. Les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité) ; un épisode peut aussi s'en écarter si son histoire le demande, en le disant dans la fiche de concepts.
 
 Sources de la version validée, gardées dans les archives AA (hors du plugin) : l'HTML de la miniature v4 (38 lignes) et les deux autres variantes de l'E003 v3 (comparaison « 1–7 / 5 DAYS LATER… », moment de match « BRAZIL CHEERED THIS GOAL »). Le tableau ci-dessous en donne les éléments.
 

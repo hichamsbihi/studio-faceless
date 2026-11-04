@@ -1,6 +1,6 @@
 # Méthode en trois calques (E011 d'AA) : la grammaire par défaut
 
-**Statut** : `VALIDÉ` (Hicham, 03/11/2026), après le choix de la miniature v2-3 de l'E011 d'AA. C'est la grammaire par défaut d'une nouvelle miniature, pour toutes les chaînes : elle remplace le fond uni de la grammaire de l'E003 (`grammaire-e003.md`), jugé « pas captivant », qui reste en secours. Les écarts de la chaîne (`direction/ECARTS.md`) l'emportent. Elle est appliquée par `studio-faceless:publisher`, et la fabrication suit `fabrication.md`.
+**Statut** : `VALIDÉ` (Hicham, 03/11/2026), après le choix de la miniature v2-3 de l'E011 d'AA. C'est la grammaire par défaut d'une nouvelle miniature, pour toutes les chaînes : elle remplace le fond uni de la grammaire de l'E003 (`grammaire-e003.md`), jugé « pas captivant », qui reste en secours. Les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité). Elle est appliquée par `studio-faceless:publisher`, et la fabrication suit `fabrication.md`.
 
 ## 1. Ce qui a échoué avant
 - **Essais du propriétaire dans un outil d'image IA (E011)** :
@@ -36,7 +36,7 @@
 
 ## 4. Licences
 - Les portraits de Pinterest ou d'une agence ne sont pas libres : prendre Commons (CC BY ou domaine public).
-- Une ligne de crédit va dans la description (skill `studio-faceless:youtube-seo`, `references/description-et-credits.md`), sauf écart de la chaîne.
+- Une ligne de crédit va dans la description (skill `studio-faceless:youtube-seo`, `${CLAUDE_PLUGIN_ROOT}/skills/youtube-seo/references/description-et-credits.md`), sauf écart de la chaîne.
 
 ## 5. Ce qui reste de la grammaire de l'E003
 - Un visage célèbre réel, sous licence, qui montre ce que la photo montre.

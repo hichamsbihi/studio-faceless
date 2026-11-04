@@ -1,5 +1,7 @@
 # Workflow : de la voix off aux bandes voix du kit
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit la chaîne voix d'un épisode : du script validé aux prises du propriétaire, leur contrôle (`transcrire.py`), leur ralentissement (`ralentir.py`), le recalage des repères mot à mot, puis les bandes voix du kit. C'est l'étape 4 du skill `episode` ; elle se termine par la **voix figée**.
 
 ## Table des matières

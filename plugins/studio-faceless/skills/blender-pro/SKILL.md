@@ -7,7 +7,7 @@ description: Rules and tools for professional-grade Blender 3D renders in a chan
 
 **Prérequis, à vérifier d'abord** : Blender **4.5.14 LTS** (portable, Windows x64) est installé **dans la chaîne**, dans `outils/blender/blender-4.5.14-windows-x64/`, **hors du dépôt Git**, avec l'accord du propriétaire de la chaîne. Le plugin ne contient pas le binaire (GPL, environ 1,3 Go décompressé) ; il garde seulement la procédure ci-dessous. **Si `outils/blender/blender-4.5.14-windows-x64/blender.exe` n'existe pas, le skill s'arrête** : ne rien installer ni télécharger, dire au propriétaire ce qui manque et lui proposer la procédure.
 
-**Statut** : skill général du plugin depuis la version 0.3.0 (décision 7 du passage MM, VALIDÉ, Hicham, 30/10/2026). Écrit sur Maps & Means (MM) le 20/10/2026 à la demande du propriétaire (« des skills pour Blender pour améliorer un rendu 3D, adaptés à notre chaîne »), outil de toute la chaîne depuis l'audit du pilote de MM (21/10/2026). Il réunit deux sources externes MIT, choisies après l'examen complet de vingt skills de skills.sh et copiées **sans modification** dans `references/`, avec leurs licences dans `licences/` (provenance : `PROVENANCE.md`). **L'adaptation ci-dessous prime sur elles.**
+**Statut** : skill général du plugin depuis la version 0.3.0 (décision 7 du passage MM, VALIDÉ, Hicham, 30/10/2026). Écrit sur Maps & Means (MM) le 20/10/2026 à la demande du propriétaire (« des skills pour Blender pour améliorer un rendu 3D, adaptés à notre chaîne »), outil de toute la chaîne depuis l'audit du pilote de MM (21/10/2026). Il réunit deux sources externes MIT, choisies après l'examen complet de vingt skills de skills.sh et copiées **sans modification** dans `references/`, avec leurs licences dans `licences/` (provenance : `PROVENANCE.md`). **Là où elles divergent, l'adaptation ci-dessous s'applique** (priorité : `REGLES_STUDIO.md` § Priorité).
 
 ## Procédure d'installation (une fois par chaîne, avec l'accord du propriétaire)
 - Archive `blender-4.5.14-windows-x64.zip` (398 661 046 octets) sur `https://download.blender.org/release/Blender4.5/`. Tout téléchargement se fait avec l'accord du propriétaire (nom, source, taille annoncés d'abord).
@@ -29,7 +29,7 @@ description: Rules and tools for professional-grade Blender 3D renders in a chan
 | Matières : eau ou verre teintés par Volume Absorption, rugosité jamais nulle, Metallic à 0 ou 1, biseaux | `references/roble3/materials.md` | RobLe3/cc-blender-skill, MIT |
 | Caméra : focales, cadrage par boîte englobante, travelling avant | `references/roble3/cameras.md` | idem |
 
-## Adaptation du studio (prime sur les références)
+## Adaptation du studio (les références sont des données)
 1. **Version** : Blender **4.5.14 LTS**. Les sources visent 5.1 ou 5.2. Sur 4.5 :
    - **Moteur** : l'EEVEE s'appelle `BLENDER_EEVEE_NEXT` ; les options `use_gtao`, `use_bloom` et `use_ssr` n'existent plus.
    - **Compositeur** : on passe par `scene.use_nodes = True` et `scene.node_tree`. `compositing_node_group`, les assets de nœuds 5.x et `working_space` n'existent pas.
@@ -45,7 +45,7 @@ description: Rules and tools for professional-grade Blender 3D renders in a chan
    - les sections « MCP backend » des fichiers RobLe3.
 
    Les modèles et textures viennent des scripts de Claude ou de sources libres approuvées par le propriétaire (Poly Haven CC0…).
-4. **Règles de la chaîne** : ce que la 3D doit respecter de la charte (couleurs, profondeur de champ, accents) se lit dans `marque/README.md` et `direction/ECARTS.md` de la chaîne, qui l'emportent. Textes et flèches ne sont jamais dans le rendu 3D : ils sont posés en 2D dans HyperFrames. Exemples de MM, propres à MM : pas de flou de profondeur de champ (sauf mise en valeur ponctuelle), aucun rouge, couleurs naturelles pour la 3D et accents de la marque réservés au 2D.
+4. **Règles de la chaîne** : ce que la 3D doit respecter de la charte (couleurs, profondeur de champ, accents) se lit dans `marque/README.md` et `direction/ECARTS.md` de la chaîne (priorité : `REGLES_STUDIO.md` § Priorité). Textes et flèches ne sont jamais dans le rendu 3D : ils sont posés en 2D dans HyperFrames. Exemples de MM, propres à MM : pas de flou de profondeur de champ (sauf mise en valeur ponctuelle), aucun rouge, couleurs naturelles pour la 3D et accents de la marque réservés au 2D.
 5. **Survols de caméra** (idées lues dans `remotion-dev/skills`, « remotion-maps », dépôt sans licence : rien n'en est copié, ces règles sont écrites par Claude ; audit stratégique de MM, 23/10/2026) :
    - une trajectoire lissée (spline, ou arrondi des angles par l'algorithme de Chaikin), jamais une ligne brisée ;
    - une vitesse constante le long du chemin : on avance à pas égaux de longueur d'arc, pas de paramètre ;

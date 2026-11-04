@@ -23,7 +23,7 @@ Règles :
 - Un événement réel sans son d'archive autorisé reste silencieux ou porté par une ambiance déclarée contextuelle. On ne fabrique pas son son « comme s'il avait été capté ».
 
 ## 2. Familles, adaptées au documentaire de la chaîne
-- **Voix off** : conduit la compréhension ; aucune autre couche ne la masque. Ses règles sont dans `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 2 (les écarts de la chaîne, dans `direction/ECARTS.md`, l'emportent sur ces règles par défaut).
+- **Voix off** : conduit la compréhension ; aucune autre couche ne la masque. Ses règles sont dans `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 2 (les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité)).
 - **Son d'archive** : choisir qui est au premier plan quand une archive parle sous la voix ; ne pas la « nettoyer » au point d'en changer le caractère ; consigner la source exacte.
 - **Ambiance et room tone** : installent le lieu et évitent le trou numérique. Construire en couches (un lit de base, quelques détails locaux, la perspective) et garder un lit très bas continu sous une scène, sauf silence voulu. Exemple AA : une ambiance de stade enregistrée ailleurs est un **enregistrement contextuel**, jamais « le son du stade X ».
 - **Bruitages motivés** : seulement pour une action réellement visible et utile au récit (exemple AA : ballon frappé dans une reconstitution déclarée ; ou page tournée d'un document montré…). Deux ou trois appuis valent mieux qu'un son par geste.

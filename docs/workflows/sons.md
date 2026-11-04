@@ -1,5 +1,7 @@
 # Workflow : les sons (bibliothèque, génération avec accord, repérage sonore)
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit comment un épisode obtient ses musiques, ses ambiances et ses effets : on **puise d'abord** dans la bibliothèque `marque/son/` de la chaîne, on **repère** ce que le son doit faire (skill `direction-sonore`), on ne **génère** (ElevenLabs) que sur demande du propriétaire, et un son neuf approuvé **rejoint la bibliothèque**. Le mix lui-même est décrit dans [`collage-et-mix.md`](collage-et-mix.md).
 
 ## Table des matières

@@ -1,5 +1,7 @@
 # Référentiels du plugin
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Cette page décrit les référentiels de `plugins/studio-faceless/referentiels/` : la méthode de récit, le référentiel de qualité de réalisation, le catalogue d'animations, (par renvoi) la direction audio et, depuis la 0.2.3, la suite des règles communes (`REGLES_DETAIL.md`). Ce sont les **règles par défaut** de toutes les chaînes.
 
 ## Table des matières

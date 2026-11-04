@@ -1,6 +1,6 @@
 # Musique à l'image
 
-Depuis le 15/10/2026 (validé sur AA), la musique **porte l'immersion** de chaque séquence (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 1-2 ; les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les règles par défaut). La question n'est plus « faut-il de la musique ? » mais « quelle musique pour cette situation ? » : ouverture, tension ou rivalité, analyse et science, émotion et fin. Écrire sa fonction pour chaque passage, ainsi que ses entrées, retraits et silences voulus.
+Depuis le 15/10/2026 (validé sur AA), la musique **porte l'immersion** de chaque séquence (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 1-2 ; les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité)). La question n'est plus « faut-il de la musique ? » mais « quelle musique pour cette situation ? » : ouverture, tension ou rivalité, analyse et science, émotion et fin. Écrire sa fonction pour chaque passage, ainsi que ses entrées, retraits et silences voulus.
 
 ## 1. Fonctions possibles
 Soutenir l'immersion, organiser la progression d'une enquête, marquer un contraste, accompagner une résolution, relier un montage, laisser entendre un sous-texte. Jamais : dire au spectateur quoi penser d'une personne réelle, gonfler une affirmation contestée, remplacer une preuve.

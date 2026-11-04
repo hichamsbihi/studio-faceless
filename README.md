@@ -18,7 +18,7 @@ Le plugin ne dépend d'aucune chaîne : les mentions d'AA ou de StudioV1 n'y ser
 ## Contenu du plugin (`plugins/studio-faceless/`)
 | Élément | Contenu |
 |---|---|
-| `skills/` | `episode` (fabrication d'un épisode, du sujet au mix), `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder` (analyse d'une vidéo par Gemini), `grilling` (portes de questions), `humanizer` (surcouche de relecture des scripts, appelée par le propriétaire), `find-skills` (recherche de skills), `conseil` (débat de plusieurs agents sur une décision du studio), `elevenlabs-sound-effects`, `elevenlabs-music` (effets sonores et musique générés), `frontend-design` (conception visuelle et critique des planches et compositions), `remove-background` (détourage avec l'outil de HyperFrames), `blender-pro` (3D avec Blender installé dans la chaîne) |
+| `skills/` | `episode` (fabrication d'un épisode, du sujet au mix), `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder` (analyse d'une vidéo par Gemini), `grilling` (questions serrées sur un plan, à la demande), `humanizer` (surcouche de relecture des scripts, appelée par le propriétaire), `conseil` (débat de plusieurs agents sur une décision du studio), `elevenlabs-sound-effects`, `elevenlabs-music` (effets sonores et musique générés), `frontend-design` (conception visuelle et critique des planches et compositions), `remove-background` (détourage avec l'outil de HyperFrames), `blender-pro` (3D avec Blender installé dans la chaîne) |
 | `agents/` | onze agents : `research`, `reviewer` (contrôle qualité en lecture seule), `art-director`, `motion-producer`, `shorts-producer`, `studio-maintainer`, `strategist` (positionnement, titres et banque de sujets d'une chaîne, une phase par appel), `media-fetcher` (téléchargement d'une liste de médias validée par le propriétaire), `sound-manager` (tout le son d'un épisode : voix, sons, plan son, mesures ; ni appel payant ni mix long), `publisher` (miniatures, puis dossier de publication ; aucun titre créé, aucune publication), `conseiller` (siège du skill `conseil`, en lecture seule, jamais délégué directement) |
 | `hooks/` | garde-fou des commandes (par rôle) et injection des règles communes au début de chaque session |
 | `REGLES_STUDIO.md` | règles communes injectées à chaque session (moins de 9 000 caractères) : quoi lire, sous-agents, économie de tokens et de contexte, statuts et règles permanentes |
@@ -31,7 +31,7 @@ Le plugin ne dépend d'aucune chaîne : les mentions d'AA ou de StudioV1 n'y ser
 | `vendor/roast-room/` | copie figée du protocole de conseil roast-room (commit `e40f406`, licence MIT), lue par `strategist` seulement ; ni skill ni agent |
 | `vendor/lemo-opuscar/` | copie figée de la bibliothèque de styles lemo-opuscar (commit `bebbbe1`, code MIT, images CC BY 4.0), lue par `art-director` pour la fiche de style et, sur brief, par les producteurs ; ni skill ni moteur |
 
-Une fois installés, les skills et les agents portent le préfixe du plugin : `studio-faceless:episode`, `studio-faceless:motion-producer`. Cinq skills (`humanizer`, `find-skills`, `conseil`, `elevenlabs-music` et `elevenlabs-sound-effects`) portent `disable-model-invocation: true` : ils ne sont pas proposés à Claude au démarrage, le propriétaire les appelle avec `/nom`.
+Une fois installés, les skills et les agents portent le préfixe du plugin : `studio-faceless:episode`, `studio-faceless:motion-producer`. Quatre skills (`humanizer`, `conseil`, `elevenlabs-music` et `elevenlabs-sound-effects`) portent `disable-model-invocation: true` : ils ne sont pas proposés à Claude au démarrage, le propriétaire les appelle avec `/nom`.
 
 ## Démarrer
 - **Commencer ici, pas à pas** : [`DEMARRAGE.md`](DEMARRAGE.md), de la machine vide à la première vidéo d'une nouvelle chaîne (installation, création de la chaîne, identité, fabrication, publication, archivage).
@@ -60,7 +60,7 @@ Dépôt privé, propriété de Hicham, tous droits réservés. Les contenus tier
 - HyperFrames et ses skills : Apache-2.0 ;
 - `vendor/roast-room/` : MIT, © 2026 AI Automation Society (son `LICENSE` et sa provenance sont dans le dossier) ;
 - `vendor/lemo-opuscar/` : code et textes MIT, © 2026 LemoLab ; images des démos CC BY 4.0 (crédit LemoLab) ; médias de tiers des démos sous leur propre licence (son `LICENSE` et son `PROVENANCE.md` sont dans le dossier) ;
-- `humanizer`, `find-skills`, `conseil`, `elevenlabs-sound-effects`, `elevenlabs-music` : MIT (leur `LICENSE` et leur provenance sont dans leur dossier) ;
+- `humanizer`, `conseil`, `elevenlabs-sound-effects`, `elevenlabs-music` : MIT (leur `LICENSE` et leur provenance sont dans leur dossier) ;
 - `blender-pro` : références MIT (scenario-labs/skills, RobLe3/cc-blender-skill ; leurs `LICENSE` sont dans `skills/blender-pro/licences/`) ;
 - `frontend-design` : Apache 2.0, © Anthropic (son `LICENSE.txt` et sa provenance sont dans son dossier) ;
 - `skills/regarder/references/claude-video/` : MIT, © Bradley Bonanno (son `LICENSE` est dans le dossier) ;

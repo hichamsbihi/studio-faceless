@@ -1,6 +1,6 @@
 # Contrôles techniques du studio
 
-Créés le 15/10/2026 (validé sur AA) et testés sur les rendus de l'épisode 003 d'AA. Les écarts de la chaîne, dans `direction/ECARTS.md`, l'emportent sur les règles par défaut citées ci-dessous.
+Créés le 15/10/2026 (validé sur AA) et testés sur les rendus de l'épisode 003 d'AA. Les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité).
 - **Garanties** : aucun script n'écrase un fichier ; tous refusent si la sortie existe.
 - **Limite** : les mesures ne valent jamais une écoute ni un visionnage (statuts du `CLAUDE.md` racine de la chaîne).
 - **Lancement** : depuis la racine de la chaîne, avec `python -I -B` et le chemin du script dans le plugin (`${CLAUDE_PLUGIN_ROOT}/outils/controle/…`). FFmpeg est trouvé dans `HYPERFRAMES_FFMPEG_PATH`, le `PATH` ou l'installation WinGet.
@@ -8,7 +8,7 @@ Créés le 15/10/2026 (validé sur AA) et testés sur les rendus de l'épisode 0
 ## `controle.py` : une commande, onze contrôles
 | Contrôle | Commande | Ce qu'on attend | Référence |
 |---|---|---|---|
-| Niveau du MP4 livré | `controle.py niveau FILM.mp4` | −16 LUFS ±1, crête vraie ≤ −1,5 dBTP | `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 3 |
+| Niveau du MP4 livré | `controle.py niveau FILM.mp4` | `mix.film_lufs_cible` ± `mix.film_lufs_tolerance`, crête vraie ≤ `mix.film_crete_vraie_max_dbtp` (`seuils.json`) | `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 3 |
 | Planche contact | `controle.py planche FILM.mp4 --sortie DOSSIER [--pas 2]` | À relire : aucune image immobile plus de 1 s, lisibilité, couleurs, photos. L'étiquette donne le temps exact de chaque image (échantillonnage par numéro d'image, corrigé le 15/10/2026) | `${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2 ter |
 | Vibration (zone fixe) | `controle.py vibration FILM.mp4 --zone L:H:X:Y [--debut S --duree S] [--extraire T]` | Sur une zone censée être immobile : pas d'alternance régulière (exemple AA : le grain de l'E001 donne une moyenne de 1,5 à 2). Le contrôle signale un écart au-delà de 30 % d'alternances nettes ; `--extraire` enregistre 10 images consécutives à regarder | Porte B |
 | **Tremblement** (16/10/2026) | `controle.py tremblement FILM.mp4 [--debut S --duree S]` (`--brut F.npz` enregistre les mesures, `--depuis F.npz` les réanalyse sans relire le film) | Aucune seconde signalée. Le contrôle mesure le déplacement réel de l'image sur 28 tuiles de 256 px, par corrélation sous-pixel. Il signale deux signatures : les **marches** (déplacements de 0 ou 1 px de même sens : arrondi au pixel pendant une dérive lente) et les **allers-retours** (tremblement). Chaque seconde signalée se vérifie sur dix images (`vibration --extraire T`) : un cran se voit sur un texte ou une photo nette, presque pas sur un fond flou. Environ 10 min par film de 80 s | `REFERENTIEL_QUALITE_REALISATION.md` § 2 ter |
@@ -31,7 +31,7 @@ C'est la méthode validée sur AA le 15/10/2026 (`DIRECTION_AUDIO.md` § 2) :
   - par un silence au plancher, placé au point le plus calme de la pause ;
   - plus de recopie depuis le 17/10/2026 : elle doublait la fin des mots dans les bandes des E003 et E004 d'AA (étude AA, 17/10/2026) ;
 - auto-contrôle : aucune recopie exacte dans la bande, sinon rien n'est écrit ;
-- −19 LUFS mono ;
+- `mix.voix_mono_lufs` en mesure mono (`seuils.json`) ;
 - un fichier `SORTIE.positions.txt`.
 
 Sa version du 15/10/2026 redonnait exactement la bande de la séquence 6 de l'E003 d'AA (61,31 s → 71,17 s). Depuis le 17/10/2026, la durée et la place des mots sont les mêmes, et seul le contenu des pauses change. Ne jamais l'appliquer aux voix jouées (chants, citations).

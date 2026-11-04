@@ -2,7 +2,7 @@
 
 **Base** : la Méthode v1 (étude AA, hors plugin ; Claude, 23/10/2026, `PROPOSÉ`, cinq blocs), tirée d'une étude de rétention (étude AA, 23/10/2026 : 35 analyses, les vraies courbes de la chaîne AA). S'y ajoutent des repères tirés d'une autre chaîne (24/10/2026), transposés. On lit la Méthode par blocs ; ce fichier n'en donne que l'essentiel et les ajouts.
 
-La boucle de curiosité (`${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` § 1, validé sur AA, 19/10/2026) reste la règle. Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur ces règles par défaut.
+La boucle de curiosité (`${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` § 1, validé sur AA, 19/10/2026) reste la règle. Les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité).
 
 ## 1. La perte est au début
 - Mesure AA : 53 à 60 % des spectateurs partent vers 0:30.
@@ -58,7 +58,7 @@ Exemple AA : l'E007 suit ce patron :
 
 ## 6. Succession des séquences
 - Chaque séquence finit sur une question ouverte que la suivante reprend. Exemple AA (E007) : seq4 finit sur « who gets it? », seq5 ouvre sur « You might think the runner-up simply moves up ».
-- Raccords visuels exacts (`socle.md` § 7). La musique continue, ou se tait exprès.
+- Raccords visuels exacts (`kit.md` § 7). La musique continue, ou se tait exprès.
 - Image : coupes plus serrées à l'ouverture qu'au milieu ; rien d'immobile plus de 1 s ; transitions variées, chacune avec son son ; dessins et schémas dans les passages d'explication.
 
 ## 7. Après la sortie
@@ -90,7 +90,7 @@ Exemple AA : l'E007 suit ce patron :
 | Urgence | fausse (à signaler, pire que rien) | aucune, et aucune n'était vraie | réelle, avec sa date |
 | Preuve | aucune | chiffre ou étude seulement | foule, ou cas proche du spectateur |
 
-Contrôle d'intégrité en plus, réussi ou échoué, qui prime sur la note : une phrase qui avoue l'ancienneté de l'idée, qui l'atténue ou qui hausse le ton comme une annonce publicitaire échoue et se réécrit.
+Contrôle d'intégrité en plus, réussi ou échoué, qui compte avant la note : une phrase qui avoue l'ancienneté de l'idée, qui l'atténue ou qui hausse le ton comme une annonce publicitaire échoue et se réécrit.
 
 **Emploi pendant l'essai** (AA, E011) : la méthode co-écrit l'angle (étape 2) et le script (étape 3) ; la note est donnée par `studio-faceless:reviewer` avant la voix, jamais par l'auteur de l'accroche. Gemini ne juge pas une ouverture (§ 5).
 

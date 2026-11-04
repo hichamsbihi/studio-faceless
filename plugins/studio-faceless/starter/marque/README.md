@@ -12,7 +12,7 @@ Ce dossier porte l'identité de la chaîne, réemployée telle quelle dans chaqu
 
 ## Couleurs
 - **Marque** : <couleurs du logo, de la signature et de l'outro>.
-- **Films** : un socle fixe et une palette propre à chaque histoire, décidée en direction artistique avec une planche d'essai. Couleurs interdites dans les films : `couleurs_interdites.json` (`{"nom": "#RRGGBB"}`), contrôlées par `controle.py couleurs` ; vide = aucune.
+- **Films** : une base fixe et une palette propre à chaque histoire, décidée en direction artistique avec une planche d'essai. Couleurs interdites dans les films : `couleurs_interdites.json` (`{"nom": "#RRGGBB"}`), contrôlées par `controle.py couleurs` ; vide = aucune.
 
 ## Polices des films
 <Polices retenues, avec leur licence (SIL OFL de préférence).>

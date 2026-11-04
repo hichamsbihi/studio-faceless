@@ -1,5 +1,7 @@
 # Workflow : faire « regarder » une vidéo YouTube publique par Gemini
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce parcours couvre l'analyse d'une vidéo YouTube **publique** par Gemini, à partir de son lien et sans aucun téléchargement : choix de la grille, estimation du coût, lancement de `regarder.py`, lecture et vérification du résultat, et, pour une chaîne entière, l'étude d'une chaîne de référence. Il sert à étudier les chaînes concurrentes ou de référence et à auditer les épisodes publics de la chaîne. Il ne sert **jamais** à télécharger une vidéo, à analyser une vidéo privée ni à écrire un script à la place de l'équipe. La méthode fait foi dans le skill [`regarder`](../../plugins/studio-faceless/skills/regarder/SKILL.md).
 
 ## Table des matières

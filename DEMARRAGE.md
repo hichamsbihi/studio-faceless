@@ -1,5 +1,7 @@
 # Démarrer : de la machine vide à la première vidéo d'une nouvelle chaîne
 
+> **En partie historique** (1.1.0, 04/11/2026) : les parties installation, machine et chaîne restent valables ; le parcours d'un épisode décrit plus bas (une porte de questions à chaque étape, `grilles.md`, séquence témoin par épisode) est remplacé. Font foi : `plugins/studio-faceless/referentiels/REGLES_DETAIL.md` § Parcours et le skill `episode`.
+
 Guide pas à pas, en français, pour installer le studio `studio-faceless`, créer une chaîne YouTube faceless et fabriquer sa première vidéo, de l'installation jusqu'à l'archivage.
 
 **État du guide** : écrit le 29/10/2026, revu le 02/11/2026 pour le plugin en version 0.4.0 (`plugins/studio-faceless/.claude-plugin/plugin.json`). Il enchaîne les workflows de [`docs/workflows/`](docs/workflows/) sans les remplacer. En cas d'écart, le fichier du plugin fait foi ([`docs/README.md`](docs/README.md)). Tout point incertain est écrit « à vérifier ».

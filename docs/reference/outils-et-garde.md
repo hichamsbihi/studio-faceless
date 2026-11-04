@@ -1,5 +1,7 @@
 # Outils, garde-fou et règles communes : référence
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Une fiche par fichier pour : les contrôles techniques (`outils/controle/controle.py` et son mode d'emploi), les cartes, le rendu, l'archivage, la sauvegarde, le contrôle du dépôt, le suivi des tokens, les hooks (`hooks/`) et les règles communes (`REGLES_STUDIO.md`).
 
 Les fichiers du plugin font foi : en cas d'écart, la fiche se corrige. Les chemins `${CLAUDE_PLUGIN_ROOT}/…` sont relatifs au dossier du plugin installé ; les chemins `direction/`, `marque/`, `episodes/<id>/` sont relatifs à la chaîne.

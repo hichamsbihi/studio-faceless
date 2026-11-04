@@ -1,0 +1,94 @@
+{
+ "_note": "Valeurs chiffrées du studio, seule source (1.1.0, point 6 du conseil du 04/11/2026, VALIDÉ). La prose cite la clé ; les outils lisent ce fichier par outils/seuils.py. Une chaîne en remplace une dans direction/seuils.json, avec « Remplace : <clé> » dans direction/ECARTS.md. Les limites du garde-fou (workers, rôles) ne sont pas ici : elles sont dans hooks/garde_commandes.py, hors échelle.",
+ "injection": {
+  "_source": "question 11 du conseil du point 6 : texte réellement injecté, chemin du cache et ligne du domaine compris",
+  "regles_studio_caracteres_max": 8000
+ },
+ "sessions": {
+  "_source": "validé sur AA, 02/11/2026 (contexte, STATE.md) et 24/10/2026 (cache des sous-agents)",
+  "state_ko_max": 2.5,
+  "contexte_alerte_k": 200,
+  "contexte_rappel_k": 50,
+  "sous_agent_sans_action_min_max": 4,
+  "contrat_regles_chaine_lignes_max": 10,
+  "agent_compte_rendu_lignes_max": 12
+ },
+ "film": {
+  "_source": "point 1, VALIDÉ le 04/11/2026 : les longues restent de 8 à 10 min",
+  "duree_min_s": 480,
+  "duree_max_s": 600,
+  "shorts_par_film": 3,
+  "accroches_par_short": 3
+ },
+ "mix": {
+  "_source": "DIRECTION_AUDIO § 3 (film ; niveaux de départ validés sur AA, 24/10/2026, Q12) et § 4 (musique par cues, validé sur AA, 03/11/2026)",
+  "film_lufs_cible": -16,
+  "film_lufs_tolerance": 1,
+  "film_crete_vraie_max_dbtp": -1.5,
+  "limiteur_dbtp": -2.0,
+  "voix_mono_lufs": -19,
+  "voix_crete_vraie_max_dbtp": -2.0,
+  "sequence_ecoute_lufs": -18,
+  "musique_sous_voix_lu_min": 7,
+  "musique_sous_voix_lu_max": 9,
+  "musique_sous_voix_lu_depart": 8,
+  "cue_s_min": 15,
+  "cue_s_max": 40,
+  "suspense_s_max": 30,
+  "effet_impact_sous_voix_lu": 14,
+  "effet_ambiance_sous_voix_lu": 16,
+  "effet_montee_sous_voix_lu": 16,
+  "effet_souffle_sous_voix_lu": 18,
+  "effet_papier_sous_voix_lu": 20
+ },
+ "shorts": {
+  "_source": "plus fort que les films : validé sur AA, 19/10/2026 ; valeurs du master (master_lufs, crete_vraie_max_dbtp) encore PROPOSÉ (skills/shorts/references/plateformes.md)",
+  "master_lufs": -14,
+  "crete_vraie_max_dbtp": -1,
+  "limiteur_dbtp": -1.5,
+  "mix_sequence_lufs": -16,
+  "musique_sous_voix_lu": 8,
+  "mecanisme_accroche_exclu_derniers_shorts": 10
+ },
+ "voix": {
+  "_source": "point 4, VALIDÉ le 04/11/2026 (contrôles et lexique de voix)",
+  "pause_revelation_s_min": 0.5,
+  "lexique_s_min": 30,
+  "lexique_s_max": 60
+ },
+ "image": {
+  "_source": "point 4 (contrôles de la planche et du témoin) ; point 2 (30 i/s), VALIDÉS le 04/11/2026",
+  "images_par_seconde": 30,
+  "photo_part_temps_min": 0.55,
+  "photo_plein_cadre_largeur_px_min": 1477,
+  "agrandissement_max": 1.3,
+  "image_immobile_s_max": 1
+ },
+ "medias": {
+  "_source": "règle par défaut du plugin (extraits, validé sur MM, 24/10/2026) ; point 4 (candidats par moment)",
+  "extrait_non_libre_s_max": 6,
+  "candidats_par_moment": 2
+ },
+ "controles": {
+  "_source": "point 4, VALIDÉ le 04/11/2026 (cas d'arrêt 4 et 5)",
+  "corrections_sur_place_max": 2,
+  "defaut_repete_sequences": 3
+ },
+ "styles": {
+  "_source": "point 2 (portages, resynchronisation) et point 3 (règle de tirage, épreuve), VALIDÉS le 04/11/2026",
+  "portages_par_film_max": 2,
+  "resynchronisation_par_mois_max": 1,
+  "epreuve_style_neuf_s": 90,
+  "tirage_dominant_exclu_dernieres_longues": 3,
+  "variete_dernieres_longues": 5,
+  "variete_axes_differents_min": 4,
+  "variete_axes": 6,
+  "dominants_portes_avant_tirage": 5,
+  "secondaires_par_film_max": 2,
+  "geste_signature_exclu_dernieres_longues": 5
+ },
+ "rendu": {
+  "_source": "point 5, VALIDÉ le 04/11/2026 (question 8, à l'essai sur l'E012)",
+  "debordement_nuit_h": 6
+ }
+}

@@ -1,5 +1,7 @@
 # Workflow : installer une machine, brancher une chaîne, mettre à jour le plugin
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit trois parcours liés : installer une machine (une fois), brancher une chaîne existante sur le plugin `studio-faceless`, puis mettre le plugin à jour quand une nouvelle version sort. Il suit `INSTALLATION.md` (racine du dépôt), qui fait foi pour les versions de référence.
 
 ## Table des matières

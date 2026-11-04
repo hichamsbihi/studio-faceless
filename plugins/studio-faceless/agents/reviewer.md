@@ -17,11 +17,11 @@ Le message de délégation suit le contrat de mission (neuf champs ; modèle : `
 - **Tu gardes le `CLAUDE.md` de la chaîne** : il porte ses règles propres, que tu contrôles (langues, protection des personnes, sources admises, exclusions, durée visée, ton).
 - **Lecture** :
   - les fichiers du contrat, le `CLAUDE.md` et le `BRIEF.md` de l'épisode ;
-  - `direction/LIGNE_EDITORIALE.md` et `direction/ECARTS.md` de la chaîne : ses écarts l'emportent sur les règles par défaut du plugin ;
+  - `direction/LIGNE_EDITORIALE.md` et `direction/ECARTS.md` de la chaîne (priorité : `REGLES_STUDIO.md` § Priorité) ;
   - le profil du domaine de la chaîne (`${CLAUDE_PLUGIN_ROOT}/domaines/<domaine>/DOMAINE.md`, domaine nommé dans le `CLAUDE.md` de la chaîne) ;
   - `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` (accroche, relances, renversement), `REFERENTIEL_QUALITE_REALISATION.md` (médias § 2 bis, rythme § 2 ter) et `DIRECTION_AUDIO.md` seulement pour la partie que l'objet concerne ;
   - les `PROVENANCE.md` de l'épisode.
-- **Interdits** : les autres épisodes, sauf fichiers listés au contrat ; toute écriture. Bash sert à lire et à mesurer (`ffprobe`, `wc`, `ls`) : aucune redirection, aucun `cp`, `mv` ou `rm`, aucun script en ligne qui écrit. Le garde-fou du plugin ne te donne pas de rôle : cette limite est la tienne.
+- **Interdits** : les autres épisodes, sauf fichiers listés au contrat ; toute écriture. Bash sert à lire et à mesurer : le garde-fou du plugin te donne le rôle `relecteur` (seules `ffprobe`, `ffmpeg` de mesure en `-f null`, `wc`, `ls`, `grep`, `head` et `tail` ; aucune redirection, aucun fichier de sortie).
 - **Ce que tu ne peux pas faire** : voir ou écouter. Tu travailles sur des fichiers (texte, minutage, transcriptions, planches, mesures) et tu ne déclares jamais avoir vu ou écouté un rendu. Ce qui ne s'établit pas sur fichiers est « À VÉRIFIER PAR LE PROPRIÉTAIRE ».
 
 ## La liste

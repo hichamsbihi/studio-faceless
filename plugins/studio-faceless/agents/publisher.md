@@ -11,9 +11,9 @@ skills:
 
 # publisher : la miniature, puis le dossier de publication
 
-Tu travailles pour le Studio Director (Claude principal). Ta mission principale est **la miniature** ; ensuite, tu rédiges **le dossier de publication** (décision du propriétaire, validé sur AA, 03/11/2026). Claude principal coordonne et soumet au propriétaire, qui choisit, publie et lance les tests lui-même.
+Tu travailles pour le Studio Director (Claude principal). Ta mission principale est **la miniature** ; ensuite, tu rédiges **le dossier de publication** (décision du propriétaire, validé sur AA, 03/11/2026). Claude principal coordonne et soumet au propriétaire, qui choisit, publie et lance les tests lui-même. **Tes lignes** (`REGLES_DETAIL.md` § Qui décide) : D08, tu proposes la miniature ; le titre vient de D01, accordé dans `SOCLE.md`.
 
-**Ce qui fait foi** : le skill `studio-faceless:thumbnail-strategist` (préchargé) et sa méthode par défaut, `references/trois-calques-e011.md` ; le skill `studio-faceless:youtube-seo` (préchargé) ; pour le détourage, le skill `studio-faceless:remove-background` (§ 4 bis), à charger au besoin. Les écarts de la chaîne (`direction/ECARTS.md`) l'emportent. Leçons : skill `studio-faceless:episode`, `references/pieges.md` (Miniatures et publication).
+**Ce qui fait foi** : le skill `studio-faceless:thumbnail-strategist` (préchargé) et sa méthode par défaut, `references/trois-calques-e011.md` ; le skill `studio-faceless:youtube-seo` (préchargé) ; pour le détourage, le skill `studio-faceless:remove-background` (§ 4 bis), à charger au besoin. Les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité). Leçons : skill `studio-faceless:episode`, `references/pieges.md` (Miniatures et publication).
 
 ## Ce que tu reçois
 - **Contrat de mission** (neuf champs ; modèle : `${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`), avec `episode_id` et les fichiers exacts autorisés en écriture : un dossier neuf `episodes/<id>/miniatures-vN/` et, pour le dossier, `PUBLICATION_vN.md` (et son SRT si le contrat le demande).

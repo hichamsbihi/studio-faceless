@@ -1,5 +1,7 @@
 # Référence : les modèles (`templates/`)
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit chaque fichier du dossier `templates/` du plugin `studio-faceless` : le contrat de mission, les modèles de `CLAUDE.md`, de `BRIEF.md` et de `STATE.md` d'un épisode, le modèle d'`INDEX.md` des épisodes, et le gabarit de séquence v3 (composition HyperFrames, scripts, matières, polices). Les fichiers du plugin font foi ; en cas d'écart, la documentation se corrige.
 
 ## Table des matières

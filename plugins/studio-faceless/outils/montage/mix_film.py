@@ -32,7 +32,7 @@ import numpy as np
 from scipy.signal import lfilter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))   # -I retire le dossier du script de sys.path
-from assembler import (FF, FP, SR, FPS, TARGET_I, MAX_TP, PLAFOND_WAV, chemin, rel, probe, lire, ebur128, mesurer,   # noqa: E402
+from assembler import (FF, FP, SR, FPS, TARGET_I, TOLERANCE_I, MAX_TP, PLAFOND_WAV, chemin, rel, probe, lire, ebur128, mesurer,   # noqa: E402
                        write_wav, limiteur, lieu, ecrire_journal)
 
 RAMPE_SILENCE, RAMPE_GAIN = 0.05, 0.01
@@ -507,7 +507,7 @@ def main():
                f'(MD5 {md_out[-12:]}) ; {I3:.1f} LUFS intégré, crête vraie {tp3:.1f} dBTP, LRA {lra3:.1f} LU ; '
                f'décodage complet sans erreur')
     ecarts = [x for x, bad in (('nombre d\'images', n_out != n_in or n_in != total), ('flux vidéo modifié', md_in != md_out),
-                               ('intensité hors −16 ±1 LUFS', abs(I3 - TARGET_I) > 1),
+                               (f'intensité hors {TARGET_I:g} ±{TOLERANCE_I:g} LUFS', abs(I3 - TARGET_I) > TOLERANCE_I),
                                ('crête vraie > −1,5 dBTP', tp3 > MAX_TP)) if bad]
     log.append('Contrôles du MP4 : ' + ('OK' if not ecarts else 'ÉCART : ' + ', '.join(ecarts))
                + ' ; écoute à faire par le propriétaire (ECOUTE_A_FAIRE)')

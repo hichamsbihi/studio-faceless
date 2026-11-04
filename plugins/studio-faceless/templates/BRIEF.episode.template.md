@@ -4,7 +4,7 @@ Modèle à compléter pour un épisode autorisé. Les notes sont en français ; 
 
 ## Référentiels applicables
 
-Consulter le `CLAUDE.md` propre à l’épisode et les documents communs, sans les dupliquer : `direction/LIGNE_EDITORIALE.md` (chemin depuis la racine de la chaîne), `${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` et `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` (règles par défaut du plugin ; les écarts de la chaîne sont dans `direction/ECARTS.md` et l’emportent). Leur statut reste applicable ; les règles de storytelling proposées ne deviennent pas approuvées par l’utilisation de ce modèle.
+Consulter le `CLAUDE.md` propre à l’épisode et les documents communs, sans les dupliquer : `direction/LIGNE_EDITORIALE.md` (chemin depuis la racine de la chaîne), `${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` et `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` (règles par défaut du plugin ; les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité)). Leur statut reste applicable ; les règles de storytelling proposées ne deviennent pas approuvées par l’utilisation de ce modèle.
 
 ## Question centrale
 [Une question précise à laquelle l'enquête cherchera à répondre.]

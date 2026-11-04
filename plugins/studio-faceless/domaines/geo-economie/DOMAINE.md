@@ -17,7 +17,7 @@ Liste de bonnes sources, jamais une obligation d'ordre ni de licence (validé su
 - **Si aucune image ne montre le fait** : motion design (cartes animées, graphiques), document primaire (dépôt SEC, communiqué de banque centrale), titre de presse cité brièvement avec sa source.
 
 ## Risques et pièges de faits
-- **Aucun conseil d'investissement, aucune prédiction de cours** : jamais « acheter » ni « vendre » ; un prix ou un cours cité est un fait daté et sourcé (validé sur MM, 19/10/2026, Q5 de la feuille de route, A43 et B22).
+- **Aucune recommandation d'investissement, aucune prédiction de cours** : jamais « acheter » ni « vendre » ; un prix ou un cours cité est un fait daté et sourcé (validé sur MM, 19/10/2026, Q5 de la feuille de route, A43 et B22).
 - **Avertissement obligatoire** dans la description de chaque vidéo, en anglais, mot pour mot, jamais omis ni reformulé :
   « This video is for educational and informational purposes only and is not financial or investment advice. »
   Le contrôle de l'avertissement est dans `${CLAUDE_PLUGIN_ROOT}/outils/controle/publication.py` (validé sur MM, 19/10/2026, B23 ; à tester sur la chaîne avant la première publication).

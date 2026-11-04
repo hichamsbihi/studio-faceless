@@ -5,8 +5,10 @@ Refuse, dans les fichiers à committer :
 - un média d'épisode (vidéo, son, image, police sous episodes/) : il va dans la sauvegarde externe ;
 - un secret probable (clé d'API sk-… ou sk_… en début de jeton, jeton GitHub, clé privée, en-tête Bearer) ;
 - un chemin propre à une machine (C:/Users/<nom>, /c/Users/<nom>) dans un fichier de code actif (hors episodes/, docs/ et tout dossier vendor/, copie de tiers) ;
-- un REGLES_STUDIO.md de plus de 9 000 caractères une fois ${CLAUDE_PLUGIN_ROOT} remplacé par un chemin de cache type : l'application de bureau
-  coupe tout additionalContext du hook SessionStart au-delà de 10 000 caractères (0.2.3, mesure du 30/10/2026). Le détail va dans referentiels/REGLES_DETAIL.md.
+- un REGLES_STUDIO.md plus long que `injection.regles_studio_caracteres_max` de referentiels/seuils.json (1.1.0) une fois
+  ${CLAUDE_PLUGIN_ROOT} remplacé par un chemin de cache type : l'application de bureau coupe tout additionalContext du hook
+  SessionStart au-delà de 10 000 caractères (0.2.3, mesure du 30/10/2026). Le détail va dans referentiels/REGLES_DETAIL.md ;
+  verifier_coherence.py compte en plus la ligne du domaine.
 
 Usage, depuis la racine de la chaîne :
   python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/verifier_depot.py            fichiers indexés (git add), comme le crochet pre-commit
@@ -14,10 +16,11 @@ Usage, depuis la racine de la chaîne :
 Crochet : .githooks/pre-commit, activé par `git config core.hooksPath .githooks` (INSTALLATION.md).
 Code de sortie : 0 = rien à signaler ; 1 = refus. Bibliothèque standard seule.
 """
-import os, re, subprocess, sys
+import json, os, re, subprocess, sys
 
 LIMITE = 10 * 1024 * 1024
-LIMITE_REGLES = 9000            # caractères de REGLES_STUDIO.md tel que le hook SessionStart l'injecte
+with open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'referentiels', 'seuils.json'), encoding='utf-8') as _f:
+    LIMITE_REGLES = json.load(_f)['injection']['regles_studio_caracteres_max']   # caractères de REGLES_STUDIO.md injecté
 RACINE_TYPE = 'C:/Users/<nom>/.claude/plugins/cache/studio-faceless/studio-faceless/0.4.0'   # longueur type du chemin du plugin installé ; l'étiquette de version (cinq caractères, comme 0.2.3 avant) ne compte que par sa longueur
 MEDIAS = {'.mp4', '.mov', '.webm', '.mkv', '.wav', '.mp3', '.m4a', '.aac', '.flac', '.png', '.jpg', '.jpeg', '.webp', '.gif',
           '.tif', '.tiff', '.pdf', '.ttf', '.otf', '.woff', '.woff2', '.zip'}

@@ -1,7 +1,7 @@
 # Production des séquences (étapes 6 et 7)
 
 ## 1. La recette v3 (validé sur AA, 24/10/2026, sur E007 seq5 v3)
-Le propriétaire : « cette diversification d'effets, de transitions et cette immersivité était celle que je recherchais ». Exemple complet AA (archives de la chaîne) : consignes de l'E007, séquence témoin seq5 v3, schéma de Turin de l'E003. Les règles citées dans ce fichier sont les règles par défaut du plugin (`${CLAUDE_PLUGIN_ROOT}/referentiels/`) ; les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent.
+Le propriétaire : « cette diversification d'effets, de transitions et cette immersivité était celle que je recherchais ». Exemple complet AA (archives de la chaîne) : consignes de l'E007, séquence témoin seq5 v3, schéma de Turin de l'E003. Les règles citées dans ce fichier sont les règles par défaut du plugin (`${CLAUDE_PLUGIN_ROOT}/referentiels/`) ; les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité).
 1. **Vivacité** :
    - un événement visuel toutes les 1,5 à 3 s ;
    - aucun plan de plus de 5 s, hors tenue S ;
@@ -35,7 +35,7 @@ Le propriétaire : « cette diversification d'effets, de transitions et cette im
 
 ## 2. Contrat du producteur (`studio-faceless:motion-producer`)
 Champs du modèle `${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`, plus :
-- **À lire d'abord** : les consignes communes de l'épisode, le brief, le modèle (séquence témoin de l'épisode, par plages), le README de la séquence précédente pour l'image d'entrée.
+- **À lire d'abord** : les consignes communes de l'épisode, le brief, le modèle (la témoin du style, ou une séquence déjà rendue de l'épisode, par plages), le README de la séquence précédente pour l'image d'entrée.
 - **Règles d'image** : `${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2 ter et § 2 quater (animation, transitions, médias au bon moment ; validé sur AA, 28/10/2026), avec la recette v3 (§ 1). Le brief en donne des extraits.
 - **Point de départ** : le gabarit v3, ou la version retenue, copiée sans MP4, sans planches et sans dossiers `_copie…` ni `_rendu-N`.
 - **Écriture** : son dossier seulement, qui n'existe pas encore. Rien dans le scratchpad, rien dans les dossiers temporaires du système.
@@ -67,12 +67,12 @@ Champs du modèle `${CLAUDE_PLUGIN_ROOT}/templates/CONTRAT_MISSION.template.md`,
 - **Réponse finale** : 12 lignes au plus.
 
 ## 3. Lots
-- **Séquence témoin d'abord** : rendue, puis validée par le propriétaire. Sa leçon passe dans les consignes communes avant les lots.
+- **L'épreuve d'abord, seulement si le film porte un style neuf** (porte 3, `etapes.md` § 6) ; sinon, les lots partent dès que le kit est fini. Il n'y a plus de séquence témoin par épisode (`REGLES_DETAIL.md` § Parcours).
 - **Lots de trois producteurs au plus.** Claude transmet à chaque nouveau producteur :
   - l'image de sortie exacte de la séquence précédente ;
   - les photos déjà prises ;
   - les quotas d'effets rares déjà consommés.
-- **Option, sur décision du propriétaire** (porte 7 de l'E009, 26/10/2026 ; validé sur AA comme option, 28/10/2026, Q72) : après la séquence témoin, tous les producteurs sont lancés à la fois ; les rendus restent un à la fois, à la suite, sans nouveau feu vert par séquence. Il faut que tous les raccords soient écrits au pixel et que les photos et les plans de banque soient répartis d'avance. Par défaut : lots de trois.
+- **Option, décidée au socle** (bloc 10 ; validé sur AA comme option, 28/10/2026, Q72 de l'E009) : dès le kit fini (ou après l'épreuve), tous les producteurs sont lancés à la fois ; les rendus restent un à la fois, à la suite, sans nouveau feu vert par séquence. Il faut que tous les raccords soient écrits au pixel et que les photos et les plans de banque soient répartis d'avance. Par défaut : lots de trois.
 - **Chaque livrable se vérifie à son retour** :
   - planches regardées ;
   - `check` ;

@@ -1,5 +1,7 @@
 # Référence : le skill `episode`
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit les dix fichiers du skill `studio-faceless:episode` (la fabrication d'un épisode, du choix du sujet au mix du film) et récapitule ses portes de questions. Le parcours, étape par étape, est dans [`../workflows/episode.md`](../workflows/episode.md).
 
 ## Table des matières

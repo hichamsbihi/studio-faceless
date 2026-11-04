@@ -8,7 +8,7 @@ description: "Shorts method for a faceless documentary channel: vertical 9:16 sh
 Méthode pour choisir, écrire, monter et contrôler les shorts d'un film de la chaîne. Statut du skill : `PROPOSÉ` (rédigé sur AA le 19/10/2026 d'après les décisions de son propriétaire du même jour ; à valider sur le pilote, épisode 001 d'AA).
 
 ## Ordre de préséance
-Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les règles par défaut du plugin.
+Les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité).
 1. **Les décisions du propriétaire** et les règles du `CLAUDE.md` de la chaîne, de `direction/` (`ECARTS.md`, puis `${CLAUDE_PLUGIN_ROOT}/referentiels/METHODE_RECIT.md` § 1 Boucle de curiosité et § 5 Shorts, `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md`, `${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md`) et de `marque/README.md` § Shorts.
 2. **L'aide officielle des plateformes** (`references/plateformes.md`).
 3. **Ce skill.**

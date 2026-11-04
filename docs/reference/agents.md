@@ -1,5 +1,7 @@
 # Référence : les agents du plugin (`agents/`)
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit les onze agents du plugin `studio-faceless` : leur en-tête, ce qu'ils lisent, ce qu'ils écrivent, ce que le garde-fou leur interdit, ce qu'ils livrent et qui les appelle. Les fichiers de `agents/` font foi ; en cas d'écart, la documentation se corrige.
 
 ## Table des matières

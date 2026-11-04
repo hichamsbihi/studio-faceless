@@ -50,9 +50,10 @@ class TailleRegles(unittest.TestCase):
         self.assertGreater(verifier_depot.taille_regles(brut), len(brut))
 
     def test_limite(self):
-        self.assertLessEqual(verifier_depot.LIMITE_REGLES, 9000)
-        self.assertGreater(verifier_depot.taille_regles('a' * 9001), verifier_depot.LIMITE_REGLES)
-        self.assertLessEqual(verifier_depot.taille_regles('a' * 9000), verifier_depot.LIMITE_REGLES)
+        limite = verifier_depot.LIMITE_REGLES          # referentiels/seuils.json (1.1.0) ; l'app coupe au-delà de 10 000
+        self.assertLessEqual(limite, 9000)
+        self.assertGreater(verifier_depot.taille_regles('a' * (limite + 1)), limite)
+        self.assertLessEqual(verifier_depot.taille_regles('a' * limite), limite)
 
     def test_regles_du_depot(self):
         chemin = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'REGLES_STUDIO.md')

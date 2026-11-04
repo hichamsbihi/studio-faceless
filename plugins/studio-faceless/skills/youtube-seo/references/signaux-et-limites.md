@@ -13,7 +13,7 @@
    - `[Officiel]` Aide 13861714 et 16391400 : Test & Compare montre jusqu'à 3 miniatures ou titres et désigne le gagnant au **temps de visionnage**, pas au CTR.
    - `[Officiel]` Aide 9314415 : l'« intro » est la part des spectateurs encore là à 30 s. La promesse doit être tenue avant.
 3. **Description.**
-   - `[Officiel]` Aide 16090438 : la description fait partie de la pertinence. Aide 12948449 : conseils de rédaction de la description.
+   - `[Officiel]` Aide 16090438 : la description fait partie de la pertinence. Aide 12948449 : recommandations de rédaction de la description.
    - `[Observé]` Seules les premières lignes s'affichent avant « …more » (page de lecture, résultats de recherche) : elles portent la promesse et la requête principale.
 4. **Chapitres.**
    - `[Officiel]` Aide 9884579 : navigation dans la vidéo ; règles de format ci-dessous.

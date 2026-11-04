@@ -1,5 +1,7 @@
 # Workflow : mettre en scène une séquence (jusqu'à `render.sh`) et la corriger
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit le parcours d'**une** séquence : du contrat de mission et du brief court jusqu'au `render.sh` écrit par l'agent `motion-producer`, puis le rendu, la présentation au propriétaire et la correction sur place. Il couvre les étapes 6 et 7 du skill `episode` ; le rendu lui-même est détaillé dans [`rendu-et-controle.md`](rendu-et-controle.md).
 
 ## Table des matières

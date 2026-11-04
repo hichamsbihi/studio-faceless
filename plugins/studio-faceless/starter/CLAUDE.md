@@ -1,6 +1,6 @@
 # <Nom de la chaîne> : instructions de la chaîne
 
-<Une phrase : genre, promesse, public.> Les règles communes du studio arrivent du plugin `studio-faceless` au début de chaque session ; ce fichier les complète et l'emporte en cas de conflit.
+<Une phrase : genre, promesse, public.> Les règles communes du studio arrivent du plugin `studio-faceless` au début de chaque session ; ce fichier les complète (priorité : `REGLES_STUDIO.md` § Priorité du plugin).
 
 ## Identité
 - **Propriétaire** : <prénom>. Il choisit, décide et valide ; partout où le plugin dit « le propriétaire », c'est lui.

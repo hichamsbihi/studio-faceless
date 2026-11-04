@@ -1,5 +1,7 @@
 # Skills annexes du plugin
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Cette page décrit les neuf skills « annexes » de `plugins/studio-faceless/skills/` : `grilling`, `humanizer`, `find-skills`, `conseil`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`, `lemo-wake`, `lemo-layers` (ces deux derniers depuis la 1.0.0 : voir leur `PROVENANCE.md`). Les skills de métier (`episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`) sont décrits dans [`skill-episode.md`](skill-episode.md), [`publication.md`](publication.md) et [`son.md`](son.md).
 
 ## Table des matières

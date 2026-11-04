@@ -1,5 +1,7 @@
 # Workflow : archivage d'un épisode et sauvegarde de la chaîne
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit deux parcours liés : l'**archivage** d'un épisode terminé (aperçu, accord du propriétaire, zip vérifié, essais déplacés dans `_A_SUPPRIMER/` que le propriétaire vide lui-même) et la **sauvegarde datée** de la chaîne, vérifiée par empreintes. Rien n'est jamais supprimé par Claude.
 
 ## Table des matières

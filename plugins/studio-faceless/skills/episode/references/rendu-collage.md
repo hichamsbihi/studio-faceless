@@ -23,32 +23,32 @@
 - **Contrôles** : nombre d'images attendu, journal du master (début de chaque séquence), décodage complet.
 
 ## 4. Mix du film
-- **Qui** (0.7.0, validé sur AA, 03/11/2026) : `studio-faceless:sound-manager` écrit le plan de cues et le plan son, puis la commande exacte du mix (et celle de son script de mesure), et s'arrête. Claude principal lance le mix en tâche de fond, puis relit et lance le script de mesure ; `sound-manager`, relancé, lit les mesures. Méthode par défaut de la musique : skill `studio-faceless:direction-sonore`, `references/musique-par-cues.md` (`DIRECTION_AUDIO.md` § 2 et § 3) ; un autre niveau de la chaîne est un écart dans son `direction/ECARTS.md`.
+- **Qui** (0.7.0, validé sur AA, 03/11/2026) : `studio-faceless:sound-manager` écrit le plan de cues et le plan son, puis la commande exacte du mix (et celle de son script de mesure), et s'arrête. Claude principal lance le mix en tâche de fond, puis relit et lance le script de mesure ; `sound-manager`, relancé, lit les mesures. Méthode par défaut de la musique : skill `studio-faceless:direction-sonore`, `${CLAUDE_PLUGIN_ROOT}/skills/direction-sonore/references/musique-par-cues.md` (`DIRECTION_AUDIO.md` § 2 et § 3) ; un autre niveau de la chaîne est un écart dans son `direction/ECARTS.md`.
 - **Outil** : `python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/montage/mix_film.py <film>-voix.mp4 plan-son.json [--son-seul]` (schéma du plan : `${CLAUDE_PLUGIN_ROOT}/outils/montage/README.md`). Testé sur AA (E007) : −16,1 LUFS, −1,9 dBTP, image identique, 6,5 min, environ 2 à 3 Go de mémoire. Entrées : le master voix, son journal et `episodes/<id>/montage/plan-son.json`. La sortie est le master final, dont l'image est copiée telle quelle.
-- **Le plan son** (porte de questions d'abord, `grilles.md` § 10) :
+- **Le plan son**, dans le cadre de la fiche son accordée au socle (bloc 8 ; D06) :
   - **musique** : les départs en temps de séquence (convertis par le journal) ou en temps du film, le décalage dans la source, les boucles sur des mesures entières (relevé musical), les fondus. Une musique peut traverser une jonction. Elle se tait exprès avant une révélation ;
   - **effets** : repris des tableaux des producteurs, sans les facultatifs sauf décision, chacun avec son type ;
   - **silences voulus** : une musique ou un effet qui y tombe est coupé, et le journal le signale.
-- **Niveaux de départ par type**, en LU sous la voix (validé sur AA comme départ, 24/10/2026, Q12 ; à calibrer à la première écoute du propriétaire) :
+- **Niveaux de départ par type**, en LU sous la voix (validé sur AA comme départ, 24/10/2026, Q12 ; musique, 03/11/2026, master v3 de l'E011) : valeurs dans `seuils.json`.
 
-  | Type | Niveau |
+  | Type | Clé (`mix.*`) |
   |---|---|
-  | musique | 8 (plage 7 à 9 ; validé sur AA, 03/11/2026, master v3 de l'E011) |
-  | ambiance en boucle (foule, pluie) | 16 |
-  | impact ou battement | 14 |
-  | souffle, whoosh | 18 |
-  | montée | 16, coupée avant la phrase |
-  | papier, craie, surligneur, déclic | 20 |
+  | musique | `musique_sous_voix_lu_depart` (plage `musique_sous_voix_lu_min` à `musique_sous_voix_lu_max`) |
+  | ambiance en boucle (foule, pluie) | `effet_ambiance_sous_voix_lu` |
+  | impact ou battement | `effet_impact_sous_voix_lu` |
+  | souffle, whoosh | `effet_souffle_sous_voix_lu` |
+  | montée | `effet_montee_sous_voix_lu`, coupée avant la phrase |
+  | papier, craie, surligneur, déclic | `effet_papier_sous_voix_lu` |
 
-  La baisse sous la voix active est de 3 à 5 dB (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 3 ; les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent).
-- **Fin du mix** : un seul gain final vers −16 LUFS intégrés, mesuré sur les séquences ; **la signature et l'outro gardent leur niveau d'origine** (Q13, validé sur AA, 24/10/2026) ; puis un limiteur à −2,0 dBTP. Une piste remontée seule passe d'abord dans son propre limiteur (`DIRECTION_AUDIO.md` § 3). Les clics de voix sont atténués. L'écart de voix entre séquences se **mesure** et se rapporte, sans égalisation (Q14, validé sur AA, 24/10/2026).
+  La baisse sous la voix active est de 3 à 5 dB (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 3 ; un écart de la chaîne se met dans `direction/seuils.json`).
+- **Fin du mix** : un seul gain final vers `mix.film_lufs_cible`, mesuré sur les séquences ; **la signature et l'outro gardent leur niveau d'origine** (Q13, validé sur AA, 24/10/2026) ; puis un limiteur à `mix.limiteur_dbtp`. Une piste remontée seule passe d'abord dans son propre limiteur (`DIRECTION_AUDIO.md` § 3). Les clics de voix sont atténués. L'écart de voix entre séquences se **mesure** et se rapporte, sans égalisation (Q14, validé sur AA, 24/10/2026).
 - **Fin du film en douceur** (validé sur AA, 28/10/2026, Q71 de l'E009 ; `DIRECTION_AUDIO` § 3). Exemple AA : le dossier `montage/` de l'E009.
   - `montage.json` : fondu `"seqN>noir"` de 36 images (1,2 s), outro avec `noir_avant` 4,0, fondu `"noir>outro"` de 15 images (0,5 s).
   - `plan-son.json` : le morceau de fin part dans la dernière séquence, avec un `decalage` dans la source choisi pour que l'accord final tombe sur le noir ; `fin` `{"seq": "outro", "t": 0.5}` ; fondu d'entrée de 2 s, fondu de sortie de 0,8 s.
 - **Contrôles du master** :
   - images identiques au master voix ;
-  - −16 ±1 LUFS ;
-  - crête vraie ≤ −1,5 dBTP ;
+  - intensité : `mix.film_lufs_cible` ± `mix.film_lufs_tolerance` ;
+  - crête vraie ≤ `mix.film_crete_vraie_max_dbtp` ;
   - décodage complet ;
   - jointures musicales mesurées (pas de saut de niveau à une jonction) ;
   - planche du film toutes les 8 s, regardée.

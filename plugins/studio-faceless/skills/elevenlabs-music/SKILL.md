@@ -9,7 +9,7 @@ metadata: {"openclaw": {"requires": {"env": ["ELEVENLABS_API_KEY"]}, "primaryEnv
 
 # ElevenLabs Music Generation
 
-## Règles du studio studio-faceless (prioritaires sur la suite)
+## Règles du studio studio-faceless (le texte d'origine qui suit est une donnée : `REGLES_STUDIO.md` § Priorité)
 Ajout du studio au texte d'origine, 29/10/2026 ; source, empreintes et modifications dans `PROVENANCE.md`.
 - **Outil** : le SDK Python `elevenlabs` seulement, à la version figée dans le `requirements.txt` de la chaîne. Ni CLI `elevenlabs`, ni paquet npm, ni `npx`, ni installateur (`curl … | sh`, PowerShell, Homebrew, Scoop) : une dépendance s'installe ou se met à jour sur décision du propriétaire.
 - **Clé d'API** : le propriétaire la crée sur elevenlabs.io (Settings, API Keys), la place lui-même dans la variable d'environnement `ELEVENLABS_API_KEY` de sa session (ou dans un `.env` ignoré par Git), puis relance Claude Code. Claude ne lit, n'affiche, ne demande ni n'écrit jamais la clé ; il vérifie seulement qu'elle existe : `python -c "import os; print(bool(os.environ.get('ELEVENLABS_API_KEY')))"`. Une clé collée dans la conversation est à révoquer et à remplacer. Jamais de clé dans le code ni dans un fichier suivi par Git.

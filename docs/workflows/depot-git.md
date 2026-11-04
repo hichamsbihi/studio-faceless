@@ -1,5 +1,7 @@
 # Workflow : le dépôt Git d'une chaîne
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit le dépôt Git privé d'une chaîne : ce qui y entre et ce qui reste dehors (`.gitignore`, Git LFS), le contrôle avant chaque commit (crochet `pre-commit` et `verifier_depot.py`), les commits locaux faits par Claude, l'envoi vers GitHub **seulement avec l'accord du propriétaire, donné à chaque fois**, et l'étiquette d'un épisode publié.
 
 ## Table des matières

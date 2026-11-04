@@ -1,5 +1,7 @@
 # Workflow : critique indépendante et storyboard par l'`art-director`
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit les deux missions de l'agent `art-director` : la **critique indépendante d'un rendu** (porte C du référentiel) et le **storyboard** (intention visuelle d'un épisode ou d'une séquence). Dans les deux cas, l'agent n'intervient **que si le propriétaire le demande**. Il propose, il ne valide pas, et il ne construit ni ne rend aucune vidéo.
 
 ## Table des matières

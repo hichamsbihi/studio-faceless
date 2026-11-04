@@ -1,5 +1,7 @@
 # Workflow : fabriquer un épisode, du sujet à l'archivage
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit le parcours complet d'un épisode (14 étapes, de 0 à 13), porte par porte, avec pour chaque étape l'agent ou l'outil, les fichiers créés dans `episodes/<id>/`, le statut posé et le renvoi vers le workflow détaillé. La méthode vient du skill `studio-faceless:episode` ([fiches](../reference/skill-episode.md)).
 
 ## Table des matières

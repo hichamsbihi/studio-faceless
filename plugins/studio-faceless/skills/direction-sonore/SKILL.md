@@ -7,12 +7,12 @@ description: "Sound direction method for the channel's documentaries: audio cont
 
 Méthode et gabarits pour décider **ce que le son doit faire** dans un documentaire de la chaîne, puis le vérifier sur le fichier livré.
 
-## Ordre de préséance
-0. **Les écarts de la chaîne** (`direction/ECARTS.md`) l'emportent sur les règles par défaut du plugin ci-dessous.
-1. **`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` fait foi** : décisions du propriétaire, voix, prise approuvée intouchable, dépenses, cibles de livraison (environ −16 LUFS, true peak ≤ −1,5 dBTP), constats HyperFrames 0.8.149, règles ElevenLabs. En cas d'écart avec ce skill, il l'emporte. Ne jamais recopier ses chiffres ailleurs que dans une mesure : y renvoyer.
-2. **`hyperframes-audio`** : mise en œuvre dans la composition (pistes, automation, effets, groupes). Rappel du projet : les valeurs d'automation sont **absolues** et remplacent `data-volume`.
-3. **Ce skill** : la méthode de conception et de contrôle, et les gabarits.
-4. `media-use` n'est pas une source de sons pour la chaîne : ses effets fournis (whoosh, riser, glitch…) n'ont ni la provenance ni le registre voulus.
+## Ce qui fait foi
+Priorité : `REGLES_STUDIO.md` § Priorité (les écarts de la chaîne sont dans `direction/ECARTS.md`) ; valeurs : `seuils.json` (clés `mix.*`), jamais recopiées ici.
+- **`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md`** : décisions du propriétaire, voix, prise approuvée intouchable, dépenses, cibles de livraison, constats HyperFrames 0.8.149, règles ElevenLabs. Ce skill en donne la méthode et ne le contredit pas ; un écart entre eux se corrige dans le plugin.
+- **`hyperframes-audio`** : mise en œuvre dans la composition (pistes, automation, effets, groupes). Rappel du projet : les valeurs d'automation sont **absolues** et remplacent `data-volume`.
+- **Ce skill** : la méthode de conception et de contrôle, et les gabarits.
+- `media-use` n'est pas une source de sons pour la chaîne : ses effets fournis (whoosh, riser, glitch…) n'ont ni la provenance ni le registre voulus.
 
 ## Quand l'utiliser
 - Préparer le son d'une séquence, d'un prototype ou d'un épisode (avant fabrication).

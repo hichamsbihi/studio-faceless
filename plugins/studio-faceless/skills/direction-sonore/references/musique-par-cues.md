@@ -1,14 +1,14 @@
 # Musique par cues, marques et contrôle sans écoute (méthode par défaut)
 
-**Statut** : `VALIDÉ` sur AA, 03/11/2026. Le propriétaire a approuvé à l'écoute le master v3 de l'E011, après avoir refusé les v1 et v2. C'est la règle par défaut de la musique d'un film, pour toutes les chaînes (VALIDÉ, Hicham, 03/11/2026), reprise par `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 2 et § 3. Une chaîne qui veut autre chose l'écrit en écart dans son `direction/ECARTS.md`, qui l'emporte. Le plan et les mesures sont faits par `studio-faceless:sound-manager` ; le mix et les scripts de mesure sont lancés par Claude principal ; l'écoute revient au propriétaire.
+**Statut** : `VALIDÉ` sur AA, 03/11/2026. Le propriétaire a approuvé à l'écoute le master v3 de l'E011, après avoir refusé les v1 et v2. C'est la règle par défaut de la musique d'un film, pour toutes les chaînes (VALIDÉ, Hicham, 03/11/2026), reprise par `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 2 et § 3. Une chaîne qui veut autre chose l'écrit en écart dans son `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité ; valeurs : `direction/seuils.json`). Le plan et les mesures sont faits par `studio-faceless:sound-manager` ; le mix et les scripts de mesure sont lancés par Claude principal ; l'écoute revient au propriétaire.
 
 ## 1. Le constat (E011 d'AA)
 - **Refus des v1 et v2** : « la musique de suspense reste trop longtemps en fond », et les révélations n'étaient pas marquées.
 - **Demande** : que « l'impact sonore suive l'impact visuel ».
 
 ## 2. La recette
-- **Des cues de 15 à 40 s**, chacun avec une fonction (installer, enquêter, tendre, respirer). Ils changent aux tournants du récit, pas aux coupes (`musique-a-l-image.md` § 2).
-- **Un suspense de 30 s au plus**, qui finit sur sa révélation.
+- **Des cues de `mix.cue_s_min` à `mix.cue_s_max` s** (`seuils.json`), chacun avec une fonction (installer, enquêter, tendre, respirer). Ils changent aux tournants du récit, pas aux coupes (`musique-a-l-image.md` § 2).
+- **Un suspense de `mix.suspense_s_max` s au plus**, qui finit sur sa révélation.
 - **Les protagonistes changent la musique à leur entrée.**
 - **Une signature courte commune** quand la photo ou le logo d'un autre acteur arrive (exemple AA : un maillet en ré).
 - **Révélation simple** : un coup tonal léger (exemple AA : un piano en ré).
@@ -17,12 +17,12 @@
 - **Aucun impact aux entrées de séquence.**
 - **Une seule tonalité pour toute la matière.** Chaque marque remplace l'effet déjà posé sur cette image : jamais deux sons pour une même image.
 - **Les sauts dans un thème se font par mesures entières** (exemple AA : 92,3 bpm, donc une mesure de 2,6 s). `decalage` et `boucle` tombent sur des multiples de la mesure.
-- **Niveau** : musique mesurée entre 7 et 9 LU sous la voix (§ 4).
+- **Niveau** : musique mesurée entre `mix.musique_sous_voix_lu_min` et `mix.musique_sous_voix_lu_max` LU sous la voix (§ 4).
 
 Ces marques sont tirées de la matière musicale du film, dans sa tonalité. Ce ne sont pas des « stings » de bande-annonce, que `SKILL.md` refuse.
 
 ## 3. La méthode de travail
-1. **Une seule séquence témoin**, d'excellente qualité, en deux variantes. Le propriétaire en valide une, puis on fait le film entier.
+1. **La fiche son, dans `SOCLE.md`** (bloc 8 ; point 4, validé sur AA, 04/11/2026) : palette, anti-palette et deux extraits par rôle, écoutés par le propriétaire ; puis le film entier, sans question. Tant que `mesurer_mix.py` n'existe pas, une écoute de la bande radio, facultative et non bloquante (`REGLES_DETAIL.md` § Parcours). Il n'y a plus de séquence témoin par épisode.
 2. **Plan de cues** (`montage/CUES_vN.md`) : une ligne par cue, avec :
    - l'identifiant stable (M01…) ;
    - l'entrée et la sortie (en temps de séquence) ;
@@ -44,7 +44,7 @@ Claude n'écoute pas. Ces mesures repèrent des défauts ; elles ne valident rie
    - Entrées : le son du mix (`NOM.mix.wav`), le gain final lu dans son journal (`NOM.log.txt`) et la voix du film (`FILM.voix.wav`), sur la même ligne de temps.
    - Hors signature et outro : ces pièces gardent leur niveau d'origine.
 2. **Intensité en pondération K sur des fenêtres de 3 s** (intensité à court terme de BS.1770, sortie `S` de `ebur128`), pour le résidu et pour la voix. On ne garde que les fenêtres où la voix est active : enveloppe RMS au-dessus de −42 dBFS, seuil de `mix_film.py`.
-3. **Écart voix − musique par cue** : la médiane des fenêtres du cue, entre 7 et 9 LU.
+3. **Écart voix − musique par cue** : la médiane des fenêtres du cue, entre `mix.musique_sous_voix_lu_min` et `mix.musique_sous_voix_lu_max` LU.
 4. **Hausse de chaque marque** : la crête momentanée du résidu (fenêtre de 0,4 s, sortie `M`) à la marque, contre celle de la seconde d'avant ; puis son écart à la voix au même instant.
 5. **Lecture** : le résidu contient aussi les réductions du limiteur sur les attaques de la voix. Elles existaient avant la musique (comparer au journal du limiteur) : ce n'est pas un défaut de la musique.
 
@@ -52,7 +52,7 @@ Claude n'écoute pas. Ces mesures repèrent des défauts ; elles ne valident rie
 
 **Défauts trouvés au premier tour de l'E011** :
 - un motif de question masqué, à 0–2 dB sous la voix ;
-- un cue plus fort que la règle des 7 LU ;
+- un cue plus fort que la règle (`mix.musique_sous_voix_lu_min` LU sous la voix au moins) ;
 - des marques trop faibles.
 
 ## 5. Faits de `mix_film.py` (vérifiés sur l'E011 d'AA, 03/11/2026)

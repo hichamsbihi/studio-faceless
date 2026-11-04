@@ -2,7 +2,7 @@
 
 **Statut** : `PROPOSÉ` (Claude, 24/10/2026), à la suite des décisions validées sur AA le 24/10/2026 : mix du film à la fin (Q4) et skill `studio-faceless:episode` (Q1). La v2 (`VALIDÉ` sur AA le 20/10/2026) reste intacte dans les archives de la chaîne AA, avec son `mix.py`.
 
-Les règles par défaut citées ici sont dans `${CLAUDE_PLUGIN_ROOT}/referentiels/` ; les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent.
+Les règles par défaut citées ici sont dans `${CLAUDE_PLUGIN_ROOT}/referentiels/` ; les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité).
 
 **Changements par rapport à la v2** :
 - **Voix seule** : plus de `mix.py`. `voix.py` fait la piste de la séquence avec la voix seule (`media/audio/piste-voix.wav`) et la référence `pistes/stem-voix.wav`. Musique et effets se mixent sur le film collé (`${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md` § 3, `${CLAUDE_PLUGIN_ROOT}/outils/montage/`).
@@ -34,7 +34,7 @@ La séquence 4 v3 dépend d'une caméra 2,5D maison, et son `check` signalait du
 | `index.html` | Composition racine 1920 × 1080 (30 i/s au rendu). Elle porte l'arrière-plan commun, la palette (variables CSS), les composants (classes), les outils `window.AA` et l'habillage (étiquette du coin, crédit, noir) |
 | `compositions/m01-titre.html` | Moment d'exemple : titre, mot clé surligné, ligne d'appoint |
 | `compositions/m02-fiche.html` | Moment d'exemple : fiche « papier » d'étude qui se pose, passage surligné |
-| `voix.py` | Piste son de la séquence : la voix seule (−18 LUFS d'écoute) et `pistes/stem-voix.wav` (gain 1) pour le mix du film |
+| `voix.py` | Piste son de la séquence : la voix seule (`mix.sequence_ecoute_lufs` d'écoute, `seuils.json`) et `pistes/stem-voix.wav` (gain 1) pour le mix du film |
 | `render.sh` | Rendu final : `--workers 2`, `--sdr`, refuse les vidéos HDR de `media/`, refuse d'écraser |
 | `media/matieres/`, `media/fonts/` | Papier charbon, brumes, grain, Newsreader, avec leurs licences (`PROVENANCE.md`) |
 | `media/fonds/fond-exemple.jpg` | Fond de contexte calculé, **à remplacer** |
@@ -84,8 +84,8 @@ La séquence 4 v3 dépend d'une caméra 2,5D maison, et son `check` signalait du
 - **Polices** : Newsreader par `@font-face` (fichier local) ; IBM Plex Mono injectée par le compilateur, depuis son cache.
 - **Taille** : un fichier de plus de 300 lignes déclenche `composition_file_too_large`. Un moment par fichier.
 
-## Palette (`marque/README.md`, « Films » : socle fixe et palette par épisode, validé sur AA, 20/10/2026)
-Le fond (papier charbon, contexte flou, vignette, brume, grain) fait partie du socle fixe. Les couleurs viennent de la palette de l'épisode, dans `:root` :
+## Palette (`marque/README.md`, « Films » : base fixe et palette par épisode, validé sur AA, 20/10/2026)
+Le fond (papier charbon, contexte flou, vignette, brume, grain) fait partie de la base fixe. Les couleurs viennent de la palette de l'épisode, dans `:root` :
 
 | Variable | Rôle | Valeur par défaut |
 |---|---|---|

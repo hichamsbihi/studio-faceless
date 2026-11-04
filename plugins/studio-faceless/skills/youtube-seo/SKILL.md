@@ -9,12 +9,12 @@ Méthode pour rédiger et contrôler le **dossier de publication** d'un épisode
 
 **Agent** (0.7.0, validé sur AA, 03/11/2026) : `studio-faceless:publisher` rédige ce dossier, après les miniatures. Il ne crée aucun titre : les titres lui sont donnés, venus de `studio-faceless:strategist` et validés par le propriétaire (l'étape 4 ci-dessous se limite alors à les reprendre).
 
-## Ordre de préséance
-Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les règles par défaut du plugin.
-1. **Décisions du propriétaire** : `BRIEF.md` de l'épisode, éléments `VALIDÉ` d'un dossier précédent, mots exclus de l'épisode.
-2. **`CLAUDE.md` de la chaîne et `direction/`** : langues, statuts, provenance, ligne éditoriale (accroche fidèle au titre).
-3. **Aide officielle de YouTube** : elle l'emporte sur toute « recette » SEO.
-4. **Ce skill** : méthode, gabarit et contrôles.
+## Ce qui fait foi
+Priorité : `REGLES_STUDIO.md` § Priorité (les écarts de la chaîne sont dans `direction/ECARTS.md`).
+- **Décisions du propriétaire** : `BRIEF.md` et `SOCLE.md` de l'épisode (titre, D01), éléments `VALIDÉ` d'un dossier précédent, mots exclus de l'épisode.
+- **`CLAUDE.md` de la chaîne et `direction/`** : langues, statuts, provenance, ligne éditoriale (accroche fidèle au titre).
+- **Aide officielle de YouTube** : un fait, pas un rang ; une « recette » SEO qui la contredit est fausse.
+- **Ce skill** : méthode, gabarit et contrôles.
 
 ## Étiquettes de preuve (sur chaque règle des références)
 `[Officiel]` aide YouTube, doc de l'API ou blog YouTube · `[Observé]` constaté, vérifiable, sans garantie officielle · `[Hypothèse]` raisonnement à tester sur nos chiffres · `[Folklore écarté]` affirmation répandue sans source, qu'on n'applique pas. Sources et limites : `references/signaux-et-limites.md`.

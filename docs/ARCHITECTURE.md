@@ -1,5 +1,7 @@
 # Architecture du plugin
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 ## Ordre des règles
 Au début de chaque session (et après un `/compact`, ainsi qu'après un `/clear`), le hook `SessionStart` injecte `REGLES_STUDIO.md` en remplaçant `${CLAUDE_PLUGIN_ROOT}` par le chemin du plugin installé. L'application de bureau coupe tout `additionalContext` au-delà de 10 000 caractères (constat du 30/10/2026 : seul un aperçu de 2 Ko arrivait au modèle) : `REGLES_STUDIO.md` reste donc sous 9 000 caractères une fois le chemin substitué (`verifier_depot.py` refuse un fichier plus long) et sa suite, `referentiels/REGLES_DETAIL.md`, se lit à la demande. Les règles s'appliquent ensuite dans cet ordre, la dernière l'emportant :
 1. `REGLES_STUDIO.md` et les référentiels du plugin (`referentiels/`) : règles par défaut ;

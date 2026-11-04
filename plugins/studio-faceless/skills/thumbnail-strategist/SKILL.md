@@ -7,11 +7,11 @@ description: "Thumbnail method for a faceless documentary channel: one promise s
 
 Méthode pour concevoir, fabriquer, contrôler et tester les miniatures d'un épisode de la chaîne. Statut du skill : `VALIDÉ` (validé sur AA, 17/10/2026 ; rédigé le 16/10/2026 à partir de l'étude AA des skills YouTube).
 
-## Ordre de préséance
-Les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent sur les règles par défaut du plugin.
-1. **Les décisions du propriétaire** (`BRIEF.md` et `PROVENANCE.md` de l'épisode) et les règles du `CLAUDE.md` de la chaîne et de `direction/`.
-2. **L'aide officielle de YouTube** (formats, Test & Compare, CTR) : elle l'emporte sur toute « recette » de miniature.
-3. **Ce skill** : la méthode, la grammaire par défaut (trois calques, VALIDÉ, Hicham, 03/11/2026 ; celle de l'E003 en secours), les contrôles et les gabarits.
+## Ce qui fait foi
+Priorité : `REGLES_STUDIO.md` § Priorité (les écarts de la chaîne sont dans `direction/ECARTS.md`) ; décideur de la miniature : D08.
+- **Les décisions du propriétaire** (`BRIEF.md`, `SOCLE.md` et `PROVENANCE.md` de l'épisode) et les règles du `CLAUDE.md` de la chaîne et de `direction/`.
+- **L'aide officielle de YouTube** (formats, Test & Compare, CTR) : un fait, pas un rang ; une « recette » de miniature qui la contredit est fausse.
+- **Ce skill** : la méthode, la grammaire par défaut (trois calques, VALIDÉ, Hicham, 03/11/2026 ; celle de l'E003 en secours), les contrôles et les gabarits.
 
 ## Quand l'utiliser
 - Trouver les concepts et les variantes d'une miniature, une fois le titre et le montage connus.

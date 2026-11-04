@@ -1,5 +1,7 @@
 # Workflow : une mission de recherche (agent `research`)
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit une mission de l'agent `research` : le contrat que lui écrit le Studio Director, les sources qu'il consulte, la façon dont il note les licences des médias candidats, le rapport qu'il rend, et ce que le Studio Director en fait (dossier `research/`, liste de téléchargement pour le propriétaire). Il couvre l'étape 1 du skill `episode` et la recherche de médias du socle (étape 5).
 
 ## Table des matières

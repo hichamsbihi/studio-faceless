@@ -1,5 +1,7 @@
 # Copies figées de tiers (`vendor/claude-skills/`, `vendor/roast-room/` et `vendor/lemo-opuscar/`)
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Cette page décrit les trois copies de tiers rangées dans `plugins/studio-faceless/vendor/` : les dix skills HyperFrames 0.8.149 (`vendor/claude-skills/` : ce que chaque skill fait, combien de fichiers il compte, quels agents du plugin le chargent) et le protocole roast-room de l'agent `strategist` (`vendor/roast-room/`, 0.4.0, MIT), plus la bibliothèque de styles lemo-opuscar (`vendor/lemo-opuscar/`, 0.7.2, MIT et CC BY 4.0). Ce sont des **copies de tiers inchangées** : il n'y a pas de fiche par fichier interne.
 
 ## Table des matières

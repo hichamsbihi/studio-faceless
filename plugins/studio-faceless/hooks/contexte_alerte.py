@@ -1,17 +1,21 @@
 """Hook UserPromptSubmit du plugin studio-faceless (0.4.1).
 
 Mesure le contexte du fil principal à chaque message du propriétaire : dernier appel du modèle dans le transcript,
-entrée + cache lu + cache écrit (même mesure que outils/suivi_tokens.py). Au-delà de 200 k, rappelle à Claude
+entrée + cache lu + cache écrit (même mesure que outils/suivi_tokens.py). Au-delà du seuil, rappelle à Claude
 d'écrire l'état puis de proposer un /compact (Hicham, 02/11/2026 : plus de /clear). Le rappel revient à chaque
-palier de 50 k ; sous le seuil, le hook ne dit rien et oublie le dernier palier. Ne bloque jamais un message.
+palier ; sous le seuil, le hook ne dit rien et oublie le dernier palier. Ne bloque jamais un message.
+Seuil et palier : `sessions.contexte_alerte_k` et `sessions.contexte_rappel_k` de referentiels/seuils.json (1.1.0).
 """
 import json
 import os
 import sys
 import tempfile
 
-SEUIL = 200_000
-PALIER = 50_000
+with open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'referentiels', 'seuils.json'),
+          encoding='utf-8') as _f:
+    _sessions = json.load(_f)['sessions']
+SEUIL = _sessions['contexte_alerte_k'] * 1000
+PALIER = _sessions['contexte_rappel_k'] * 1000
 
 
 def dernier_contexte(chemin):

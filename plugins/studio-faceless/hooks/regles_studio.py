@@ -4,7 +4,8 @@ Injecte les règles communes du studio (REGLES_STUDIO.md) au début de chaque se
 avec les chemins du plugin installé à la place de ${CLAUDE_PLUGIN_ROOT}.
 Depuis 0.2.0 : lit la ligne « - **Domaine** : <domaine> » du CLAUDE.md de la chaîne et donne le chemin de son profil.
 Depuis 0.2.3 : l'application de bureau coupe tout additionalContext au-delà de 10 000 caractères (seul un aperçu de 2 Ko
-arrive au modèle). REGLES_STUDIO.md doit donc rester court (le vérificateur du dépôt refuse plus de 9 000 caractères) ;
+arrive au modèle). REGLES_STUDIO.md doit donc rester court (limite : injection.regles_studio_caracteres_max de
+referentiels/seuils.json, comptée par outils/verifier_coherence.py avec cette ligne du domaine) ;
 si le texte final dépasse tout de même 9 500 caractères, une première ligne dit de lire le fichier en entier.
 """
 import json

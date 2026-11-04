@@ -1,5 +1,7 @@
 # Workflow : créer une nouvelle chaîne
 
+> **Historique, non normatif** (bandeau posé par la 1.1.0, 04/11/2026) : cette page décrit le plugin tel qu'il était quand elle a été écrite. Les règles en vigueur sont dans `plugins/studio-faceless/` (`REGLES_STUDIO.md`, `referentiels/`, skills, agents) ; là où elle s'en écarte, ce sont elles qui s'appliquent.
+
 Ce document décrit le parcours complet pour créer une chaîne à partir du squelette `plugins/studio-faceless/starter/` : espace, dépôt Git, plugin, porte de questions de départ, remplissage de `CLAUDE.md`, de `direction/LIGNE_EDITORIALE.md`, de `direction/ECARTS.md`, de la marque, des couleurs interdites et de la bibliothèque de sons, jusqu'au lancement du premier épisode.
 
 ## Table des matières

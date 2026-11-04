@@ -18,11 +18,13 @@ Méthode validée sur AA (${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md 
 Aucune coupe, aucun mot retiré ni ajouté. À n'appliquer qu'à la narration : jamais aux voix jouées (chants, citations).
 
 Usage, depuis la racine de la chaîne :
-  python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/controle/ralentir.py PRISE.mp3 SORTIE.wav [--tempo 0.97] [--tete 0.6] [--queue 1.2] [--cible -19]
+  python -I -B ${CLAUDE_PLUGIN_ROOT}/outils/controle/ralentir.py PRISE.mp3 SORTIE.wav [--tempo 0.97] [--tete 0.6] [--queue 1.2] [--cible LUFS]   (défaut : mix.voix_mono_lufs de seuils.json)
 Écrit SORTIE.wav (48 kHz, mono, 24 bits) et SORTIE.positions.txt. Refuse d'écraser. La prise d'origine n'est pas modifiée.
 """
 import argparse, glob, hashlib, os, re, shutil, subprocess, sys
 import numpy as np
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   # outils/ : seuils.py (-I retire le dossier du script)
+import seuils   # noqa: E402  ; referentiels/seuils.json (1.1.0)
 
 FF_DEFAUT = next(iter(sorted(glob.glob(os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Microsoft', 'WinGet', 'Packages', 'Gyan.FFmpeg*', '*', 'bin')))), '')  # FFmpeg de WinGet s'il existe ; aucun chemin propre à une machine
 FF = os.environ.get('HYPERFRAMES_FFMPEG_PATH') or shutil.which('ffmpeg') or os.path.join(FF_DEFAUT, 'ffmpeg.exe')
@@ -141,7 +143,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('prise'); ap.add_argument('sortie')
     ap.add_argument('--tempo', type=float, default=0.97); ap.add_argument('--tete', type=float, default=0.6)
-    ap.add_argument('--queue', type=float, default=1.2); ap.add_argument('--cible', type=float, default=-19.0)
+    ap.add_argument('--queue', type=float, default=1.2); ap.add_argument('--cible', type=float, default=float(seuils.valeur('mix.voix_mono_lufs')))
     a = ap.parse_args()
     pos = os.path.splitext(a.sortie)[0] + '.positions.txt'
     for p in (a.sortie, pos):

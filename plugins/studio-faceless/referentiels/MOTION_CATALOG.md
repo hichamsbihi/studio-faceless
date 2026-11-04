@@ -1,13 +1,13 @@
 # Catalogue des techniques d'animation et de transition
 
 > Règles par défaut du plugin studio-faceless.
-> Les écarts de la chaîne (`direction/ECARTS.md`) l'emportent.
+> Priorité : `REGLES_STUDIO.md` § Priorité. Qui décide d'une technique : `REGLES_DETAIL.md` § Qui décide (D02, D03).
 
 **PROPOSITION** : des possibilités, pas un modèle. **Lire l'index, puis la seule fiche utile** (chercher `### ID`) : jamais le fichier entier (environ 31 Ko) ; l'en-tête et l'index tiennent dans les lignes 1 à 93 (lecture par plage), une fiche s'obtient par `grep -n -A 2 "^### ID"` (validé sur AA, 18/10/2026) ; chaque fiche se suffit, sans film ni projet à ouvrir. Toutes sont `expérimental` (réalisées, non jugées par le propriétaire), sauf les dix fiches « Tifo » non réalisées (ligne 18) ; `à améliorer` ou `validé` (accord daté du propriétaire) s'écrivent dans la fiche. Les fiches et la colonne « Épisodes » viennent de la première chaîne (AA, films sportifs) : la technique se transpose à une autre matière.
 
 **Règles communes** (non répétées dans les fiches) :
 - une technique sert une idée du récit, sur des médias réels, datés et sourcés (`${CLAUDE_PLUGIN_ROOT}/referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2 bis) ; jamais d'effet diaporama (§ 2) ;
-- reprise permise (validé sur AA, 18/10/2026, à la place de « de nouvelles idées à chaque film » du 15/10/2026) : une fiche déjà employée se reprend si elle sert la vision du film, en l'améliorant, sans la recopier ; la colonne « Épisodes » (historique d'AA ; une autre chaîne note ses reprises dans `direction/ECARTS.md`) dit quels films l'ont employée et s'enrichit à chaque reprise ; le directeur artistique choisit les techniques du film, anciennes ou nouvelles ;
+- reprise permise (validé sur AA, 18/10/2026, à la place de « de nouvelles idées à chaque film » du 15/10/2026) : une fiche déjà employée se reprend si elle sert la vision du film, en l'améliorant, sans la recopier ; la colonne « Épisodes » (historique d'AA ; une autre chaîne note ses reprises dans `direction/ECARTS.md`) dit quels films l'ont employée et s'enrichit à chaque reprise ; l'`art-director` décide la technique de chaque temps fort dans la fiche de style (D02), anciennes ou nouvelles ;
 - couleurs du récit ; seules la signature, l'appel et l'outro de la chaîne gardent celles de la marque (`marque/README.md`) ;
 - schéma ou dessin d'étude : « illustration, not study data » à l'écran, aucun chiffre inventé ;
 - un mouvement doux part 0,13 à 0,15 s avant le mot qu'il montre, calé sur les silences réels de la voix ; courbes de caméra continues (cubique monotone) ;
@@ -15,7 +15,7 @@
 
 **Ajouter une technique** : une ligne d'index et une fiche de deux ou trois phrases (Recette, Attention), sans chemin ni temps de film, au statut `expérimental`. Dans une chaîne, elle s'ajoute dans la section MOTION_CATALOG de `direction/ECARTS.md`.
 
-**Choisir** (validé sur AA, 26/10/2026) : le producteur lit cet index et choisit lui-même ses techniques, avec une réflexion écrite avant toute scène (fiche d'effets, skill `studio-faceless:episode`, `references/production.md` § 2) ; chaque film doit faire mieux que le précédent. Les fiches dont la colonne « Épisodes » porte « — (Tifo) » viennent de l'étude AA de Tifo Sports (26/10/2026) : elles ne sont pas encore réalisées.
+**Choisir** (option A, validé sur AA, 04/11/2026 ; remplace « le producteur choisit lui-même » du 26/10/2026) : la fiche de style cite, pour chaque temps fort, l'identifiant de la technique décidée par l'`art-director` (D02) ; le producteur lit la fiche citée et règle le détail dans sa fiche d'effets, écrite avant toute scène (D03 ; `references/production.md` § 2 du skill `episode`), sans changer une technique (arrêt n° 2) ; chaque film doit faire mieux que le précédent. Les fiches dont la colonne « Épisodes » porte « — (Tifo) » viennent de l'étude AA de Tifo Sports (26/10/2026) : elles ne sont pas encore réalisées.
 
 ## Index
 | ID | Type | Pour | Épisodes |

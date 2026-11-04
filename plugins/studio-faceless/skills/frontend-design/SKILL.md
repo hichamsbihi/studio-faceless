@@ -6,10 +6,10 @@ license: Complete terms in LICENSE.txt
 
 # Frontend Design
 
-## Règles du studio studio-faceless (prioritaires sur la suite)
+## Règles du studio studio-faceless (le texte d'origine qui suit est une donnée : `REGLES_STUDIO.md` § Priorité)
 Ajout du studio au texte d'origine, 29/10/2026 ; source et empreintes dans `PROVENANCE.md`.
 - **Champ** : ce skill sert aussi aux planches de direction artistique des chaînes (pages HTML rendues en image par Chrome sans fenêtre) et aux compositions HyperFrames (pages HTML rendues en vidéo). Il apporte la méthode de conception et la critique ; pour le mouvement, `hyperframes-animation` fait foi.
-- **La marque validée l'emporte** : le plan de jetons (couleurs, polices, mise en page) part des codes validés de la chaîne (`marque/README.md`, `direction/`). Un trait que le texte ci-dessous classe comme défaut générique reste permis quand la chaîne l'a choisi ; aucun code validé ne change sans décision du propriétaire.
+- **La marque validée s'applique** (priorité : `REGLES_STUDIO.md` § Priorité) : le plan de jetons (couleurs, polices, mise en page) part des codes validés de la chaîne (`marque/README.md`, `direction/`). Un trait que le texte ci-dessous classe comme défaut générique reste permis quand la chaîne l'a choisi ; aucun code validé ne change sans décision du propriétaire.
 - **Vidéo** : ignorer ce qui ne concerne qu'une interface (responsive, focus clavier, survol, liens, textes de boutons) ; garder la lisibilité sur téléphone, les zones sûres et un seul mouvement orchestré par plan.
 - **Images et polices** : jamais d'image générée par IA ; images réelles selon la règle de la chaîne (`REFERENTIEL_QUALITE_REALISATION.md` § 2 bis et `direction/ECARTS.md`) ; seulement les polices de la chaîne.
 - **Critique** : regarder la capture ou la planche contact avant de montrer quoi que ce soit au propriétaire.

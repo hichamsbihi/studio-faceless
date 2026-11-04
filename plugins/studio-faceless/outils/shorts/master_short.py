@@ -3,10 +3,12 @@ Valeurs PROPOSÉ (${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md, shorts 
 Gain unique, puis limiteur de crêtes vraies, plafond −1,5 dBTP sur le WAV (marge de 0,5 dB pour l'AAC). Les fonctions
 crete_par_echantillon et limiteur sont recopiées de l'assembleur du montage de l'E005 d'AA (version antérieure de montage/assembler.py).
 L'image est copiée sans réencodage ; le son est réencodé en AAC 48 kHz ; index en tête (faststart). Refuse d'écraser.
-Usage : python -I -B master_short.py ENTREE.mp4 SORTIE.mp4 [--cible -14] [--plafond -1.5]
+Usage : python -I -B master_short.py ENTREE.mp4 SORTIE.mp4 [--cible LUFS] [--plafond dBTP]   (défauts : shorts.master_lufs et shorts.limiteur_dbtp de seuils.json)
 """
-import argparse, os, re, shutil, subprocess
+import argparse, os, re, shutil, subprocess, sys
 import numpy as np
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   # outils/ : seuils.py (-I retire le dossier du script)
+import seuils   # noqa: E402  ; referentiels/seuils.json (1.1.0)
 from scipy.signal import resample_poly
 from scipy.ndimage import minimum_filter1d
 
@@ -73,8 +75,8 @@ def limiteur(x, plafond_db, anticipation=0.005, retour_db_s=25.0):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('entree'); ap.add_argument('sortie')
-    ap.add_argument('--cible', type=float, default=-14.0)
-    ap.add_argument('--plafond', type=float, default=-1.5)
+    ap.add_argument('--cible', type=float, default=float(seuils.valeur('shorts.master_lufs')))
+    ap.add_argument('--plafond', type=float, default=float(seuils.valeur('shorts.limiteur_dbtp')))
     a = ap.parse_args()
     if os.path.exists(a.sortie):
         raise SystemExit('refus : ' + a.sortie + ' existe déjà')

@@ -32,7 +32,10 @@ SR = 48000
 
 # Cibles (DIRECTION_AUDIO.md § 3) et couleurs retirées des films : celles de la chaîne, dans marque/couleurs_interdites.json
 # ({"corail": "#F17462", …}) ; sans ce fichier, aucune couleur n'est interdite.
-CIBLE_LUFS, TOLERANCE_LUFS, MAX_TP = -16.0, 1.0, -1.5
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   # outils/ : seuils.py
+import seuils   # noqa: E402  ; referentiels/seuils.json (1.1.0)
+CIBLE_LUFS, TOLERANCE_LUFS = seuils.valeur('mix.film_lufs_cible'), seuils.valeur('mix.film_lufs_tolerance')
+MAX_TP = seuils.valeur('mix.film_crete_vraie_max_dbtp')
 FICHIER_COULEURS = os.path.join(os.environ.get('CLAUDE_PROJECT_DIR') or os.getcwd(), 'marque', 'couleurs_interdites.json')
 
 

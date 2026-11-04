@@ -20,7 +20,9 @@ import argparse, os, pathlib, shutil, subprocess, sys
 
 FF = os.environ.get('HYPERFRAMES_FFMPEG_PATH') or shutil.which('ffmpeg') or 'ffmpeg'
 FP = os.environ.get('HYPERFRAMES_FFPROBE_PATH') or shutil.which('ffprobe') or 'ffprobe'
-DUREE_MAX = 6.0  # extraits de moins de six secondes (règle par défaut du plugin ; MM, 24/10/2026)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   # outils/ : seuils.py
+import seuils   # noqa: E402  ; règle par défaut du plugin (MM, 24/10/2026), valeur dans referentiels/seuils.json (1.1.0)
+DUREE_MAX = float(seuils.valeur('medias.extrait_non_libre_s_max'))
 # Source HDR (HLG ou PQ, BT.2020) : ramenée en SDR BT.709 avant le traitement (S1 v2 de MM, 24/10/2026).
 VERS_SDR = ("zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,tonemap=hable:desat=0,"
             "zscale=t=bt709:m=bt709:r=tv,format=yuv420p,")

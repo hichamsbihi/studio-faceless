@@ -1,3 +1,5 @@
 #!/bin/sh
 # Dépôt du plugin studio-faceless : contrôle avant chaque commit. Activé par : git config core.hooksPath .githooks
-exec python -I -B plugins/studio-faceless/outils/verifier_depot.py
+# 1.1.0 : verifier_coherence.py, bloquant ici seulement (les chaînes lancent verifier_depot.py du cache, sans ce contrôle).
+python -I -B plugins/studio-faceless/outils/verifier_depot.py || exit 1
+exec python -I -B plugins/studio-faceless/outils/verifier_coherence.py

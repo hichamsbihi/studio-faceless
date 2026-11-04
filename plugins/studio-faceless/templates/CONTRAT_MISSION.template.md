@@ -1,6 +1,6 @@
 # Contrat de mission : modèle
 
-À recopier dans le message de délégation à un sous-agent. Les neuf champs sont définis dans les règles communes du studio (`${CLAUDE_PLUGIN_ROOT}/REGLES_STUDIO.md`, « Sous-agents ») ; un champ sans objet vaut « aucun ». Les règles par défaut citées ci-dessous sont dans `${CLAUDE_PLUGIN_ROOT}/referentiels/` ; les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent.
+À recopier dans le message de délégation à un sous-agent. Les neuf champs sont définis dans les règles communes du studio (`${CLAUDE_PLUGIN_ROOT}/REGLES_STUDIO.md`, « Sous-agents ») ; un champ sans objet vaut « aucun ». Les règles par défaut citées ci-dessous sont dans `${CLAUDE_PLUGIN_ROOT}/referentiels/` ; les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité).
 
 ```text
 episode_id : <episode-00N | studio>
@@ -14,7 +14,7 @@ décisions validées : <décision, date et référence, ou « aucune »>
 restrictions : <interdits propres à la mission>
 ```
 
-**Règles de la chaîne utiles à la mission** (0.2.3) : une section de **10 lignes au plus**, recopiée par l'orchestrateur depuis le `CLAUDE.md` de la chaîne, à la suite des neuf champs. **Obligatoire pour `studio-faceless:research`, `studio-faceless:studio-maintainer`, `studio-faceless:strategist` et `studio-faceless:media-fetcher`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents, qui le lisent.
+**Règles de la chaîne utiles à la mission** (0.2.3) : une section de **10 lignes au plus**, recopiée par le directeur depuis le `CLAUDE.md` de la chaîne, à la suite des neuf champs. **Obligatoire pour `studio-faceless:research`, `studio-faceless:studio-maintainer`, `studio-faceless:strategist` et `studio-faceless:media-fetcher`**, qui démarrent sans le `CLAUDE.md` de la chaîne (`omitClaudeMd`) ; facultative pour les autres agents, qui le lisent.
 
 ```text
 Règles de la chaîne utiles à la mission (10 lignes au plus, recopiées du CLAUDE.md de la chaîne)
@@ -35,7 +35,7 @@ pour strategist : <propriétaire, domaine, chaînes sœurs, chaînes de référe
   - Une correction après visionnage se fait dans la même version (validé sur AA, 24/10/2026) : reprise du producteur si son cache est chaud, sinon un agent court, avec un brief de quelques lignes (ce qui change, fichiers et version de départ) ; une nouvelle version seulement pour un défaut majeur.
 - `studio-faceless:shorts-producer` (validé sur AA, 19/10/2026) : il faut le **kit shorts** (`episodes/<id>/kit/shorts/`), un **brief de short** (modèle : skill `studio-faceless:shorts`, `references/brief-short.md`) et un dossier d'écriture exact (`episodes/<id>/production/short-0N-vM/`). Mêmes règles que le producteur de séquences : il s'arrête à `render.sh`, et chaque correction est confiée à un nouvel agent.
 - `studio-faceless:studio-maintainer` : `episode_id` vaut « studio » ; sans écriture autorisée, il constate seulement ; section « Règles de la chaîne utiles à la mission » obligatoire.
-- `studio-faceless:strategist` (0.4.0) : `episode_id` vaut « studio » ; deux champs en plus, `phase` (`dossier`, `brief`, `conseil`, `titres`, `sujets` ou `banque`) et `session` (`docs/strategie/<AAAA-MM-JJ>-<sujet>/`) ; écriture dans `docs/`, et dans `direction/BANQUE_SUJETS.md` seulement si « décisions validées » cite l'accord daté du propriétaire ; section « Règles de la chaîne utiles à la mission » obligatoire (propriétaire, langues, domaine, chaînes sœurs, chaînes de référence).
+- `studio-faceless:strategist` (0.4.0) : `episode_id` vaut « studio » ; deux champs en plus, `phase` (`dossier`, `brief`, `revue`, `titres`, `sujets` ou `banque`) et `session` (`docs/strategie/<AAAA-MM-JJ>-<sujet>/`) ; écriture dans `docs/`, et dans `direction/BANQUE_SUJETS.md` seulement si « décisions validées » cite l'accord daté du propriétaire ; section « Règles de la chaîne utiles à la mission » obligatoire (propriétaire, langues, domaine, chaînes sœurs, chaînes de référence).
 - `studio-faceless:media-fetcher` (0.6.0) : `episode_id` de l'épisode ; écriture limitée à `episodes/<id>/kit/media/source-vN/` ; le contrat donne la **liste JSON** à télécharger (dans `episodes/<id>/kit/`), la décision datée du propriétaire qui la valide (« décisions validées »), le dossier de dépôt et le **robot** (`--agent-utilisateur` : un nom et l'adresse de la chaîne, jamais une adresse e-mail) ; section « Règles de la chaîne utiles à la mission » obligatoire (sources admises, exclusions, langues).
 
 ## Brief de séquence court (producteur)
@@ -49,7 +49,7 @@ plan de plans : <moment (s) → média du kit → mouvement voulu → raison d'�
 son : <musique du kit et gain relatif ; effets au moment exact, ou « aucun »>
 gabarit : <kit/gabarit/> ; éléments à réutiliser (fond, fiche, étiquettes…)
 règles utiles : <extraits courts de direction/ et des consignes de l'épisode : palette, typographie, vibration, photos répétées…>
-fiches du catalogue : <identifiants suggérés, ou « aucune »> ; le producteur lit l'index de ${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md (début du fichier, jusqu'à la première fiche `###`) et choisit lui-même, dans sa fiche d'effets écrite avant toute scène
+fiches du catalogue : <identifiants de la fiche de style, temps fort par temps fort (D02)> ; le producteur lit ces fiches de ${CLAUDE_PLUGIN_ROOT}/referentiels/MOTION_CATALOG.md et règle le détail dans sa fiche d'effets écrite avant toute scène (D03), sans changer une technique
 épisode précédent : <retours du propriétaire à appliquer ; techniques déjà employées, à améliorer et non à recopier>
 sortie : <dossier d'écriture exact> ; nom du MP4 prévu
 ```

@@ -1,12 +1,12 @@
 # Référentiel de qualité de réalisation (V0.3, partiellement validé)
 
 > Règles par défaut du plugin studio-faceless.
-> Les écarts de la chaîne (`direction/ECARTS.md`) l'emportent.
+> Priorité : `REGLES_STUDIO.md` § Priorité.
 
 **Statut : PROPOSITION À VALIDER**, sauf ce qui suit, validé sur AA par son propriétaire :
 - la règle « besoin narratif → médias » (§3), demandée le 12 octobre 2026. L'étape « images clés validées » est **supprimée le 15 octobre 2026** (§3) ;
 - l'interdiction de l'effet diaporama, et ses moyens (§2), règle générale validée le 15 octobre 2026 ;
-- les règles de choix des médias (§2 bis), le contrat de plan (§3 bis) et les portes A à C (§4), validés le 14 octobre 2026 ;
+- les règles de choix des médias (§2 bis), le contrat de plan (§3 bis) et les contrôles A à C (§4), validés le 14 octobre 2026 ;
 - les règles d'animation, de transitions et de médias au bon moment (§2 quater), validées le 28 octobre 2026 (épisode 009) ;
 - les règles de rythme, de réalisme, de profondeur et d'arrière-plan (§2 ter), validées le 15 octobre 2026 pendant l'épisode 003. Ce document fixe un niveau d'exigence ; ce n'est ni une charte graphique ni une méthode imposée. Les pratiques propres à un épisode vont dans son `CLAUDE.md`, pas ici.
 
@@ -40,12 +40,7 @@
 
 ## 2 bis. Choix des médias (validé sur AA, 14 octobre 2026)
 - **Une situation authentique** (un événement daté, une réaction réelle) vaut mieux qu'un montage de plans génériques. Le montage ne change pas la nature d'une scène (exemple AA : un échauffement ne devient pas une défaite).
-- **Aucun pixel créé sur une photo donnée pour vraie** (validé sur AA, 04/11/2026 ; précise « aucune image générée par IA ») :
-  - ni par IA ni par un autre calcul : ni LaMa, ni remplissage OpenCV, ni push-pull. Le détourage sépare des pixels réels, il n'en crée pas ;
-  - un fond tiré de la même photo floutée est admis, s'il ne montre aucun double net du sujet ;
-  - aucun mouvement du corps, du visage ou des cheveux d'une personne réelle : seules la caméra et les calques bougent (fiche LIVING-PHOTO de `MOTION_CATALOG.md`).
-
-  Pour cette raison, les skills `studio-faceless:lemo-wake` et `lemo-layers`, adaptés au studio le 04/11/2026, n'emploient jamais leur remplissage.
+- **Aucun pixel créé sur une photo donnée pour vraie** (validé sur AA, 04/11/2026) : règle dans `STYLES.md` § Aucun pixel créé.
 - **Chaque média a une fonction narrative** qu'on peut formuler en une phrase ; « c'est un stade » ne suffit pas. Un média qui ne raconte rien sort du montage.
 - **Les mots habitent l'image** (le plan de l'événement, sa profondeur, un support réel) au lieu de flotter en surimpression.
 - **Image adaptée au récit** : chaque image correspond au contexte et au niveau de l'histoire racontée. Une image amateur ou semi-pro n'est acceptée que si c'est ce que montre réellement le récit.
@@ -72,7 +67,7 @@ Ces règles viennent des retours du propriétaire sur un épisode de la premièr
 - **Les images suivent la voix.**
   - Chaque phrase déclenche un événement visuel sur son premier mot (±2 images).
   - Les pauses sont tenues par l'image et le son.
-  - Aucune image ne reste immobile plus de 1 s (§ 2 quater, 28/10/2026 ; 2,5 s auparavant). Ce mouvement vient des photos et des fonds, jamais du texte posé (voir « Aucune vibration »).
+  - Aucune image ne reste immobile plus de `image.image_immobile_s_max` s (`seuils.json` ; § 2 quater, 28/10/2026). Ce mouvement vient des photos et des fonds, jamais du texte posé (voir « Aucune vibration »).
   - Pas de récitation ni de sensation de lecture.
 - **Plus de photos réelles**, pour garder « le lien de réalisme avec le spectateur ».
   - Un fond uni devient l'exception.
@@ -92,7 +87,7 @@ Ces règles viennent des retours du propriétaire sur un épisode de la premièr
   - Un mouvement lent reste continu.
   - **Un texte posé reste immobile** (validé sur AA, 20/10/2026 ; mesures de l'E005 du 19/10/2026) : entrée et sortie courtes, en glissement et en opacité ; jamais d'échelle ni de flou animés sur un texte ou un bloc qui en contient. L'échelle fait sauter les lettres. Le flou, la brume, le grain et `--workers 2` imposent un rendu recalé au pixel, où même un glissement lent saccade.
   - Interdits : secousse de caméra, valeurs aléatoires recalculées à chaque image hors du grain, arrondi au pixel pendant un mouvement lent.
-  - Contrôle : porte B.
+  - Contrôle : B (§ 4).
 - **Raccord vers la signature** (validé sur MM, 20/10/2026, règle générale le 21/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ) : l'accroche finit par un noircissement animé en dégradé, puis la signature « allume la lumière ». C'est le raccord par défaut de chaque épisode ; la chaîne peut fixer le sien dans `direction/ECARTS.md`.
 
 - **Recette d'image v3** (validé sur AA, 24/10/2026, sur E007 seq5 v3 : « cette diversification d'effets, transitions et cette immersivité était celle que je recherchais » ; détail et contrat : skill `studio-faceless:episode`, `references/production.md` § 1 ; modèles : archives de la chaîne) :
@@ -111,7 +106,7 @@ Ces règles viennent des retours du propriétaire sur un épisode de la premièr
 ## 2 quater. Animation, transitions et médias au bon moment (validé sur AA, 28/10/2026)
 Ces règles viennent des retours du propriétaire sur la séquence témoin de l'E009 d'AA (26/10/2026) : « le plan est figé pendant presque la moitié de l'accroche », puis « l'objectif n'est pas de faire un collage de vidéos, l'objectif est d'avoir des animations bien faites, une bonne maîtrise des transitions et utiliser les médias dans le bon moment ». Elles complètent le § 2 ter et la recette v3 ; en cas d'écart, la règle la plus stricte s'applique.
 
-- **Des animations, pas des schémas posés.** Un dessin se construit et vit à l'image : tracés, éléments qui entrent avec leur propre mouvement, chiffres qui défilent, symboles qui se déplacent sur leurs trajectoires. La caméra bouge dans le monde dessiné (poussée, travelling, légère rotation, calques en parallaxe 2,5D). **Aucune image immobile plus de 1 s**, hors les 3 images d'une jonction.
+- **Des animations, pas des schémas posés.** Un dessin se construit et vit à l'image : tracés, éléments qui entrent avec leur propre mouvement, chiffres qui défilent, symboles qui se déplacent sur leurs trajectoires. La caméra bouge dans le monde dessiné (poussée, travelling, légère rotation, calques en parallaxe 2,5D). **Aucune image immobile plus de `image.image_immobile_s_max` s** (`seuils.json`), hors les images d'une jonction.
 - **Une idée de mise en scène par passage d'explication.** L'objet dessiné peut se montrer en profondeur ; la caméra s'en approche ou en fait le tour ; ses parties s'ouvrent et les éléments y entrent avec élan, rebond ou traîne. Jamais seulement des aplats qui s'allument. La perspective CSS se limite aux dessins et aux photos, jamais sur un texte (§ 2 ter).
 - **Une transition pensée à chaque coupe**, liée au récit :
   - raccord de forme (le dessin se pose exactement sur la vraie image, ou l'inverse) ;
@@ -162,11 +157,11 @@ Chaque unité audiovisuelle importante précise :
 
 Une transformation qui n'apporte ni découverte ni changement de lecture est à reprendre.
 
-## 4. Portes de qualité
+## 4. Contrôles de qualité, puis visionnage
 - **A — Intention, avant toute animation lourde** : question de scène, matériaux licites, fiche de séquence validée.
   - Les médias se choisissent avant les effets. Plusieurs angles ou sources cohérentes quand ils existent vraiment ; jamais de travelling qui montrerait ce que la photo ne contient pas.
   - **Lignes de source** (validé sur MM, 21/10/2026, audit de son pilote ; proposé au plugin 0.3.0, PROPOSÉ) : chaque mention de source écrite à l'écran est relue contre la recherche avant `render.sh`. Sur le pilote d'origine, quatre lignes fausses, vues seulement après le rendu, étaient restées dans le film en ligne.
-  - Le producteur fixe lui-même ses images clés (entrée, découverte centrale, transformation, raccord, état final) et les vérifie sur sa planche de la porte B. Depuis le 15/10/2026, elles ne sont plus soumises au propriétaire (§3).
+  - Le producteur fixe lui-même ses images clés (entrée, découverte centrale, transformation, raccord, état final) et les vérifie sur sa planche du contrôle B. Depuis le 15/10/2026, elles ne sont plus soumises au propriétaire (§3).
   - Les médias réels, ou leurs alternatives graphiques honnêtes, avec leur provenance et leurs droits.
   - S'il n'existe qu'une photo, le dire et construire une structure éditoriale plutôt que 40 s de zoom.
   - Refusé : un prototype où la voix avance pendant que l'image ne fait que dériver ou changer légèrement d'échelle.
@@ -175,7 +170,7 @@ Une transformation qui n'apporte ni découverte ni changement de lecture est à 
   - On examine la planche d'images, le mouvement, la continuité de caméra, la lisibilité des sujets, la découverte réelle et le montage avec les plans voisins. Le jugement est perceptif, pas seulement chiffré.
   - **Aucune clé avant sa valeur** (validé sur MM, 21/10/2026, audit de son pilote, séquences 5 et 8 ; proposé au plugin 0.3.0, PROPOSÉ) : une légende ou une étiquette n'apparaît pas avant la donnée qu'elle explique.
   - **Aucun cadre ne naît vide** (validé sur MM, 21/10/2026 ; proposé au plugin 0.3.0, PROPOSÉ ; complète la recette v3, `skills/episode/references/production.md` § 1) : un tableau, une colonne ou un cadre apparaît avec son contenu. Le producteur le vérifie sur sa planche, avant `render.sh` : sur le pilote d'origine, le défaut n'avait été vu que sur les MP4 de trois séquences, d'où trois nouvelles versions.
-  - Depuis le 28/10/2026, aucune image ne reste immobile plus de 1 s (§ 2 quater ; 2,5 s du 15/10 au 28/10). Une tenue sans information ni intention nouvelle se corrige ; une pause expressive reste permise si quelque chose y vit (lumière, profondeur, son).
+  - Depuis le 28/10/2026, aucune image ne reste immobile plus de `image.image_immobile_s_max` s (`seuils.json`, § 2 quater). Une tenue sans information ni intention nouvelle se corrige ; une pause expressive reste permise si quelque chose y vit (lumière, profondeur, son).
   - **Vibration** : différence entre images successives sur une zone censée être immobile, après réduction et léger flou, pour neutraliser le grain :
 
     `ffmpeg -i X.mp4 -vf "crop=W:H:X:Y,scale=iw/4:ih/4,gblur=sigma=2,tblend=all_mode=difference,signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=-" -f null -`
@@ -188,7 +183,7 @@ Une transformation qui n'apporte ni découverte ni changement de lecture est à 
   - `studio-faceless:art-director` examine le MP4 produit (planches denses, images aux raccords) et rend : temps → défaut précis → raison → correction à fort impact.
   - Aucun verdict « conforme » fondé seulement sur les LUFS, les 30 i/s, un CLI sans erreur ou une compilation.
 - **D — Son et image** : écoute selon `${CLAUDE_PLUGIN_ROOT}/referentiels/DIRECTION_AUDIO.md`.
-- **E — Revue humaine** : le propriétaire décide.
+- **E — Visionnage** : une porte du propriétaire (`REGLES_DETAIL.md` § Parcours), pas un contrôle.
 
 Bloquant même si c'est beau : preuve fabriquée ou trompeuse, droits non clarifiés, élément majeur illisible, plan essentiel manquant, audio non contrôlé.
 

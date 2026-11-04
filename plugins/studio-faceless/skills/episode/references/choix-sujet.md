@@ -1,6 +1,6 @@
 # Choisir le sujet (`PROPOSÉ`, Méthode v1, étude AA, bloc 1)
 
-Les règles citées (`REFERENTIEL`, `METHODE_RECIT`) sont les règles par défaut du plugin (`${CLAUDE_PLUGIN_ROOT}/referentiels/`) ; les écarts de la chaîne sont dans `direction/ECARTS.md` et l'emportent.
+Les règles citées (`REFERENTIEL`, `METHODE_RECIT`) sont les règles par défaut du plugin (`${CLAUDE_PLUGIN_ROOT}/referentiels/`) ; les écarts de la chaîne sont dans `direction/ECARTS.md` (priorité : `REGLES_STUDIO.md` § Priorité).
 
 ## 1. Grille (celle de l'audit E007 d'AA)
 Six critères notés de 1 à 5. Trois comptent double : demande, nom connu, médias. Maximum 45.
