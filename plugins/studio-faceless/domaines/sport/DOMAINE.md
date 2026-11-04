@@ -7,6 +7,7 @@ Règles communes aux chaînes de sport. Elles remplacent les règles par défaut
 
 ## Droits des images (remplacent ou précisent `REFERENTIEL_QUALITE_REALISATION.md` § 2 bis)
 - **Vraies vidéos de match** : un vrai moment de match se montre en vraie vidéo, jamais en animation ; l'animation sert à expliquer. Compétitions admises par défaut : Mondial (FIFA), CAN (CAF), compétitions de l'UEFA, Premier League (validé sur AA, 28/10/2026, Q23 et Q24 de l'E010, après les exceptions de l'E008 et de l'E009). Le risque de réclamation Content ID est assumé par le propriétaire ; chaque chaîne confirme ou réduit cette liste dans ses écarts.
+- **Vraie photo d'un moment de match** (validé sur AA, 04/11/2026) : seules la caméra et les annotations qui expliquent (anneaux, flèches) bougent, et aucun athlète n'est détouré ni décollé de la photo. Le détourage en calque sert aux portraits et aux lieux. Jamais un corps qui bouge.
 - **Logos** : clubs, instances, compétitions, trophées (Ballon d'Or), médias cités, avec mesure : un ou deux par passage, seulement s'ils aident (validé sur AA, 28/10/2026, Q69 de l'E010).
 - **Vidéos libres génériques** : permises, jamais présentées comme le match ou le club précis ; aucune vidéo générée par IA (validé sur AA, 19/10/2026).
 - **Licences à signaler au contrôle** : `BY-SA`, `PD-AR`, `PD-Brazil`, `BY 2.0 BR`, domaine public argentin (liste `LICENCES_EN_ATTENTE` de `outils/controle/controle.py`, constituée sur AA).

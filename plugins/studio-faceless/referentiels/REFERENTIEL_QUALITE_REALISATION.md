@@ -40,6 +40,12 @@
 
 ## 2 bis. Choix des médias (validé sur AA, 14 octobre 2026)
 - **Une situation authentique** (un événement daté, une réaction réelle) vaut mieux qu'un montage de plans génériques. Le montage ne change pas la nature d'une scène (exemple AA : un échauffement ne devient pas une défaite).
+- **Aucun pixel créé sur une photo donnée pour vraie** (validé sur AA, 04/11/2026 ; précise « aucune image générée par IA ») :
+  - ni par IA ni par un autre calcul : ni LaMa, ni remplissage OpenCV, ni push-pull. Le détourage sépare des pixels réels, il n'en crée pas ;
+  - un fond tiré de la même photo floutée est admis, s'il ne montre aucun double net du sujet ;
+  - aucun mouvement du corps, du visage ou des cheveux d'une personne réelle : seules la caméra et les calques bougent (fiche LIVING-PHOTO de `MOTION_CATALOG.md`).
+
+  Pour cette raison, les skills `studio-faceless:lemo-wake` et `lemo-layers`, adaptés au studio le 04/11/2026, n'emploient jamais leur remplissage.
 - **Chaque média a une fonction narrative** qu'on peut formuler en une phrase ; « c'est un stade » ne suffit pas. Un média qui ne raconte rien sort du montage.
 - **Les mots habitent l'image** (le plan de l'événement, sa profondeur, un support réel) au lieu de flotter en surimpression.
 - **Image adaptée au récit** : chaque image correspond au contexte et au niveau de l'histoire racontée. Une image amateur ou semi-pro n'est acceptée que si c'est ce que montre réellement le récit.

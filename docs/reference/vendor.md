@@ -130,6 +130,11 @@ Chaque fiche donne le dossier, le nombre de fichiers, le rôle d'après le `SKIL
 - **Contenu** (2 084 fichiers : 2 083 copiés et le `PROVENANCE.md` ajouté ; 43,2 Mo) : 66 styles (`STYLE.md`, `style.json`, `poster.jpg`, `DEMO.md`, code de démo), le gabarit `_template/`, l'index `styles/README.md`, le code commun `core/`, `README.md`, `TECHNIQUE.md`, `DIRECTOR.md`, `LICENSE`.
 - **Non copié** : images fixes des démos, textures 3D, `styleboard/`, `docs/`, installeur et outils de dépôt, skill et manifestes de plugin, `AGENTS.md`, `CLAUDE.md` ; banques d'instruments (1,42 Go), hors du plugin.
 - **Ni skill, ni moteur** : `art-director` le lit pour la fiche de style ; les producteurs reprennent le code d'une démo citée au brief, branché sur `hf-seek` (`expérimental`). Leur moteur et leurs scripts ne se lancent jamais. Détail : `vendor/lemo-opuscar/PROVENANCE.md`.
+- **Depuis la 1.0.0** (validé sur AA, 04/11/2026) :
+  - la copie est suivie par paliers (au plus une fois par mois, avec une porte de licence, jamais pendant un épisode) ;
+  - un style porté a une fiche de rendu, et un film prend au plus 2 portages nouveaux ;
+  - une notice MIT va dans chaque projet ;
+  - les consignes de `DIRECTOR.md` et `TECHNIQUE.md` sont neutralisées.
 
 ## Qui charge quoi
 | Agent | Préchargés (champ `skills:`) | À la demande (outil Skill) |

@@ -2,6 +2,25 @@
 
 La version installée est celle de `plugins/studio-faceless/.claude-plugin/plugin.json`. Une modification n'arrive dans les chaînes que si ce numéro change.
 
+## 1.0.0 (04/11/2026)
+Décisions du point 2 de l'ordre du jour des conseils d'AA, sur le moteur créatif : premier conseil réel, 11 agents, 0,75 M de tokens. Les 10 recommandations du conseil sont validées par le propriétaire (04/11/2026 : « Oui aux 10 »). Le même jour, il revient sur les questions 3 et 4 : « tu prends les skills tu les adaptes à notre environnement ». La version est numérotée 1.0.0 à sa demande.
+- **`skills/lemo-wake/` et `skills/lemo-layers/`** : les skills `wake` et `layers` de lemo-wake (commit `f070df8`, CC BY-NC 4.0), copiés et adaptés.
+  - Une section « Règles du studio » est insérée en tête : HyperFrames seul moteur, aucune installation, détourage par `remove-background`, aucun remplissage, aucun corps qui bouge.
+  - Le skill `upload` n'est pas copié, puisqu'il publie dans leur galerie.
+  - Détail dans le `PROVENANCE.md` de chaque dossier.
+- **`vendor/lemo-opuscar/PROVENANCE.md`** :
+  - les styles et la méthode viennent de la bibliothèque, et HyperFrames reste le seul moteur ; leur plugin et leur moteur sont refusés ;
+  - la copie est suivie par paliers : au plus une fois par mois, avec une porte de licence et jamais pendant un épisode. Cela remplace « copie figée, aucune resynchronisation » ; `MY-STYLES.md` arrivera au prochain palier ;
+  - un style porté une fois sur `hf-seek` a une fiche de rendu, et un film prend au plus 2 portages nouveaux ;
+  - une notice MIT est ajoutée dans chaque projet qui reprend du code ;
+  - les consignes de `AGENTS.md`, `DIRECTOR.md` (§ 1, 11, 12 et 13) et `TECHNIQUE.md` (§ 4 et 11) sont neutralisées, ainsi que leur cadence à 24 et 12 i/s.
+- **`agents/art-director.md`** : une longue a un style dominant, au plus deux techniques secondaires et un geste au sommet. Le registre de variété `direction/REGISTRE_VARIETE.md` de la chaîne exige 4 axes sur 6 différents des 5 dernières longues ou des 10 derniers shorts (à l'essai).
+- **`agents/motion-producer.md`, `agents/shorts-producer.md`** : la notice MIT et la fiche de rendu sont exigées, et le rendu se fait toujours à 30 i/s (une animation par pas à 15 ou 10 i/s, jamais à 12).
+- **`referentiels/MOTION_CATALOG.md`** : nouvelle fiche LIVING-PHOTO, « la photo vivante », `expérimental`, avec pour méthode le skill `lemo-wake` adapté.
+- **`referentiels/REFERENTIEL_QUALITE_REALISATION.md` § 2 bis et `REGLES_STUDIO.md`** : aucun pixel créé sur une photo donnée pour vraie, par IA ou non (ni LaMa, ni OpenCV, ni push-pull) ; un fond tiré de la même photo floutée est admis ; aucun corps de personne réelle ne bouge. Le remplissage des skills lemo-wake ne s'emploie donc jamais.
+- **`domaines/sport/DOMAINE.md`** : sur une vraie photo d'un moment de match, seules la caméra et les annotations bougent ; le détourage en calque est réservé aux portraits et aux lieux.
+- Non corrigé, noté pour le point 6 : dans `skills/conseil/conseil-workflow.js`, la contre-hypothèse est sautée dès qu'un désaccord « majeur » vise un avis du premier tour, même abandonné ensuite.
+
 ## 0.8.0 (04/11/2026)
 Skill `conseil` et agent `conseiller`, à la demande du propriétaire (04/11/2026 : « me trouver un skill dont l'idée est de créer un council, un conseil avec plusieurs agents pour en débattre », puis le choix « claude-council + débat »).
 - **`skills/conseil/`** : plusieurs agents Claude indépendants débattent d'une décision du studio : avis en aveugle, débat sur les avis anonymes avec classement, contre-hypothèse si aucun désaccord majeur, compte rendu d'un président dans `docs/rapports/` de la chaîne. Script `conseil-workflow.js` pour l'outil Workflow ; porte du propriétaire avant tout lancement ; `disable-model-invocation: true`.

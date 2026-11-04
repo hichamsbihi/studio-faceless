@@ -61,6 +61,7 @@
 | PAPER-CARD | Archive | poser un fait vérifié sur une fiche | E003 |
 | BEFORE-AFTER | Archive | l'anomalie en deux images au même cadrage | — (Tifo) |
 | CUTOUT-FIGURE | Archive | une personne réelle posée dans un dessin | — (Tifo) |
+| LIVING-PHOTO | Archive | une photo réelle qui vit, sans pixel créé | — |
 | UNIT-ROWS | Donnée | une statistique en unités qu'on compte | E004 |
 | PHOTO-TO-UNIT | Donnée | une photo qui devient l'unité du graphique | E004 |
 | WINDOW-TOKEN | Donnée | la rangée vide s'ouvre sur les gens | E004 |
@@ -215,6 +216,24 @@
 
 ### CUTOUT-FIGURE · La personne détourée
 **Recette** : une personne clé, détourée avec `remove-background` de HyperFrames (méthode : skill `studio-faceless:remove-background` ; validé sur AA, 28/10/2026, Q117 de l'E010), en couleurs réelles, est posée dans un dessin, une carte ou un graphique, à 45 % de la hauteur au moins ; son étiquette entre en opacité ou en glissement au pixel entier. **Attention** : quelques personnes par film, photo libre créditée ; jamais de bichromie (validé sur AA, 26/10/2026).
+
+### LIVING-PHOTO · La photo vivante
+**Recette** : dans la composition, jamais en boucle pré-rendue, avec une durée qui suit la voix. Seules la caméra et les calques bougent, sous l'une de trois formes :
+- une parallaxe couvrante : le premier plan, détouré avec `remove-background`, grossit plus vite que le fond et recouvre toujours sa silhouette d'origine ;
+- un fond tiré de la même photo floutée, sans aucun double net du sujet ;
+- la photo-objet : la photo elle-même devient un tirage, une carte ou une page.
+
+Elle sert à l'accroche d'un short et à 2 ou 3 révélations par longue, sans boucle dans une longue.
+
+**Méthode** : skill `studio-faceless:lemo-wake`, adapté au studio (validé sur AA, 04/11/2026).
+
+**Attention** (validé sur AA, 04/11/2026) :
+- aucun pixel créé ;
+- aucun mouvement du corps, du visage, des cheveux ou du ballon d'une personne réelle ;
+- sur un vrai moment de match, la caméra et les annotations seulement (profil du domaine sport) ;
+- un fond magenta posé sous le détourage ne laisse voir aucun pixel ;
+- « mouvement simulé » est noté dans le `PROVENANCE.md` du projet ;
+- elle reste `expérimental` jusqu'à son duel à l'aveugle contre un Ken Burns.
 
 ### UNIT-ROWS · Le graphique en unités
 **Recette** : rangées d'unités (un essai = une case, un succès = une case remplie, la dernière en fraction) ; une seconde étude se lit dans la même grille, l'écart en couleur. **Attention** : valeurs publiées seulement.

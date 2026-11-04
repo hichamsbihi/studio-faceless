@@ -80,6 +80,8 @@ S'il manque le brief, le kit ou le dossier d'écriture, ne crée rien : renvoie 
 - **Démo de la bibliothèque de styles** (si le brief en cite une, d'après la fiche de style validée ; `expérimental`, validé sur AA, 03/11/2026) : lis `${CLAUDE_PLUGIN_ROOT}/vendor/lemo-opuscar/PROVENANCE.md`, puis seulement les fichiers de démo cités.
   - Son `window.render(t)` devient un écouteur de `hf-seek` (`event.detail.time` ; adaptateur `three` de `hyperframes-animation`, dont on prend l'horloge sans charger Three.js) ; `data-duration` sur la racine, médias préchargés.
   - Mise en page refaite sur le gabarit de séquence v3 (les démos suivent leur propre gabarit).
+  - Dans le dossier du projet, `LICENSE-lemo-opuscar-MIT` (copie de leur `LICENSE`) ; pour un style nouvellement porté, la fiche de rendu (`PROVENANCE.md` de la bibliothèque, validé sur AA, 04/11/2026).
+  - Toujours 30 i/s : une animation par pas se fait à 15 ou 10 i/s, jamais à 12 (validé sur AA, 04/11/2026).
   - Jamais leur moteur ni leurs scripts, ni leurs images, voix ou musiques.
   - Au rapport : ce qui a marché ou non dans le branchement.
 - **Une seule composition racine par dossier** : les autres vont dans `compositions/` et se rendent avec `-c`.

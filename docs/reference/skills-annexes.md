@@ -1,6 +1,6 @@
 # Skills annexes du plugin
 
-Cette page décrit les sept skills « annexes » de `plugins/studio-faceless/skills/` : `grilling`, `humanizer`, `find-skills`, `conseil`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`. Les skills de métier (`episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`) sont décrits dans [`skill-episode.md`](skill-episode.md), [`publication.md`](publication.md) et [`son.md`](son.md).
+Cette page décrit les neuf skills « annexes » de `plugins/studio-faceless/skills/` : `grilling`, `humanizer`, `find-skills`, `conseil`, `elevenlabs-sound-effects`, `elevenlabs-music`, `frontend-design`, `lemo-wake`, `lemo-layers` (ces deux derniers depuis la 1.0.0 : voir leur `PROVENANCE.md`). Les skills de métier (`episode`, `shorts`, `thumbnail-strategist`, `youtube-seo`, `direction-sonore`, `regarder`) sont décrits dans [`skill-episode.md`](skill-episode.md), [`publication.md`](publication.md) et [`son.md`](son.md).
 
 ## Table des matières
 - [Vue d'ensemble](#vue-densemble)
@@ -22,6 +22,8 @@ Cette page décrit les sept skills « annexes » de `plugins/studio-faceless/ski
 | `studio-faceless:elevenlabs-sound-effects` | elevenlabs/skills `sound-effects`, commit `503d4e9`, copie du 29/10/2026 avec une section « Règles du studio » | MIT | `VALIDÉ` (Hicham, 29/10/2026) | le **propriétaire** avec `/elevenlabs-sound-effects`, ou Claude qui lit le `SKILL.md` quand il demande une génération, son par son, coût annoncé avant (appel automatique bloqué depuis la 0.2.2) |
 | `studio-faceless:elevenlabs-music` | elevenlabs/skills `music`, même commit et même traitement | MIT | idem | idem |
 | `studio-faceless:frontend-design` | anthropics/skills `frontend-design`, commit `ca45fc4`, copie du 29/10/2026 avec une section « Règles du studio » | Apache 2.0 | `VALIDÉ` (Hicham, 29/10/2026) | Claude principal et les producteurs, pour les planches de direction artistique et les compositions |
+| `studio-faceless:lemo-wake` | lemomo-ai/lemo-wake `skills/wake`, commit `f070df8`, copie du 04/11/2026 avec une section « Règles du studio » (HyperFrames seul moteur, aucune installation, aucun remplissage, aucun corps qui bouge) | CC BY-NC 4.0 | `VALIDÉ` (Hicham, 04/11/2026) ; à l'essai (fiche LIVING-PHOTO, `expérimental`) | les producteurs et Claude principal, quand une fiche de style validée prévoit une photo vivante |
+| `studio-faceless:lemo-layers` | lemomo-ai/lemo-wake `skills/layers`, même commit et même traitement ; `skills/upload` non copié (publication vers leur galerie) | CC BY-NC 4.0 | idem | idem, pour découper une photo en calques |
 
 **Depuis la 0.2.2**, quatre de ces skills portent `disable-model-invocation: true` (`humanizer`, `find-skills`, `elevenlabs-music`, `elevenlabs-sound-effects`), et `conseil` depuis la 0.8.0 : leur description n'est plus dans la liste proposée à Claude au démarrage, et Claude ne les appelle plus par l'outil Skill. Le propriétaire les appelle avec `/nom`, ou Claude lit leur `SKILL.md` quand il le demande. Vérifié avant le réglage : aucun fichier du plugin ne les précharge ni ne demande de les invoquer.
 
